@@ -25,10 +25,12 @@ export default function MapLayout({
       </div>
       <div className="fixed w-screen h-screen z-50 pointer-events-none">
         {hasNavbar && <Navbar />}
-        <main className='fixed z-50 w-96 p-10 backdrop-blur-lg backdrop-saturate-150 bg-background/70'>
+        <main className='fixed z-50 w-96 rounded-medium shadow-md'>
           {children}
         </main>
       </div>
     </>
   );
 }
+
+//backdrop-blur-lg backdrop-saturate-150 bg-background/70
