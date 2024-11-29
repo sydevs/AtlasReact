@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  main {
+    @apply pointer-events-auto;
+    max-height: 90%;
+    margin: 5%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  nav + main {
+    max-height: calc(90% - 4rem);
+  }
+}
