@@ -8,8 +8,8 @@ interface Props {
 
 export default function EventItem({ event }: Props) {
   return (
-    <Link href={`/event/${event.id}`} className="block backdrop-blur-lg backdrop-saturate-150 bg-background/70 hover:bg-background/50">
-      <li key={event.id} className="p-5 flex flex-row items-center">
+    <Link href={`/event/${event.id}`} className="block bg-blur-hover">
+      <li key={event.id} className="p-4 flex flex-row items-center">
         <div className="flex-grow">{event.label}</div>
         <RightArrowIcon />
       </li>

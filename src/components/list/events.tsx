@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@/config/api";
-import EventItem from "../items/event";
+import EventItem from "./event";
 import Loader from "../loader";
 
 interface Props {
   eventIds: number[];
 }
 
-export default function AreaList({ eventIds }: Props) {
+export default function EventsList({ eventIds }: Props) {
   const { data, isLoading, error } = useQuery({
     queryKey: [`events-${eventIds}`],
     queryFn: () => api.findManyEvents(eventIds),

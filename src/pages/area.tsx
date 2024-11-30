@@ -1,9 +1,9 @@
 import Loader from "@/components/loader";
-import EventList from "@/components/list/events";
 import api from "@/config/api";
 import MapLayout from "@/layouts/map";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import { ListHeader, EventsList } from "@/components/list";
 
 export default function AreaPage() {
   let { id } = useParams();
@@ -12,14 +12,14 @@ export default function AreaPage() {
     queryFn: () => api.getArea(Number(id)),
   });
 
-  console.log('area', data)
   return (
     <MapLayout>
-      <h1 className="text-2xl font-bold text-center bg-white p-2">
-        {data?.name}
-      </h1>
       <Loader isLoading={isLoading} error={error}>
-        <EventList eventIds={data?.eventIds || []} />
+        {data &&
+          <>
+            <ListHeader title={data.name} returnLink={`/${data.parentType.toLocaleLowerCase()}/${data.parentId}`} />
+            <EventsList eventIds={data.eventIds || []} />
+          </>}
       </Loader>
     </MapLayout>
   );

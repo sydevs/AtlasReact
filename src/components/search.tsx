@@ -4,7 +4,7 @@ import { Input } from "@nextui-org/input";
 
 export default function Search() {
   return (
-    <div className="p-2 backdrop-blur-lg backdrop-saturate-150 bg-background/70">
+    <div className="p-2 bg-blur">
       <Input
         aria-label="Search"
         classNames={{

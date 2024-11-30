@@ -1,22 +1,28 @@
-import { Link } from "@nextui-org/link";
-import { Snippet } from "@nextui-org/snippet";
-import { Code } from "@nextui-org/code";
-import { button as buttonStyles } from "@nextui-org/theme";
-import { Kbd } from "@nextui-org/kbd";
-import { SearchIcon } from "@/components/icons";
-
-import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
 import MapLayout from "@/layouts/map";
-import { Input } from "@nextui-org/input";
-import CountryList from "@/components/list/countries";
 import Search from "@/components/search";
+import { useQuery } from "@tanstack/react-query";
+import api from "@/config/api";
+import Loader from "@/components/loader";
+import { Country } from "@/types";
+import { ListItem } from "@/components/list";
 
 export default function IndexPage() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['countries'],
+    queryFn: () => api.getCountries(),
+  });
+
   return (
     <MapLayout>
       <Search />
-      <CountryList />
+      <Loader isLoading={isLoading} error={error}>
+        {data &&
+          <ul className="overflow-y-auto">
+            {data.map((country: Country) => (
+              <ListItem key={country.id} label={country.label} count={country.eventCount} link={`/country/${country.id}`} />
+            ))}
+          </ul>}
+      </Loader>
     </MapLayout>
   );
 }

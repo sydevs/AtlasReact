@@ -7,25 +7,40 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 export type Country = {
   id: number;
   label: string;
-  regions: Region[];
-  areas: Area[];
-  eventIds: number[];
+  regions: Region[] | undefined;
+  areas: Area[] | undefined;
+  eventCount: number;
 };
 
 export type Region = {
   id: number;
+  parentId: number;
+  parentType: string;
   name: string;
   areas: Area[];
-  eventIds: number[];
+  eventCount: number;
 };
 
 export type Area = {
   id: number;
+  parentId: number;
+  parentType: string;
+  name: string;
+  eventIds: number[];
+  eventCount: number;
+};
+
+export type Venue = {
+  id: number;
+  parentId: number;
+  parentType: string;
   name: string;
   eventIds: number[];
 };
 
 export type Event = {
   id: number;
+  areaId: number;
   label: string;
+  venue: Venue;
 };

@@ -1,9 +1,11 @@
-import AreaList from "@/components/list/areas";
 import api from "@/config/api";
 import MapLayout from "@/layouts/map";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Loader from "@/components/loader";
+import ListHeader from "@/components/list/header";
+import { Area } from "@/types";
+import { ListItem } from "@/components/list";
 
 export default function RegionPage() {
   let { id } = useParams();
@@ -14,11 +16,16 @@ export default function RegionPage() {
 
   return (
     <MapLayout>
-      <h1 className="text-2xl font-bold text-center bg-white p-2">
-        {data?.name}
-      </h1>
       <Loader isLoading={isLoading} error={error}>
-        <AreaList areas={data?.areas || []} />;
+        {data &&
+          <>
+            <ListHeader title={data.name} returnLink={`/${data.parentType.toLocaleLowerCase()}/${data.parentId}`} />
+            <ul>
+              {data.areas.map((area: Area) => (
+                <ListItem key={area.id} label={area.name} count={area.eventCount} link={`/area/${area.id}`} />
+              ))}
+            </ul>
+          </>}
       </Loader>
     </MapLayout>
   );

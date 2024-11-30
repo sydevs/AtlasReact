@@ -14,7 +14,9 @@ export default function EventPage() {
   return (
     <MapLayout>
       <Loader isLoading={isLoading} error={error}>
-        {JSON.stringify(data)}
+        <div className="bg-blur p-5">
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        </div>
       </Loader>
     </MapLayout>
   );

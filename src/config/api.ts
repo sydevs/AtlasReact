@@ -8,59 +8,83 @@ const client = axios.create({
   },
 });
 
-const getCountry = async (id: number) => {
+const graphqlTypes = {
+  country: `
+    id
+    label
+    eventCount
+    regions {
+      id
+      name
+      eventCount
+    }
+    areas {
+      id
+      name
+      eventCount
+    }
+  `,
+  region: `
+    id
+    parentId
+    parentType
+    name
+    eventCount
+    areas {
+      id
+      name
+      eventCount
+    }
+  `,
+  area: `
+    id
+    parentId
+    parentType
+    name
+    eventIds
+    eventCount
+  `,
+  event: `
+    id
+    locationId
+    locationType
+    label
+    areaId
+  `,
+  venue: `
+    id
+    name
+    eventIds
+  `,
+};
+
+const getCountries = async () => {
   const response = await client.post("/", {
-    query: `{
-      country(id: ${id}) {
-        id
-        label
-        eventIds
-        areas {
-          id
-          name
-          eventIds
-        }
-        regions {
-          id
-          name
-          eventIds
-        }
-      }
-    }`
+    query: `{ countries { ${graphqlTypes.country} } }`,
   });
 
-  console.log(response)
+  return response.data.data.countries as Country[];
+};
+
+const getCountry = async (id: number) => {
+  const response = await client.post("/", {
+    query: `{ country(id: ${id}) { ${graphqlTypes.country} } }`,
+  });
+
   return response.data.data.country as Country;
 };
 
 const getRegion = async (id: number) => {
   const response = await client.post("/", {
-    query: `{
-      region(id: ${id}) {
-        id
-        name
-        eventIds
-        areas {
-          id
-          name
-          eventIds
-        }
-      }
-    }`
+    query: `{ region(id: ${id}) { ${graphqlTypes.region} } }`,
   });
 
-  return response.data.data.area as Region;
+  return response.data.data.region as Region;
 };
 
 const getArea = async (id: number) => {
   const response = await client.post("/", {
-    query: `{
-      area(id: ${id}) {
-        id
-        name
-        eventIds
-      }
-    }`
+    query: `{ area(id: ${id}) { ${graphqlTypes.area} } }`,
   });
 
   return response.data.data.area as Area;
@@ -68,23 +92,10 @@ const getArea = async (id: number) => {
 
 const getEvent = async (id: number) => {
   const response = await client.post("/", {
-    query: `{
-      event(id: ${id}) {
-        id
-        label
-      }
-    }`
+    query: `{ event(id: ${id}) { ${graphqlTypes.event} } }`,
   });
 
-  return response.data.data.area as Event;
-};
-
-const getRegions = async (country_id: number) => {
-  return getCountry(country_id).then(country => country.regions);
-};
-
-const getAreas = async (country_id: number) => {
-  return getCountry(country_id).then(country => country.areas);
+  return response.data.data.event as Event;
 };
 
 const findManyEvents = async (ids: number[]) => {
@@ -101,12 +112,11 @@ const findManyEvents = async (ids: number[]) => {
 };
 
 const AtlasService = {
+  getCountries,
   getCountry,
   getRegion,
   getArea,
   getEvent,
-  getRegions,
-  getAreas,
   findManyEvents
 }
 

@@ -1,10 +1,11 @@
-import AreaList from "@/components/list/areas";
 import MapLayout from "@/layouts/map";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import api from "@/config/api";
 import Loader from "@/components/loader";
-import RegionList from "@/components/list/regions";
+import ListHeader from "@/components/list/header";
+import { Area, Region } from "@/types";
+import { ListItem } from "@/components/list";
 
 export default function CountryPage() {
   let { id } = useParams();
@@ -15,13 +16,19 @@ export default function CountryPage() {
 
   return (
     <MapLayout>
-      <h1 className="text-2xl font-bold text-center bg-white p-2">
-        {data?.label}
-      </h1>
       <Loader isLoading={isLoading} error={error}>
-        {data?.regions.length > 0 ?
-          <RegionList regions={data?.regions || []} /> :
-          <AreaList areas={data?.areas || []} />}
+        {data &&
+          <>
+            <ListHeader title={data.label} returnLink="/" />
+            <ul>
+              {data.regions?.map((region: Region) => (
+                <ListItem key={region.id} label={region.name} count={region.eventCount} link={`/region/${region.id}`} />
+              ))
+              || data.areas?.map((area: Area) => (
+                <ListItem key={area.id} label={area.name} count={area.eventCount} link={`/area/${area.id}`} />
+              ))}
+            </ul>
+          </>}
       </Loader>
     </MapLayout>
   );

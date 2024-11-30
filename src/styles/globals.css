@@ -15,3 +15,13 @@
     max-height: calc(90% - 4rem);
   }
 }
+
+@layer components {
+  .bg-blur {
+    @apply backdrop-blur-lg backdrop-saturate-150 bg-background/70;
+  }
+
+  .bg-blur-hover {
+    @apply backdrop-blur-lg backdrop-saturate-150 bg-background/70 hover:bg-background/50;
+  }
+}
