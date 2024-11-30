@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Country, Region, Area, Event } from "@/types";
+import { Country, Region, Area, Event, Venue } from "@/types";
 
 const client = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT,
@@ -46,15 +46,53 @@ const graphqlTypes = {
   `,
   event: `
     id
-    locationId
-    locationType
+    url
     label
-    areaId
+    descriptionHtml
+    category
+    address
+    languageCode
+    path
+    registrationMode
+    registrationUrl
+    registrationQuestions {
+      slug
+      title
+    }
+    timing {
+      duration
+      timeZone
+      firstDate
+      lastDate
+      upcomingDates
+      recurrence
+      recurrenceCount
+    }
+    contact {
+      phoneName
+      phoneNumber
+      emailName
+      emailAddress
+      meetup
+      facebook
+    }
+    images {
+      url
+      thumbnailUrl
+    }
+    location {
+      id
+      type
+      label
+      directionsUrl
+    }
   `,
   venue: `
     id
     name
     eventIds
+    parentId
+    parentType
   `,
 };
 
@@ -90,6 +128,14 @@ const getArea = async (id: number) => {
   return response.data.data.area as Area;
 };
 
+const getVenue = async (id: number) => {
+  const response = await client.post("/", {
+    query: `{ venue(id: ${id}) { ${graphqlTypes.venue} } }`,
+  });
+
+  return response.data.data.venue as Venue;
+};
+
 const getEvent = async (id: number) => {
   const response = await client.post("/", {
     query: `{ event(id: ${id}) { ${graphqlTypes.event} } }`,
@@ -116,6 +162,7 @@ const AtlasService = {
   getCountry,
   getRegion,
   getArea,
+  getVenue,
   getEvent,
   findManyEvents
 }

@@ -19,7 +19,7 @@ export default function RegionPage() {
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
-            <ListHeader title={data.name} returnLink={`/${data.parentType.toLocaleLowerCase()}/${data.parentId}`} />
+            <ListHeader title={data.name} returnLink={`/${data.parentType.toLowerCase()}/${data.parentId}`} />
             <ul>
               {data.areas.map((area: Area) => (
                 <ListItem key={area.id} label={area.name} count={area.eventCount} link={`/area/${area.id}`} />

@@ -1,3 +1,4 @@
+import { ListHeader } from "@/components/list";
 import Loader from "@/components/loader";
 import api from "@/config/api";
 import MapLayout from "@/layouts/map";
@@ -14,6 +15,7 @@ export default function EventPage() {
   return (
     <MapLayout>
       <Loader isLoading={isLoading} error={error}>
+        {data && <ListHeader title={data.label} returnLink={`/${data.location.type.toLowerCase()}/${data.location.id}`} />}
         <div className="bg-blur p-5">
           <pre>{JSON.stringify(data, null, 2)}</pre>
         </div>
