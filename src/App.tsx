@@ -7,9 +7,6 @@ import AreaPage from "@/pages/area";
 import VenuePage from "@/pages/venue";
 import EventPage from "@/pages/event";
 
-import BlogPage from "@/pages/blog";
-import AboutPage from "@/pages/about";
-
 function App() {
   return (
     <Routes>
@@ -19,8 +16,6 @@ function App() {
       <Route element={<AreaPage />} path="/area/:id" />
       <Route element={<VenuePage />} path="/venue/:id" />
       <Route element={<EventPage />} path="/event/:id" />
-      <Route element={<BlogPage />} path="/blog" />
-      <Route element={<AboutPage />} path="/about" />
     </Routes>
   );
 }

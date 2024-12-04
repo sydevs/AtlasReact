@@ -8,7 +8,7 @@ interface Props {
 
 export default function EventItem({ event }: Props) {
   return (
-    <Link href={`/event/${event.id}`} className="block bg-blur-hover">
+    <Link href={`/event/${event.id}`} className="block bg-panel-hover">
       <li key={event.id} className="p-4 flex flex-row items-center">
         <div className="flex-grow">{event.label}</div>
         <RightArrowIcon />

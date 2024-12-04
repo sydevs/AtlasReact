@@ -16,7 +16,7 @@ export default function EventPage() {
     <MapLayout>
       <Loader isLoading={isLoading} error={error}>
         {data && <ListHeader title={data.label} returnLink={`/${data.location.type.toLowerCase()}/${data.location.id}`} />}
-        <div className="bg-blur p-5">
+        <div className="bg-panel p-5">
           <pre>{JSON.stringify(data, null, 2)}</pre>
         </div>
       </Loader>

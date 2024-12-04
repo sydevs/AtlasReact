@@ -1,10 +1,20 @@
-import { Kbd } from "@nextui-org/kbd";
-import { SearchIcon } from "@/components/icons";
+import React from 'react';
+import { SearchIcon, OnlineCallIcon, FilledOnlineCallIcon } from "@/components/icons";
+import { Tooltip } from "@nextui-org/tooltip";
 import { Input } from "@nextui-org/input";
+import { Geocoder } from "@mapbox/search-js-react";
+import { SearchBox } from "@mapbox/search-js-react";
 
-export default function Search() {
+interface Props {
+  online: boolean;
+}
+
+export default function Search({ online = true }: Props) {
+  const [location, setLocation] = React.useState('');
+  const OnlineIcon = online ? FilledOnlineCallIcon : OnlineCallIcon;
+
   return (
-    <div className="p-2 bg-blur">
+    <div className="p-4 bg-panel">
       <Input
         aria-label="Search"
         classNames={{
@@ -12,10 +22,13 @@ export default function Search() {
           input: "text-sm",
         }}
         endContent={
-          <Kbd className="hidden lg:inline-block" keys={["command"]}>
-            K
-          </Kbd>
+          <OnlineIcon className="text-2xl flex-shrink-0 pointer-events-auto cursor-pointer fill-slate-400 hover:fill-primary" />
         }
+        /*endContent={
+          <Tooltip showArrow={true} closeDelay={500} color="primary" content="Show online classes only" placement="left">
+            <OnlineIcon className="text-2xl flex-shrink-0 pointer-events-auto fill-slate-400 hover:fill-primary" />
+          </Tooltip>
+        }*/
         labelPlacement="outside"
         placeholder="Search..."
         startContent={

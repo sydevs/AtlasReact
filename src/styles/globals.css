@@ -17,11 +17,11 @@
 }
 
 @layer components {
-  .bg-blur {
+  .bg-panel {
     @apply backdrop-blur-lg backdrop-saturate-150 bg-background/70;
   }
 
-  .bg-blur-hover {
+  .bg-panel-hover {
     @apply backdrop-blur-lg backdrop-saturate-150 bg-background/70 hover:bg-background/50;
   }
 }

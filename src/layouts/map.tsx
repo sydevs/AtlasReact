@@ -25,7 +25,7 @@ export default function MapLayout({
       </div>
       <div className="fixed w-screen h-screen z-50 pointer-events-none">
         {hasNavbar && <Navbar />}
-        <main className='fixed z-50 w-96 rounded-medium shadow-md'>
+        <main className='fixed z-50 w-96 shadow-md'>
           {children}
         </main>
       </div>
