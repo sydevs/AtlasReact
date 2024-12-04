@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/navbar";
-import Map, { GeolocateControl } from 'react-map-gl';
+import { Mapbox } from "@/components/mapbox";
+import { MapProvider } from "react-map-gl";
 
 export default function MapLayout({
   children,
@@ -9,19 +10,9 @@ export default function MapLayout({
   const hasNavbar = true;
 
   return (
-    <>
+    <MapProvider>
       <div className="fixed w-dvw h-dvh z-10">
-        <Map
-          mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESSTOKEN}
-          mapStyle="mapbox://styles/sydevadmin/ck7g6nag70rn11io09f45odkq"
-          //{...viewState}
-          //onMove={evt => setViewState(evt.viewState)}
-          style={{ width: '100%', height: '100%' }}
-          reuseMaps
-          attributionControl={false}
-        >
-          <GeolocateControl />
-        </Map>
+        <Mapbox />
       </div>
       <div className="fixed w-screen h-screen z-50 pointer-events-none">
         {hasNavbar && <Navbar />}
@@ -29,7 +20,7 @@ export default function MapLayout({
           {children}
         </main>
       </div>
-    </>
+    </MapProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 import MapLayout from "@/layouts/map";
-import Search from "@/components/search";
+import SearchBar from "@/components/search-bar";
 import { useQuery } from "@tanstack/react-query";
 import api from "@/config/api";
 import Loader from "@/components/loader";
@@ -14,7 +14,7 @@ export default function IndexPage() {
 
   return (
     <MapLayout>
-      <Search />
+      <SearchBar onSelect={value => console.log(value)} />
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <ul className="overflow-y-auto">
