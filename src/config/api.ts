@@ -96,6 +96,38 @@ const graphqlTypes = {
   `,
 };
 
+const getGeojson = async () => {
+  const response = await client.post("/", {
+    query: `{
+      geojson(languageCode: "en", locale: "en") { 
+        type
+        features {
+          type
+          id
+          geometry {
+            type
+            coordinates
+          }
+          properties {
+            id
+            type
+            label
+            latitude
+            longitude
+            radius
+            onlineEventIds
+            offlineEventIds
+            parentId
+            parentType
+          }
+        }
+      }
+    }`,
+  });
+
+  return response.data.data.geojson;
+};
+
 const getCountries = async () => {
   const response = await client.post("/", {
     query: `{ countries { ${graphqlTypes.country} } }`,
@@ -158,6 +190,7 @@ const findManyEvents = async (ids: number[]) => {
 };
 
 const AtlasService = {
+  getGeojson,
   getCountries,
   getCountry,
   getRegion,

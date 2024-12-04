@@ -1,7 +1,7 @@
 import React from 'react';
 import { OnlineCallIcon } from "@/components/icons";
 import { Tooltip } from "@nextui-org/tooltip";
-import { SearchBox } from "@/components/mapbox";
+import SearchBox from "@/components/mapbox/search";
 import { Button } from "@nextui-org/button";
 import { GeocodeFeature } from '@mapbox/search-js-core';
 

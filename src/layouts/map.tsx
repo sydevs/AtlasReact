@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/navbar";
-import { Mapbox } from "@/components/mapbox";
+import Mapbox from "@/components/mapbox/map";
 import { MapProvider } from "react-map-gl";
 
 export default function MapLayout({
@@ -12,7 +12,7 @@ export default function MapLayout({
   return (
     <MapProvider>
       <div className="fixed w-dvw h-dvh z-10">
-        <Mapbox />
+        <Mapbox onZoom={zoom => console.log(zoom)} />
       </div>
       <div className="fixed w-screen h-screen z-50 pointer-events-none">
         {hasNavbar && <Navbar />}
