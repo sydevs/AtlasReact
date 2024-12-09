@@ -13,7 +13,7 @@ export default function SearchBar({ onSelect }: Props) {
   const [online, setOnline] = React.useState(true);
 
   return (
-    <div className="p-4 z-50 relative flex flex-row gap-1 items-center shadow-lg bg-white shadow-white">
+    <div className="p-4 z-50 relative flex flex-row gap-1 items-center shadow-lg bg-background shadow-background">
       <div className="flex-grow">
         <SearchBox onSelect={onSelect} />
       </div>

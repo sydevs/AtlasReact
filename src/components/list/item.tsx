@@ -10,10 +10,10 @@ interface Props {
 export default function ListItem({ label, count, link }: Props) {
   return (
     <Link href={link} className="block bg-panel-hover">
-      <li className="p-5 flex flex-row items-center">
-        <div className="flex-grow">{label}</div>
-        <div className="text-right mr-4">{count}</div>
-        <RightArrowIcon />
+      <li className="px-6 py-5 flex flex-row items-center font-semibold">
+        <div className="text-lg flex-grow">{label}</div>
+        <div className="text-right mr-1 font-mono">{count}</div>
+        <RightArrowIcon className="text-xl" />
       </li>
     </Link>
   );

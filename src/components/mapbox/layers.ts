@@ -58,7 +58,7 @@ export const selectedPointLayer: LayerProps = {
     'icon-size': 0.85,
     'icon-ignore-placement': true,
     'icon-image': 'selected',
-    'text-font': ['DIN Offc Pro Bold', 'Arial Unicode MS Bold'],
+    'text-font': ['Iosevka Term Web', 'DIN Offc Pro Bold', 'Arial Unicode MS Bold'],
     'text-size': 12,
   },
   paint: {

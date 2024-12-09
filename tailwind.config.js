@@ -1,4 +1,5 @@
-import {nextui} from '@nextui-org/theme'
+import { nextui } from '@nextui-org/theme'
+import defaultTheme from 'tailwindcss/defaultTheme'
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -10,8 +11,13 @@ module.exports = {
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    fontFamily: {
+      'sans': ['Raleway', ...defaultTheme.fontFamily.sans],
+      'serif': [...defaultTheme.fontFamily.serif],
+      'mono': ['Iosevka Term Web', ...defaultTheme.fontFamily.mono],
+    },
   },
+  defaultTheme: 'light',
   darkMode: "class",
   plugins: [nextui({
     themes: {

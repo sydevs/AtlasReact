@@ -1,20 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://iosevka-webfonts.github.io/iosevka-term/iosevka-term.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   main {
-    @apply pointer-events-auto;
+    @apply pointer-events-auto text-content1;
     max-height: 90%;
     margin: 5%;
     overflow-x: hidden;
     overflow-y: auto;
     color: #7b7b7b;
-    font-family: 'raleway', sans-serif;
   }
 
   nav + main {
     max-height: calc(90% - 4rem);
+  }
+
+  a {
+    color: inherit !important;
   }
 }
 
