@@ -20,7 +20,7 @@ export default function RegionPage() {
         {data &&
           <>
             <ListHeader title={data.name} returnLink={`/${data.parentType.toLowerCase()}/${data.parentId}`} />
-            <ul>
+            <ul className="overflow-y-auto">
               {data.areas.map((area: Area) => (
                 <ListItem key={area.id} label={area.name} count={area.eventCount} link={`/area/${area.id}`} />
               ))}

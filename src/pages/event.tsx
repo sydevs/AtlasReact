@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 export default function EventPage() {
   let { id } = useParams();
   const { data, isLoading, error } = useQuery({
-    queryKey: [`event-${id}`],
+    queryKey: ['event', id],
     queryFn: () => api.getEvent(Number(id)),
   });
 

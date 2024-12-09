@@ -9,6 +9,8 @@
     margin: 5%;
     overflow-x: hidden;
     overflow-y: auto;
+    color: #7b7b7b;
+    font-family: 'raleway', sans-serif;
   }
 
   nav + main {
@@ -18,10 +20,10 @@
 
 @layer components {
   .bg-panel {
-    @apply backdrop-blur-lg backdrop-saturate-150 bg-background/70;
+    @apply backdrop-blur-lg backdrop-saturate-150 bg-background/90;
   }
 
   .bg-panel-hover {
-    @apply backdrop-blur-lg backdrop-saturate-150 bg-background/70 hover:bg-background/50;
+    @apply backdrop-blur-lg backdrop-saturate-150 bg-background/90 hover:bg-background/70;
   }
 }

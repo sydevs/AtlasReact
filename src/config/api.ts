@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Event } from "@/types";
+import { EventPreview } from "@/types";
 
 const client = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT,
@@ -16,7 +16,7 @@ const getEvents = async (latitude: number, longitude: number) => {
     },
   });
 
-  return response.data as Event[];
+  return response.data as EventPreview[];
 };
 
 export default {

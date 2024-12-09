@@ -20,7 +20,7 @@ export default function CountryPage() {
         {data &&
           <>
             <ListHeader title={data.label} returnLink="/" />
-            <ul>
+            <ul className="overflow-y-auto">
               {data.regions?.map((region: Region) => (
                 <ListItem key={region.id} label={region.name} count={region.eventCount} link={`/region/${region.id}`} />
               ))

@@ -1,16 +1,22 @@
-import { Event } from "@/types";
+import { EventPreview } from "@/types";
 import { RightArrowIcon } from "../icons";
 import { Link } from "@nextui-org/link";
 
 interface Props {
-  event: Event;
+  event: EventPreview;
 }
 
 export default function EventItem({ event }: Props) {
   return (
-    <Link href={`/event/${event.id}`} className="block bg-panel-hover">
-      <li key={event.id} className="p-4 flex flex-row items-center">
-        <div className="flex-grow">{event.label}</div>
+    <Link href={`/event/${event.id}`} className="block bg-panel-hover after:border-b after:border-[#d8d8d8] after:mx-6 after:block text-inherit">
+      <li key={event.id} className="flex flex-row py-5 px-6 items-center">
+        <div className="flex flex-grow flex-col gap-1">
+          <div className="font-bold text-lg leading-tight">{event.label}</div>
+          <div className="text-sm leading-tight">{event.address}</div>
+          <div className="text-xs uppercase">{event.recurrence}</div>
+          <div className="text-xs text-gray-500 mt-1">{event.timing}</div>
+        </div>
+        <div className="text-right font-bold ml-4 text-sm text-nowrap">More info</div>
         <RightArrowIcon />
       </li>
     </Link>

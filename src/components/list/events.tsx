@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Event } from "@/types";
+import { EventPreview } from "@/types";
 import api from "@/config/api";
 import gql_api from "@/config/graphql-api";
 import EventItem from "./event";
@@ -41,12 +41,12 @@ export function StaticEventsList({ eventIds }: IdsProps) {
 }
 
 interface Props {
-  events: Event[];
+  events: EventPreview[];
 }
 
 export default function EventsList({ events }: Props) {
   return (
-    <ul>
+    <ul className="overflow-y-auto">
       {events.map((event, _index, _arr) => (
         <EventItem key={event.id} event={event} />
       ))}

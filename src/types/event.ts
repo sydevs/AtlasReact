@@ -1,4 +1,18 @@
 
+export type EventPreview = {
+  id: number;
+  label: string;
+  online: boolean;
+  address: string;
+  recurrence: string;
+  locationId: number;
+  locationType: string;
+  latitude: number;
+  longitude: number;
+  timeZone: string;
+  timing: string;
+};
+
 export type Event = {
   id: number;
   url: string;
