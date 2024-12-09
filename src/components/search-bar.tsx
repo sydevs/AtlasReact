@@ -1,38 +1,50 @@
 import React from 'react';
-import { OnlineCallIcon } from "@/components/icons";
-import { Tooltip } from "@nextui-org/tooltip";
+import { OnlineCallIcon, LeftArrowIcon, SearchIcon, CancelIcon } from "@/components/icons";
 import SearchBox from "@/components/mapbox/search";
-import { Button } from "@nextui-org/button";
 import { GeocodeFeature } from '@mapbox/search-js-core';
+import Toggle from "@/components/toggle";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   onSelect: (value: GeocodeFeature) => void;
+  header?: string;
+  returnLink?: string;
 }
 
-export default function SearchBar({ onSelect }: Props) {
-  const [online, setOnline] = React.useState(true);
+export default function SearchBar({ onSelect, header, returnLink }: Props) {
+  let navigate = useNavigate();
+  const [isOnline, setIsOnline] = React.useState(false);
+  const [isSearching, setIsSearching] = React.useState(!header);
 
   return (
     <div className="p-4 z-50 relative flex flex-row gap-1 items-center shadow-lg bg-background shadow-background">
+      {returnLink &&
+        <Toggle
+          active={false}
+          setActive={() => navigate(returnLink)}
+          Icon={LeftArrowIcon}
+        />
+        }
+      
       <div className="flex-grow">
-        <SearchBox onSelect={onSelect} />
+        {isSearching || !header ?
+          <SearchBox onSelect={onSelect} />
+          : <div className="px-3 text-lg font-bold">{header}</div>}
       </div>
-      <Tooltip
-        color={online ? "primary" : "secondary"}
-        content={(online ? "Showing" : "Show") + " online classes only"}
-        delay={1000}
-        placement="left"
-      >
-        <Button isIconOnly
-          color={online ? "primary" : "secondary"}
-          variant={online ? "shadow" : "faded"}
-          radius="full"
-          aria-label="Like"
-          onClick={() => setOnline(!online)}
-        >
-          <OnlineCallIcon width={24} height={24} />
-        </Button>
-      </Tooltip>
+      {isSearching && 
+        <Toggle
+          active={isOnline}
+          setActive={setIsOnline}
+          Icon={OnlineCallIcon}
+          tooltip={(isSearching ? "Showing" : "Show") + " online classes only"}
+        />}
+      {header &&
+        <Toggle
+          active={isSearching}
+          setActive={setIsSearching}
+          Icon={isSearching ? CancelIcon : SearchIcon}
+          tooltip={"Search"}
+        />}
       {/*
       <Geocoder
         options={{

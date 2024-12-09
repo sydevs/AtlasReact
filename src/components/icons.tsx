@@ -190,6 +190,28 @@ export const OnlineCallIcon = (props: IconSvgProps) => (
   </svg>
 );
 
+export const CancelIcon = (props: IconSvgProps) => (
+  <svg
+    aria-hidden="true"
+    fill="none"
+    focusable="false"
+    height="1em"
+    role="presentation"
+    viewBox="0 0 24 24"
+    width="1em"
+    {...props}
+  >
+    <path
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      d="m5 19l7-7m0 0l7-7m-7 7L5 5m7 7l7 7"
+    />
+  </svg>
+);
+
 
 export const HelpIcon: React.FC<IconSvgProps> = ({
   size = 24,

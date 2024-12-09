@@ -11,6 +11,25 @@ module.exports = {
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    fontSize: {
+      'xs': ['0.75rem', {
+        lineHeight: '1.25rem',
+        letterSpacing: '0.36px',
+      }],
+      'sm': ['0.815rem', {
+        lineHeight: '1.25rem',
+        letterSpacing: '0.36px',
+      }],
+      'base': ['0.875rem', '1.075rem'],
+      'lg': ['1.0625rem', {
+        lineHeight: '1.25rem',
+        fontWeight: '600',
+      }],
+      'xl': ['1.25rem', {
+        lineHeight: '1.5rem',
+        fontWeight: '600',
+      }],
+    },
     fontFamily: {
       'sans': ['Raleway', ...defaultTheme.fontFamily.sans],
       'serif': [...defaultTheme.fontFamily.serif],

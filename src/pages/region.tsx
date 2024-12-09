@@ -3,7 +3,7 @@ import MapLayout from "@/layouts/map";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Loader from "@/components/loader";
-import ListHeader from "@/components/list/header";
+import SearchBar from "@/components/search-bar";
 import { Area } from "@/types";
 import { ListItem } from "@/components/list";
 
@@ -19,7 +19,7 @@ export default function RegionPage() {
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
-            <ListHeader title={data.name} returnLink={`/${data.parentType.toLowerCase()}/${data.parentId}`} />
+            <SearchBar onSelect={value => console.log(value)} header={data.name} returnLink={`/${data.parentType.toLowerCase()}/${data.parentId}`} />
             <ul className="overflow-y-auto">
               {data.areas.map((area: Area) => (
                 <ListItem key={area.id} label={area.name} count={area.eventCount} link={`/area/${area.id}`} />

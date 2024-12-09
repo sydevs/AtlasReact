@@ -3,7 +3,8 @@ import api from "@/config/graphql-api";
 import MapLayout from "@/layouts/map";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { ListHeader, StaticEventsList } from "@/components/list";
+import SearchBar from "@/components/search-bar";
+import { StaticEventsList } from "@/components/list";
 import { useEffect } from "react";
 
 export default function VenuePage() {
@@ -26,7 +27,7 @@ export default function VenuePage() {
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
-            <ListHeader title={data.name} returnLink={`/${data.parentType.toLowerCase()}/${data.parentId}`} />
+            <SearchBar onSelect={value => console.log(value)} header={data.name} returnLink={`/${data.parentType.toLowerCase()}/${data.parentId}`} />
             <StaticEventsList eventIds={data.eventIds || []} />
           </>}
       </Loader>

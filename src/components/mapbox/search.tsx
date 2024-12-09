@@ -1,22 +1,27 @@
-import React from 'react';
+import React from "react";
 import { Geocoder } from "@mapbox/search-js-react";
 import { GeocodingFeature } from "@mapbox/search-js-core";
 import { useMap } from "react-map-gl";
-import { controlTheme } from './themes';
+import { controlTheme } from "./themes";
+import { useSearchParams } from "react-router-dom";
 
 interface SearchProps {
   onSelect: (value: GeocodingFeature) => void;
 }
 
 export default function SearchBox({ onSelect }: SearchProps) {
-  const [location, setLocation] = React.useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = React.useState(searchParams.get("q") || "");
   const { mapbox: map } = useMap();
 
   return (
     // @ts-ignore: 'Geocoder' cannot be used as a JSX component.
     <Geocoder
-      value={location}
-      onChange={setLocation}
+      value={searchQuery}
+      onChange={(query) => {
+        setSearchQuery(query)
+        setSearchParams({ q: query })
+      }}
       onRetrieve={onSelect}
       accessToken={import.meta.env.VITE_MAPBOX_ACCESSTOKEN}
       theme={controlTheme}
