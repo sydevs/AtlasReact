@@ -1,4 +1,4 @@
-import api from "@/config/api";
+import api from "@/config/graphql-api";
 import MapLayout from "@/layouts/map";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";

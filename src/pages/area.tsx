@@ -1,9 +1,9 @@
 import Loader from "@/components/loader";
-import api from "@/config/api";
+import api from "@/config/graphql-api";
 import MapLayout from "@/layouts/map";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { ListHeader, EventsList } from "@/components/list";
+import { ListHeader, StaticEventsList } from "@/components/list";
 
 export default function AreaPage() {
   let { id } = useParams();
@@ -18,7 +18,7 @@ export default function AreaPage() {
         {data &&
           <>
             <ListHeader title={data.name} returnLink={`/${data.parentType.toLowerCase()}/${data.parentId}`} />
-            <EventsList eventIds={data.eventIds || []} />
+            <StaticEventsList eventIds={data.eventIds || []} />
           </>}
       </Loader>
     </MapLayout>

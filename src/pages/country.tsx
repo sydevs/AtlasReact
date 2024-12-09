@@ -1,7 +1,7 @@
 import MapLayout from "@/layouts/map";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import api from "@/config/api";
+import api from "@/config/graphql-api";
 import Loader from "@/components/loader";
 import ListHeader from "@/components/list/header";
 import { Area, Region } from "@/types";

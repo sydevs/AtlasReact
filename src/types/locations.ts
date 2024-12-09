@@ -1,4 +1,9 @@
 
+export type Location = {
+  latitude: number;
+  longitude: number;
+}
+
 export type Country = {
   id: number;
   label: string;

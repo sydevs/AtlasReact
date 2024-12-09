@@ -2,36 +2,66 @@ import type { LayerProps } from 'react-map-gl';
 
 export const clusterLayer: LayerProps = {
   id: 'clusters',
-  type: 'circle',
-  source: 'earthquakes',
+  type: 'symbol',
+  source: 'venues',
   filter: ['has', 'point_count'],
+  layout: {
+    'icon-allow-overlap': true,
+    'icon-ignore-placement': true,
+    'icon-image': 'cluster',
+    'text-field': '{point_count_abbreviated}',
+    'text-font': ['DIN Offc Pro Bold', 'Arial Unicode MS Bold'],
+    'text-size': 12,
+  },
   paint: {
-    'circle-color': ['step', ['get', 'point_count'], '#51bbd6', 100, '#f1f075', 750, '#f28cb1'],
-    'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
-  }
+    'text-color': '#FFFFFF',
+  },
 };
 
-export const clusterCountLayer: LayerProps = {
+/*export const clusterCountLayer: LayerProps = {
   id: 'cluster-count',
   type: 'symbol',
-  source: 'earthquakes',
+  source: 'venues',
   filter: ['has', 'point_count'],
   layout: {
     'text-field': '{point_count_abbreviated}',
     'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
     'text-size': 12
   }
-};
+};*/
 
 export const unclusteredPointLayer: LayerProps = {
   id: 'unclustered-point',
-  type: 'circle',
-  source: 'earthquakes',
+  type: 'symbol',
+  source: 'venues',
   filter: ['!', ['has', 'point_count']],
+  layout: {
+    'icon-anchor': 'bottom',
+    'icon-size': 0.85,
+    'icon-ignore-placement': true,
+    'icon-image': 'point',
+    'text-font': ['DIN Offc Pro Bold', 'Arial Unicode MS Bold'],
+    'text-size': 12,
+  },
   paint: {
-    'circle-color': '#11b4da',
-    'circle-radius': 4,
-    'circle-stroke-width': 1,
-    'circle-stroke-color': '#fff'
-  }
+    'text-color': '#FFFFFF',
+  },
+};
+
+export const selectedPointLayer: LayerProps = {
+  id: 'selected-point',
+  type: 'symbol',
+  source: 'selection',
+  filter: ['has', 'point_count'],
+  layout: {
+    'icon-anchor': 'bottom',
+    'icon-size': 0.85,
+    'icon-ignore-placement': true,
+    'icon-image': 'selected',
+    'text-font': ['DIN Offc Pro Bold', 'Arial Unicode MS Bold'],
+    'text-size': 12,
+  },
+  paint: {
+    'text-color': '#FFFFFF',
+  },
 };
