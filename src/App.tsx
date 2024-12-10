@@ -11,7 +11,7 @@ function App() {
   return (
     <Routes>
       <Route element={<IndexPage />} path="/" />
-      <Route element={<CountryPage />} path="/country/:id" />
+      <Route element={<CountryPage />} path="/country/:code" />
       <Route element={<RegionPage />} path="/region/:id" />
       <Route element={<AreaPage />} path="/area/:id" />
       <Route element={<VenuePage />} path="/venue/:id" />

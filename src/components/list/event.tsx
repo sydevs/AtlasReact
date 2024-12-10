@@ -1,10 +1,10 @@
-import { EventPreview } from "@/types";
+import { EventSlim } from "@/types";
 import { RightArrowIcon } from "../icons";
 import { Link } from "@nextui-org/link";
 import Chip from "@/components/base/chip";
 
 interface Props {
-  event: EventPreview;
+  event: EventSlim;
 }
 
 export default function EventItem({ event }: Props) {

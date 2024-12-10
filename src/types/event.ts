@@ -1,36 +1,36 @@
 
-export type EventPreview = {
+export type EventCore = {
   id: number;
   label: string;
   online: boolean;
   address: string;
+  parentId: number;
+  parentType: string;
+  timeZone: string;
+  languageCode: string;
+}
+
+export type EventSlim = {
   recurrence: string;
-  locationId: number;
-  locationType: string;
   latitude: number;
   longitude: number;
-  timeZone: string;
   timing: string;
-};
+} & EventCore;
 
 export type Event = {
-  id: number;
   url: string;
-  label: string;
+  description: string;
   descriptionHtml: string;
+  language: string;
   category: string;
-  address: string;
-  languageCode: string;
-  path: string;
-  registrationMode: string;
   registrationUrl: string;
-  registrationQuestions: RegistrationQuestion[];
+  registrationMode: string;
+  registrationQuestions: EventQuestion[];
   timing: EventTiming;
   contact: EventContact;
   images: EventImage[];
   location: EventLocation;
-  online: boolean;
-};
+} & EventCore;
 
 export type EventImage = {
   url: string;
@@ -63,7 +63,7 @@ export type EventTiming = {
   recurrenceCount: number;
 }
 
-export type RegistrationQuestion = {
+export type EventQuestion = {
   slug: string;
   title: string;
 }

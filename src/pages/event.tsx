@@ -22,6 +22,7 @@ export default function EventPage() {
   const registrationRef = useRef<HTMLDivElement>(null);
   const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })    
 
+  console.log('event', data)
   return (
     <MapLayout width={467}>
       <Loader isLoading={isLoading} error={error}>

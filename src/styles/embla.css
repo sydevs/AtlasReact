@@ -1,7 +1,7 @@
 .embla {
   max-width: 48rem;
   margin: 3rem -2.75rem;
-  --slide-height: 10rem;
+  --slide-height: 12rem;
   --slide-spacing: 1rem;
   --slide-size: 80%;
   --detail-medium-contrast: darkgrey;

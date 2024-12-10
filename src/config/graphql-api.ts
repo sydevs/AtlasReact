@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Country, Region, Area, Event, EventPreview, Venue } from "@/types";
+import { Country, Region, Area, Event, EventSlim, Venue } from "@/types";
 
 const client = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT + "/graphql",
@@ -187,7 +187,7 @@ const findManyEvents = async (ids: number[]) => {
     }`
   });
 
-  return response.data.data.events as EventPreview[];
+  return response.data.data.events as EventSlim[];
 };
 
 export default {

@@ -1,6 +1,9 @@
 import { SVGProps } from "react";
-export * from "./locations";
+export * from "./country";
 export * from "./event";
+export * from "./area";
+export * from "./region";
+export * from "./venue";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
