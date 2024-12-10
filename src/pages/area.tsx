@@ -13,7 +13,6 @@ export default function AreaPage() {
     queryFn: () => api.getArea(Number(id)),
   });
 
-  console.log('area', data)
   return (
     <MapLayout>
       <Loader isLoading={isLoading} error={error}>

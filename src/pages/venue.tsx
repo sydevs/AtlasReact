@@ -22,7 +22,6 @@ export default function VenuePage() {
     }
   }, [data, navigate]);
 
-  console.log('venue', data)
   return (
     <MapLayout>
       <Loader isLoading={isLoading} error={error}>

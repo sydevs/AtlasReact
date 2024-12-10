@@ -13,7 +13,6 @@ export default function CountryPage() {
     queryFn: () => api.getCountry(code || ""),
   });
 
-  console.log('country', data)
   return (
     <MapLayout>
       <Loader isLoading={isLoading} error={error}>

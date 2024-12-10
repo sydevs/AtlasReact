@@ -21,6 +21,7 @@ export type Event = {
   url: string;
   description: string;
   descriptionHtml: string;
+  location: EventLocation;
   language: string;
   category: string;
   registrationUrl: string;
@@ -29,7 +30,6 @@ export type Event = {
   timing: EventTiming;
   contact: EventContact;
   images: EventImage[];
-  location: EventLocation;
 } & EventCore;
 
 export type EventImage = {

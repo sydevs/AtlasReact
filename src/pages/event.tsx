@@ -1,5 +1,5 @@
 import Loader from "@/components/loader";
-import api from "@/config/graphql-api";
+import api from "@/config/api";
 import MapLayout from "@/layouts/map";
 import { Link } from "@nextui-org/link";
 import { useQuery } from "@tanstack/react-query";
@@ -22,14 +22,13 @@ export default function EventPage() {
   const registrationRef = useRef<HTMLDivElement>(null);
   const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })    
 
-  console.log('event', data)
   return (
     <MapLayout width={467}>
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <div className="bg-panel py-8 px-11 pb-24">
             <>
-              <Link className="text-3xl absolute top-6 left-2" href={`/${data.location.type.toLowerCase()}/${data.location.id}`}>
+              <Link className="text-3xl absolute top-6 left-2" href={`/${data.location.type}/${data.location.id}`}>
                 <LeftArrowIcon size={32} className="text-lg" />
               </Link>
               <Link className="text-3xl absolute top-8 right-4" href="#share">
@@ -46,9 +45,11 @@ export default function EventPage() {
             <p className="text-sm mb-1">{data.address}</p>
             <p className="text-xs">{data.timing.recurrence}</p>
             <p className="text-xs font-medium">{data.timing.firstDate}</p>
-            <Link className="text-sm hover:underline" href={`tel: ${data.contact.phoneNumber}`} target="_blank" rel="noopener noreferrer">
-              tel: {data.contact.phoneNumber}, {data.contact.phoneName}
-            </Link>
+            {data.contact.phoneNumber &&
+              <Link className="text-sm hover:underline" href={`tel: ${data.contact.phoneNumber}`} target="_blank" rel="noopener noreferrer">
+                tel: {data.contact.phoneNumber}
+                {data.contact.phoneName && `, ${data.contact.phoneName}`}
+              </Link>}
             <div className="flex flex-row gap-6 my-5 text-primary">
               <Link onClick={executeScroll} href="#registrations">
                 <SignupIcon className="mr-2" />
