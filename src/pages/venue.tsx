@@ -1,11 +1,11 @@
 import Loader from "@/components/loader";
 import api from "@/config/api";
-import MapLayout from "@/layouts/map";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import SearchBar from "@/components/search-bar";
 import { EventsList } from "@/components/list";
 import { useEffect } from "react";
+import { Main } from "@/components/base/main";
 
 export default function VenuePage() {
   let { id } = useParams();
@@ -23,7 +23,7 @@ export default function VenuePage() {
   }, [data, navigate]);
 
   return (
-    <MapLayout>
+    <Main>
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
@@ -31,6 +31,6 @@ export default function VenuePage() {
             <EventsList events={data.events} />
           </>}
       </Loader>
-    </MapLayout>
+    </Main>
   );
 }

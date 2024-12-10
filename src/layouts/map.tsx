@@ -1,16 +1,9 @@
 import { Navbar } from "@/components/navbar";
 import Mapbox from "@/components/mapbox/map";
 import { MapProvider } from "react-map-gl";
+import { Outlet } from "react-router-dom";
 
-type Props = {
-  children: React.ReactNode;
-  width?: number;
-};
-
-export default function MapLayout({
-  children,
-  width = 400,
-}: Props) {
+export default function MapLayout() {
   const hasNavbar = true;
 
   return (
@@ -20,12 +13,8 @@ export default function MapLayout({
       </div>
       <div className="fixed w-screen h-screen z-50 pointer-events-none">
         {hasNavbar && <Navbar />}
-        <main className={`fixed z-50 shadow-md flex flex-col`} style={{ width: width}}>
-          {children}
-        </main>
+        <Outlet />
       </div>
     </MapProvider>
   );
 }
-
-//backdrop-blur-lg backdrop-saturate-150 bg-background/70

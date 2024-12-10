@@ -1,10 +1,10 @@
 import Loader from "@/components/loader";
 import api from "@/config/api";
-import MapLayout from "@/layouts/map";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { EventsList } from "@/components/list";
 import SearchBar from "@/components/search-bar";
+import { Main } from "@/components/base/main";
 
 export default function AreaPage() {
   let { id } = useParams();
@@ -14,7 +14,7 @@ export default function AreaPage() {
   });
 
   return (
-    <MapLayout>
+    <Main>
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
@@ -22,6 +22,6 @@ export default function AreaPage() {
             <EventsList events={data.events} />
           </>}
       </Loader>
-    </MapLayout>
+    </ Main>
   );
 }

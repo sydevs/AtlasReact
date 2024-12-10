@@ -1,10 +1,10 @@
 import api from "@/config/api";
-import MapLayout from "@/layouts/map";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Loader from "@/components/loader";
 import SearchBar from "@/components/search-bar";
 import { List, ListItem } from "@/components/list";
+import { Main } from "@/components/base/main";
 
 export default function RegionPage() {
   let { id } = useParams();
@@ -14,7 +14,7 @@ export default function RegionPage() {
   });
 
   return (
-    <MapLayout>
+    <Main>
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
@@ -26,6 +26,6 @@ export default function RegionPage() {
             </List>
           </>}
       </Loader>
-    </MapLayout>
+    </Main>
   );
 }

@@ -1,6 +1,5 @@
 import Loader from "@/components/loader";
 import api from "@/config/api";
-import MapLayout from "@/layouts/map";
 import { Link } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -9,6 +8,7 @@ import EmblaCarousel from "@/components/carousel";
 import Registration from "@/components/registration";
 import { LeftArrowIcon, SignupIcon, ShareIcon, DirectionsIcon } from "@/components/icons";
 import { useRef } from "react";
+import { Main } from "@/components/base/main";
 
 const DOMPurify = createDOMPurify(window)
 
@@ -23,7 +23,7 @@ export default function EventPage() {
   const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })    
 
   return (
-    <MapLayout width={467}>
+    <Main width={467}>
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <div className="bg-panel py-8 px-11 pb-24">
@@ -76,6 +76,6 @@ export default function EventPage() {
             </div>
           </div>}
       </Loader>
-    </MapLayout>
+    </Main>
   );
 }

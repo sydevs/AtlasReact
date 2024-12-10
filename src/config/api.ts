@@ -8,6 +8,11 @@ const client = axios.create({
   },
 });
 
+const getGeojson = async () => {
+  const response = await client.get("/geojson.json");
+  return response.data;
+};
+
 const getCountries = async () => {
   const response = await client.get("/countries.json");
   return response.data as CountrySlim[];
@@ -50,6 +55,7 @@ const getEvent = async (id: number) => {
 };
 
 export default {
+  getGeojson,
   getCountries,
   getEvents,
   getCountry,

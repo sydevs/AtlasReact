@@ -1,10 +1,10 @@
-import MapLayout from "@/layouts/map";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import api from "@/config/api";
 import Loader from "@/components/loader";
 import { List, ListItem } from "@/components/list";
 import SearchBar from "@/components/search-bar";
+import { Main } from "@/components/base/main";
 
 export default function CountryPage() {
   let { code } = useParams();
@@ -14,7 +14,7 @@ export default function CountryPage() {
   });
 
   return (
-    <MapLayout>
+    <Main>
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
@@ -27,6 +27,6 @@ export default function CountryPage() {
             </List>
           </>}
       </Loader>
-    </MapLayout>
+    </Main>
   );
 }
