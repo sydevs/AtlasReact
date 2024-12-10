@@ -17,7 +17,7 @@ export default function SearchBar({ onSelect, header, returnLink }: Props) {
   const [isSearching, setIsSearching] = React.useState(!header);
 
   return (
-    <div className="p-4 z-50 relative flex flex-row gap-1 items-center shadow-lg bg-background shadow-background">
+    <div className="p-4 h-[70px] z-50 relative flex flex-row gap-2 items-center bg-background shadow-lg shadow-background">
       {returnLink &&
         <LeftArrowIcon size={32} onClick={() => navigate(returnLink)} />}
       
@@ -31,15 +31,12 @@ export default function SearchBar({ onSelect, header, returnLink }: Props) {
           active={isOnline}
           setActive={setIsOnline}
           Icon={OnlineIcon}
-          tooltip={(isSearching ? "Showing" : "Show") + " online classes only"}
+          tooltip={(isOnline ? "Showing" : "Show") + " online classes only"}
+          size='sm'
         />}
-      {header &&
-        <Toggle
-          active={isSearching}
-          setActive={setIsSearching}
-          Icon={isSearching ? CloseIcon : SearchIcon}
-          tooltip={"Search"}
-        />}
+      {header && (isSearching ?
+        <CloseIcon size={24} onClick={() => setIsSearching(false)} /> :
+        <SearchIcon size={24} onClick={() => setIsSearching(true)} />)}
       {/*
       <Geocoder
         options={{

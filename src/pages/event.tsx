@@ -29,17 +29,16 @@ export default function EventPage() {
   useEffect(() => {
     if (!mapbox || !data) return;
     
+    setMapSelection(data.location)
     mapbox.easeTo({
       center: [data.location.longitude, data.location.latitude],
-      zoom: 15,
+      zoom: data.online ? 10 : 15,
     })
 
-    setMapSelection({
-      latitude: data.location.latitude,
-      longitude: data.location.longitude,
-    })
-
-    return () => setMapSelection(null)
+    return () => {
+      setMapSelection(null)
+      mapbox.zoomOut()
+    }
   }, [data, mapbox])
 
   return (
