@@ -51,6 +51,8 @@ export type EventLocation = {
   type: string;
   label: string;
   directionsUrl: string;
+  latitude: number;
+  longitude: number;
 }
 
 export type EventTiming = {

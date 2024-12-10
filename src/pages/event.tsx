@@ -7,20 +7,40 @@ import createDOMPurify from 'dompurify'
 import EmblaCarousel from "@/components/carousel";
 import Registration from "@/components/registration";
 import { LeftArrowIcon, SignupIcon, ShareIcon, DirectionsIcon } from "@/components/icons";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Main } from "@/components/base/main";
+import { useViewState } from "@/config/store";
+import { useMap } from "react-map-gl";
 
 const DOMPurify = createDOMPurify(window)
 
 export default function EventPage() {
   let { id } = useParams();
+  let { mapbox } = useMap();
+  const setMapSelection = useViewState(s => s.setSelection);
   const { data, isLoading, error } = useQuery({
     queryKey: ['event', id],
-    queryFn: () => api.getEvent(Number(id))
+    queryFn: () => api.getEvent(Number(id)),
   });
 
   const registrationRef = useRef<HTMLDivElement>(null);
   const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })    
+
+  useEffect(() => {
+    if (!mapbox || !data) return;
+    
+    mapbox.easeTo({
+      center: [data.location.longitude, data.location.latitude],
+      zoom: 15,
+    })
+
+    setMapSelection({
+      latitude: data.location.latitude,
+      longitude: data.location.longitude,
+    })
+
+    return () => setMapSelection(null)
+  }, [data, mapbox])
 
   return (
     <Main width={467}>

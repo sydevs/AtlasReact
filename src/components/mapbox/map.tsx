@@ -1,15 +1,19 @@
 import { useState, useCallback } from 'react';
-import ReactMapGL, { GeolocateControl, Layer, Source, ViewStateChangeEvent } from 'react-map-gl';
+import ReactMapGL, { GeoJSONSource, GeolocateControl, Layer, MapMouseEvent, MapRef, Source, ViewStateChangeEvent } from 'react-map-gl';
 import { clusterLayer, selectedPointLayer, unclusteredPointLayer } from './layers';
 import { useEffect } from 'react';
 import { useViewState } from "@/config/store";
 import { useQuery } from '@tanstack/react-query';
 import api from '@/config/api';
+import { useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
 
 //const MapGL = ReactMapGL({})
 
 export default function Mapbox() {
-  const [ selection, setSelection ] = useState<Location | null>(null);
+  let navigate = useNavigate();
+  const mapRef = useRef<MapRef>(null);
+  const selection = useViewState(s => s.selection);
   const setViewState = useViewState(s => s.setViewState);
 
   const { data, isLoading, error } = useQuery({
@@ -19,9 +23,38 @@ export default function Mapbox() {
 
   //useMapImage({ mapRef: map, url: marker, name: 'marker', sdf: true });
 
-  const updateViewState = useCallback((evt: ViewStateChangeEvent) => setViewState(evt.viewState), [setViewState]);
+  const updateViewState = useCallback((evt: ViewStateChangeEvent) => {
+    setViewState(evt.viewState)
+  }, [setViewState]);
 
-  console.log('geojson', data)
+  const selectFeature = useCallback((evt: MapMouseEvent) => {
+    if (!evt.features || !evt.features.length || !mapRef.current) return
+    const feature = evt.features[0]
+
+    if (feature.layer?.id === clusterLayer.id) {
+      const source = mapRef.current.getSource("venues") as GeoJSONSource;
+      source.getClusterExpansionZoom(feature.properties?.cluster_id, (err, zoom) => {
+        if (err || !mapRef.current) return console.error(err)
+  
+        mapRef.current.easeTo({
+          // @ts-ignore
+          center: feature.geometry.coordinates,
+          zoom: (zoom || mapRef.current.getZoom()) + 1,
+          duration: 500
+        });
+      });
+    } else if (feature.layer?.id === unclusteredPointLayer.id) {
+      navigate(`/venue/${feature.properties?.id}`)
+    }
+  }, [mapRef]);
+
+  const hoverOnFeature = useCallback((evt: MapMouseEvent) => {
+    if (!mapRef.current) return
+
+    // This is in order to render a clickable cursor on hover
+    mapRef.current.getCanvas().style.cursor = evt.features?.length ? 'pointer' : ''
+  }, [mapRef])
+
   return (
     <ReactMapGL
       id="mapbox"
@@ -29,10 +62,14 @@ export default function Mapbox() {
       mapStyle="mapbox://styles/sydevadmin/ck7g6nag70rn11io09f45odkq"
       //{...viewState}
       onMoveEnd={updateViewState}
+      onClick={selectFeature}
+      onMouseMove={hoverOnFeature}
+      padding={{ top: 0, bottom: 0, right: 0, left: 532 }}
       style={{ width: '100%', height: '100%' }}
-      interactiveLayerIds={['venues']}
+      interactiveLayerIds={[clusterLayer.id, unclusteredPointLayer.id]}
       reuseMaps
       attributionControl={false}
+      ref={mapRef}
     >
       {data &&
         <Source
