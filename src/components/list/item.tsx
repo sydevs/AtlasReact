@@ -1,5 +1,5 @@
 import { RightArrowIcon } from "../icons";
-import { Link } from "@nextui-org/link";
+import { Link } from "@nextui-org/react";
 
 interface Props {
   label: string;

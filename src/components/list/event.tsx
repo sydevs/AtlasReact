@@ -1,6 +1,6 @@
 import { EventSlim } from "@/types";
 import { RightArrowIcon } from "../icons";
-import { Link } from "@nextui-org/link";
+import { Link } from "@nextui-org/react";
 import Chip from "@/components/base/chip";
 
 interface Props {

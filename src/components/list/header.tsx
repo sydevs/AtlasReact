@@ -1,4 +1,4 @@
-import { Link } from "@nextui-org/link";
+import { Link } from "@nextui-org/react";
 import { LeftArrowIcon } from "../icons";
 
 interface Props {

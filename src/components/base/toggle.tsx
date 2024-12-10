@@ -1,6 +1,5 @@
 import React from 'react';
-import { Tooltip } from "@nextui-org/tooltip";
-import { Button } from "@nextui-org/button";
+import { Tooltip, Button } from "@nextui-org/react";
 import { IconSvgProps } from "@/types";
 
 interface Props {

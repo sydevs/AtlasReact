@@ -1,4 +1,4 @@
-import { NextUIProvider } from "@nextui-org/system";
+import { NextUIProvider } from "@nextui-org/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useNavigate, useHref } from "react-router-dom";
 

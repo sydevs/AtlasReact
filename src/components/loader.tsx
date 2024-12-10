@@ -1,5 +1,4 @@
-import { Spinner } from "@nextui-org/spinner";
-//import { Alert } from "@nextui-org/alert";
+import { Spinner, Alert } from "@nextui-org/react";
 
 interface Props {
   isLoading: boolean;
@@ -19,8 +18,7 @@ export default function Loader({ isLoading, error, children }: Props) {
   if (error) {
     return (
       <div className="p-10 bg-panel text-center">
-        {/*<Alert color="danger" title={error.message} />*/}
-        {error.message}
+        <Alert color="danger" title={error.message} />
       </div>
     );
   }

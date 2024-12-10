@@ -1,6 +1,4 @@
-import { Input, Textarea } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
-//import { Form } from "@nextui-org/form";
+import { Input, Textarea, Button, Form } from "@nextui-org/react";
 import { Event } from "@/types";
 import { useState } from "react";
 import { ShareIcon, PlusSquareIcon } from "@/components/icons";
@@ -38,8 +36,8 @@ export default function Registration({ event }: Props) {
               <span>Invite a friend along</span>
             </div>
           </div>
-        </>
-        : <form className="gap-4 flex flex-col justify-center">
+        </> :
+        <Form className="gap-4 flex flex-col justify-center">
           <Input label="Name" type="text" placeholder="Enter your name" variant="bordered" isRequired radius="none" />
           <Input label="Email" type="email" placeholder="Enter your email" variant="bordered" isRequired radius="none" />
           <Textarea label="Do you have any questions?" variant="bordered" isRequired radius="none" />
@@ -47,7 +45,7 @@ export default function Registration({ event }: Props) {
           <Button className="w-full rounded-sm" color="primary" onClick={() => setSubmitted(true)}>
             Register
           </Button>
-        </form>}
+        </Form>}
     </>
   );
 }

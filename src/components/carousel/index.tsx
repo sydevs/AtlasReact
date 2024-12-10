@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react'
+import { Image } from '@nextui-org/react'
 import {
   EmblaCarouselType,
   EmblaEventType,
@@ -110,10 +111,12 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
             <div className="embla__slide cursor-zoom-in" key={index}>
               <div className="embla__parallax">
                 <a className="embla__parallax__layer cursor-zoom-in" target="_blank" rel="noopener noreferrer" href={`https://picsum.photos/600/350?v=${index}`}>
-                  <img
+                  <Image
+                    width="320px"
+                    height="192px"
+                    alt="Your alt text"
                     className="embla__slide__img embla__parallax__img"
                     src={`https://picsum.photos/600/350?v=${index}`}
-                    alt="Your alt text"
                   />
                 </a>
               </div>

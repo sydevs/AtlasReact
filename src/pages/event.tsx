@@ -1,7 +1,7 @@
 import Loader from "@/components/loader";
 import api from "@/config/api";
 import MapLayout from "@/layouts/map";
-import { Link } from "@nextui-org/link";
+import { Link } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import createDOMPurify from 'dompurify'

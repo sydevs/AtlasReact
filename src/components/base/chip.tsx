@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconSvgProps } from "@/types";
-import { Chip as NextUIChip } from "@nextui-org/chip";
+import { Chip as NextUIChip } from "@nextui-org/react";
 
 interface Props {
   props?: any;
