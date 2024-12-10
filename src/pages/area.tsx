@@ -9,7 +9,7 @@ import SearchBar from "@/components/search-bar";
 export default function AreaPage() {
   let { id } = useParams();
   const { data, isLoading, error } = useQuery({
-    queryKey: [`area-${id}`],
+    queryKey: ['area', id],
     queryFn: () => api.getArea(Number(id)),
   });
 

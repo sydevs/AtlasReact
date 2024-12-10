@@ -4,6 +4,8 @@
   --slide-height: 10rem;
   --slide-spacing: 1rem;
   --slide-size: 80%;
+  --detail-medium-contrast: darkgrey;
+  --text-body: black;
 }
 .embla__viewport {
   overflow: hidden;
@@ -52,7 +54,6 @@
   border: 0;
   padding: 0;
   margin: 0;
-  box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
   width: 3.6rem;
   height: 3.6rem;
   z-index: 1;

@@ -12,13 +12,13 @@ export default function VenuePage() {
   let navigate = useNavigate();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: [`venue-${id}`],
+    queryKey: ['venue', id],
     queryFn: () => api.getVenue(Number(id))
   });
 
   useEffect(() => {
     if (data && data.eventIds.length < 2) {
-      navigate(`/area/${data.parentId}`);
+      navigate(`/area/${data.parentId}`, { replace: true });
     }
   }, [data, navigate]);
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { OnlineCallIcon, LeftArrowIcon, SearchIcon, CancelIcon } from "@/components/icons";
 import SearchBox from "@/components/mapbox/search";
 import { GeocodeFeature } from '@mapbox/search-js-core';
-import Toggle from "@/components/toggle";
+import Toggle from "@/components/base/toggle";
 import { useNavigate } from "react-router-dom";
 
 interface Props {

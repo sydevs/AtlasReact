@@ -29,6 +29,7 @@ export type Event = {
   contact: EventContact;
   images: EventImage[];
   location: EventLocation;
+  online: boolean;
 };
 
 export type EventImage = {

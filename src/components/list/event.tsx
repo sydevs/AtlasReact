@@ -1,6 +1,7 @@
 import { EventPreview } from "@/types";
 import { RightArrowIcon } from "../icons";
 import { Link } from "@nextui-org/link";
+import Chip from "@/components/base/chip";
 
 interface Props {
   event: EventPreview;
@@ -14,7 +15,11 @@ export default function EventItem({ event }: Props) {
           <div className="font-semibold text-lg leading-tight">{event.label}</div>
           <div className="text-sm leading-tight">{event.address}</div>
           <div className="text-xs uppercase">{event.recurrence}</div>
-          <div className="text-xs text-gray-500 mt-1">{event.timing}</div>
+          <div className="text-xs text-gray-500">{event.timing}</div>
+          <div className="mt-1">
+            {event.online && <Chip>Online</Chip>}
+            {/*event.languageCode && <Chip>{event.languageName}</Chip>*/}
+          </div>
         </div>
         <div className="text-right font-semibold ml-4 text-sm text-nowrap">More info</div>
         <RightArrowIcon />

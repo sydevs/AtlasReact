@@ -50,6 +50,7 @@ const graphqlTypes = {
     label
     descriptionHtml
     category
+    online
     address
     languageCode
     path

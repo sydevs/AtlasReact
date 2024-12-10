@@ -1,4 +1,3 @@
-import { ListHeader } from "@/components/list";
 import Loader from "@/components/loader";
 import api from "@/config/graphql-api";
 import MapLayout from "@/layouts/map";
@@ -7,9 +6,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import createDOMPurify from 'dompurify'
 import EmblaCarousel from "@/components/carousel";
-import { Input, Textarea } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
-//import { Form } from "@nextui-org/form";
+import Registration from "@/components/registration";
+import { LeftArrowIcon, SearchIcon } from "@/components/icons";
+import { useRef } from "react";
 
 const DOMPurify = createDOMPurify(window)
 
@@ -17,28 +16,49 @@ export default function EventPage() {
   let { id } = useParams();
   const { data, isLoading, error } = useQuery({
     queryKey: ['event', id],
-    queryFn: () => api.getEvent(Number(id)),
+    queryFn: () => api.getEvent(Number(id))
   });
 
+  const registrationRef = useRef<HTMLDivElement>(null);
+  const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })    
+
   return (
-    <MapLayout>
+    <MapLayout width={467}>
       <Loader isLoading={isLoading} error={error}>
-        {data && <ListHeader title={data.label} returnLink={`/${data.location.type.toLowerCase()}/${data.location.id}`} />}
         {data &&
           <div className="bg-panel py-8 px-11 pb-24">
+            <>
+              <Link className="text-3xl absolute top-8 left-4" href={`/${data.location.type.toLowerCase()}/${data.location.id}`}>
+                <LeftArrowIcon className="text-lg" />
+              </Link>
+              <Link className="text-3xl absolute top-8 right-4" href="#share">
+                <SearchIcon className="text-lg" />
+              </Link>
+            </>
+            {data.online && data.languageCode && 
+              <div className="text-xs px-2.5 py-2 border-primary border-1 rounded leading-tight ml-4 mb-2 float-right text-center">
+                <div className="italic">This class is</div>
+                {data.languageCode && <div className="text-primary font-bold">{data.languageCode}</div>}
+                {data.online && <div className="text-secondary font-bold">Online</div>}
+              </div>}
             <h2 className="text-lg font-bold mb-2">{data.label}</h2>
             <p className="text-sm mb-1">{data.address}</p>
             <p className="text-xs">{data.timing.recurrence}</p>
-            <p className="text-xs font-semibold">{data.timing.firstDate}</p>
-            <div className="flex flex-row gap-6 my-5">
-              <Link href="#registrations">
+            <p className="text-xs font-medium">{data.timing.firstDate}</p>
+            <Link className="text-sm hover:underline" href={`tel: ${data.contact.phoneNumber}`} target="_blank" rel="noopener noreferrer">
+              tel: {data.contact.phoneNumber}, {data.contact.phoneName}
+            </Link>
+            <div className="flex flex-row gap-6 my-5 text-primary">
+              <Link onClick={executeScroll} href="#registrations">
+                <SearchIcon className="mr-2" />
                 Register
               </Link>
-              <Link href="#registrations">
+              <Link href={data.location.directionsUrl} target="_blank" rel="noopener noreferrer">
+                <SearchIcon className="mr-2" />
                 Get Directions
               </Link>
             </div>
-            <div className="my-4" dangerouslySetInnerHTML={{
+            <div className="mt-16 mb-4" dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(data.descriptionHtml, {
                 USE_PROFILES: { html: true },
                 ALLOWED_TAGS: ['p', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'del', 'br'],
@@ -49,23 +69,9 @@ export default function EventPage() {
               slides={[1, 2, 3] || data.images}
               options={{ containScroll: false }}
             />
-            <div className="flex flex-row my-5 gap-5 space-around justify-center align-middle">
-              <img src="/graphics/leaves.svg" className="h-12 object-fit -rotate-90 flip" />
-              <div className="text-center text-lg">
-                <h3 className="mb-1.5">Register Now</h3>
-                <div className="text-xs italic">This class is on-going</div>
-              </div>
-              <img src="/graphics/leaves.svg" className="h-12 object-fit rotate-90" />
+            <div ref={registrationRef}>
+              <Registration event={data} />
             </div>
-            <form className="gap-4 flex flex-col justify-center">
-              <Input label="Name" type="text" placeholder="Enter your name" variant="bordered" isRequired radius="none" />
-              <Input label="Email" type="email" placeholder="Enter your email" variant="bordered" isRequired radius="none" />
-              <Textarea label="Do you have any questions?" variant="bordered" isRequired radius="none" />
-              <p className="text-xs">By submitting you confirm you agree to receive follow up messages about this and similar events, in accordance with our privacy policy.</p>
-              <Button className="w-full rounded-sm" color="primary">
-                Register
-              </Button>
-            </form>
           </div>}
       </Loader>
     </MapLayout>

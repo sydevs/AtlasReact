@@ -29,12 +29,19 @@ module.exports = {
         lineHeight: '1.5rem',
         fontWeight: '600',
       }],
+      '2xl': ['1.875rem', {
+        lineHeight: '1.166667',
+        letterSpacing: '0.8px',
+      }],
     },
     fontFamily: {
       'sans': ['Raleway', ...defaultTheme.fontFamily.sans],
       'serif': [...defaultTheme.fontFamily.serif],
       'mono': ['Iosevka Term Web', ...defaultTheme.fontFamily.mono],
     },
+    backgroundImage: {
+      'circle-pattern': "url('/graphics/circle.svg')",
+    }
   },
   defaultTheme: 'light',
   darkMode: "class",
@@ -44,11 +51,11 @@ module.exports = {
         colors: {
           primary: {
             foreground: "#FFFFFF",
-            DEFAULT: "#e08e79",
+            DEFAULT: '#92bbb8',
           },
           secondary: {
             foreground: "#FFFFFF",
-            DEFAULT: '#92bbb8',
+            DEFAULT: '#e08e79',
           },
           tertiary: {
             foreground: "#FFFFFF",
@@ -61,11 +68,11 @@ module.exports = {
           colors: {
             primary: {
               foreground: "#FFFFFF",
-              DEFAULT: "#92bbb8",
+              DEFAULT: '#e08e79',
             },
             secondary: {
               foreground: "#FFFFFF",
-              DEFAULT: '#e08e79',
+              DEFAULT: "#92bbb8",
             },
             tertiary: {
               foreground: "#FFFFFF",

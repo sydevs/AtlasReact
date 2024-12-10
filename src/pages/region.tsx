@@ -10,7 +10,7 @@ import { ListItem } from "@/components/list";
 export default function RegionPage() {
   let { id } = useParams();
   const { data, isLoading, error } = useQuery({
-    queryKey: [`region-${id}`],
+    queryKey: ['region', id],
     queryFn: () => api.getRegion(Number(id)),
   });
 
