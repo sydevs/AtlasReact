@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { EventSlim } from "@/types";
 import api from "@/config/api";
 import EventItem from "./event";
@@ -10,13 +10,15 @@ interface DynamicProps {
 }
 
 export function DynamicEventsList({ latitude, longitude }: DynamicProps) {
-  const { data, isLoading, error } = useQuery({
+  const { data, isFetching, error } = useQuery({
     queryKey: ['events', latitude, longitude],
     queryFn: () => api.getEvents(latitude, longitude),
+    placeholderData: keepPreviousData,
   });
 
+  console.log(isFetching, data)
   return (
-    <Loader isLoading={isLoading} error={error}>
+    <Loader data={data} isLoading={isFetching} error={error}>
       <EventsList events={data || []} />
     </Loader>
   );
