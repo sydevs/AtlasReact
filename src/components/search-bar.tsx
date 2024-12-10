@@ -1,5 +1,5 @@
 import React from 'react';
-import { OnlineCallIcon, LeftArrowIcon, SearchIcon, CancelIcon } from "@/components/icons";
+import { OnlineIcon, LeftArrowIcon, SearchIcon, CloseIcon } from "@/components/icons";
 import SearchBox from "@/components/mapbox/search";
 import { GeocodeFeature } from '@mapbox/search-js-core';
 import Toggle from "@/components/base/toggle";
@@ -19,12 +19,7 @@ export default function SearchBar({ onSelect, header, returnLink }: Props) {
   return (
     <div className="p-4 z-50 relative flex flex-row gap-1 items-center shadow-lg bg-background shadow-background">
       {returnLink &&
-        <Toggle
-          active={false}
-          setActive={() => navigate(returnLink)}
-          Icon={LeftArrowIcon}
-        />
-        }
+        <LeftArrowIcon size={32} onClick={() => navigate(returnLink)} />}
       
       <div className="flex-grow">
         {isSearching || !header ?
@@ -35,14 +30,14 @@ export default function SearchBar({ onSelect, header, returnLink }: Props) {
         <Toggle
           active={isOnline}
           setActive={setIsOnline}
-          Icon={OnlineCallIcon}
+          Icon={OnlineIcon}
           tooltip={(isSearching ? "Showing" : "Show") + " online classes only"}
         />}
       {header &&
         <Toggle
           active={isSearching}
           setActive={setIsSearching}
-          Icon={isSearching ? CancelIcon : SearchIcon}
+          Icon={isSearching ? CloseIcon : SearchIcon}
           tooltip={"Search"}
         />}
       {/*

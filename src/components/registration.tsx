@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/button";
 //import { Form } from "@nextui-org/form";
 import { Event } from "@/types";
 import { useState } from "react";
-import { SearchIcon } from "@/components/icons";
+import { ShareIcon, PlusSquareIcon } from "@/components/icons";
 
 type Props = {
   event: Event;
@@ -30,11 +30,11 @@ export default function Registration({ event }: Props) {
           </div>
           <div className="flex my-5 gap-5 space-around justify-center align-middle font-bold text-sm leading-4">
             <div className="w-32 flex items-center justify-center gap-2.5 cursor-pointer opacity-80 hover:opacity-100" onClick={() => setSubmitted(false)}>
-              <SearchIcon className="text-[2.5em]" />
+              <PlusSquareIcon className="text-[2.5em]" />
               <span>Register someone else</span>
             </div>
             <div className="w-32 flex items-center justify-center gap-2.5 cursor-pointer opacity-80 hover:opacity-100">
-              <SearchIcon className="text-[2.5em]" />
+              <ShareIcon className="text-[2.5em]" />
               <span>Invite a friend along</span>
             </div>
           </div>

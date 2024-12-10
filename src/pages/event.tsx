@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import createDOMPurify from 'dompurify'
 import EmblaCarousel from "@/components/carousel";
 import Registration from "@/components/registration";
-import { LeftArrowIcon, SearchIcon } from "@/components/icons";
+import { LeftArrowIcon, SignupIcon, ShareIcon, DirectionsIcon } from "@/components/icons";
 import { useRef } from "react";
 
 const DOMPurify = createDOMPurify(window)
@@ -28,11 +28,11 @@ export default function EventPage() {
         {data &&
           <div className="bg-panel py-8 px-11 pb-24">
             <>
-              <Link className="text-3xl absolute top-8 left-4" href={`/${data.location.type.toLowerCase()}/${data.location.id}`}>
-                <LeftArrowIcon className="text-lg" />
+              <Link className="text-3xl absolute top-6 left-2" href={`/${data.location.type.toLowerCase()}/${data.location.id}`}>
+                <LeftArrowIcon size={32} className="text-lg" />
               </Link>
               <Link className="text-3xl absolute top-8 right-4" href="#share">
-                <SearchIcon className="text-lg" />
+                <ShareIcon size={18} />
               </Link>
             </>
             {data.online && data.languageCode && 
@@ -50,11 +50,11 @@ export default function EventPage() {
             </Link>
             <div className="flex flex-row gap-6 my-5 text-primary">
               <Link onClick={executeScroll} href="#registrations">
-                <SearchIcon className="mr-2" />
+                <SignupIcon className="mr-2" />
                 Register
               </Link>
               <Link href={data.location.directionsUrl} target="_blank" rel="noopener noreferrer">
-                <SearchIcon className="mr-2" />
+                <DirectionsIcon className="mr-2" />
                 Get Directions
               </Link>
             </div>
