@@ -8,6 +8,7 @@ import api from '@/config/api';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { useBreakpoint } from '@/config/responsive';
+import i18n from '@/config/i18n';
 
 //const MapGL = ReactMapGL({})
 
@@ -77,6 +78,8 @@ export default function Mapbox() {
       interactiveLayerIds={[clusterLayer.id, unclusteredPointLayer.id]}
       reuseMaps
       attributionControl={false}
+      // @ts-ignore - Language is a valid property
+      language={i18n.resolvedLanguage}
       ref={mapRef}
     >
       {data &&

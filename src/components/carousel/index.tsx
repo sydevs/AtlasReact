@@ -116,6 +116,10 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
                     height="192px"
                     alt="Your alt text"
                     className="embla__slide__img embla__parallax__img"
+                    classNames={{
+                      wrapper: "rounded-sm",
+                      img: "embla__slide__img embla__parallax__img",
+                    }}
                     src={`https://picsum.photos/600/350?v=${index}`}
                   />
                 </a>

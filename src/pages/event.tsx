@@ -11,12 +11,14 @@ import { useEffect, useRef } from "react";
 import { Main } from "@/components/base/main";
 import { useViewState } from "@/config/store";
 import { useMap } from "react-map-gl";
+import { useTranslation } from "react-i18next";
 
 const DOMPurify = createDOMPurify(window)
 
 export default function EventPage() {
-  let { id } = useParams();
-  let { mapbox } = useMap();
+  const { id } = useParams();
+  const { mapbox } = useMap();
+  const { t } = useTranslation();
   const setMapSelection = useViewState(s => s.setSelection);
   const { data, isLoading, error } = useQuery({
     queryKey: ['event', id],
@@ -72,11 +74,11 @@ export default function EventPage() {
             <div className="flex flex-row gap-6 my-8 text-primary">
               <Link className="text-sm italic font-medium" onClick={executeScroll} href="#registrations">
                 <SignupIcon className="mr-2" />
-                Register
+                {t('register')}
               </Link>
               <Link className="text-sm italic font-medium" href={data.location.directionsUrl} target="_blank" rel="noopener noreferrer">
                 <DirectionsIcon className="mr-2" />
-                Get Directions
+                {t('get_directions')}
               </Link>
             </div>
             <div className="mt-16 mb-4" dangerouslySetInnerHTML={{

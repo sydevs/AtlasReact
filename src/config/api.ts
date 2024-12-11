@@ -1,11 +1,25 @@
 import axios from "axios";
 import { Area, Country, Region, Venue, Event, CountrySlim, EventSlim } from "@/types";
+import i18n from "@/config/i18n";
 
 const client = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT,
   headers: {
     "Content-type": "application/json",
-  },
+  }
+});
+
+client.interceptors.request.use((config) => {
+  // use config.params if it has been set
+  config.params = config.params || {};
+
+  // add any client instance specific params to config
+  config.params['locale'] = i18n.resolvedLanguage;
+
+  //const params = new URLSearchParams();
+  //config.params['api-key'] = process.env.VUE_APP_API_KEY;
+
+  return config;
 });
 
 const getGeojson = async () => {
