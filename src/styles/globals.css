@@ -7,16 +7,8 @@
 
 @layer base {
   main {
-    @apply pointer-events-auto text-content1;
-    max-height: 90%;
-    margin: 5%;
-    overflow-x: hidden;
-    overflow-y: auto;
+    @apply text-content1;
     color: #7b7b7b;
-  }
-
-  nav + main {
-    max-height: calc(90% - 4rem);
   }
 
   a {

@@ -10,7 +10,7 @@ interface Props {
 export default function Loader({ isLoading, data, error, children }: Props) {
   if (data && isLoading) {
     return <div className="relative">
-      <Spinner color="secondary" size="sm" className="absolute top-4 right-4 z-50" />
+      <Spinner color="secondary" size="sm" className="absolute top-4 right-4 z-1" />
       {children}
     </div>;
   }

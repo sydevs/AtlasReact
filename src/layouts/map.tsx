@@ -8,11 +8,11 @@ export default function MapLayout() {
 
   return (
     <MapProvider>
-      <div className="fixed w-dvw h-dvh z-10">
+      <div className="w-dvw h-[80dvh] md:fixed md:h-dvh">
         <Mapbox />
       </div>
-      <div className="fixed w-screen h-screen z-50 pointer-events-none">
-        {hasNavbar && <Navbar />}
+      <div className={`flex flex-col w-screen md:h-screen pointer-events-none ${hasNavbar ? 'pb-16 md:p-0' : ''}`}>
+        {hasNavbar && <Navbar className="fixed bottom-0 border-t-medium shadow-md md:static pointer-events-auto" />}
         <Outlet />
       </div>
     </MapProvider>

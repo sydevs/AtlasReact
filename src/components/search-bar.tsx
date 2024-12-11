@@ -17,7 +17,7 @@ export default function SearchBar({ onSelect, header, returnLink }: Props) {
   const [isSearching, setIsSearching] = React.useState(!header);
 
   return (
-    <div className="p-4 h-[70px] z-50 relative flex flex-row gap-2 items-center bg-background shadow-lg shadow-background">
+    <div className="p-4 h-[70px] relative flex flex-row gap-2 items-center bg-background shadow-lg shadow-background">
       {returnLink &&
         <LeftArrowIcon size={32} onClick={() => navigate(returnLink)} />}
       

@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import api from '@/config/api';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
+import { useBreakpoint } from '@/config/responsive';
 
 //const MapGL = ReactMapGL({})
 
@@ -15,6 +16,8 @@ export default function Mapbox() {
   const mapRef = useRef<MapRef>(null);
   const selection = useViewState(s => s.selection);
   const setViewState = useViewState(s => s.setViewState);
+  const { isMd } = useBreakpoint("md");
+  const { isLg } = useBreakpoint("lg");
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['geojson'],
@@ -64,7 +67,12 @@ export default function Mapbox() {
       onMoveEnd={updateViewState}
       onClick={selectFeature}
       onMouseMove={hoverOnFeature}
-      padding={{ top: 0, bottom: 0, right: 0, left: 532 }}
+      padding={{
+        top: 0,
+        bottom: 0,
+        right: 0,
+        left: isMd ? 320 : (isLg ? 528 : 0),
+      }}
       style={{ width: '100%', height: '100%' }}
       interactiveLayerIds={[clusterLayer.id, unclusteredPointLayer.id]}
       reuseMaps

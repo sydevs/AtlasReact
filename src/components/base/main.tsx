@@ -1,3 +1,4 @@
+import { useBreakpoint } from "@/config/responsive";
 
 type Props = {
   children: React.ReactNode;
@@ -8,8 +9,20 @@ export function Main({
   width = 400,
   children
 } : Props) {
+  const { isMd } = useBreakpoint("md");
+  const { isLg } = useBreakpoint("lg");
+
   return (
-    <main className='fixed z-50 shadow-md flex flex-col' style={{ width: width}}>
+    <main
+      className={`
+        flex flex-col md:max-lg:flex-grow
+        pointer-events-auto overflow-y-scroll
+        md:max-lg:bg-background
+        md:shadow-md
+        lg:m-16
+      `}
+      style={isMd && { width: isLg ? width : 400 } || {}}
+    >
       {children}
     </main>
   );

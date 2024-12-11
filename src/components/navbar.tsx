@@ -1,6 +1,7 @@
 import { Button, Kbd, Link, Input } from "@nextui-org/react";
 import {
   Navbar as NextUINavbar,
+  NavbarProps,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
@@ -20,7 +21,7 @@ import {
   SearchIcon,
 } from "@/components/icons";
 
-export const Navbar = () => {
+export const Navbar = ({ ...props } : NavbarProps) => {
   const searchInput = (
     <Input
       aria-label="Search"
@@ -43,7 +44,7 @@ export const Navbar = () => {
   );
 
   return (
-    <NextUINavbar maxWidth="xl" position="static" className="pointer-events-auto">
+    <NextUINavbar maxWidth="xl" position="static" { ...props }>
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand className="gap-3 max-w-fit">
           <Link
