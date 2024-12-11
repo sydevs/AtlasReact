@@ -39,11 +39,11 @@ export default function Registration({ event }: Props) {
           </div>
         </> :
         <Form className="gap-4 flex flex-col justify-center">
-          <SelectionDropdown startContent={<CalendarIcon />} />
+          <SelectionDropdown startContent={<CalendarIcon />} options={event.timing.upcomingDates.map(date => ({ value: date.toISOString(), label: date.toLocaleDateString() }))} />
           <Input label="Name" type="text" placeholder="Enter your name" variant="bordered" isRequired radius="none" />
           <Input label="Email" type="email" placeholder="Enter your email" variant="bordered" isRequired radius="none" />
           
-          {event.registrationQuestions.map((question, index) => 
+          {event.registration.questions.map((question, index) => 
             <Textarea name={question.slug} label={question.title} variant="bordered" radius="none" key={index} />
           )}
 

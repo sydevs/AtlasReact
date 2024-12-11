@@ -3,11 +3,17 @@ import type { Selection } from "@nextui-org/react";
 import React from "react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 
-type Props = {
-  startContent?: React.ReactNode;
+type DropdownItemProps = {
+  value: string;
+  label: string;
 }
 
-export default function SelectionDropdown({ startContent } : Props) {
+type Props = {
+  startContent?: React.ReactNode;
+  options: DropdownItemProps[];
+}
+
+export default function SelectionDropdown({ startContent, options } : Props) {
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set(["Select a date..."]));
 
   const selectedValue = React.useMemo(
@@ -35,11 +41,9 @@ export default function SelectionDropdown({ startContent } : Props) {
         variant="flat"
         onSelectionChange={setSelectedKeys}
       >
-        <DropdownItem key="text">Text</DropdownItem>
-        <DropdownItem key="number">Number</DropdownItem>
-        <DropdownItem key="date">Date</DropdownItem>
-        <DropdownItem key="single_date">Single Date</DropdownItem>
-        <DropdownItem key="iteration">Iteration</DropdownItem>
+        {options.map(({ value, label }) => 
+          <DropdownItem key={value} value={value}>{label}</DropdownItem>
+        )}
       </DropdownMenu>
     </Dropdown>
   );
