@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import createDOMPurify from 'dompurify'
 import EmblaCarousel from "@/components/carousel";
-import Registration from "@/components/registration";
+import Registration from "@/components/event/registration";
 import { LeftArrowIcon, SignupIcon, ShareIcon, DirectionsIcon } from "@/components/icons";
 import { useEffect, useRef } from "react";
 import { Main } from "@/components/base/main";
@@ -69,12 +69,12 @@ export default function EventPage() {
                 tel: {data.contact.phoneNumber}
                 {data.contact.phoneName && `, ${data.contact.phoneName}`}
               </Link>}
-            <div className="flex flex-row gap-6 my-5 text-primary">
-              <Link onClick={executeScroll} href="#registrations">
+            <div className="flex flex-row gap-6 my-8 text-primary">
+              <Link className="text-sm italic font-medium" onClick={executeScroll} href="#registrations">
                 <SignupIcon className="mr-2" />
                 Register
               </Link>
-              <Link href={data.location.directionsUrl} target="_blank" rel="noopener noreferrer">
+              <Link className="text-sm italic font-medium" href={data.location.directionsUrl} target="_blank" rel="noopener noreferrer">
                 <DirectionsIcon className="mr-2" />
                 Get Directions
               </Link>

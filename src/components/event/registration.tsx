@@ -1,7 +1,8 @@
 import { Input, Textarea, Button, Form } from "@nextui-org/react";
 import { Event } from "@/types";
 import { useState } from "react";
-import { ShareIcon, PlusSquareIcon } from "@/components/icons";
+import { ShareIcon, PlusSquareIcon, CalendarIcon } from "@/components/icons";
+import SelectionDropdown from "@/components/base/dropdown";
 
 type Props = {
   event: Event;
@@ -38,9 +39,14 @@ export default function Registration({ event }: Props) {
           </div>
         </> :
         <Form className="gap-4 flex flex-col justify-center">
+          <SelectionDropdown startContent={<CalendarIcon />} />
           <Input label="Name" type="text" placeholder="Enter your name" variant="bordered" isRequired radius="none" />
           <Input label="Email" type="email" placeholder="Enter your email" variant="bordered" isRequired radius="none" />
-          <Textarea label="Do you have any questions?" variant="bordered" isRequired radius="none" />
+          
+          {event.registrationQuestions.map((question, index) => 
+            <Textarea name={question.slug} label={question.title} variant="bordered" radius="none" key={index} />
+          )}
+
           <p className="text-xs text-center">By submitting you confirm you agree to receive follow up messages about this and similar events, in accordance with our privacy policy.</p>
           <Button className="w-full rounded-sm" color="primary" onClick={() => setSubmitted(true)}>
             Register
