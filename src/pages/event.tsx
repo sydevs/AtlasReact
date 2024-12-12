@@ -63,9 +63,9 @@ export default function EventPage() {
                 {data.online && <div className="text-secondary font-bold">Online</div>}
               </div>}
             <h2 className="text-lg font-bold mb-2">{data.label}</h2>
-            <p className="text-sm mb-1">{data.address}</p>
+            <p className="text-sm mb-1">{data.location.address}</p>
             <p className="text-xs">{data.timing.recurrence}</p>
-            <p className="text-xs font-medium">{data.timing.firstDate}</p>
+            <p className="text-xs font-medium">{data.timing.firstDate.toString()}</p>
             {data.contact.phoneNumber &&
               <Link className="text-sm hover:underline" href={`tel: ${data.contact.phoneNumber}`} target="_blank" rel="noopener noreferrer">
                 tel: {data.contact.phoneNumber}

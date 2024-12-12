@@ -1,79 +1,92 @@
+import z from "zod"
 
-export type EventCore = {
-  id: number;
-  label: string;
-  online: boolean;
-  parentId: number;
-  parentType: string;
-  languageCode: string;
-}
+export const EventTimingSchema = z.object({
+  firstDate: z.coerce.date(),
+  lastDate: z.coerce.date().nullable(),
+  upcomingDates: z.array(z.coerce.date()),
+  //recurrenceCount: z.number(),
 
-export type EventSlim = {
-  recurrence: string;
-  address: string;
-  latitude: number;
-  longitude: number;
-  timing: string;
-  timeZone: string;
-} & EventCore;
+  startTime: z.string(),
+  endTime: z.string().nullable(),
 
-export type Event = {
-  url: string;
-  description: string;
-  descriptionHtml: string;
-  language: string;
-  languageCode: string;
-  category: string;
+  recurrence: z.string(),
+  duration: z.number(),
+  timeZone: z.string(),
+})
 
-  registration: EventRegistration;
-  timing: EventTiming;
-  contact: EventContact;
-  images: EventImage[];
-  location: EventLocation;
-} & EventCore;
+export const EventContactSchema = z.object({
+  phoneName: z.string(),
+  phoneNumber: z.string(),
+})
 
-export type EventRegistration = {
-  mode: string;
-  externalUrl: string;
-  maxParticipants: number;
-  participantCount: number;
-  questions: EventQuestion[];
-};
+export const EventLocationSchema = z.object({
+  id: z.number(),
+  type: z.string(),
+  directionsUrl: z.string(),
+  address: z.string(),
+  latitude: z.number(),
+  longitude: z.number(),
+})
 
-export type EventImage = {
-  url: string;
-  thumbnailUrl: string;
-}
+export const EventRegistrationSchema = z.object({
+  mode: z.string(),
+  externalUrl: z.string().optional(),
+  maxParticipants: z.number().nullable(),
+  participantCount: z.number(),
+  questions: z.array(z.object({
+    slug: z.string(),
+    title: z.string(),
+  })),
+})
 
-export type EventTiming = {
-  firstDate: Date;
-  lastDate: Date;
-  upcomingDates: Date[];
-  recurrenceCount: number;
+export const EventImageSchema = z.object({
+  url: z.string().url(),
+  thumbnailUrl: z.string().url(),
+})
 
-  startTime: string;
-  endTime: string;
+export const EventQuestionSchema = z.object({
+  slug: z.string(),
+  title: z.string(),
+})
 
-  recurrence: string;
-  duration: number;
-  timeZone: string;
-}
+export const EventCoreSchema = z.object({
+  id: z.number(),
+  label: z.string(),
+  online: z.boolean(),
+  languageCode: z.string(),
+})
 
-export type EventContact = {
-  phoneName: string;
-  phoneNumber: string;
-}
+export const EventSlimSchema = z.object({
+  recurrence: z.string(),
+  address: z.string(),
+  latitude: z.number(),
+  longitude: z.number(),
+  timing: z.string(),
+  timeZone: z.string(),
+  locationId: z.number(),
+  locationType: z.string(),
+}).merge(EventCoreSchema)
 
-export type EventLocation = {
-  id: number;
-  type: string;
-  directionsUrl: string;
-  address: string;
-  latitude: number;
-  longitude: number;
-}
+export const EventSchema = z.object({
+  url: z.string(),
+  description: z.string(),
+  descriptionHtml: z.string(),
+  language: z.string(),
+  languageCode: z.string(),
+  category: z.string(),
 
-export type EventQuestion = {
-  slug: string;
-  title: string;
-}
+  registration: EventRegistrationSchema,
+  timing: EventTimingSchema,
+  contact: EventContactSchema,
+  images: z.array(EventImageSchema),
+  location: EventLocationSchema,
+}).merge(EventCoreSchema)
+
+export type Event = z.infer<typeof EventSchema>
+export type EventSlim = z.infer<typeof EventSlimSchema>
+export type EventTiming = z.infer<typeof EventTimingSchema>
+export type EventContact = z.infer<typeof EventContactSchema>
+export type EventLocation = z.infer<typeof EventLocationSchema>
+export type EventQuestion = z.infer<typeof EventQuestionSchema>
+export type EventRegistration = z.infer<typeof EventRegistrationSchema>
+export type EventImage = z.infer<typeof EventImageSchema>

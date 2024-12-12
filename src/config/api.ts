@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Area, Country, Region, Venue, Event, CountrySlim, EventSlim } from "@/types";
+import { Area, Country, Region, Venue, CountrySlim, EventSlim, EventSchema } from "@/types";
 import i18n from "@/config/i18n";
 
 const client = axios.create({
@@ -65,7 +65,7 @@ const getVenue = async (id: number) => {
 
 const getEvent = async (id: number) => {
   const response = await client.get(`/events/${id}.json`);
-  return response.data as Event;
+  return EventSchema.parse(response.data);
 };
 
 export default {
