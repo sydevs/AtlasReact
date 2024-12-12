@@ -1,7 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import ReactMapGL, { GeoJSONSource, GeolocateControl, Layer, MapMouseEvent, MapRef, Source, ViewStateChangeEvent } from 'react-map-gl';
 import { clusterLayer, selectedPointLayer, unclusteredPointLayer } from './layers';
-import { useEffect } from 'react';
 import { useViewState } from "@/config/store";
 import { useQuery } from '@tanstack/react-query';
 import api from '@/config/api';
@@ -20,7 +19,7 @@ export default function Mapbox() {
   const { isMd } = useBreakpoint("md");
   const { isLg } = useBreakpoint("lg");
 
-  const { data, isLoading, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ['geojson'],
     queryFn: () => api.getGeojson()
   });

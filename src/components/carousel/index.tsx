@@ -17,8 +17,7 @@ import { EventImage } from '@/types/event'
 const TWEEN_FACTOR_BASE = 0.2
 
 type PropType = {
-  //slides: EventImage[]
-  slides: number[]
+  slides: EventImage[]
   options?: EmblaOptionsType
 }
 
