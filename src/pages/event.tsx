@@ -12,6 +12,7 @@ import { Main } from "@/components/base/main";
 import { useViewState } from "@/config/store";
 import { useMap } from "react-map-gl";
 import { useTranslation } from "react-i18next";
+import EventMetadata from "@/components/event/metadata";
 
 const DOMPurify = createDOMPurify(window)
 
@@ -45,6 +46,7 @@ export default function EventPage() {
 
   return (
     <Main width={467}>
+      {data && <EventMetadata event={data} />}
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <div className="bg-panel py-8 px-11 pb-24">
@@ -62,7 +64,7 @@ export default function EventPage() {
                 {data.languageCode && <div className="text-primary font-bold">{data.languageCode}</div>}
                 {data.online && <div className="text-secondary font-bold">Online</div>}
               </div>}
-            <h2 className="text-lg font-bold mb-2">{data.label}</h2>
+            <h1 className="text-lg font-bold mb-2">{data.label}</h1>
             <p className="text-sm mb-1">{data.location.address}</p>
             <p className="text-xs">{data.timing.recurrence}</p>
             <p className="text-xs font-medium">{data.timing.firstDate.toString()}</p>
@@ -76,10 +78,11 @@ export default function EventPage() {
                 <SignupIcon className="mr-2" />
                 {t('register')}
               </Link>
-              <Link className="text-sm italic font-medium" href={data.location.directionsUrl} target="_blank" rel="noopener noreferrer">
-                <DirectionsIcon className="mr-2" />
-                {t('get_directions')}
-              </Link>
+              {data.location.directionsUrl &&
+                <Link className="text-sm italic font-medium" href={data.location.directionsUrl} target="_blank" rel="noopener noreferrer">
+                  <DirectionsIcon className="mr-2" />
+                  {t('get_directions')}
+                </Link>}
             </div>
             <div className="mt-16 mb-4" dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(data.descriptionHtml, {

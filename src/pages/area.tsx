@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { EventsList } from "@/components/list";
 import SearchBar from "@/components/search-bar";
 import { Main } from "@/components/base/main";
+import { Helmet } from "react-helmet-async";
 
 export default function AreaPage() {
   let { id } = useParams();
@@ -15,6 +16,11 @@ export default function AreaPage() {
 
   return (
     <Main>
+      {data &&
+        <Helmet>
+          <title>{`Free Meditation Classes in ${data.label}`}</title>
+          <meta name="description" content={`${data.events.length} free meditation classes at ${data.label}`} />
+        </Helmet>}
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>

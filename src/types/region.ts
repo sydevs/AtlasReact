@@ -3,10 +3,11 @@ import { AreaSlim } from "./area";
 export type RegionCore = {
   id: number;
   label: string;
+  eventCount: number;
 };
 
 export type RegionSlim = {
-  eventCount: number;
+
 } & RegionCore;
 
 export type Region = {

@@ -10,7 +10,7 @@ export const EventTimingSchema = z.object({
   endTime: z.string().nullable(),
 
   recurrence: z.string(),
-  duration: z.number(),
+  duration: z.number().nullable(),
   timeZone: z.string(),
 })
 
@@ -22,7 +22,7 @@ export const EventContactSchema = z.object({
 export const EventLocationSchema = z.object({
   id: z.number(),
   type: z.string(),
-  directionsUrl: z.string(),
+  directionsUrl: z.string().nullish(),
   address: z.string(),
   latitude: z.number(),
   longitude: z.number(),

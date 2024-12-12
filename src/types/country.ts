@@ -3,10 +3,11 @@ export type CountryCore = {
   id: number;
   code: string;
   label: string;
+  eventCount: number;
 };
 
 export type CountrySlim = {
-  eventCount: number;
+
 } & CountryCore;
 
 export type Country = {

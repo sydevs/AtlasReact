@@ -6,6 +6,7 @@ import { List, DynamicEventsList, ListItem } from "@/components/list";
 import { useViewState } from "@/config/store";
 import { useShallow } from 'zustand/react/shallow'
 import { Main } from "@/components/base/main";
+import { Helmet } from "react-helmet-async";
 
 export default function IndexPage() {
   const [ zoom, latitude, longitude ] = useViewState(useShallow(s => [s.zoom, s.latitude, s.longitude]))
@@ -16,6 +17,11 @@ export default function IndexPage() {
 
   return (
     <Main>
+      <Helmet>
+        <title>Free Meditation Classes</title>
+        <meta property="og:url" content="https://wemeditate.com/map" />
+        <link rel="canonical" href="https://wemeditate.com/map" />
+      </Helmet>
       <SearchBar onSelect={value => console.log(value)} />
       { zoom < 7 ?
         <Loader isLoading={isLoading} error={error}>

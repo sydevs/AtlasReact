@@ -5,6 +5,7 @@ import Loader from "@/components/loader";
 import { List, ListItem } from "@/components/list";
 import SearchBar from "@/components/search-bar";
 import { Main } from "@/components/base/main";
+import { Helmet } from "react-helmet-async";
 
 export default function CountryPage() {
   let { code } = useParams();
@@ -15,6 +16,11 @@ export default function CountryPage() {
 
   return (
     <Main>
+      {data &&
+        <Helmet>
+          <title>{`Free Meditation Classes at ${data.label}`}</title>
+          <meta name="description" content={`${data.eventCount} free meditation classes at ${data.label}`} />
+        </Helmet>}
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>

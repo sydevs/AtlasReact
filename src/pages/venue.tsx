@@ -6,6 +6,7 @@ import SearchBar from "@/components/search-bar";
 import { EventsList } from "@/components/list";
 import { useEffect } from "react";
 import { Main } from "@/components/base/main";
+import { Helmet } from "react-helmet-async";
 
 export default function VenuePage() {
   let { id } = useParams();
@@ -24,6 +25,11 @@ export default function VenuePage() {
 
   return (
     <Main>
+      {data &&
+        <Helmet>
+          <title>{`Free Meditation Classes at ${data.label}`}</title>
+          <meta name="description" content={`${data.events.length} free meditation classes at ${data.label}`} />
+        </Helmet>}
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
