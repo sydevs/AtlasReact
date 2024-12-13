@@ -10,7 +10,6 @@ import MapLayout from "./layouts/map";
 import i18n from "./config/i18n";
 import { Helmet } from "react-helmet-async";
 import { Provider } from "./provider";
-import React from "react";
 
 import "@/styles/globals.css";
 import "@/styles/embla.css";
@@ -18,22 +17,20 @@ import '@/config/i18n';
 
 export default function App() {
   return (
-    <React.StrictMode>
-      <Provider>
-        <Helmet>
-          <meta property="og:locale" content={i18n.resolvedLanguage} />
-        </Helmet>
-        <Routes>
-          <Route element={<MapLayout />} path="/">
-            <Route element={<IndexPage />} index />
-            <Route element={<CountryPage />} path="/country/:code" />
-            <Route element={<RegionPage />} path="/region/:id" />
-            <Route element={<AreaPage />} path="/area/:id" />
-            <Route element={<VenuePage />} path="/venue/:id" />
-            <Route element={<EventPage />} path="/event/:id" />
-          </Route>
-        </Routes>
-      </Provider>
-    </React.StrictMode>
+    <Provider>
+      <Helmet>
+        <meta property="og:locale" content={i18n.resolvedLanguage} />
+      </Helmet>
+      <Routes>
+        <Route element={<MapLayout />} path="/">
+          <Route element={<IndexPage />} index />
+          <Route element={<CountryPage />} path="/country/:code" />
+          <Route element={<RegionPage />} path="/region/:id" />
+          <Route element={<AreaPage />} path="/area/:id" />
+          <Route element={<VenuePage />} path="/venue/:id" />
+          <Route element={<EventPage />} path="/event/:id" />
+        </Route>
+      </Routes>
+    </Provider>
   );
 }
