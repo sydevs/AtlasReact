@@ -2,7 +2,7 @@ import Loader from "@/components/loader";
 import api from "@/config/api";
 import { Link } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import createDOMPurify from 'dompurify'
 import EmblaCarousel from "@/components/carousel";
 import Registration from "@/components/event/registration";

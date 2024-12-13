@@ -3,7 +3,7 @@ import { Geocoder } from "@mapbox/search-js-react";
 import { GeocodingFeature } from "@mapbox/search-js-core";
 import { useMap } from "react-map-gl";
 import { controlTheme } from "./themes";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 
 interface SearchProps {
   onSelect: (value: GeocodingFeature) => void;

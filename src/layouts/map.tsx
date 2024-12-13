@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/navbar";
 import Mapbox from "@/components/mapbox/map";
 import { MapProvider } from "react-map-gl";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 
 export default function MapLayout() {
   const hasNavbar = true;
