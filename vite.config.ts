@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
     tsconfigPaths(),
-    cssInjectedByJsPlugin({ dev: { enableDev: true }})
+    cssInjectedByJsPlugin() //{ dev: { enableDev: true }})
   ],
   build: {
     rollupOptions: {
