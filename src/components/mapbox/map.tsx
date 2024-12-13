@@ -47,7 +47,6 @@ export default function Mapbox() {
         });
       });
     } else if (feature.layer?.id === unclusteredPointLayer.id) {
-      console.log(feature.properties)
       navigate(`/${feature.properties?.type}/${feature.properties?.id}`)
     }
   }, [mapRef]);

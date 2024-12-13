@@ -22,7 +22,7 @@ export default function IndexPage() {
         <meta property="og:url" content="https://wemeditate.com/map" />
         <link rel="canonical" href="https://wemeditate.com/map" />
       </Helmet>
-      <SearchBar onSelect={value => console.log(value)} />
+      <SearchBar onSelect={value => console.log(value)} filterable={zoom < 7} />
       { zoom < 7 ?
         <Loader isLoading={isLoading} error={error}>
           {data &&

@@ -33,7 +33,11 @@ export default function VenuePage() {
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
-            <SearchBar onSelect={value => console.log(value)} header={data.label} returnLink='/' />
+            <SearchBar
+              onSelect={value => console.log(value)}
+              header={data.label}
+              returnLink='/'
+            />
             <EventsList events={data.events} />
           </>}
       </Loader>

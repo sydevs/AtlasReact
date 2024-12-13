@@ -16,7 +16,6 @@ export function DynamicEventsList({ latitude, longitude }: DynamicProps) {
     placeholderData: keepPreviousData,
   });
 
-  console.log(isFetching, data)
   return (
     <Loader data={data} isLoading={isFetching} error={error}>
       <EventsList events={data || []} />

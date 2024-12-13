@@ -18,13 +18,17 @@ export default function CountryPage() {
     <Main>
       {data &&
         <Helmet>
-          <title>{`Free Meditation Classes at ${data.label}`}</title>
+          <title>{`Free Meditation Classes in ${data.label}`}</title>
           <meta name="description" content={`${data.eventCount} free meditation classes at ${data.label}`} />
         </Helmet>}
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
-            <SearchBar onSelect={value => console.log(value)} header={data.label} returnLink="/" />
+            <SearchBar
+              onSelect={value => console.log(value)}
+              header={data.label}
+              returnLink="/"
+            />
             <List>
               {data.children.map((child) => (
                 child.eventCount > 0 &&

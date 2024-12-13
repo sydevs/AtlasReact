@@ -24,7 +24,11 @@ export default function AreaPage() {
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
-            <SearchBar onSelect={value => console.log(value)} header={data.label} returnLink={`/${data.parentType}/${data.parentId}`} />
+            <SearchBar
+              onSelect={value => console.log(value)}
+              header={data.label}
+              returnLink={`/${data.parentType}/${data.parentId}`}
+            />
             <EventsList events={data.events} />
           </>}
       </Loader>

@@ -24,7 +24,11 @@ export default function RegionPage() {
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
-            <SearchBar onSelect={value => console.log(value)} header={data.label} returnLink={`/${data.parentType}/${data.parentId}`} />
+            <SearchBar
+              onSelect={value => console.log(value)}
+              header={data.label}
+              returnLink={`/${data.parentType}/${data.parentId}`}
+            />
             <List>
               {data.areas.map((area) => (
                 <ListItem key={area.id} label={area.label} count={area.eventCount} link={`/area/${area.id}`} />
