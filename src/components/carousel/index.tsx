@@ -21,8 +21,10 @@ type PropType = {
   options?: EmblaOptionsType
 }
 
-const EmblaCarousel: React.FC<PropType> = (props) => {
-  const { slides, options } = props
+const EmblaCarousel: React.FC<PropType> = ({
+  slides,
+  options,
+}: PropType) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(options)
   const tweenFactor = useRef(0)
   const tweenNodes = useRef<HTMLElement[]>([])
