@@ -1,14 +1,14 @@
-import { Input, Textarea, Button, Form } from "@nextui-org/react";
+import { Input, Textarea, Button, Form, Select, SelectItem } from "@nextui-org/react";
 import { Event } from "@/types";
 import { useState } from "react";
 import { ShareIcon, PlusSquareIcon, CalendarIcon } from "@/components/icons";
-import SelectionDropdown from "@/components/base/dropdown";
 
 type Props = {
   event: Event;
+  onShareOpen: () => void;
 };
 
-export default function Registration({ event }: Props) {
+export default function Registration({ event, onShareOpen }: Props) {
   const [submitted, setSubmitted] = useState(false);
 
   return (
@@ -32,14 +32,18 @@ export default function Registration({ event }: Props) {
               <PlusSquareIcon className="text-[2.5em]" />
               <span>Register someone else</span>
             </div>
-            <div className="w-32 flex items-center justify-center gap-2.5 cursor-pointer opacity-80 hover:opacity-100">
+            <div className="w-32 flex items-center justify-center gap-2.5 cursor-pointer opacity-80 hover:opacity-100" onClick={onShareOpen}>
               <ShareIcon className="text-[2.5em]" />
               <span>Invite a friend along</span>
             </div>
           </div>
         </> :
         <Form className="gap-4 flex flex-col justify-center">
-          <SelectionDropdown startContent={<CalendarIcon />} options={event.timing.upcomingDates.map(date => ({ value: date.toISOString(), label: date.toLocaleDateString() }))} />
+          <Select className="max-w-xs" label="Starting date" placeholder="Select a date..." startContent={<CalendarIcon />} variant="bordered" isRequired radius="none">
+            {event.timing.upcomingDates.map((date) => (
+              <SelectItem key={date.toISOString()}>{date.toLocaleDateString()}</SelectItem>
+            ))}
+          </Select>
           <Input label="Name" type="text" placeholder="Enter your name" variant="bordered" isRequired radius="none" />
           <Input label="Email" type="email" placeholder="Enter your email" variant="bordered" isRequired radius="none" />
           

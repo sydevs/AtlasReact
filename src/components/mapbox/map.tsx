@@ -35,7 +35,7 @@ export default function Mapbox() {
     const feature = evt.features[0]
 
     if (feature.layer?.id === clusterLayer.id) {
-      const source = mapRef.current.getSource("venues") as GeoJSONSource;
+      const source = mapRef.current.getSource("events") as GeoJSONSource;
       source.getClusterExpansionZoom(feature.properties?.cluster_id, (err, zoom) => {
         if (err || !mapRef.current) return console.error(err)
   
@@ -47,7 +47,8 @@ export default function Mapbox() {
         });
       });
     } else if (feature.layer?.id === unclusteredPointLayer.id) {
-      navigate(`/venue/${feature.properties?.id}`)
+      console.log(feature.properties)
+      navigate(`/${feature.properties?.type}/${feature.properties?.id}`)
     }
   }, [mapRef]);
 
@@ -83,7 +84,7 @@ export default function Mapbox() {
     >
       {data &&
         <Source
-          id="venues"
+          id="events"
           type="geojson"
           data={data}
           cluster={true}

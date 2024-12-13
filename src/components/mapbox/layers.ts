@@ -7,7 +7,7 @@ type Props = {
 export const clusterLayer: Props = {
   id: 'clusters',
   type: 'symbol',
-  source: 'venues',
+  source: 'events',
   filter: ['has', 'point_count'],
   layout: {
     'icon-allow-overlap': true,
@@ -25,7 +25,7 @@ export const clusterLayer: Props = {
 /*export const clusterCountLayer: Props = {
   id: 'cluster-count',
   type: 'symbol',
-  source: 'venues',
+  source: 'events',
   filter: ['has', 'point_count'],
   layout: {
     'text-field': '{point_count_abbreviated}',
@@ -37,7 +37,7 @@ export const clusterLayer: Props = {
 export const unclusteredPointLayer: Props = {
   id: 'unclustered-point',
   type: 'symbol',
-  source: 'venues',
+  source: 'events',
   filter: ['!', ['has', 'point_count']],
   layout: {
     'icon-anchor': 'bottom',

@@ -69,8 +69,8 @@ export const EventSlimSchema = z.object({
 
 export const EventSchema = z.object({
   url: z.string(),
-  description: z.string(),
-  descriptionHtml: z.string(),
+  description: z.string().nullable(),
+  descriptionHtml: z.string().nullable(),
   language: z.string(),
   languageCode: z.string(),
   category: z.string(),
