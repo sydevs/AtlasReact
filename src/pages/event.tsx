@@ -92,7 +92,7 @@ export default function EventPage() {
               })
             }}></div>
             <EmblaCarousel
-              slides={[1, 2, 3] || data.images}
+              slides={data.images || []}
               options={{ containScroll: false }}
             />
             <div ref={registrationRef}>

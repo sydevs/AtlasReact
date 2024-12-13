@@ -17,13 +17,14 @@ import { EventImage } from '@/types/event'
 const TWEEN_FACTOR_BASE = 0.2
 
 type PropType = {
-  //slides: EventImage[]
-  slides: number[]
+  slides: EventImage[]
   options?: EmblaOptionsType
 }
 
-const EmblaCarousel: React.FC<PropType> = (props) => {
-  const { slides, options } = props
+const EmblaCarousel: React.FC<PropType> = ({
+  slides,
+  options,
+}: PropType) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(options)
   const tweenFactor = useRef(0)
   const tweenNodes = useRef<HTMLElement[]>([])
