@@ -3,7 +3,7 @@ import { OnlineIcon, LeftArrowIcon, SearchIcon, CloseIcon } from "@/components/i
 import SearchBox from "@/components/mapbox/search";
 import { GeocodeFeature } from '@mapbox/search-js-core';
 import Toggle from "@/components/base/toggle";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 interface Props {
   onSelect: (value: GeocodeFeature) => void;

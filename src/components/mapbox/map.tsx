@@ -4,7 +4,7 @@ import { clusterLayer, selectedPointLayer, unclusteredPointLayer } from './layer
 import { useViewState } from "@/config/store";
 import { useQuery } from '@tanstack/react-query';
 import api from '@/config/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useRef } from 'react';
 import { useBreakpoint } from '@/config/responsive';
 import i18n from '@/config/i18n';

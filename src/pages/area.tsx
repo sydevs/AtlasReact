@@ -1,7 +1,7 @@
 import Loader from "@/components/loader";
 import api from "@/config/api";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { EventsList } from "@/components/list";
 import SearchBar from "@/components/search-bar";
 import { Main } from "@/components/base/main";

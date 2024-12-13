@@ -1,6 +1,6 @@
 import { NextUIProvider } from "@nextui-org/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useNavigate, useHref } from "react-router-dom";
+import { useNavigate, useHref } from "react-router";
 import { HelmetProvider } from "react-helmet-async";
 
 const queryClient = new QueryClient()
