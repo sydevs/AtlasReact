@@ -2,7 +2,7 @@ import { Link, useDisclosure } from "@nextui-org/react";
 import createDOMPurify from 'dompurify'
 import EmblaCarousel from "@/components/carousel";
 import Registration from "@/components/event/registration";
-import { LeftArrowIcon, SignupIcon, ShareIcon, DirectionsIcon } from "@/components/icons";
+import { SignupIcon, ShareIcon, DirectionsIcon } from "@/components/icons";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Event } from "@/types";
@@ -23,10 +23,7 @@ export default function EventDetails({ event } : Props) {
   return (
     <div className="bg-panel py-8 px-11 pb-24">
       <>
-        <Link className="text-3xl absolute top-6 left-2" href={`/${event.location.type}/${event.location.id}`}>
-          <LeftArrowIcon size={32} className="text-lg" />
-        </Link>
-        <Link className="text-3xl absolute top-8 right-4 cursor-pointer hover:opacity-hover" onClick={onOpen}>
+        <Link className="text-3xl absolute top-8 right-4" isBlock onClick={onOpen}>
           <ShareIcon size={18} />
         </Link>
       </>

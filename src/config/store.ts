@@ -8,16 +8,31 @@ type ViewState = {
   selection?: { latitude: number, longitude: number } | null
 }
 
-type Action = {
+type ViewAction = {
   setViewState: (viewState: ViewState) => void
   setSelection: (selection: ViewState['selection']) => void,
 }
 
-export const useViewState = create<ViewState & Action>((set) => ({
+export const useViewState = create<ViewState & ViewAction>((set) => ({
   latitude: 0,
   longitude: 0,
   zoom: 0,
   selection: null,
   setViewState: (viewState) => set(() => ({ ...viewState })),
   setSelection: (selection: ViewState['selection']) => set(() => ({ selection })),
+}))
+
+type NavigationState = {
+  returnPath: string | null;
+  returnViewState: ViewState | null;
+}
+
+type NavigationAction = {
+  setNavigationState: (navigationState: NavigationState) => void;
+}
+
+export const useNavigationState = create<NavigationState & NavigationAction>((set) => ({
+  returnPath: null,
+  returnViewState: null,
+  setNavigationState: (navigationState) => set(() => ({ ...navigationState })),
 }))

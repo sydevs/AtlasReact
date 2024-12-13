@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import ReactMapGL, { GeoJSONSource, GeolocateControl, Layer, MapMouseEvent, MapRef, Source, ViewStateChangeEvent } from 'react-map-gl';
 import { clusterLayer, selectedPointLayer, unclusteredPointLayer } from './layers';
-import { useViewState } from "@/config/store";
+import { useNavigationState, useViewState } from "@/config/store";
 import { useQuery } from '@tanstack/react-query';
 import api from '@/config/api';
 import { useNavigate } from 'react-router';
@@ -9,15 +9,14 @@ import { useRef } from 'react';
 import { useBreakpoint } from '@/config/responsive';
 import i18n from '@/config/i18n';
 
-//const MapGL = ReactMapGL({})
-
 export default function Mapbox() {
   let navigate = useNavigate();
   const mapRef = useRef<MapRef>(null);
-  const selection = useViewState(s => s.selection);
-  const setViewState = useViewState(s => s.setViewState);
+  const { zoom, latitude, longitude, setViewState, selection } = useViewState(s => s);
+  const setNavigationState = useNavigationState(s => s.setNavigationState);
   const { isMd } = useBreakpoint("md");
   const { isLg } = useBreakpoint("lg");
+
 
   const { data } = useQuery({
     queryKey: ['geojson'],
@@ -48,8 +47,15 @@ export default function Mapbox() {
       });
     } else if (feature.layer?.id === unclusteredPointLayer.id) {
       navigate(`/${feature.properties?.type}/${feature.properties?.id}`)
+
+      if (feature.properties?.type === "event") {
+        setNavigationState({
+          returnPath: location.pathname,
+          returnViewState: { zoom, latitude, longitude },
+        });
+      }
     }
-  }, [mapRef]);
+  }, [navigate, mapRef, zoom, latitude, longitude, setNavigationState]);
 
   const hoverOnFeature = useCallback((evt: MapMouseEvent) => {
     if (!mapRef.current) return

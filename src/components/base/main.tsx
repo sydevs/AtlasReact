@@ -20,6 +20,7 @@ export function Main({
         md:max-lg:bg-background
         md:shadow-md
         lg:m-16
+        relative
       `}
       style={isMd && { width: isLg ? width : 400 } || {}}
     >

@@ -4,14 +4,18 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import { useEffect } from "react";
 import { Main } from "@/components/base/main";
-import { useViewState } from "@/config/store";
+import { useNavigationState, useViewState } from "@/config/store";
 import { useMap } from "react-map-gl";
 import EventMetadata from "@/components/event/metadata";
 import EventDetails from "@/components/event/details";
+import { Link } from "@nextui-org/react";
+import { LeftArrowIcon } from "@/components/icons";
 
 export default function EventPage() {
   const { id } = useParams();
   const { mapbox } = useMap();
+  const returnPath = useNavigationState(s => s.returnPath);
+  const returnViewState = useNavigationState(s => s.returnViewState);
   const setMapSelection = useViewState(s => s.setSelection);
   const { data, isLoading, error } = useQuery({
     queryKey: ['event', id],
@@ -29,12 +33,22 @@ export default function EventPage() {
 
     return () => {
       setMapSelection(null)
-      mapbox.zoomOut()
+      if (returnViewState) {
+        mapbox.easeTo({
+          center: [returnViewState.longitude, returnViewState.latitude],
+          zoom: returnViewState.zoom,
+        })
+      } else {
+        mapbox.zoomTo(mapbox.getZoom() - 2)
+      }
     }
   }, [data, mapbox])
 
   return (
     <Main width={467}>
+      <Link className="text-3xl absolute top-6 left-2 z-10" href={returnPath || "/"}>
+        <LeftArrowIcon size={32} className="text-lg" />
+      </Link>
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
