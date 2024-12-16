@@ -7,6 +7,7 @@ import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Event } from "@/types";
 import ShareModal from "./share";
+import i18n from "@/config/i18n";
 
 const DOMPurify = createDOMPurify(window)
 
@@ -14,9 +15,15 @@ type Props = {
   event: Event;
 };
 
+function getTime(time: string, timeZone: string) {
+  const date = new Date(time);
+  date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+  return date.toLocaleTimeString(i18n.resolvedLanguage, { hour: 'numeric', minute: '2-digit', timeZone });
+}
+
 export default function EventDetails({ event } : Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { t } = useTranslation();
+  const { t } = useTranslation('events');
   const registrationRef = useRef<HTMLDivElement>(null);
   const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })    
 
@@ -35,8 +42,14 @@ export default function EventDetails({ event } : Props) {
         </div>}
       <h1 className="text-lg font-bold mb-2">{event.label}</h1>
       <p className="text-sm mb-1">{event.location.address}</p>
-      <p className="text-xs">{event.timing.recurrence}</p>
-      <p className="text-xs font-medium">{event.timing.firstDate.toString()}</p>
+      <p className="text-xs uppercase">
+        {t(`recurrence.${event.timing.recurrence}`, { weekday: event.timing.firstDate.toLocaleDateString(i18n.resolvedLanguage, { weekday: 'long' }) })}
+      </p>
+      <p className="text-xs font-medium">
+        {event.timing.localEndTime ? 
+          `${getTime(event.timing.localStartTime, event.timing.timeZone)} - ${getTime(event.timing.localEndTime, event.timing.timeZone)}` :
+          getTime(event.timing.localStartTime, event.timing.timeZone)}
+      </p>
       {event.contact.phoneNumber &&
         <Link className="text-sm hover:underline" href={`tel: ${event.contact.phoneNumber}`} target="_blank" rel="noopener noreferrer">
           tel: {event.contact.phoneNumber}

@@ -4,10 +4,10 @@ export const EventTimingSchema = z.object({
   firstDate: z.coerce.date(),
   lastDate: z.coerce.date().nullable(),
   upcomingDates: z.array(z.coerce.date()),
-  //recurrenceCount: z.number(),
+  recurrenceCount: z.number().nullable(),
 
-  startTime: z.string(),
-  endTime: z.string().nullable(),
+  localStartTime: z.string(),
+  localEndTime: z.string().nullable(),
 
   recurrence: z.string(),
   duration: z.number().nullable(),

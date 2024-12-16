@@ -2,6 +2,8 @@ import { Input, Textarea, Button, Form, Select, SelectItem } from "@nextui-org/r
 import { Event } from "@/types";
 import { useState } from "react";
 import { ShareIcon, PlusSquareIcon, CalendarIcon } from "@/components/icons";
+import i18n from "@/config/i18n";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   event: Event;
@@ -10,6 +12,8 @@ type Props = {
 
 export default function Registration({ event, onShareOpen }: Props) {
   const [submitted, setSubmitted] = useState(false);
+  const DATE_FORMAT = new Intl.DateTimeFormat(i18n.resolvedLanguage, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
+  const { t } = useTranslation('events');
 
   return (
     <>
@@ -17,7 +21,11 @@ export default function Registration({ event, onShareOpen }: Props) {
         <img src="/graphics/leaves.svg" className="h-12 object-fit -rotate-90 flip" />
         <div className="text-center text-lg">
           <h3 className="mb-1.5">Register Now</h3>
-          <div className="text-xs italic">This class is on-going</div>
+          <div className="text-xs italic">
+            {event.timing.recurrenceCount ?
+              t('timing_labels.sessions', { count: event.timing.recurrenceCount }) :
+              t('timing_labels.ongoing')}
+          </div>
         </div>
         <img src="/graphics/leaves.svg" className="h-12 object-fit rotate-90" />
       </div>
@@ -41,7 +49,7 @@ export default function Registration({ event, onShareOpen }: Props) {
         <Form className="gap-4 flex flex-col justify-center">
           <Select className="max-w-xs" label="Starting date" placeholder="Select a date..." startContent={<CalendarIcon />} variant="bordered" isRequired radius="none">
             {event.timing.upcomingDates.map((date) => (
-              <SelectItem key={date.toISOString()}>{date.toLocaleDateString()}</SelectItem>
+              <SelectItem key={date.toISOString()}>{DATE_FORMAT.format(date)}</SelectItem>
             ))}
           </Select>
           <Input label="Name" type="text" placeholder="Enter your name" variant="bordered" isRequired radius="none" />
