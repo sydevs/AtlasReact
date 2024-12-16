@@ -1,6 +1,48 @@
 import { nextui } from '@nextui-org/theme'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
+const TEAL_COLOR = {
+  DEFAULT: '#82b1ae',
+  50: '#c1d8d7',
+  100: '#b1cfcc',
+  200: '#a2c5c2',
+  300: '#92bbb8', // Original
+  400: '#82b1ae',
+  500: '#73a7a4',
+  600: '#639e99',
+  700: '#598f8a',
+  800: '#4f7f7b',
+  900: '#456f6c',
+}
+
+const ORANGE_COLOR = {
+  DEFAULT: '#e08e79',
+  50: '#f3d3cc',
+  100: '#eec2b7',
+  200: '#eab1a2',
+  300: '#e59f8e',
+  400: '#e08e79', // Original
+  500: '#db7d64',
+  600: '#d66b50',
+  700: '#d25a3b',
+  800: '#c64d2d',
+  900: '#b14529',
+}
+
+const BLUE_COLOR = {
+  DEFAULT: '#8fb8cf',
+  50: '#d7e5ee',
+  100: '#c5dae6',
+  200: '#b3cedf',
+  300: '#a1c3d7', // Original
+  400: '#8fb8cf',
+  500: '#7dacc8',
+  600: '#6ba1c0',
+  700: '#5996b8',
+  800: '#4a8aae',
+  900: '#427b9c',
+}
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -50,33 +92,41 @@ module.exports = {
       light: {
         colors: {
           primary: {
-            foreground: "#FFFFFF",
-            DEFAULT: '#92bbb8',
+            ...TEAL_COLOR,
+            foreground: "#000000",
           },
           secondary: {
-            foreground: "#FFFFFF",
-            DEFAULT: '#e08e79',
+            ...ORANGE_COLOR,
+            foreground: "#000000",
           },
           tertiary: {
-            foreground: "#FFFFFF",
-            DEFAULT: '#a1c3d7',
+            ...BLUE_COLOR,
+            foreground: "#000000",
           },
+          danger: {
+            ...ORANGE_COLOR,
+          },
+          focus: TEAL_COLOR,
         },
       },
       dark: {
         extend: {
           colors: {
             primary: {
+              ...ORANGE_COLOR,
               foreground: "#FFFFFF",
-              DEFAULT: '#e08e79',
             },
             secondary: {
-              foreground: "#FFFFFF",
-              DEFAULT: "#92bbb8",
+              ...TEAL_COLOR,
+              foreground: "#000000",
             },
             tertiary: {
-              foreground: "#FFFFFF",
-              DEFAULT: '#a1c3d7',
+              ...BLUE_COLOR,
+              foreground: "#000000",
+            },
+            danger: {
+              ...ORANGE_COLOR,
+              foreground: "#000000",
             },
           },
           borderColor: {

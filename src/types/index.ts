@@ -4,6 +4,7 @@ export * from "./event";
 export * from "./area";
 export * from "./region";
 export * from "./venue";
+export * from "./registration";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;

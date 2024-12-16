@@ -1,18 +1,16 @@
-import { Input, Textarea, Button, Form, Select, SelectItem } from "@nextui-org/react";
 import { Event } from "@/types";
 import { useState } from "react";
-import { ShareIcon, PlusSquareIcon, CalendarIcon } from "@/components/icons";
-import i18n from "@/config/i18n";
+import { ShareIcon, PlusSquareIcon } from "@/components/icons";
 import { useTranslation } from "react-i18next";
+import RegistrationForm from "./registration-form";
 
 type Props = {
   event: Event;
   onShareOpen: () => void;
 };
 
-export default function Registration({ event, onShareOpen }: Props) {
+export default function RegistrationSection({ event, onShareOpen }: Props) {
   const [submitted, setSubmitted] = useState(false);
-  const DATE_FORMAT = new Intl.DateTimeFormat(i18n.resolvedLanguage, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
   const { t } = useTranslation('events');
 
   return (
@@ -46,24 +44,10 @@ export default function Registration({ event, onShareOpen }: Props) {
             </div>
           </div>
         </> :
-        <Form className="gap-4 flex flex-col justify-center">
-          <Select className="max-w-xs" label="Starting date" placeholder="Select a date..." startContent={<CalendarIcon />} variant="bordered" isRequired radius="none">
-            {event.timing.upcomingDates.map((date) => (
-              <SelectItem key={date.toISOString()}>{DATE_FORMAT.format(date)}</SelectItem>
-            ))}
-          </Select>
-          <Input label="Name" type="text" placeholder="Enter your name" variant="bordered" isRequired radius="none" />
-          <Input label="Email" type="email" placeholder="Enter your email" variant="bordered" isRequired radius="none" />
-          
-          {event.registration.questions.map((question, index) => 
-            <Textarea name={question.slug} label={question.title} variant="bordered" radius="none" key={index} />
-          )}
-
-          <p className="text-xs text-center">By submitting you confirm you agree to receive follow up messages about this and similar events, in accordance with our privacy policy.</p>
-          <Button className="w-full rounded-sm" color="primary" onClick={() => setSubmitted(true)}>
-            Register
-          </Button>
-        </Form>}
+        <RegistrationForm
+          event={event}
+          setSubmitted={setSubmitted}
+        />}
     </>
   );
 }

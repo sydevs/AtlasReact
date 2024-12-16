@@ -7,6 +7,14 @@ interface Props {
   children: React.ReactNode;
 }
 
+export function Loading() {
+  return (
+    <div className="w-100 h-100 p-10 flex justify-center items-center bg-panel-thin">
+      <Spinner label="Loading..." color="secondary" />
+    </div>
+  );
+}
+
 export default function Loader({ isLoading, data, error, children }: Props) {
   if (data && isLoading) {
     return <div className="relative">
@@ -16,11 +24,7 @@ export default function Loader({ isLoading, data, error, children }: Props) {
   }
 
   if (isLoading) {
-    return (
-      <div className="w-100 h-100 p-10 flex justify-center items-center bg-panel-thin">
-        <Spinner label="Loading..." color="secondary" />
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error) {

@@ -1,7 +1,7 @@
 import { Link, useDisclosure } from "@nextui-org/react";
 import createDOMPurify from 'dompurify'
 import EmblaCarousel from "@/components/carousel";
-import Registration from "@/components/event/registration";
+import RegistrationSection from "@/components/event/registration";
 import { SignupIcon, ShareIcon, DirectionsIcon } from "@/components/icons";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -79,7 +79,7 @@ export default function EventDetails({ event } : Props) {
         options={{ containScroll: false }}
       />
       <div ref={registrationRef}>
-        <Registration event={event} onShareOpen={onOpen} />
+        <RegistrationSection event={event} onShareOpen={onOpen} />
       </div>
       <ShareModal isOpen={isOpen} onOpenChange={onOpenChange} event={event} />
     </div>
