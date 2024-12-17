@@ -7,11 +7,12 @@ type EventMetaeventProps = {
 }
 
 export default function EventMetaevent({ event } : EventMetaeventProps) {
+  const description = event.description || "Free meditation class";
   const schema : EventSchema = {
     "@type": "Event",
     "@id": event.url,
     name: event.label,
-    description: event.description,
+    description: description,
     startDate: event.timing.firstDate.toISOString(),
     endDate: event.timing.lastDate?.toISOString(),
     image: event.images[0]?.url,
@@ -58,10 +59,10 @@ export default function EventMetaevent({ event } : EventMetaeventProps) {
     <Helmet>
       <title>{`${event.label} - Free Meditation Class`}</title>
       <link rel="canonical" href={event.url} />
-      <meta name="description" content={event.description} />
+      <meta name="description" content={description} />
       <meta property="og:type" content="event" />
       <meta property="og:title" content={event.label} />
-      <meta property="og:description" content={event.description} />
+      <meta property="og:description" content={description} />
       <meta property="og:url" content={event.url} />
       <meta property="og:event:start_time" content={event.timing.firstDate.toISOString()} />
       <meta property="og:locale:alternate" content={event.languageCode} />

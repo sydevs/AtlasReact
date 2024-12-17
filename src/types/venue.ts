@@ -1,16 +1,20 @@
-import { EventSlim } from "./event";
+import { EventSlimSchema } from "./event";
+import z from "zod"
 
-export type VenueCore = {
-  id: number;
-  label: string;
-};
+export const VenueCoreSchema = z.object({
+  id: z.number(),
+  label: z.string(),
+})
 
-export type VenueSlim = {
-  eventCount: number;
-} & VenueCore;
+export const VenueSlimSchema = z.object({
+  eventCount: z.number(),
+}).merge(VenueCoreSchema)
 
-export type Venue = {
-  parentId: number;
-  parentType: string;
-  events: EventSlim[];
-} & VenueCore;
+export const VenueSchema = z.object({
+  parentId: z.number(),
+  parentType: z.string(),
+  events: z.array(EventSlimSchema),
+}).merge(VenueCoreSchema)
+
+export type Venue = z.infer<typeof VenueSchema>
+export type VenueSlim = z.infer<typeof VenueSlimSchema>

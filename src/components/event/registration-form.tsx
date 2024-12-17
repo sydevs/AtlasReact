@@ -1,11 +1,11 @@
 import { Input, Textarea, Button, Form, Select, SelectItem, InputProps, Alert } from "@nextui-org/react";
 import { Event } from "@/types";
-import i18n from "@/config/i18n";
 import { useForm } from "react-hook-form"
 import { Registration, RegistrationSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/config/api";
 import { useMutation } from "@tanstack/react-query";
+import { DateTime } from "luxon";
 
 type Props = {
   event: Event;
@@ -26,12 +26,6 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<Registration>({ resolver: zodResolver(RegistrationSchema) });
-
-  console.log(errors)
-
-  const DATE_FORMAT = new Intl.DateTimeFormat(i18n.resolvedLanguage, {
-    weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
-  })
 
   const mutation = useMutation({
     scope: { id: `registration-for-${event.id}` },
@@ -54,9 +48,14 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
         errorMessage={errors.startingAt?.message}
         isInvalid={!!errors.startingAt}
       >
-        {event.timing.upcomingDates.map((date) => (
-          <SelectItem key={date.toISOString()}>{DATE_FORMAT.format(date)}</SelectItem>
-        ))}
+        {event.timing.upcomingDates.map((date) => {
+          let dateTime = DateTime.fromJSDate(date);
+          return (
+            <SelectItem key={date.toISOString()} value={date.toISOString()} textValue={dateTime.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}>
+              {dateTime.toRelativeCalendar()} - {dateTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}
+            </SelectItem>
+          )
+        })}
       </Select>
 
       <Input

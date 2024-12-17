@@ -1,22 +1,26 @@
+import z from "zod"
 
-export type CountryCore = {
-  id: number;
-  code: string;
-  label: string;
-  eventCount: number;
-};
+const CountryChildSchema = z.object({
+  id: z.number(),
+  type: z.string(),
+  label: z.string(),
+  eventCount: z.number(),
+})
 
-export type CountrySlim = {
+export const CountryCoreSchema = z.object({
+  id: z.number(),
+  code: z.string(),
+  label: z.string(),
+  eventCount: z.number(),
+})
 
-} & CountryCore;
+export const CountrySlimSchema = z.object({
 
-export type Country = {
-  children: CountryChild[];
-} & CountryCore;
+}).merge(CountryCoreSchema)
 
-type CountryChild = {
-  id: number;
-  type: string;
-  label: string;
-  eventCount: number;
-};
+export const CountrySchema = z.object({
+  children: z.array(CountryChildSchema),
+}).merge(CountryCoreSchema)
+
+export type CountrySlimSchema = z.infer<typeof CountrySlimSchema>
+export type CountrySchema = z.infer<typeof CountrySchema>

@@ -1,17 +1,21 @@
-import { AreaSlim } from "./area";
+import { AreaSlimSchema } from "./area";
+import z from "zod"
 
-export type RegionCore = {
-  id: number;
-  label: string;
-  eventCount: number;
-};
+export const RegionCoreSchema = z.object({
+  id: z.number(),
+  label: z.string(),
+  eventCount: z.number(),
+})
 
-export type RegionSlim = {
+export const RegionSlimSchema = z.object({
 
-} & RegionCore;
+}).merge(RegionCoreSchema)
 
-export type Region = {
-  parentId: number;
-  parentType: string;
-  areas: AreaSlim[];
-} & RegionCore;
+export const RegionSchema = z.object({
+  parentId: z.string(),
+  parentType: z.string(),
+  areas: z.array(AreaSlimSchema),
+}).merge(RegionCoreSchema)
+
+export type Region = z.infer<typeof RegionSchema>
+export type RegionSlim = z.infer<typeof RegionSlimSchema>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Area, Country, Region, Venue, CountrySlim, EventSlim, EventSchema } from "@/types";
+import { AreaSchema, CountrySchema, RegionSchema, VenueSchema, CountrySlimSchema, EventSlimSchema, EventSchema } from "@/types";
 import i18n from "@/config/i18n";
 
 const client = axios.create({
@@ -29,7 +29,7 @@ const getGeojson = async () => {
 
 const getCountries = async () => {
   const response = await client.get("/countries.json");
-  return response.data as CountrySlim[];
+  return CountrySlimSchema.array().parse(response.data);
 };
 
 const getEvents = async (latitude: number, longitude: number) => {
@@ -40,27 +40,27 @@ const getEvents = async (latitude: number, longitude: number) => {
     },
   });
 
-  return response.data as EventSlim[];
+  return EventSlimSchema.array().parse(response.data);
 };
 
 const getCountry = async (code: string) => {
   const response = await client.get(`/countries/${code}.json`);
-  return response.data as Country;
+  return CountrySchema.parse(response.data);
 };
 
 const getRegion = async (id: number) => {
   const response = await client.get(`/regions/${id}.json`);
-  return response.data as Region;
+  return RegionSchema.parse(response.data);
 };
 
 const getArea = async (id: number) => {
   const response = await client.get(`/areas/${id}.json`);
-  return response.data as Area;
+  return AreaSchema.parse(response.data);
 };
 
 const getVenue = async (id: number) => {
   const response = await client.get(`/venues/${id}.json`);
-  return response.data as Venue;
+  return VenueSchema.parse(response.data);
 };
 
 const getEvent = async (id: number) => {

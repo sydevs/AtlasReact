@@ -1,32 +1,47 @@
 import { Link, useDisclosure } from "@nextui-org/react";
 import createDOMPurify from 'dompurify'
 import EmblaCarousel from "@/components/carousel";
-import RegistrationSection from "@/components/event/registration";
+import RegistrationSection from "@/components/event/registration-section";
 import { SignupIcon, ShareIcon, DirectionsIcon } from "@/components/icons";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Event } from "@/types";
 import ShareModal from "./share";
 import i18n from "@/config/i18n";
+import { TimezoneChip } from "@/components/base/chip";
+import { DateTime } from "luxon";
 
 const DOMPurify = createDOMPurify(window)
 
-type Props = {
+type EventTimeProps = {
+  nextDate: DateTime;
+  duration: number | null;
+  timeZone: string;
+};
+
+export function EventTime({ nextDate, duration, timeZone } : EventTimeProps) {
+  const times = [nextDate];
+  if (duration) {
+    times.push(nextDate.plus({ hours: duration }));
+  }
+
+  return <>
+    {times.map((time) => time.setZone(timeZone).toLocaleString(DateTime.TIME_SIMPLE)).join(' - ')}
+    <TimezoneChip time={nextDate.setZone(timeZone)} />
+  </>;
+}
+
+type EventDetailsProps = {
   event: Event;
 };
 
-function getTime(time: string, timeZone: string) {
-  const date = new Date(time);
-  date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
-  return date.toLocaleTimeString(i18n.resolvedLanguage, { hour: 'numeric', minute: '2-digit', timeZone });
-}
-
-export default function EventDetails({ event } : Props) {
+export default function EventDetails({ event } : EventDetailsProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { t } = useTranslation('events');
   const registrationRef = useRef<HTMLDivElement>(null);
-  const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })    
+  const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })  
 
+  console.log('event time', event.id, event.timing.upcomingDates[0].toISOString(), DateTime.fromJSDate(event.timing.upcomingDates[0]))
   return (
     <div className="bg-panel py-8 px-11 pb-24">
       <>
@@ -41,15 +56,17 @@ export default function EventDetails({ event } : Props) {
           {event.online && <div className="text-secondary font-bold">Online</div>}
         </div>}
       <h1 className="text-lg font-bold mb-2">{event.label}</h1>
-      <p className="text-sm mb-1">{event.location.address}</p>
-      <p className="text-xs uppercase">
-        {t(`recurrence.${event.timing.recurrence}`, { weekday: event.timing.firstDate.toLocaleDateString(i18n.resolvedLanguage, { weekday: 'long' }) })}
-      </p>
-      <p className="text-xs font-medium">
-        {event.timing.localEndTime ? 
-          `${getTime(event.timing.localStartTime, event.timing.timeZone)} - ${getTime(event.timing.localEndTime, event.timing.timeZone)}` :
-          getTime(event.timing.localStartTime, event.timing.timeZone)}
-      </p>
+      <div className="text-sm mb-1">{event.location.address}</div>
+      <div className="text-xs uppercase">
+        {t(`recurrence.${event.timing.type}`, { weekday: event.timing.firstDate.toLocaleDateString(i18n.resolvedLanguage, { weekday: 'long' }) })}
+      </div>
+      <div className="text-xs font-medium">
+        <EventTime
+          nextDate={DateTime.fromJSDate(event.timing.upcomingDates[0])}
+          duration={event.timing.duration}
+          timeZone={event.online ? DateTime.local().zoneName : event.timing.timeZone}
+        />
+      </div>
       {event.contact.phoneNumber &&
         <Link className="text-sm hover:underline" href={`tel: ${event.contact.phoneNumber}`} target="_blank" rel="noopener noreferrer">
           tel: {event.contact.phoneNumber}

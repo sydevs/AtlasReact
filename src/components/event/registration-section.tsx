@@ -20,8 +20,8 @@ export default function RegistrationSection({ event, onShareOpen }: Props) {
         <div className="text-center text-lg">
           <h3 className="mb-1.5">Register Now</h3>
           <div className="text-xs italic">
-            {event.timing.recurrenceCount ?
-              t('timing_labels.sessions', { count: event.timing.recurrenceCount }) :
+            {event.category == 'course' ?
+              t('timing_labels.sessions', { count: event.timing.recurrenceCount || 0 }) :
               t('timing_labels.ongoing')}
           </div>
         </div>

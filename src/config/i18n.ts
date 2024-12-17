@@ -54,7 +54,7 @@ i18n
           },
           timing_labels: {
             sessions_one: "One-time event",
-            sessions_many: "%{count}-session course",
+            sessions_other: "%{count}-session course",
             ongoing: "This class is on-going",
           }
         },

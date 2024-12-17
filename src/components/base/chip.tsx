@@ -1,14 +1,14 @@
 import React from 'react';
 import { IconSvgProps } from "@/types";
-import { Chip as NextUIChip } from "@nextui-org/react";
+import { Chip as NextUIChip, ChipProps, Tooltip } from "@nextui-org/react";
+import { DateTime } from "luxon";
 
-interface Props {
-  props?: any;
+type Props = {
   children: React.ReactNode;
-  icon?: React.FC<IconSvgProps>;
-}
+  icon?: React.ReactElement<IconSvgProps>;
+} & ChipProps
 
-export default function Chip({ props, children, icon }: Props) {
+export default function Chip({ children, icon, ...props }: Props) {
   return (
     <NextUIChip
       color="primary"
@@ -23,5 +23,21 @@ export default function Chip({ props, children, icon }: Props) {
     >
       {children}
     </NextUIChip>
+  );
+}
+
+type TimezoneChipProps = {
+  time: DateTime;
+} & ChipProps
+
+export function TimezoneChip({ time, ...props }: TimezoneChipProps) {
+  return (
+    <Tooltip content={`${time.toFormat('ZZZZZ')} (${time.toFormat('Z')})`} placement="top">
+      <span> {/* Tooltip wrapper needed for forwardRef to work */}
+        <Chip color="primary" size="sm" variant="light" {...props}>
+          {time.toFormat('ZZZZ')}
+        </Chip>
+      </span>
+    </Tooltip>
   );
 }

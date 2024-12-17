@@ -1,17 +1,16 @@
 import z from "zod"
 
 export const EventTimingSchema = z.object({
+  type: z.string(),
+  localStartTime: z.string(),
+  localEndTime: z.string().nullable(),
+  duration: z.number().nullable(),
+  timeZone: z.string(),
+  
   firstDate: z.coerce.date(),
   lastDate: z.coerce.date().nullable(),
   upcomingDates: z.array(z.coerce.date()),
   recurrenceCount: z.number().nullable(),
-
-  localStartTime: z.string(),
-  localEndTime: z.string().nullable(),
-
-  recurrence: z.string(),
-  duration: z.number().nullable(),
-  timeZone: z.string(),
 })
 
 export const EventContactSchema = z.object({
@@ -57,11 +56,12 @@ export const EventCoreSchema = z.object({
 })
 
 export const EventSlimSchema = z.object({
-  recurrence: z.string(),
+  recurrence: z.string().nullable(), // TODO: Remove this in favour of calculating it
   address: z.string(),
   latitude: z.number(),
   longitude: z.number(),
-  timing: z.string(),
+  nextDate: z.coerce.date(),
+  duration: z.number().nullable(),
   timeZone: z.string(),
   locationId: z.number(),
   locationType: z.string(),
@@ -71,9 +71,7 @@ export const EventSchema = z.object({
   url: z.string(),
   description: z.string().nullable(),
   descriptionHtml: z.string().nullable(),
-  language: z.string(),
-  languageCode: z.string(),
-  category: z.string(),
+  category: z.enum(['dropin', 'course', 'single', 'festival', 'concert', 'inactive']),
 
   registration: EventRegistrationSchema,
   timing: EventTimingSchema,
