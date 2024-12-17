@@ -7,7 +7,7 @@ import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Event } from "@/types";
 import ShareModal from "./share";
-import i18n from "@/config/i18n";
+import useLocale from "@/hooks/use-locale";
 import { TimezoneChip } from "@/components/base/chip";
 import { DateTime } from "luxon";
 
@@ -37,11 +37,11 @@ type EventDetailsProps = {
 
 export default function EventDetails({ event } : EventDetailsProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { locale, languageNames } = useLocale();
   const { t } = useTranslation('events');
   const registrationRef = useRef<HTMLDivElement>(null);
   const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })  
 
-  console.log('event time', event.id, event.timing.upcomingDates[0].toISOString(), DateTime.fromJSDate(event.timing.upcomingDates[0]))
   return (
     <div className="bg-panel py-8 px-11 pb-24">
       <>
@@ -50,15 +50,15 @@ export default function EventDetails({ event } : EventDetailsProps) {
         </Link>
       </>
       {event.online && event.languageCode && 
-        <div className="text-xs px-2.5 py-2 border-primary border-1 rounded leading-tight ml-4 mb-2 float-right text-center">
-          <div className="italic">This class is</div>
-          {event.languageCode && <div className="text-primary font-bold">{event.languageCode}</div>}
-          {event.online && <div className="text-secondary font-bold">Online</div>}
+        <div className="text-xs px-2.5 py-2 border-primary border-1 rounded leading-tight ml-4 mb-2 float-right text-center flex flex-col gap-0.5">
+          <div className="italic mb-0.5">This class is</div>
+          {event.online && <div className="text-primary font-bold uppercase">Online</div>}
+          {event.languageCode && <div className="text-secondary font-bold uppercase">{languageNames.of(event.languageCode)}</div>}
         </div>}
       <h1 className="text-lg font-bold mb-2">{event.label}</h1>
       <div className="text-sm mb-1">{event.location.address}</div>
       <div className="text-xs uppercase">
-        {t(`recurrence.${event.timing.type}`, { weekday: event.timing.firstDate.toLocaleDateString(i18n.resolvedLanguage, { weekday: 'long' }) })}
+        {t(`recurrence.${event.timing.type}`, { weekday: event.timing.firstDate.toLocaleDateString(locale, { weekday: 'long' }) })}
       </div>
       <div className="text-xs font-medium">
         <EventTime

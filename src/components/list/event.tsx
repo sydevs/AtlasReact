@@ -8,6 +8,7 @@ import { useCallback } from "react";
 import { useShallow } from 'zustand/react/shallow'
 import { EventTime } from "../event/details";
 import { DateTime } from "luxon";
+import useLocale from "@/hooks/use-locale";
 
 interface Props {
   event: EventSlim;
@@ -15,6 +16,7 @@ interface Props {
 
 export default function EventItem({ event }: Props) {
   const location = useLocation();
+  const { locale, languageNames } = useLocale();
   const { zoom, latitude, longitude } = useViewState(
     useShallow((s) => ({ zoom: s.zoom, latitude: s.latitude, longitude: s.longitude })),
   )
@@ -27,8 +29,6 @@ export default function EventItem({ event }: Props) {
     });
   }, [location, zoom, latitude, longitude, setNavigationState]);
 
-  console.log('event time', event.id, typeof event.nextDate)
-  console.log('event time', event.id, event.nextDate.toISOString(), DateTime.fromJSDate(event.nextDate))
   return (
     <Link href={`/event/${event.id}`} onPress={handlePress} className="block bg-panel-hover after:border-b after:border-divider after:mx-6 after:block text-inherit">
       <li key={event.id} className="flex flex-row py-5 px-6 items-center">
@@ -43,9 +43,9 @@ export default function EventItem({ event }: Props) {
               timeZone={event.online ? DateTime.local().zoneName : event.timeZone}
             />
           </div>
-          <div className="mt-1">
+          <div className="flex mt-1 gap-1">
             {event.online && <Chip>Online</Chip>}
-            {/*event.languageCode && <Chip>{event.languageName}</Chip>*/}
+            {event.languageCode != locale && <Chip color="secondary">{languageNames.of(event.languageCode)}</Chip>}
           </div>
         </div>
         <div className="text-right font-semibold ml-4 text-sm text-nowrap">More info</div>

@@ -7,7 +7,13 @@ import api from '@/config/api';
 import { useNavigate } from 'react-router';
 import { useRef } from 'react';
 import { useBreakpoint } from '@/config/responsive';
-import i18n from '@/config/i18n';
+import useLocale from '@/hooks/use-locale';
+import { useTheme } from '@/hooks/use-theme';
+
+const MAP_STYLES = {
+  light: "mapbox://styles/sydevadmin/ck7g6nag70rn11io09f45odkq",
+  dark: "mapbox://styles/sydevadmin/cl4nw934f001j14l8jnof3a7w",
+}
 
 export default function Mapbox() {
   let navigate = useNavigate();
@@ -16,7 +22,8 @@ export default function Mapbox() {
   const setNavigationState = useNavigationState(s => s.setNavigationState);
   const { isMd } = useBreakpoint("md");
   const { isLg } = useBreakpoint("lg");
-
+  const { locale } = useLocale();
+  const { theme } = useTheme();
 
   const { data } = useQuery({
     queryKey: ['geojson'],
@@ -68,7 +75,7 @@ export default function Mapbox() {
     <ReactMapGL
       id="mapbox"
       mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESSTOKEN}
-      mapStyle="mapbox://styles/sydevadmin/ck7g6nag70rn11io09f45odkq"
+      mapStyle={MAP_STYLES[theme]}
       //{...viewState}
       onMoveEnd={updateViewState}
       onClick={selectFeature}
@@ -84,7 +91,7 @@ export default function Mapbox() {
       reuseMaps
       attributionControl={false}
       // @ts-ignore - Language is a valid property
-      language={i18n.resolvedLanguage}
+      language={locale}
       ref={mapRef}
     >
       {data &&

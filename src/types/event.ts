@@ -14,8 +14,8 @@ export const EventTimingSchema = z.object({
 })
 
 export const EventContactSchema = z.object({
-  phoneName: z.string(),
-  phoneNumber: z.string(),
+  phoneName: z.string().nullable(),
+  phoneNumber: z.string().nullable(),
 })
 
 export const EventLocationSchema = z.object({

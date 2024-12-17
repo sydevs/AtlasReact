@@ -16,7 +16,7 @@ export default function Chip({ children, icon, ...props }: Props) {
       radius="sm"
       size="sm"
       classNames={{
-        content: "uppercase text-primary font-bold"
+        content: "uppercase font-bold"
       }}
       startContent={icon}
       {...props}
