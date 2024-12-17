@@ -9,7 +9,7 @@ export default function useLocale() {
   }, [i18n.resolvedLanguage]);
 
   return {
-    locale: i18n.resolvedLanguage,
+    locale: i18n.resolvedLanguage || "en",
     setLocale: i18n.changeLanguage,
     languageNames
   };

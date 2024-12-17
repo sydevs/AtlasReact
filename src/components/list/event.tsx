@@ -4,9 +4,9 @@ import { Link } from "@nextui-org/react";
 import Chip from "@/components/base/chip";
 import { useNavigationState, useViewState } from "@/config/store";
 import { useLocation } from "react-router";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useShallow } from 'zustand/react/shallow'
-import { EventTime } from "../event/details";
+import { EventTime, EventSoon } from "../event/details";
 import { DateTime } from "luxon";
 import useLocale from "@/hooks/use-locale";
 
@@ -29,6 +29,8 @@ export default function EventItem({ event }: Props) {
     });
   }, [location, zoom, latitude, longitude, setNavigationState]);
 
+  const date = useMemo(() => DateTime.fromJSDate(event.nextDate), [event.nextDate]);
+
   return (
     <Link href={`/event/${event.id}`} onPress={handlePress} className="block bg-panel-hover after:border-b after:border-divider after:mx-6 after:block text-inherit">
       <li key={event.id} className="flex flex-row py-5 px-6 items-center">
@@ -38,12 +40,16 @@ export default function EventItem({ event }: Props) {
           <div className="text-xs uppercase">{event.recurrence}</div>
           <div className="text-xs text-gray-500">
             <EventTime
-              nextDate={DateTime.fromJSDate(event.nextDate)}
+              nextDate={date}
               duration={event.duration}
               timeZone={event.online ? DateTime.local().zoneName : event.timeZone}
+              showTimeZone={event.online}
+              delay={500}
             />
           </div>
           <div className="flex mt-1 gap-1">
+            <EventSoon nextDate={date.setLocale(locale)} online={event.online} />
+            
             {event.online && <Chip>Online</Chip>}
             {event.languageCode != locale && <Chip color="secondary">{languageNames.of(event.languageCode)}</Chip>}
           </div>

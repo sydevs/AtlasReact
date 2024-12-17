@@ -3,12 +3,12 @@ import createDOMPurify from 'dompurify'
 import EmblaCarousel from "@/components/carousel";
 import RegistrationSection from "@/components/event/registration-section";
 import { SignupIcon, ShareIcon, DirectionsIcon } from "@/components/icons";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Event } from "@/types";
 import ShareModal from "./share";
 import useLocale from "@/hooks/use-locale";
-import { TimezoneChip } from "@/components/base/chip";
+import Chip, { TimezoneChip } from "@/components/base/chip";
 import { DateTime } from "luxon";
 
 const DOMPurify = createDOMPurify(window)
@@ -17,9 +17,11 @@ type EventTimeProps = {
   nextDate: DateTime;
   duration: number | null;
   timeZone: string;
+  showTimeZone?: boolean;
+  delay?: number;
 };
 
-export function EventTime({ nextDate, duration, timeZone } : EventTimeProps) {
+export function EventTime({ nextDate, duration, timeZone, delay, showTimeZone = false } : EventTimeProps) {
   const times = [nextDate];
   if (duration) {
     times.push(nextDate.plus({ hours: duration }));
@@ -27,8 +29,27 @@ export function EventTime({ nextDate, duration, timeZone } : EventTimeProps) {
 
   return <>
     {times.map((time) => time.setZone(timeZone).toLocaleString(DateTime.TIME_SIMPLE)).join(' - ')}
-    <TimezoneChip time={nextDate.setZone(timeZone)} />
+    {showTimeZone && <TimezoneChip time={nextDate.setZone(timeZone)} delay={delay} />}
   </>;
+}
+
+type EventSoonProps = {
+  online: boolean;
+  nextDate: DateTime;
+};
+
+export function EventSoon({ nextDate, online } : EventSoonProps) {
+  const unit = online ? 'hours' : 'weeks';
+  const diff = nextDate.diffNow([unit]).get(unit);
+  if (!(0 < diff && diff < 1)) {
+    return null;
+  }
+
+  return <Chip color="primary">
+    {online ?
+      "Starting soon" :
+      `Starting ${nextDate.toLocaleString({ month: 'short', day: 'numeric' })}`}
+  </Chip>;
 }
 
 type EventDetailsProps = {
@@ -42,6 +63,8 @@ export default function EventDetails({ event } : EventDetailsProps) {
   const registrationRef = useRef<HTMLDivElement>(null);
   const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })  
 
+  const nextDate = useMemo(() => DateTime.fromJSDate(event.timing.upcomingDates[0]).setLocale(locale), [event.timing.upcomingDates]);
+
   return (
     <div className="bg-panel py-8 px-11 pb-24">
       <>
@@ -49,22 +72,23 @@ export default function EventDetails({ event } : EventDetailsProps) {
           <ShareIcon size={18} />
         </Link>
       </>
-      {event.online && event.languageCode && 
+      {(event.online || event.languageCode != locale) && 
         <div className="text-xs px-2.5 py-2 border-primary border-1 rounded leading-tight ml-4 mb-2 float-right text-center flex flex-col gap-0.5">
           <div className="italic mb-0.5">This class is</div>
           {event.online && <div className="text-primary font-bold uppercase">Online</div>}
-          {event.languageCode && <div className="text-secondary font-bold uppercase">{languageNames.of(event.languageCode)}</div>}
+          {event.languageCode != locale && <div className="text-secondary font-bold uppercase">{languageNames.of(event.languageCode)}</div>}
         </div>}
       <h1 className="text-lg font-bold mb-2">{event.label}</h1>
       <div className="text-sm mb-1">{event.location.address}</div>
       <div className="text-xs uppercase">
-        {t(`recurrence.${event.timing.type}`, { weekday: event.timing.firstDate.toLocaleDateString(locale, { weekday: 'long' }) })}
+        {t(`recurrence.${event.timing.type}`, { weekday: nextDate.toLocaleString({ weekday: 'long' }) })}
       </div>
       <div className="text-xs font-medium">
         <EventTime
-          nextDate={DateTime.fromJSDate(event.timing.upcomingDates[0])}
+          nextDate={nextDate}
           duration={event.timing.duration}
           timeZone={event.online ? DateTime.local().zoneName : event.timing.timeZone}
+          showTimeZone={event.online}
         />
       </div>
       {event.contact.phoneNumber &&
@@ -72,7 +96,7 @@ export default function EventDetails({ event } : EventDetailsProps) {
           tel: {event.contact.phoneNumber}
           {event.contact.phoneName && `, ${event.contact.phoneName}`}
         </Link>}
-      <div className="flex flex-row gap-6 my-8 text-primary">
+      <div className="flex flex-row gap-6 mt-8 text-primary">
         <Link className="text-sm italic font-medium" onClick={executeScroll} href="#registrations">
           <SignupIcon className="mr-2" />
           {t('register')}
@@ -82,6 +106,9 @@ export default function EventDetails({ event } : EventDetailsProps) {
             <DirectionsIcon className="mr-2" />
             {t('get_directions')}
           </Link>}
+      </div>
+      <div className="mt-3 mb-8">
+        <EventSoon nextDate={nextDate.setLocale(locale)} online={event.online} />
       </div>
       {event.descriptionHtml &&
         <div className="mt-16 mb-4" dangerouslySetInnerHTML={{

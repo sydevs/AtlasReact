@@ -51,7 +51,7 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
         {event.timing.upcomingDates.map((date) => {
           let dateTime = DateTime.fromJSDate(date);
           return (
-            <SelectItem key={date.toISOString()} value={date.toISOString()} textValue={dateTime.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}>
+            <SelectItem key={date.toISOString()} value={date.toISOString()} textValue={dateTime.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)} className="capitalize">
               {dateTime.toRelativeCalendar()} - {dateTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}
             </SelectItem>
           )
@@ -89,7 +89,8 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
       )}
 
       <p className="text-xs text-center">By submitting you confirm you agree to receive follow up messages about this and similar events, in accordance with our privacy policy.</p>
-      <Button className="w-full rounded-sm" color="primary" type="submit" isLoading={mutation.isPending}>
+
+      <Button className="w-full rounded-sm text-white font-semibold tracking-wider" color="primary" type="submit" isLoading={mutation.isPending}>
         Register
       </Button>
 
@@ -97,6 +98,11 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
         <Alert className="mt-4" color="secondary" title="Something went wrong" type="error">
           {mutation.error.message}
         </Alert>}
+
+      <Alert className="mt-4" color="primary" title="Online Session" variant="bordered" size="xs" type="info" hideIconWrapper>
+        The link to this class will be emailed to you.
+      </Alert>
+
     </Form>
   );
 }

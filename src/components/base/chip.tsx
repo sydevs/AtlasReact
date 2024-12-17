@@ -28,16 +28,17 @@ export default function Chip({ children, icon, ...props }: Props) {
 
 type TimezoneChipProps = {
   time: DateTime;
+  delay?: number;
 } & ChipProps
 
-export function TimezoneChip({ time, ...props }: TimezoneChipProps) {
+export function TimezoneChip({ time, delay = 0, ...props }: TimezoneChipProps) {
   return (
-    <Tooltip content={`${time.toFormat('ZZZZZ')} (${time.toFormat('Z')})`} placement="top">
-      <span> {/* Tooltip wrapper needed for forwardRef to work */}
+    <Tooltip className='max-w-64' delay={delay} closeDelay={0} content={`Converted to ${time.toFormat('ZZZZZ')} (${time.toFormat('Z')})`} placement="top">
+      <abbr> {/* Tooltip wrapper needed for forwardRef to work */}
         <Chip color="primary" size="sm" variant="light" {...props}>
           {time.toFormat('ZZZZ')}
         </Chip>
-      </span>
+      </abbr>
     </Tooltip>
   );
 }
