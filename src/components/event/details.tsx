@@ -6,6 +6,8 @@ import { SignupIcon, ShareIcon, DirectionsIcon } from "@/components/icons";
 import { useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Event } from "@/types";
+import { EventTime } from "./time";
+import { EventSoon } from "./soon";
 import ShareModal from "./share";
 import useLocale from "@/hooks/use-locale";
 import { DateTime } from "luxon";
