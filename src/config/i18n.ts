@@ -35,6 +35,7 @@ i18n
         events: {
           get_directions: "Get Directions",
           register: "Register",
+          hosted_from: "Hosted from %{city}",
           recurrence: {
             daily: "Daily",
             monday: "Mondays",

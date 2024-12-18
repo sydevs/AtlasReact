@@ -32,11 +32,12 @@ const getCountries = async () => {
   return CountrySlimSchema.array().parse(response.data);
 };
 
-const getEvents = async (latitude: number, longitude: number) => {
+const getEvents = async (latitude: number, longitude: number, onlineOnly: boolean = false) => {
   const response = await client.get("/events.json", {
     params: {
       latitude: latitude,
       longitude: longitude,
+      online: onlineOnly,
     },
   });
 

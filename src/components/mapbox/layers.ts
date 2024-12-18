@@ -69,3 +69,14 @@ export const selectedPointLayer: LayerProps = {
     'text-color': '#FFFFFF',
   },
 };
+
+export const selectedAreaLayer: LayerProps = {
+  id: 'selected-area',
+  type: 'symbol',
+  source: 'selection',
+  layout: {
+    'icon-size': 0.85,
+    'icon-ignore-placement': true,
+    'icon-image': 'selected', //'selected_cluster',
+  },
+};

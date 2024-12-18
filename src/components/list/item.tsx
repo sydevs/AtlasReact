@@ -6,12 +6,14 @@ interface Props {
   subtitle?: string;
   count: number;
   link: string;
+  children?: React.ReactNode;
 }
 
-export default function ListItem({ label, subtitle, count, link }: Props) {
+export default function ListItem({ label, subtitle, count, link, children }: Props) {
   return (
-    <Link href={link} className="block bg-panel-hover">
-      <li className="px-6 py-5 flex flex-row items-center font-semibold">
+    <Link href={link} className="px-6 block bg-panel-hover">
+      <li className="py-5 flex flex-row items-center font-semibold border-b border-divider">
+        {children}
         <div className="text-lg flex-grow">
           <div>{label}</div>
           {subtitle && <div className="text-md font-light">{subtitle}</div>}

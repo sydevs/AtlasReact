@@ -4,6 +4,7 @@ import SearchBox from "@/components/mapbox/search";
 import { GeocodeFeature } from '@mapbox/search-js-core';
 import { useNavigate } from "react-router";
 import { Chip } from "@nextui-org/react";
+import { useSearchState } from '@/config/store';
 
 interface Props {
   onSelect: (value: GeocodeFeature) => void;
@@ -19,7 +20,8 @@ export default function SearchBar({
   filterable = false,
 }: Props) {
   let navigate = useNavigate();
-  const [isOnline, setIsOnline] = React.useState(false);
+  const onlineOnly = useSearchState(s => s.onlineOnly);
+  const setOnlineOnly = useSearchState(s => s.setOnlineOnly);
   const [isSearching, setIsSearching] = React.useState(!header);
 
   const handleSelect = useCallback((value: GeocodeFeature) => {
@@ -28,7 +30,7 @@ export default function SearchBar({
   }, [onSelect, navigate]);
 
   return (
-    <div className="p-4 relative bg-background shadow-lg shadow-background">
+    <div className="p-4 pb-3 relative bg-background shadow-lg shadow-background border-b-1.5 border-default-300">
       <div className="flex flex-row gap-2 items-center">
         {returnLink &&
           <LeftArrowIcon size={32} onClick={() => navigate(returnLink)} />}
@@ -79,15 +81,15 @@ export default function SearchBar({
         />*/}
       </div>
       {filterable && <Chip
-          color={isOnline ? "secondary" : "primary"}
-          variant={isOnline ? "shadow" : "light"}
+          color={onlineOnly ? "secondary" : "primary"}
+          variant={onlineOnly ? "shadow" : "light"}
           radius="sm"
           size="sm"
           classNames={{
             base: "mt-2 hover:opacity-hover cursor-pointer",
             content: "uppercase font-bold"
           }}
-          onClick={() => setIsOnline(!isOnline)}
+          onClick={() => setOnlineOnly(!onlineOnly)}
           startContent={<OnlineIcon />}
         >Online classes</Chip>}
     </div>

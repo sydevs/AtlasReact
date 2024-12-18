@@ -5,7 +5,7 @@ type ViewState = {
   zoom: number
   latitude: number
   longitude: number
-  selection?: { latitude: number, longitude: number } | null
+  selection?: { latitude: number, longitude: number, approximate: boolean } | null
 }
 
 type ViewAction = {
@@ -35,4 +35,17 @@ export const useNavigationState = create<NavigationState & NavigationAction>((se
   returnPath: null,
   returnViewState: null,
   setNavigationState: (navigationState) => set(() => ({ ...navigationState })),
+}))
+
+type SearchState = {
+  onlineOnly: boolean;
+}
+
+type SearchAction = {
+  setOnlineOnly: (onlineOnly: boolean) => void;
+}
+
+export const useSearchState = create<SearchState & SearchAction>((set) => ({
+  onlineOnly: false,
+  setOnlineOnly: (onlineOnly) => set(() => ({ onlineOnly })),
 }))

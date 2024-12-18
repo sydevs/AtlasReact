@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import ReactMapGL, { GeoJSONSource, GeolocateControl, Layer, MapMouseEvent, MapRef, Source, ViewStateChangeEvent } from 'react-map-gl';
-import { clusterLayer, selectedPointLayer, unclusteredPointLayer } from './layers';
+import { clusterLayer, selectedPointLayer, unclusteredPointLayer, selectedAreaLayer } from './layers';
 import { useNavigationState, useViewState } from "@/config/store";
 import { useQuery } from '@tanstack/react-query';
 import api from '@/config/api';
@@ -121,7 +121,7 @@ export default function Mapbox() {
             }]
           }}
         >
-          <Layer {...selectedPointLayer} /> 
+          <Layer {...(selection.approximate ? selectedAreaLayer : selectedPointLayer)} /> 
         </Source>}
       <GeolocateControl />
     </ReactMapGL>

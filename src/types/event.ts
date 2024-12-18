@@ -65,6 +65,7 @@ export const EventSlimSchema = z.object({
   timeZone: z.string(),
   locationId: z.number(),
   locationType: z.string(),
+  distance: z.number().optional(),
 }).merge(EventCoreSchema)
 
 export const EventSchema = z.object({

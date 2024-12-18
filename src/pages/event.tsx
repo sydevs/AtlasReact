@@ -25,7 +25,7 @@ export default function EventPage() {
   useEffect(() => {
     if (!mapbox || !data) return;
     
-    setMapSelection(data.location)
+    setMapSelection({ ...data.location, approximate: data.online })
     mapbox.easeTo({
       center: [data.location.longitude, data.location.latitude],
       zoom: data.online ? 10 : 15,
@@ -46,7 +46,7 @@ export default function EventPage() {
 
   return (
     <Main width={467}>
-      <Link className="text-3xl absolute top-6 left-2 z-10" href={returnPath || "/"}>
+      <Link className="text-3xl absolute top-7 left-1.5 z-10" href={returnPath || "/"}>
         <LeftArrowIcon size={32} className="text-lg" />
       </Link>
       <Loader isLoading={isLoading} error={error}>

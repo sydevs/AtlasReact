@@ -8,49 +8,9 @@ import { useTranslation } from "react-i18next";
 import { Event } from "@/types";
 import ShareModal from "./share";
 import useLocale from "@/hooks/use-locale";
-import Chip, { TimezoneChip } from "@/components/base/chip";
 import { DateTime } from "luxon";
 
 const DOMPurify = createDOMPurify(window)
-
-type EventTimeProps = {
-  nextDate: DateTime;
-  duration: number | null;
-  timeZone: string;
-  showTimeZone?: boolean;
-  delay?: number;
-};
-
-export function EventTime({ nextDate, duration, timeZone, delay, showTimeZone = false } : EventTimeProps) {
-  const times = [nextDate];
-  if (duration) {
-    times.push(nextDate.plus({ hours: duration }));
-  }
-
-  return <>
-    {times.map((time) => time.setZone(timeZone).toLocaleString(DateTime.TIME_SIMPLE)).join(' - ')}
-    {showTimeZone && <TimezoneChip time={nextDate.setZone(timeZone)} delay={delay} />}
-  </>;
-}
-
-type EventSoonProps = {
-  online: boolean;
-  nextDate: DateTime;
-};
-
-export function EventSoon({ nextDate, online } : EventSoonProps) {
-  const unit = online ? 'hours' : 'weeks';
-  const diff = nextDate.diffNow([unit]).get(unit);
-  if (!(0 < diff && diff < 1)) {
-    return null;
-  }
-
-  return <Chip color="primary">
-    {online ?
-      "Starting soon" :
-      `Starting ${nextDate.toLocaleString({ month: 'short', day: 'numeric' })}`}
-  </Chip>;
-}
 
 type EventDetailsProps = {
   event: Event;
@@ -68,7 +28,7 @@ export default function EventDetails({ event } : EventDetailsProps) {
   return (
     <div className="bg-panel py-8 px-11 pb-24">
       <>
-        <Link className="text-3xl absolute top-8 right-4" isBlock onClick={onOpen}>
+        <Link className="text-3xl absolute top-8 right-1.5 cursor-pointer" isBlock onClick={onOpen}>
           <ShareIcon size={18} />
         </Link>
       </>
