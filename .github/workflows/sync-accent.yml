@@ -14,6 +14,8 @@ jobs:
           node-version: 16
       - run: npm install -g accent-cli
       - run: accent sync --add-translations --merge-type=passive --order-by=key
+        env:
+          ACCENT_API_KEY: ${{ secrets.ACCENT_API_KEY }}
       - uses: peter-evans/create-pull-request@v4
         with:
           add-paths: "*.po"
