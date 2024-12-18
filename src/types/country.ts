@@ -19,6 +19,7 @@ export const CountrySlimSchema = z.object({
 }).merge(CountryCoreSchema)
 
 export const CountrySchema = z.object({
+  bounds: z.tuple([z.number(), z.number(), z.number(), z.number()]),
   children: z.array(CountryChildSchema),
 }).merge(CountryCoreSchema)
 

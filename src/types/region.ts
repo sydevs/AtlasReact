@@ -15,6 +15,7 @@ export const RegionSchema = z.object({
   parentId: z.string(),
   parentType: z.string(),
   areas: z.array(AreaSlimSchema),
+  bounds: z.tuple([z.number(), z.number(), z.number(), z.number()]),
 }).merge(RegionCoreSchema)
 
 export type Region = z.infer<typeof RegionSchema>

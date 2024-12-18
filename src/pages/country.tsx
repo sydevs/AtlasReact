@@ -6,13 +6,26 @@ import { List, ListItem } from "@/components/list";
 import SearchBar from "@/components/search-bar";
 import { Main } from "@/components/base/main";
 import { Helmet } from "react-helmet-async";
+import { useMap } from "react-map-gl";
+import { useEffect } from "react";
+import { useViewState } from "@/config/store";
+import { bboxPolygon } from "@turf/bbox-polygon";
 
 export default function CountryPage() {
-  let { code } = useParams();
+  let { countryCode } = useParams();
+  const { mapbox } = useMap();
+  const setBoundary = useViewState(s => s.setBoundary);
   const { data, isLoading, error } = useQuery({
-    queryKey: ['country', code],
-    queryFn: () => api.getCountry(code || ""),
+    queryKey: ['country', countryCode],
+    queryFn: () => api.getCountry(countryCode || ""),
   });
+
+  useEffect(() => {
+    if (mapbox && data) {
+      setBoundary(bboxPolygon(data.bounds))
+      mapbox.fitBounds(data.bounds)
+    }
+  }, [data, mapbox]);
 
   return (
     <Main>

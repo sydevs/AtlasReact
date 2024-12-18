@@ -7,9 +7,11 @@ import { EventsList } from "@/components/list";
 import { useEffect } from "react";
 import { Main } from "@/components/base/main";
 import { Helmet } from "react-helmet-async";
+import { useMap } from "react-map-gl";
 
 export default function VenuePage() {
   let { id } = useParams();
+  const { mapbox } = useMap();
   let navigate = useNavigate();
 
   const { data, isLoading, error } = useQuery({
@@ -22,6 +24,12 @@ export default function VenuePage() {
       navigate(`/area/${data.parentId}`, { replace: true });
     }
   }, [data, navigate]);
+
+  useEffect(() => {
+    if (mapbox && data) {
+      mapbox.easeTo({ center: [data.longitude, data.latitude], zoom: 13 })
+    }
+  }, [data, mapbox]);
 
   return (
     <Main>

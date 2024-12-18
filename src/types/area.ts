@@ -14,6 +14,9 @@ export const AreaSchema = z.object({
   parentId: z.number(),
   parentType: z.string(),
   events: z.array(EventSlimSchema),
+  latitude: z.number(),
+  longitude: z.number(),
+  radius: z.number(),
 }).merge(AreaCoreSchema)
 
 export type Area = z.infer<typeof AreaSchema>

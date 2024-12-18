@@ -80,3 +80,17 @@ export const selectedAreaLayer: LayerProps = {
     'icon-image': 'selected', //'selected_cluster',
   },
 };
+
+export const boundsLayer: LayerProps = {
+  id: 'selected-bounds',
+  type: 'line',
+  source: 'bounds',
+  layout: {
+    'line-join': 'round',
+    'line-cap': 'round'
+  },
+  paint: {
+    'line-color': '#888',
+    'line-width': 4
+  }
+};

@@ -7,7 +7,7 @@ import { useSearchState, useViewState } from "@/config/store";
 import { useShallow } from 'zustand/react/shallow'
 import { Main } from "@/components/base/main";
 import { Helmet } from "react-helmet-async";
-import { Avatar } from "@nextui-org/react";
+import { CircleFlag } from 'react-circle-flags'
 
 export default function IndexPage() {
   const onlineOnly = useSearchState(s => s.onlineOnly);
@@ -36,7 +36,7 @@ export default function IndexPage() {
             {data &&
               data.filter(country => country.eventCount > 0).map((country) => (
                 <ListItem key={country.id} label={country.label} count={country.eventCount} link={`/country/${country.code}`}>
-                  <CircleFlag countryCode={country.code.toLocaleLowerCase()} className="w-7 h-7 mr-3 border border-divider rounded-full" />
+                  <CircleFlag countryCode={country.code.toLocaleLowerCase()} className="w-7 h-7 mr-3 border border-divider rounded-full bg-divider" />
                 </ListItem>
               ))}
           </List>

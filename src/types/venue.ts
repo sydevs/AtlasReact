@@ -4,6 +4,8 @@ import z from "zod"
 export const VenueCoreSchema = z.object({
   id: z.number(),
   label: z.string(),
+  latitude: z.number(),
+  longitude: z.number(),
 })
 
 export const VenueSlimSchema = z.object({

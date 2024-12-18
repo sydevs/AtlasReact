@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import ReactMapGL, { GeoJSONSource, GeolocateControl, Layer, MapMouseEvent, MapRef, Source, ViewStateChangeEvent } from 'react-map-gl';
-import { clusterLayer, selectedPointLayer, unclusteredPointLayer, selectedAreaLayer } from './layers';
+import { clusterLayer, selectedPointLayer, unclusteredPointLayer, selectedAreaLayer, boundsLayer } from './layers';
 import { useNavigationState, useViewState } from "@/config/store";
 import { useQuery } from '@tanstack/react-query';
 import api from '@/config/api';
@@ -9,16 +9,24 @@ import { useRef } from 'react';
 import { useBreakpoint } from '@/config/responsive';
 import useLocale from '@/hooks/use-locale';
 import { useTheme } from '@/hooks/use-theme';
+import { useShallow } from 'zustand/react/shallow';
 
 const MAP_STYLES = {
   light: "mapbox://styles/sydevadmin/ck7g6nag70rn11io09f45odkq",
   dark: "mapbox://styles/sydevadmin/cl4nw934f001j14l8jnof3a7w",
 }
 
+const DEBUG_BOUNDARY = false
+
 export default function Mapbox() {
   let navigate = useNavigate();
   const mapRef = useRef<MapRef>(null);
-  const { zoom, latitude, longitude, setViewState, selection } = useViewState(s => s);
+  const { zoom, latitude, longitude, setViewState, selection, boundary } = useViewState(
+    useShallow((s) => ({
+      zoom: s.zoom, latitude: s.latitude, longitude: s.longitude, selection: s.selection, boundary: s.boundary,
+      setViewState: s.setViewState,
+    })),
+  );
   const setNavigationState = useNavigationState(s => s.setNavigationState);
   const { isMd } = useBreakpoint("md");
   const { isLg } = useBreakpoint("lg");
@@ -81,10 +89,10 @@ export default function Mapbox() {
       onClick={selectFeature}
       onMouseMove={hoverOnFeature}
       padding={{
-        top: 0,
-        bottom: 0,
-        right: 0,
-        left: isMd ? 320 : (isLg ? 528 : 0),
+        top: 20,
+        bottom: 20,
+        right: 20,
+        left: isMd ? 340 : (isLg ? 548 : 20),
       }}
       style={{ width: '100%', height: '100%' }}
       interactiveLayerIds={[clusterLayer.id, unclusteredPointLayer.id]}
@@ -122,6 +130,14 @@ export default function Mapbox() {
           }}
         >
           <Layer {...(selection.approximate ? selectedAreaLayer : selectedPointLayer)} /> 
+        </Source>}
+      {DEBUG_BOUNDARY && boundary &&
+        <Source
+          id="bounds"
+          type="geojson"
+          data={boundary}
+        >
+          <Layer {...boundsLayer} /> 
         </Source>}
       <GeolocateControl />
     </ReactMapGL>
