@@ -30,7 +30,7 @@ export default function RegionPage() {
               returnLink={`/${data.parentType}/${data.parentId}`}
             />
             <List>
-              {data.areas.map((area) => (
+              {data.areas.filter(area => area.eventCount > 0).map((area) => (
                 <ListItem key={area.id} label={area.label} count={area.eventCount} link={`/area/${area.id}`} />
               ))}
             </List>

@@ -34,9 +34,9 @@ export default function IndexPage() {
         <Loader isLoading={isLoading} error={error}>
           <List>
             {data &&
-              data.map((country) => (
+              data.filter(country => country.eventCount > 0).map((country) => (
                 <ListItem key={country.id} label={country.label} count={country.eventCount} link={`/country/${country.code}`}>
-                  <Avatar alt={country.label} className="w-7 h-7 mr-3" src={`https://flagcdn.com/${country.code.toLocaleLowerCase()}.svg`} classNames={{ base: "border border-divider" }} />
+                  <CircleFlag countryCode={country.code.toLocaleLowerCase()} className="w-7 h-7 mr-3 border border-divider rounded-full" />
                 </ListItem>
               ))}
           </List>
