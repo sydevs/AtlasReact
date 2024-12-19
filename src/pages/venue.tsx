@@ -8,11 +8,13 @@ import { useEffect } from "react";
 import { Main } from "@/components/base/main";
 import { Helmet } from "react-helmet-async";
 import { useMap } from "react-map-gl";
+import { useTranslation } from "react-i18next";
 
 export default function VenuePage() {
-  let { id } = useParams();
+  const { id } = useParams();
   const { mapbox } = useMap();
-  let navigate = useNavigate();
+  const { t } = useTranslation('common');
+  const navigate = useNavigate();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['venue', id],
@@ -35,8 +37,8 @@ export default function VenuePage() {
     <Main>
       {data &&
         <Helmet>
-          <title>{`Free Meditation Classes at ${data.label}`}</title>
-          <meta name="description" content={`${data.events.length} free meditation classes at ${data.label}`} />
+          <title>{t('venues.title', { venue: data.label })}</title>
+          <meta name="description" content={t('venues.description', { count: data.events.length, venue: data.label })} />
         </Helmet>}
       <Loader isLoading={isLoading} error={error}>
         {data &&

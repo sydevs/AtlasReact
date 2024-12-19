@@ -99,7 +99,7 @@ export default function Mapbox() {
       reuseMaps
       attributionControl={false}
       // @ts-ignore - Language is a valid property
-      language={locale}
+      language={locale} // TOOD: Make sure this switches when locale changes
       ref={mapRef}
     >
       {data &&

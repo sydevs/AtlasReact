@@ -3,14 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import HttpBackend, { HttpBackendOptions } from 'i18next-http-backend'
 
-/*
- * Potential backends:
- * https://github.com/i18next/i18next-http-backend
- * https://www.accent.reviews (self-hosted)
- * https://crowdin.com/pricing (good ui)
- * https://locize.com/pricing.html (native integration)
- * https://tolgee.io/pricing
- */
+export const supportedLanguages = ['en', 'fr'];
 
 i18n
   // Load translations from the backend

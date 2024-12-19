@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/config/api";
 import { useMutation } from "@tanstack/react-query";
 import { DateTime } from "luxon";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   event: Event;
@@ -26,6 +27,7 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<Registration>({ resolver: zodResolver(RegistrationSchema) });
+  const { t } = useTranslation('events');
 
   const mutation = useMutation({
     scope: { id: `registration-for-${event.id}` },
@@ -43,7 +45,7 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
       <Select
         {...register("startingAt", { required: true })}
         {...INPUT_STYLE}
-        label="Starting date"
+        label={t('registration.starting_date')}
         isRequired
         errorMessage={errors.startingAt?.message}
         isInvalid={!!errors.startingAt}
@@ -61,7 +63,8 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
       <Input
         {...register("name", { required: true })}
         {...INPUT_STYLE}
-        label="Name"
+        label={t('registration.name')}
+        type="text"
         isRequired
         errorMessage={errors.name?.message}
         isInvalid={!!errors.name}
@@ -70,7 +73,7 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
       <Input
         {...register("email", { required: true })}
         {...INPUT_STYLE}
-        label="Email"
+        label={t('registration.email')}
         type="email"
         isRequired
         errorMessage={errors.email?.message}
@@ -88,10 +91,12 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
         />
       )}
 
-      <p className="text-xs text-center">By submitting you confirm you agree to receive follow up messages about this and similar events, in accordance with our privacy policy.</p>
+      <p className="text-xs text-center">
+        {t('registration.privacy_policy')}
+      </p>
 
       <Button className="w-full rounded-sm text-white font-semibold tracking-wider" color="primary" type="submit" isLoading={mutation.isPending}>
-        Register
+        {t('registration.submit')}
       </Button>
 
       {mutation.isError &&
@@ -99,8 +104,8 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
           {mutation.error.message}
         </Alert>}
 
-      <Alert className="mt-4" color="primary" title="Online Session" variant="bordered" size="xs" type="info" hideIconWrapper>
-        The link to this class will be emailed to you.
+      <Alert className="mt-4" color="primary" title={t('registration.online_notice_title')} variant="bordered" size="xs" type="info" hideIconWrapper>
+        {t('registration.online_notice')}
       </Alert>
 
     </Form>

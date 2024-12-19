@@ -1,16 +1,25 @@
 // originally written by @imoaazahmed
 
-import { useMemo } from "react";
-import i18n from "@/config/i18n";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function useLocale() {
+  const { i18n } = useTranslation()
+  const [ locale, setLocale ] = useState(i18n.resolvedLanguage || "en");
   const languageNames = useMemo(() => {
-    return new Intl.DisplayNames(i18n.resolvedLanguage, { type: "language" });
-  }, [i18n.resolvedLanguage]);
+    return new Intl.DisplayNames(locale, { type: "language" });
+  }, [locale]);
+  const regionNames = useMemo(() => {
+    return new Intl.DisplayNames(locale, { type: "region" });
+  }, [locale]);
 
   return {
-    locale: i18n.resolvedLanguage || "en",
-    setLocale: i18n.changeLanguage,
-    languageNames
+    locale: locale,
+    languageNames,
+    regionNames,
+    setLocale: (locale: string) => {
+      i18n.changeLanguage(locale)
+      setLocale(locale)
+    },
   };
 };

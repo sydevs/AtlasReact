@@ -1,5 +1,6 @@
 import Chip from "@/components/base/chip";
 import { DateTime } from "luxon";
+import { useTranslation } from "react-i18next";
 
 type EventSoonProps = {
   online: boolean;
@@ -17,9 +18,13 @@ export function EventSoon({ nextDate, online } : EventSoonProps) {
     return null;
   }
 
+  const { t } = useTranslation('events');
+
   return <Chip color="primary">
     {online ?
-      "Starting soon" :
-      `Starting ${nextDate.toLocaleString({ month: 'short', day: 'numeric' })}`}
+      t('details.starting_soon') :
+      t('details.starting_on', {
+        date: nextDate.toLocaleString({ month: 'short', day: 'numeric' }),
+      })}
   </Chip>;
 }

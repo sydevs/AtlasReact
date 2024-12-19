@@ -5,7 +5,7 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const hasNavbar = true;
+  const hasNavbar = window.location.hostname == 'atlas.sydevelopers.com';
 
   return (
     <>

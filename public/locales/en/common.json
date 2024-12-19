@@ -1,0 +1,17 @@
+{
+  "free_meditation_class": "Free Meditation Class",
+  "free_meditation_classes": "Free Meditation Classes",
+  "language_selector": "Language selector",
+  "loading": "Loading...",
+  "show_online_classes": "Show online classes",
+  "locations": {
+    "title": "Free Meditation Classes in %{location}",
+    "description_one": "%{count} free meditation class in %{location}",
+    "description_other": "%{count} free meditation classes in %{location}"
+  },
+  "venues": {
+    "title": "Free Meditation Classes at %{venue}",
+    "description_one": "%{count} free meditation class at %{venue}",
+    "description_other": "%{count} free meditation classes at %{venue}"
+  }
+}

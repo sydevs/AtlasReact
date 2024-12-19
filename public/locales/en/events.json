@@ -1,7 +1,37 @@
 {
-  "get_directions": "Get Directions",
-  "register": "Register",
-  "hosted_from": "Hosted from %{city}",
+  "details": {
+    "this_class_is": "This class is",
+    "hosted_from": "Hosted from %{city}",
+    "online": "Online",
+    "get_directions": "Get Directions",
+    "register": "Register",
+    "tel": "tel: %{phoneNumber}",
+    "starting_soon": "Starting soon",
+    "starting_on": "Starting %{date}",
+    "more_info": "More info"
+  },
+  "timing": {
+    "converted_to": "Converted to %{timezone} (%{offset})",
+    "descriptor": {
+      "sessions_one": "One-time event",
+      "sessions_other": "%{count}-session course",
+      "ongoing": "This class is on-going"
+    }
+  },
+  "registration": {
+    "register_now": "Register Now",
+    "starting_date": "Starting date",
+    "name": "Your name",
+    "email": "Your email",
+    "submit": "Register",
+    "confirmation": "Thank you for registering!",
+    "followup": "You will receive an email confirmation shortly",
+    "register_again": "Register someone else",
+    "invite_friend": "Invite a friend along",
+    "privacy_policy": "By submitting you confirm you agree to receive follow up messages about this and similar events, in accordance with our privacy policy.",
+    "online_notice_title": "Online Session",
+    "online_notice": "The link to this class will be emailed to you."
+  },
   "recurrence": {
     "daily": "Daily",
     "monday": "Mondays",
@@ -18,10 +48,5 @@
     "monthly_3rd": "3rd %{weekday} of Every Month",
     "monthly_4th": "4th %{weekday} of Every Month",
     "monthly_last": "Last %{weekday} of Every Month"
-  },
-  "timing_labels": {
-    "sessions_one": "One-time event",
-    "sessions_other": "%{count}-session course",
-    "ongoing": "This class is on-going"
   }
 }

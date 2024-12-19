@@ -1,4 +1,5 @@
 import { Spinner, Alert } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   data?: any;
@@ -8,9 +9,10 @@ interface Props {
 }
 
 export function Loading() {
+  const { t } = useTranslation('common');
   return (
     <div className="w-100 h-100 p-10 flex justify-center items-center bg-panel-thin">
-      <Spinner label="Loading..." color="secondary" />
+      <Spinner label={t('loading')} color="secondary" />
     </div>
   );
 }

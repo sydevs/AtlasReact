@@ -15,6 +15,7 @@ import {
   FlipboardIcon,
 } from "@/components/icons";
 import { Event } from "@/types";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   event: Event;
@@ -29,6 +30,7 @@ export default function ShareModal({
 } : Props) {
   const label = encodeURI(event.label)
   const url = encodeURI(event.url)
+  const { t } = useTranslation('events');
   const socials = [
     {
       url: `mailto:?subject=${label}&body=${url}`,
@@ -55,7 +57,7 @@ export default function ShareModal({
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
-        <ModalHeader className="flex flex-col gap-1">Invite a friend</ModalHeader>
+        <ModalHeader className="flex flex-col gap-1">{t('registration.invite_friend')}</ModalHeader>
         <ModalBody>
           <div>
             <Snippet color="secondary" className="text-sm w-full">

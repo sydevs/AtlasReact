@@ -11,10 +11,12 @@ import { useEffect } from "react";
 import { useViewState } from "@/config/store";
 import { circle as geoCircle } from "@turf/circle";
 import { bbox } from "@turf/bbox";
+import { useTranslation } from "react-i18next";
 
 export default function AreaPage() {
   let { id } = useParams();
   const { mapbox } = useMap();
+  const { t } = useTranslation('common');
   const setBoundary = useViewState(s => s.setBoundary);
   const { data, isLoading, error } = useQuery({
     queryKey: ['area', id],
@@ -34,14 +36,13 @@ export default function AreaPage() {
     <Main>
       {data &&
         <Helmet>
-          <title>{`Free Meditation Classes in ${data.label}`}</title>
-          <meta name="description" content={`${data.events.length} free meditation classes at ${data.label}`} />
+          <title>{t('locations.title', { location: data.label })}</title>
+          <meta name="description" content={t('locations.description', { count: data.events.length, location: data.label })} />
         </Helmet>}
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
             <SearchBar
-              onSelect={value => console.log(value)}
               header={data.label}
               returnLink={`/${data.parentType}/${data.parentId}`}
             />

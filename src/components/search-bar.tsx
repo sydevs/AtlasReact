@@ -5,9 +5,10 @@ import { GeocodeFeature } from '@mapbox/search-js-core';
 import { useNavigate } from "react-router";
 import { Chip } from "@nextui-org/react";
 import { useSearchState } from '@/config/store';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
-  onSelect: (value: GeocodeFeature) => void;
+  onSelect?: (value: GeocodeFeature) => void;
   header?: string;
   returnLink?: string;
   filterable?: boolean;
@@ -20,12 +21,13 @@ export default function SearchBar({
   filterable = false,
 }: Props) {
   let navigate = useNavigate();
+  const { t } = useTranslation('common');
   const onlineOnly = useSearchState(s => s.onlineOnly);
   const setOnlineOnly = useSearchState(s => s.setOnlineOnly);
   const [isSearching, setIsSearching] = React.useState(!header);
 
   const handleSelect = useCallback((value: GeocodeFeature) => {
-    onSelect(value);
+    onSelect && onSelect(value);
     navigate("/");
   }, [onSelect, navigate]);
 
@@ -40,7 +42,7 @@ export default function SearchBar({
             <SearchBox onSelect={handleSelect} />
             : <>
               <div className="px-3 text-lg font-bold">{header}</div>
-              <div className="px-3 text-md">Free Meditation Classes</div>
+              <div className="px-3 text-md">{t('free_meditation_classes')}</div>
             </>}
         </div>
         {header && (isSearching ?
@@ -90,8 +92,10 @@ export default function SearchBar({
             content: "uppercase font-bold"
           }}
           onClick={() => setOnlineOnly(!onlineOnly)}
-          startContent={<OnlineIcon />}
-        >Online classes</Chip>}
+          startContent={<OnlineIcon className='mr-0.5' />}
+        >
+          {t('show_online_classes')}
+        </Chip>}
     </div>
   );
 }

@@ -55,11 +55,15 @@ export default function EventItem({ event }: Props) {
           <div className="flex mt-1 gap-1">
             <EventSoon nextDate={date.setLocale(locale)} online={event.online} />
             
-            {event.online && <Chip>Online</Chip>}
-            {event.languageCode != locale && <Chip color="secondary">{languageNames.of(event.languageCode)}</Chip>}
+            {event.online &&
+              <Chip>{t('details.online')}</Chip>}
+            {event.languageCode != locale &&
+              <Chip color="secondary">{languageNames.of(event.languageCode)}</Chip>}
           </div>
         </div>
-        <div className="text-right font-semibold ml-4 text-sm text-nowrap">More info</div>
+        <div className="text-right font-semibold ml-4 text-sm max-w-24">
+          {t('details.more_info')}
+        </div>
         <RightArrowIcon />
       </li>
     </Link>

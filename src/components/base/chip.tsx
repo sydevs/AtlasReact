@@ -2,6 +2,7 @@ import React from 'react';
 import { IconSvgProps } from "@/types";
 import { Chip as NextUIChip, ChipProps, Tooltip } from "@nextui-org/react";
 import { DateTime } from "luxon";
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   children: React.ReactNode;
@@ -32,8 +33,11 @@ type TimezoneChipProps = {
 } & ChipProps
 
 export function TimezoneChip({ time, delay = 0, ...props }: TimezoneChipProps) {
+  const { t } = useTranslation('events');
+  const tooltip = t('timing.converted_to', { timezone: time.toFormat('ZZZZZ'), offset: time.toFormat('Z') })
+  
   return (
-    <Tooltip className='max-w-64' delay={delay} closeDelay={0} content={`Converted to ${time.toFormat('ZZZZZ')} (${time.toFormat('Z')})`} placement="top">
+    <Tooltip className='max-w-64' delay={delay} closeDelay={0} content={tooltip} placement="top">
       <abbr> {/* Tooltip wrapper needed for forwardRef to work */}
         <Chip color="primary" size="sm" variant="light" {...props}>
           {time.toFormat('ZZZZ')}

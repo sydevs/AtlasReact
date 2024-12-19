@@ -2,6 +2,7 @@ import { Event } from "@/types";
 import { Event as EventSchema } from "schema-dts"
 import { Helmet } from "react-helmet-async";
 import useLocale from "@/hooks/use-locale";
+import { useTranslation } from "react-i18next";
 
 type EventMetaeventProps = {
   event: Event;
@@ -9,6 +10,7 @@ type EventMetaeventProps = {
 
 export default function EventMetaevent({ event } : EventMetaeventProps) {
   const { locale } = useLocale();
+  const { t } = useTranslation('common');
 
   const description = event.description || "Free meditation class";
   const schema : EventSchema = {
@@ -60,7 +62,7 @@ export default function EventMetaevent({ event } : EventMetaeventProps) {
 
   return (
     <Helmet htmlAttributes={{ lang: locale }}>
-      <title>{`${event.label} - Free Meditation Class`}</title>
+      <title>{`${event.label} - ${t('free_meditation_class')}`}</title>
       <link rel="canonical" href={event.url} />
       <meta name="description" content={description} />
       <meta property="og:type" content="event" />

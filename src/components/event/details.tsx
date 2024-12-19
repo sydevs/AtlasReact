@@ -23,8 +23,8 @@ export default function EventDetails({ event } : EventDetailsProps) {
   const { locale, languageNames } = useLocale();
   const { t } = useTranslation('events');
   const registrationRef = useRef<HTMLDivElement>(null);
-  const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })  
 
+  const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })  
   const nextDate = useMemo(() => DateTime.fromJSDate(event.timing.upcomingDates[0]).setLocale(locale), [event.timing.upcomingDates]);
 
   return (
@@ -36,8 +36,8 @@ export default function EventDetails({ event } : EventDetailsProps) {
       </>
       {(event.online || event.languageCode != locale) && 
         <div className="text-xs px-2.5 py-2 border-primary border-1 rounded leading-tight ml-4 mb-2 float-right text-center flex flex-col gap-0.5">
-          <div className="italic mb-0.5">This class is</div>
-          {event.online && <div className="text-primary font-bold uppercase">Online</div>}
+          <div className="italic mb-0.5">{t('details.this_class_is')}</div>
+          {event.online && <div className="text-primary font-bold uppercase">{t('details.online')}</div>}
           {event.languageCode != locale && <div className="text-secondary font-bold uppercase">{languageNames.of(event.languageCode)}</div>}
         </div>}
       <h1 className="text-lg font-bold mb-2">{event.label}</h1>
@@ -55,18 +55,18 @@ export default function EventDetails({ event } : EventDetailsProps) {
       </div>
       {event.contact.phoneNumber &&
         <Link className="text-sm hover:underline" href={`tel: ${event.contact.phoneNumber}`} target="_blank" rel="noopener noreferrer">
-          tel: {event.contact.phoneNumber}
+          {t('details.tel', { phoneNumber: event.contact.phoneNumber })}
           {event.contact.phoneName && `, ${event.contact.phoneName}`}
         </Link>}
       <div className="flex flex-row gap-6 mt-8 text-primary">
         <Link className="text-sm italic font-medium" onClick={executeScroll} href="#registrations">
           <SignupIcon className="mr-2" />
-          {t('register')}
+          {t('details.register')}
         </Link>
         {event.location.directionsUrl &&
           <Link className="text-sm italic font-medium" href={event.location.directionsUrl} target="_blank" rel="noopener noreferrer">
             <DirectionsIcon className="mr-2" />
-            {t('get_directions')}
+            {t('details.get_directions')}
           </Link>}
       </div>
       <div className="mt-3 mb-8">

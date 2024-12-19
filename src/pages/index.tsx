@@ -8,8 +8,12 @@ import { useShallow } from 'zustand/react/shallow'
 import { Main } from "@/components/base/main";
 import { Helmet } from "react-helmet-async";
 import { CircleFlag } from 'react-circle-flags'
+import { useTranslation } from "react-i18next";
+import useLocale from "@/hooks/use-locale";
 
 export default function IndexPage() {
+  const { t } = useTranslation('common');
+  const { regionNames } = useLocale();
   const onlineOnly = useSearchState(s => s.onlineOnly);
   const [ zoom, latitude, longitude ] = useViewState(useShallow(s => [s.zoom, s.latitude, s.longitude]))
   const { data, isLoading, error } = useQuery({
@@ -20,7 +24,7 @@ export default function IndexPage() {
   return (
     <Main>
       <Helmet>
-        <title>Free Meditation Classes</title>
+        <title>{t('free_meditation_classes')}</title>
         <meta property="og:url" content="https://wemeditate.com/map" />
         <link rel="canonical" href="https://wemeditate.com/map" />
       </Helmet>
@@ -35,7 +39,7 @@ export default function IndexPage() {
           <List>
             {data &&
               data.filter(country => country.eventCount > 0).map((country) => (
-                <ListItem key={country.id} label={country.label} count={country.eventCount} link={`/country/${country.code}`}>
+                <ListItem key={country.id} label={regionNames.of(country.code) || country.label} count={country.eventCount} link={`/country/${country.code}`}>
                   <CircleFlag countryCode={country.code.toLocaleLowerCase()} className="w-7 h-7 mr-3 border border-divider rounded-full bg-divider" />
                 </ListItem>
               ))}

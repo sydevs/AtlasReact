@@ -10,10 +10,12 @@ import { useMap } from "react-map-gl";
 import { useEffect } from "react";
 import { bboxPolygon } from "@turf/bbox-polygon";
 import { useViewState } from "@/config/store";
+import { useTranslation } from "react-i18next";
 
 export default function RegionPage() {
   let { id } = useParams();
   const { mapbox } = useMap();
+  const { t } = useTranslation('common');
   const setBoundary = useViewState(s => s.setBoundary);
   const { data, isLoading, error } = useQuery({
     queryKey: ['region', id],
@@ -31,8 +33,8 @@ export default function RegionPage() {
     <Main>
       {data &&
         <Helmet>
-          <title>{`Free Meditation Classes at ${data.label}`}</title>
-          <meta name="description" content={`${data.eventCount} free meditation classes at ${data.label}`} />
+          <title>{t('locations.title', { location: data.label })}</title>
+          <meta name="description" content={t('locations.description', { count: data.eventCount, location: data.label })} />
         </Helmet>}
       <Loader isLoading={isLoading} error={error}>
         {data &&

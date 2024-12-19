@@ -14,7 +14,7 @@ type Props = {
 }
 
 export default function SelectionDropdown({ startContent, options } : Props) {
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set(["Select a date..."]));
+  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
 
   const selectedValue = React.useMemo(
     () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
