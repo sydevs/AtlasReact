@@ -18,6 +18,7 @@ export function Main({
 
   return (
     <main
+      id='main'
       className={`
         flex flex-col flex-grow lg:flex-grow-0
         pointer-events-auto md:overflow-y-scroll

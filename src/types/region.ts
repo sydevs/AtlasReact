@@ -14,8 +14,7 @@ export const RegionSlimSchema = z.object({
 
 export const RegionSchema = z.object({
   url: z.string(),
-  parentId: z.string(),
-  parentType: z.string(),
+  parentPath: z.string(),
   areas: z.array(AreaSlimSchema),
   bounds: z.tuple([z.number(), z.number(), z.number(), z.number()]),
 }).merge(RegionCoreSchema)

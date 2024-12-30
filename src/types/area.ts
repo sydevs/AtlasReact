@@ -14,8 +14,7 @@ export const AreaSlimSchema = z.object({
 
 export const AreaSchema = z.object({
   url: z.string(),
-  parentId: z.number(),
-  parentType: z.string(),
+  parentPath: z.string(),
   events: z.array(EventSlimSchema),
   latitude: z.number(),
   longitude: z.number(),

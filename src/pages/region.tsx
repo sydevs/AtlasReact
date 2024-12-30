@@ -42,7 +42,7 @@ export default function RegionPage() {
             <SearchBar
               onSelect={value => console.log(value)}
               header={data.label}
-              returnLink={`/${data.parentType}/${data.parentId}`}
+              returnLink={data.parentPath}
             />
             <List>
               {data.areas.filter(area => area.eventCount > 0).map((area) => (

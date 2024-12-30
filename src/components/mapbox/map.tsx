@@ -1,10 +1,10 @@
-import { useCallback } from 'react';
-import ReactMapGL, { GeoJSONSource, GeolocateControl, Layer, MapMouseEvent, MapRef, Source, ViewStateChangeEvent } from 'react-map-gl';
+import { useCallback, useEffect, useState } from 'react';
+import ReactMapGL, { GeoJSONSource, GeolocateControl, Layer, MapMouseEvent, MapRef, Source } from 'react-map-gl';
 import { clusterLayer, selectedPointLayer, unclusteredPointLayer, selectedAreaLayer, boundsLayer } from './layers';
 import { useNavigationState, useViewState } from "@/config/store";
 import { useQuery } from '@tanstack/react-query';
 import api from '@/config/api';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useRef } from 'react';
 import { useBreakpoint } from '@/config/responsive';
 import useLocale from '@/hooks/use-locale';
@@ -17,32 +17,45 @@ const MAP_STYLES = {
 }
 
 const DEBUG_BOUNDARY = false
+const DEBUG_PADDING = false
+
+export function computePadding(isMd: boolean) {
+  const mapRect = document.getElementById('mapbox')?.getBoundingClientRect()
+  const mainRect = document.getElementById('main')?.getBoundingClientRect()
+
+  if (!mapRect || !mainRect) return { top: 20, bottom: 20, left: 20, right: 20 }
+
+  return {
+    top: 20,
+    bottom: 20 + (!isMd ? mapRect.bottom - mainRect.top : 0),
+    left: 20 + (isMd ? mainRect.right - mainRect.left : 0),
+    right: 20,
+  }
+}
 
 export default function Mapbox() {
   let navigate = useNavigate();
   const mapRef = useRef<MapRef>(null);
   const { zoom, latitude, longitude, setViewState, selection, boundary } = useViewState(
     useShallow((s) => ({
-      zoom: s.zoom, latitude: s.latitude, longitude: s.longitude, selection: s.selection, boundary: s.boundary,
+      zoom: s.zoom, latitude: s.latitude, longitude: s.longitude,
+      selection: s.selection, boundary: s.boundary,
       setViewState: s.setViewState,
     })),
   );
+  const location = useLocation();
   const setNavigationState = useNavigationState(s => s.setNavigationState);
-  const { isSm } = useBreakpoint("sm");
   const { isMd } = useBreakpoint("md");
   const { locale } = useLocale();
   const { theme } = useTheme();
+
+  // TODO: Remove this debug code (DEBUG_PADDING)
+  const [ padding, setPadding ] = useState({ top: 20, bottom: 20, left: 20, right: 20 })
 
   const { data } = useQuery({
     queryKey: ['geojson'],
     queryFn: () => api.getGeojson()
   });
-
-  //useMapImage({ mapRef: map, url: marker, name: 'marker', sdf: true });
-
-  const updateViewState = useCallback((evt: ViewStateChangeEvent) => {
-    setViewState(evt.viewState)
-  }, [setViewState]);
 
   const selectFeature = useCallback((evt: MapMouseEvent) => {
     if (!evt.features || !evt.features.length || !mapRef.current) return
@@ -61,7 +74,7 @@ export default function Mapbox() {
         });
       });
     } else if (feature.layer?.id === unclusteredPointLayer.id) {
-      navigate(`/${feature.properties?.type}/${feature.properties?.id}`)
+      navigate(feature.properties?.path)
 
       if (feature.properties?.type === "event") {
         setNavigationState({
@@ -79,21 +92,51 @@ export default function Mapbox() {
     mapRef.current.getCanvas().style.cursor = evt.features?.length ? 'pointer' : ''
   }, [mapRef])
 
+  useEffect(() => {
+    if (!mapRef.current) return
+    const map = mapRef.current
+
+    const updatePadding = () => {
+      const mapRect = map.getCanvas().getBoundingClientRect()
+      const mainRect = document.getElementById('main')?.getBoundingClientRect()
+
+      if (!mapRect || !mainRect) return
+
+      const padding = {
+        top: 20,
+        bottom: 20 + (!isMd ? mapRect.bottom - mainRect.top : 0),
+        left: 20 + (isMd ? mainRect.right - mainRect.left : 0),
+        right: 20,
+      }
+      map.setPadding(padding)
+
+      if (DEBUG_PADDING) {
+        console.log('updatePadding', mapRect, mainRect, "=>", padding)
+        setPadding(padding)
+      }
+    }
+
+    updatePadding()
+    window.addEventListener('resize', updatePadding)
+    window.addEventListener('orientationchange', updatePadding)
+    window.addEventListener('scroll', updatePadding)
+
+    return () => {
+      window.removeEventListener('resize', updatePadding)
+      window.removeEventListener('orientationchange', updatePadding)
+      window.removeEventListener('scroll', updatePadding)
+    }
+  }, [mapRef, isMd, location])
+
   return (
     <ReactMapGL
       id="mapbox"
       mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESSTOKEN}
       mapStyle={MAP_STYLES[theme]}
       //{...viewState}
-      onMoveEnd={updateViewState}
+      onMoveEnd={evt => setViewState(evt.viewState)}
       onClick={selectFeature}
       onMouseMove={hoverOnFeature}
-      padding={{
-        top: 20,
-        bottom: 20,
-        right: 20,
-        left: isSm ? 20 : (isMd ? 340 : 548),
-      }}
       style={{ width: '100%', height: '100%' }}
       interactiveLayerIds={[clusterLayer.id, unclusteredPointLayer.id]}
       reuseMaps
@@ -102,6 +145,8 @@ export default function Mapbox() {
       language={locale} // TOOD: Make sure this switches when locale changes
       ref={mapRef}
     >
+      {DEBUG_PADDING &&
+        <div className='absolute border-3 border-dashed border-red-700 pointer-events-none' style={padding} />}
       {data &&
         <Source
           id="events"
@@ -143,23 +188,3 @@ export default function Mapbox() {
     </ReactMapGL>
   );
 }
-
-/*type UseMapImageOptions = {
-  mapRef: React.MutableRefObject<any>;
-  url: string;
-  name: string;
-  sdf?: boolean;
-}
-
-export function useMapImage({ mapRef, url, name, sdf = false }: UseMapImageOptions) {
-  React.useEffect(() => {
-    if (mapRef.current) {
-      const map = mapRef.current.getMap() as MapboxMap;
-
-      map.loadImage(url, (error, image) => {
-        if (error) throw error;
-        if (image && !map.hasImage(name)) map.addImage(name, image, { sdf });
-      });
-    }
-  }, [mapRef.current]);
-}*/

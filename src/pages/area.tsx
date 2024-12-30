@@ -44,7 +44,7 @@ export default function AreaPage() {
           <>
             <SearchBar
               header={data.label}
-              returnLink={`/${data.parentType}/${data.parentId}`}
+              returnLink={data.parentPath}
             />
             <EventsList events={data.events} />
           </>}

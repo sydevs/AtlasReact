@@ -15,8 +15,7 @@ export const VenueSlimSchema = z.object({
 
 export const VenueSchema = z.object({
   url: z.string(),
-  parentId: z.number(),
-  parentType: z.string(),
+  parentPath: z.string(),
   events: z.array(EventSlimSchema),
 }).merge(VenueCoreSchema)
 
