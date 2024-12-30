@@ -34,7 +34,7 @@ export default function VenuePage() {
   }, [data, mapbox]);
 
   return (
-    <Main>
+    <Main mapWindow={240}>
       {data &&
         <Helmet>
           <title>{t('venues.title', { venue: data.label })}</title>

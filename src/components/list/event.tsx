@@ -40,7 +40,7 @@ export default function EventItem({ event }: Props) {
         <div className="flex flex-grow flex-col gap-1">
           <div className="font-semibold text-lg leading-tight">{event.label}</div>
           <div className="text-sm leading-tight">
-            {event.online ? t('hosted_from', { city: event.address }) : event.address}
+            {event.online ? t('details.hosted_from', { city: event.address }) : event.address}
           </div>
           <div className="text-xs uppercase">{event.recurrence}</div>
           <div className="text-xs text-gray-500">

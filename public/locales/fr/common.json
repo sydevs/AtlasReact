@@ -4,6 +4,7 @@
   "language_selector": "Sélecteur de langue",
   "loading": "Chargement...",
   "show_online_classes": "Afficher les cours en ligne",
+  "events": "événements",
   "locations": {
     "title": "Cours de méditation gratuits à %{location}",
     "description_one": "%{count} cours de méditation gratuit à %{location}",

@@ -21,6 +21,16 @@ export const RightArrowIcon: React.FC<IconSvgProps> = ({
   />
 );
 
+export const DownArrowIcon: React.FC<IconSvgProps> = ({
+  ...props
+}) => (
+  <BaseIcon
+    view="0 0 24 24"
+    paths={["m5 10l7 7l7-7"]}
+    {...props}
+  />
+);
+
 export const CloseIcon: React.FC<IconSvgProps> = ({
   ...props
 }) => (

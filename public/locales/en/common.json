@@ -4,6 +4,7 @@
   "language_selector": "Language selector",
   "loading": "Loading...",
   "show_online_classes": "Show online classes",
+  "events": "events",
   "locations": {
     "title": "Free Meditation Classes in %{location}",
     "description_one": "%{count} free meditation class in %{location}",

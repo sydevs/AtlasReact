@@ -1,27 +1,31 @@
-import React, { useCallback } from 'react';
-import { OnlineIcon, LeftArrowIcon, SearchIcon, CloseIcon } from "@/components/icons";
+import React, { useCallback, useRef } from 'react';
+import { OnlineIcon, LeftArrowIcon, DownArrowIcon, SearchIcon, CloseIcon } from "@/components/icons";
 import SearchBox from "@/components/mapbox/search";
 import { GeocodeFeature } from '@mapbox/search-js-core';
 import { useNavigate } from "react-router";
 import { Chip } from "@nextui-org/react";
 import { useSearchState } from '@/config/store';
 import { useTranslation } from 'react-i18next';
+import { useBreakpoint } from '@/config/responsive';
 
 interface Props {
   onSelect?: (value: GeocodeFeature) => void;
   header?: string;
   returnLink?: string;
   filterable?: boolean;
+  eventCount?: number;
 }
 
 export default function SearchBar({
   onSelect,
   header,
   returnLink,
+  eventCount,
   filterable = false,
 }: Props) {
   let navigate = useNavigate();
   const { t } = useTranslation('common');
+  const { isMd } = useBreakpoint("md");
   const onlineOnly = useSearchState(s => s.onlineOnly);
   const setOnlineOnly = useSearchState(s => s.setOnlineOnly);
   const [isSearching, setIsSearching] = React.useState(!header);
@@ -31,8 +35,17 @@ export default function SearchBar({
     navigate("/");
   }, [onSelect, navigate]);
 
+  const listingRef = useRef<HTMLDivElement>(null);
+  const executeScroll = useCallback(() => {
+    const elementRect = listingRef.current?.getBoundingClientRect();
+    if (!elementRect) return;
+
+    const scrollTop = elementRect.top - elementRect.height + document.documentElement.scrollTop
+    window.scrollTo({ top: scrollTop, behavior: 'smooth' })
+  }, [listingRef])
+  
   return (
-    <div className="p-4 pb-3 relative bg-background shadow-lg shadow-background border-b-1.5 border-default-300">
+    <div className="sticky top-0 z-10 p-4 pb-3 bg-background shadow-lg shadow-background border-b-1.5 border-default-300">
       <div className="flex flex-row gap-2 items-center">
         {returnLink &&
           <LeftArrowIcon size={32} onClick={() => navigate(returnLink)} />}
@@ -48,39 +61,6 @@ export default function SearchBar({
         {header && (isSearching ?
           <CloseIcon size={24} onClick={() => setIsSearching(false)} /> :
           <SearchIcon size={24} onClick={() => setIsSearching(true)} />)}
-        {/*
-        <Geocoder
-          options={{
-            proximity: {
-              lng: -122.431297,
-              lat: 37.773972,
-            },
-          }}
-          value={location}
-          onChange={value => setLocation(value)}
-          accessToken={import.meta.env.VITE_MAPBOX_ACCESSTOKEN}
-        />
-        <Input
-          aria-label="Search"
-          classNames={{
-            inputWrapper: "bg-default-100",
-            input: "text-sm",
-          }}
-          endContent={
-            <OnlineIcon className="text-2xl flex-shrink-0 pointer-events-auto cursor-pointer fill-slate-400 hover:fill-primary" />
-          }
-          /*endContent={
-            <Tooltip showArrow={true} closeDelay={500} color="primary" content="Show online classes only" placement="left">
-              <OnlineIcon className="text-2xl flex-shrink-0 pointer-events-auto fill-slate-400 hover:fill-primary" />
-            </Tooltip>
-          }*
-          labelPlacement="outside"
-          placeholder="Search..."
-          startContent={
-            <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
-          }
-          type="search"
-        />*/}
       </div>
       {filterable && <Chip
           color={onlineOnly ? "secondary" : "primary"}
@@ -96,6 +76,14 @@ export default function SearchBar({
         >
           {t('show_online_classes')}
         </Chip>}
+      {!isMd && eventCount &&
+        <div ref={listingRef} className="w-16 text-center uppercase mx-auto mt-2 text-sm font-semibold leading-snug hover:underline cursor-pointer" onClick={executeScroll}>
+          {eventCount}
+          <br />
+          {t('events')}
+          <br />
+          <DownArrowIcon className='inline -mt-1' />
+        </div>}
     </div>
   );
 }

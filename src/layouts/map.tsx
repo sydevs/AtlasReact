@@ -4,15 +4,16 @@ import { MapProvider } from "react-map-gl";
 import { Outlet } from "react-router";
 
 export default function MapLayout() {
-  const hasNavbar = true;
+  const hasNavbar = false;
 
   return (
     <MapProvider>
-      <div className="w-dvw h-[80dvh] md:fixed md:h-dvh">
+      {hasNavbar &&
+        <Navbar className="fixed top-0 border-t-medium shadow-md md:static pointer-events-auto" />}
+      <div className="w-dvw h-dvh fixed">
         <Mapbox />
       </div>
-      <div className={`flex flex-col w-screen md:h-screen pointer-events-none ${hasNavbar ? 'pb-16 md:p-0' : ''}`}>
-        {hasNavbar && <Navbar className="fixed bottom-0 border-t-medium shadow-md md:static pointer-events-auto" />}
+      <div className={`flex flex-col w-screen h-screen pointer-events-none`}>
         <Outlet />
       </div>
     </MapProvider>

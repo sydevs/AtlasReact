@@ -21,15 +21,17 @@ export default function IndexPage() {
     queryFn: () => api.getCountries(),
   });
 
+  const showCountries = zoom < 7 && !onlineOnly;
+
   return (
-    <Main>
+    <Main footerHeight={170}>
       <Helmet>
         <title>{t('free_meditation_classes')}</title>
         <meta property="og:url" content="https://wemeditate.com/map" />
         <link rel="canonical" href="https://wemeditate.com/map" />
       </Helmet>
-      <SearchBar onSelect={value => console.log(value)} filterable={true} />
-      { zoom >= 7 || onlineOnly ?
+      <SearchBar onSelect={value => console.log(value)} filterable={true} eventCount={showCountries && data?.reduce((acc, country) => acc + country.eventCount, 0) || undefined} />
+      { !showCountries ?
         <DynamicEventsList
           latitude={latitude}
           longitude={longitude}

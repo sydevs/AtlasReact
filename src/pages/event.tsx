@@ -45,7 +45,7 @@ export default function EventPage() {
   }, [data, mapbox])
 
   return (
-    <Main width={467}>
+    <Main width={467} mapWindow={180}>
       <Link className="text-3xl absolute top-7 left-1.5 z-10" href={returnPath || "/"}>
         <LeftArrowIcon size={32} className="text-lg" />
       </Link>

@@ -28,8 +28,8 @@ export default function Mapbox() {
     })),
   );
   const setNavigationState = useNavigationState(s => s.setNavigationState);
+  const { isSm } = useBreakpoint("sm");
   const { isMd } = useBreakpoint("md");
-  const { isLg } = useBreakpoint("lg");
   const { locale } = useLocale();
   const { theme } = useTheme();
 
@@ -92,7 +92,7 @@ export default function Mapbox() {
         top: 20,
         bottom: 20,
         right: 20,
-        left: isMd ? 340 : (isLg ? 548 : 20),
+        left: isSm ? 20 : (isMd ? 340 : 548),
       }}
       style={{ width: '100%', height: '100%' }}
       interactiveLayerIds={[clusterLayer.id, unclusteredPointLayer.id]}
