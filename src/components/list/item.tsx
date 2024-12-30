@@ -11,7 +11,7 @@ interface Props {
 
 export default function ListItem({ label, subtitle, count, link, children }: Props) {
   return (
-    <Link href={link} className="px-6 block bg-panel-hover">
+    <Link href={link} className="px-6 block text-inherit transition-colors hover:bg-primary-10">
       <li className="py-5 flex flex-row items-center font-semibold border-b border-divider">
         {children}
         <div className="text-lg flex-grow">

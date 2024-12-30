@@ -45,7 +45,7 @@ export default function SearchBar({
   }, [listingRef])
   
   return (
-    <div className="sticky top-0 z-10 p-4 pb-3 bg-background shadow-lg shadow-background border-b-1.5 border-default-300">
+    <div className="sticky top-0 z-10 p-4 pb-3 shadow-lg shadow-background border-b-1.5 border-default-300">
       <div className="flex flex-row gap-2 items-center">
         {returnLink &&
           <LeftArrowIcon size={32} onClick={() => navigate(returnLink)} />}
@@ -77,12 +77,12 @@ export default function SearchBar({
           {t('show_online_classes')}
         </Chip>}
       {!isMd && eventCount &&
-        <div ref={listingRef} className="w-16 text-center uppercase mx-auto mt-2 text-sm font-semibold leading-snug hover:underline cursor-pointer" onClick={executeScroll}>
-          {eventCount}
-          <br />
-          {t('events')}
-          <br />
-          <DownArrowIcon className='inline -mt-1' />
+        <div ref={listingRef} className="mt-2 text-center text-sm font-semibold uppercase leading-snug">
+          <span className="hover:underline cursor-pointer" onClick={executeScroll}>
+            {eventCount} {t('events')}
+            <br />
+            <DownArrowIcon className='inline -mt-1' />
+          </span>
         </div>}
     </div>
   );

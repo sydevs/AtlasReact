@@ -3,6 +3,7 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 
 const TEAL_COLOR = {
   DEFAULT: '#82b1ae',
+  10: '#f4f8f7', // alt #e9f1f0
   50: '#c1d8d7',
   100: '#b1cfcc',
   200: '#a2c5c2',
@@ -17,6 +18,7 @@ const TEAL_COLOR = {
 
 const ORANGE_COLOR = {
   DEFAULT: '#e08e79',
+  10: '#fBf3f1',
   50: '#f3d3cc',
   100: '#eec2b7',
   200: '#eab1a2',
@@ -31,6 +33,7 @@ const ORANGE_COLOR = {
 
 const BLUE_COLOR = {
   DEFAULT: '#8fb8cf',
+  10: '#ecf3f7',
   50: '#d7e5ee',
   100: '#c5dae6',
   200: '#b3cedf',
@@ -99,10 +102,10 @@ module.exports = {
             ...ORANGE_COLOR,
             foreground: "#000000",
           },
-          tertiary: {
+          /*tertiary: {
             ...BLUE_COLOR,
             foreground: "#000000",
-          },
+          },*/
           danger: {
             ...ORANGE_COLOR,
           },
@@ -120,10 +123,10 @@ module.exports = {
               ...TEAL_COLOR,
               foreground: "#000000",
             },
-            tertiary: {
+            /*tertiary: {
               ...BLUE_COLOR,
               foreground: "#000000",
-            },
+            },*/
             danger: {
               ...ORANGE_COLOR,
               foreground: "#000000",

@@ -29,7 +29,7 @@ export default function EventDetails({ event } : EventDetailsProps) {
   const firstDate = useMemo(() => DateTime.fromJSDate(event.timing.firstDate), [event.timing.firstDate]);
 
   return (
-    <div className="bg-panel pt-16 px-6 sm:pt-8 sm:px-11 pb-24">
+    <div className="pt-16 px-6 sm:pt-8 sm:px-11 pb-24">
       <>
         <Link className="text-3xl absolute top-8 right-1.5 cursor-pointer" isBlock onClick={onOpen}>
           <ShareIcon size={18} />

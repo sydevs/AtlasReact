@@ -36,7 +36,7 @@ export default function EventItem({ event }: Props) {
   const firstDate = useMemo(() => DateTime.fromJSDate(event.firstDate), [event.firstDate]);
 
   return (
-    <Link href={event.path} onPress={handlePress} className="block px-6 bg-panel-hover text-inherit">
+    <Link href={event.path} onPress={handlePress} className="block px-6 text-inherit transition-colors hover:bg-primary-10">
       <li key={event.id} className="flex flex-row py-5 items-center border-b border-divider">
         <div className="flex flex-grow flex-col gap-1">
           <div className="font-semibold text-lg leading-tight">{event.label}</div>

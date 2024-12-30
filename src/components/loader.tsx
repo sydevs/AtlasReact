@@ -11,7 +11,7 @@ interface Props {
 export function Loading() {
   const { t } = useTranslation('common');
   return (
-    <div className="w-100 h-100 p-10 flex justify-center items-center bg-panel-thin">
+    <div className="w-100 h-100 p-10 flex justify-center items-center">
       <Spinner label={t('loading')} color="secondary" />
     </div>
   );
@@ -31,7 +31,7 @@ export default function Loader({ isLoading, data, error, children }: Props) {
 
   if (error) {
     return (
-      <div className="p-10 bg-panel text-center">
+      <div className="p-10 bg-background text-center">
         <Alert color="danger" title={error.message} />
       </div>
     );

@@ -6,6 +6,7 @@ import EventItem from "./event";
 import Loader from "../loader";
 import i18n from "@/config/i18n";
 import { DateTime } from "luxon";
+import { List } from ".";
 
 interface DynamicProps {
   latitude: number;
@@ -45,10 +46,10 @@ interface Props {
 
 export default function EventsList({ events }: Props) {
   return (
-    <ul className="overflow-y-auto">
+    <List>
       {events.map((event, _index, _arr) => (
         <EventItem key={event.id} event={event} />
       ))}
-    </ul>
+    </List>
   );
 }

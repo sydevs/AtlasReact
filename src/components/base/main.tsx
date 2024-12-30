@@ -22,8 +22,7 @@ export function Main({
       className={`
         flex flex-col flex-grow lg:flex-grow-0
         pointer-events-auto md:overflow-y-scroll
-        md:max-lg:bg-background
-        md:shadow-md
+        bg-background md:shadow-md
         lg:m-16
         relative
       `}
@@ -33,7 +32,6 @@ export function Main({
           { marginTop: mapWindow ? `${mapWindow}px` : `calc(100dvh - ${footerHeight}px)` }}
     >
       {children}
-      <div className="flex-grow bg-white"></div>
     </main>
   );
 }
