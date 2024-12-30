@@ -26,6 +26,7 @@ export default function EventDetails({ event } : EventDetailsProps) {
 
   const executeScroll = () => registrationRef.current?.scrollIntoView({ behavior: 'smooth' })  
   const nextDate = useMemo(() => DateTime.fromJSDate(event.timing.upcomingDates[0]).setLocale(locale), [event.timing.upcomingDates]);
+  const firstDate = useMemo(() => DateTime.fromJSDate(event.timing.firstDate), [event.timing.firstDate]);
 
   return (
     <div className="bg-panel pt-16 px-6 sm:pt-8 sm:px-11 pb-24">
@@ -70,7 +71,7 @@ export default function EventDetails({ event } : EventDetailsProps) {
           </Link>}
       </div>
       <div className="mt-3 mb-8">
-        <EventSoon nextDate={nextDate.setLocale(locale)} online={event.online} />
+        <EventSoon firstDate={firstDate.setLocale(locale)} online={event.online} />
       </div>
       {event.descriptionHtml &&
         <div className="mt-16 mb-4" dangerouslySetInnerHTML={{

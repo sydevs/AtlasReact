@@ -32,10 +32,11 @@ export default function EventItem({ event }: Props) {
     });
   }, [location, zoom, latitude, longitude, setNavigationState]);
 
-  const date = useMemo(() => DateTime.fromJSDate(event.nextDate), [event.nextDate]);
+  const nextDate = useMemo(() => DateTime.fromJSDate(event.nextDate), [event.nextDate]);
+  const firstDate = useMemo(() => DateTime.fromJSDate(event.firstDate), [event.firstDate]);
 
   return (
-    <Link href={`/event/${event.id}`} onPress={handlePress} className="block px-6 bg-panel-hover text-inherit">
+    <Link href={event.path} onPress={handlePress} className="block px-6 bg-panel-hover text-inherit">
       <li key={event.id} className="flex flex-row py-5 items-center border-b border-divider">
         <div className="flex flex-grow flex-col gap-1">
           <div className="font-semibold text-lg leading-tight">{event.label}</div>
@@ -45,7 +46,7 @@ export default function EventItem({ event }: Props) {
           <div className="text-xs uppercase">{event.recurrence}</div>
           <div className="text-xs text-gray-500">
             <EventTime
-              nextDate={date}
+              nextDate={nextDate}
               duration={event.duration}
               timeZone={event.online ? DateTime.local().zoneName : event.timeZone}
               showTimeZone={event.online}
@@ -53,7 +54,7 @@ export default function EventItem({ event }: Props) {
             />
           </div>
           <div className="flex mt-1 gap-1">
-            <EventSoon nextDate={date.setLocale(locale)} online={event.online} />
+            <EventSoon firstDate={firstDate.setLocale(locale)} online={event.online} />
             
             {event.online &&
               <Chip>{t('details.online')}</Chip>}

@@ -51,7 +51,7 @@ export default function CountryPage() {
             <List>
               {data.children.map((child) => (
                 child.eventCount > 0 &&
-                  <ListItem key={child.id} label={child.label} count={child.eventCount} link={`/${child.type}/${child.id}`} />
+                  <ListItem key={child.id} label={child.label} subtitle={child.subtitle} count={child.eventCount} link={child.path} />
               ))}
             </List>
           </>}

@@ -26,11 +26,11 @@ export default function App() {
       <Routes>
         <Route element={<MapLayout />} path="/">
           <Route element={<IndexPage />} index />
-          <Route element={<CountryPage />} path="/country/:countryCode" />
-          <Route element={<RegionPage />} path="/region/:id" />
-          <Route element={<AreaPage />} path="/area/:id" />
-          <Route element={<VenuePage />} path="/venue/:id" />
-          <Route element={<EventPage />} path="/event/:id" />
+          <Route element={<CountryPage />} path="/countries/:countryCode" />
+          <Route element={<RegionPage />} path="/regions/:id" />
+          <Route element={<AreaPage />} path="/areas/:id" />
+          <Route element={<VenuePage />} path="/venues/:id" />
+          <Route element={<EventPage />} path="/events/:id" />
         </Route>
       </Routes>
     </Provider>

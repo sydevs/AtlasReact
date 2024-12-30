@@ -41,7 +41,7 @@ export default function IndexPage() {
           <List>
             {data &&
               data.filter(country => country.eventCount > 0).map((country) => (
-                <ListItem key={country.id} label={regionNames.of(country.code) || country.label} count={country.eventCount} link={`/country/${country.code}`}>
+                <ListItem key={country.id} label={regionNames.of(country.code) || country.label} count={country.eventCount} link={country.path}>
                   <CircleFlag countryCode={country.code.toLocaleLowerCase()} className="w-7 h-7 mr-3 border border-divider rounded-full bg-divider" />
                 </ListItem>
               ))}

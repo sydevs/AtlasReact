@@ -23,6 +23,10 @@ export default function EventPage() {
   });
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (!mapbox || !data) return;
     
     setMapSelection({ ...data.location, approximate: data.online })

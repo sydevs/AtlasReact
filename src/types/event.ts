@@ -50,6 +50,7 @@ export const EventQuestionSchema = z.object({
 
 export const EventCoreSchema = z.object({
   id: z.number(),
+  path: z.string(),
   label: z.string(),
   online: z.boolean(),
   languageCode: z.string(),
@@ -61,6 +62,7 @@ export const EventSlimSchema = z.object({
   latitude: z.number(),
   longitude: z.number(),
   nextDate: z.coerce.date(),
+  firstDate: z.coerce.date(),
   duration: z.number().nullable(),
   timeZone: z.string(),
   locationId: z.number(),

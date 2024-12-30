@@ -46,7 +46,7 @@ export default function RegionPage() {
             />
             <List>
               {data.areas.filter(area => area.eventCount > 0).map((area) => (
-                <ListItem key={area.id} label={area.label} count={area.eventCount} link={`/area/${area.id}`} />
+                <ListItem key={area.id} label={area.label} subtitle={area.subtitle} count={area.eventCount} link={area.path} />
               ))}
             </List>
           </>}

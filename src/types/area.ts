@@ -3,14 +3,17 @@ import z from "zod"
 
 export const AreaCoreSchema = z.object({
   id: z.number(),
+  path: z.string(),
   label: z.string(),
 })
 
 export const AreaSlimSchema = z.object({
   eventCount: z.number(),
+  subtitle: z.string().optional(),
 }).merge(AreaCoreSchema)
 
 export const AreaSchema = z.object({
+  url: z.string(),
   parentId: z.number(),
   parentType: z.string(),
   events: z.array(EventSlimSchema),
