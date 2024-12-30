@@ -35,17 +35,17 @@ export default function SearchBar({
     navigate("/");
   }, [onSelect, navigate]);
 
-  const listingRef = useRef<HTMLDivElement>(null);
+  const searchBarRef = useRef<HTMLDivElement>(null);
   const executeScroll = useCallback(() => {
-    const elementRect = listingRef.current?.getBoundingClientRect();
+    const elementRect = searchBarRef.current?.getBoundingClientRect();
     if (!elementRect) return;
 
-    const scrollTop = elementRect.top - elementRect.height + document.documentElement.scrollTop
+    const scrollTop = elementRect.top + document.documentElement.scrollTop
     window.scrollTo({ top: scrollTop, behavior: 'smooth' })
-  }, [listingRef])
+  }, [searchBarRef])
   
   return (
-    <div className="sticky top-0 z-10 p-4 pb-3 shadow-lg shadow-background border-b-1.5 border-default-300">
+    <div ref={searchBarRef} className="sticky top-0 z-10 p-4 pb-3 bg-background shadow-lg shadow-background border-b-1.5 border-default-300">
       <div className="flex flex-row gap-2 items-center">
         {returnLink &&
           <LeftArrowIcon size={32} onClick={() => navigate(returnLink)} />}
@@ -77,7 +77,7 @@ export default function SearchBar({
           {t('show_online_classes')}
         </Chip>}
       {!isMd && eventCount &&
-        <div ref={listingRef} className="mt-2 text-center text-sm font-semibold uppercase leading-snug">
+        <div className="mt-2 text-center text-sm font-semibold uppercase leading-snug">
           <span className="hover:underline cursor-pointer" onClick={executeScroll}>
             {eventCount} {t('events')}
             <br />

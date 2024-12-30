@@ -96,7 +96,7 @@ export default function Mapbox() {
     if (!mapRef.current) return
     const map = mapRef.current
 
-    const updatePadding = () => {
+    const updatePadding = (evt?: Event) => {
       const mapRect = map.getCanvas().getBoundingClientRect()
       const mainRect = document.getElementById('main')?.getBoundingClientRect()
 
@@ -108,7 +108,12 @@ export default function Mapbox() {
         left: 20 + (isMd ? mainRect.right - mainRect.left : 0),
         right: 20,
       }
-      map.setPadding(padding)
+
+      if (evt?.type) {
+        map.setPadding(padding)
+      } else {
+        map.easeTo({ padding })
+      }
 
       if (DEBUG_PADDING) {
         console.log('updatePadding', mapRect, mainRect, "=>", padding)

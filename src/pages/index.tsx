@@ -10,11 +10,15 @@ import { Helmet } from "react-helmet-async";
 import { CircleFlag } from 'react-circle-flags'
 import { useTranslation } from "react-i18next";
 import useLocale from "@/hooks/use-locale";
+import { useMap } from "react-map-gl";
+import { useEffect } from "react";
 
 export default function IndexPage() {
   const { t } = useTranslation('common');
   const { regionNames } = useLocale();
   const onlineOnly = useSearchState(s => s.onlineOnly);
+  const { mapbox } = useMap();
+  const setBoundary = useViewState(s => s.setBoundary);
   const [ zoom, latitude, longitude ] = useViewState(useShallow(s => [s.zoom, s.latitude, s.longitude]))
   const { data, isLoading, error } = useQuery({
     queryKey: ['countries'],
@@ -22,6 +26,13 @@ export default function IndexPage() {
   });
 
   const showCountries = zoom < 7 && !onlineOnly;
+
+  useEffect(() => {
+    if (mapbox) {
+      setBoundary(undefined)
+      mapbox.easeTo({ zoom: 0 })
+    }
+  }, [data, mapbox, setBoundary]);
 
   return (
     <Main footerHeight={170}>
