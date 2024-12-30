@@ -5,11 +5,11 @@ export const AreaCoreSchema = z.object({
   id: z.number(),
   path: z.string(),
   label: z.string(),
+  subtitle: z.string().nullish(),
 })
 
 export const AreaSlimSchema = z.object({
   eventCount: z.number(),
-  subtitle: z.string().optional(),
 }).merge(AreaCoreSchema)
 
 export const AreaSchema = z.object({

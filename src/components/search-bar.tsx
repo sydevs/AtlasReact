@@ -11,6 +11,7 @@ import { useBreakpoint } from '@/config/responsive';
 interface Props {
   onSelect?: (value: GeocodeFeature) => void;
   header?: string;
+  subheader?: string;
   returnLink?: string;
   filterable?: boolean;
   eventCount?: number;
@@ -19,6 +20,7 @@ interface Props {
 export default function SearchBar({
   onSelect,
   header,
+  subheader,
   returnLink,
   eventCount,
   filterable = false,
@@ -55,7 +57,7 @@ export default function SearchBar({
             <SearchBox onSelect={handleSelect} />
             : <>
               <div className="px-3 text-lg font-bold">{header}</div>
-              <div className="px-3 text-md">{t('free_meditation_classes')}</div>
+              <div className="px-3 text-md">{subheader || t('free_meditation_classes')}</div>
             </>}
         </div>
         {header && (isSearching ?

@@ -5,7 +5,7 @@ const CountryChildSchema = z.object({
   path: z.string(),
   type: z.string(),
   label: z.string(),
-  subtitle: z.string().optional(),
+  subtitle: z.string().nullish(),
   eventCount: z.number(),
 })
 
