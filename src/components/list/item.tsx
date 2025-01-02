@@ -3,7 +3,7 @@ import { Link } from "@nextui-org/react";
 
 interface Props {
   label: string;
-  subtitle?: string;
+  subtitle?: string | null;
   count: number;
   link: string;
   children?: React.ReactNode;

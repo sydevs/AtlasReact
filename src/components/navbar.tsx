@@ -5,7 +5,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
 } from "@nextui-org/react";
@@ -14,7 +13,7 @@ import clsx from "clsx";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { Logo, HelpIcon } from "@/components/icons";
+import { Logo } from "@/components/icons";
 import LanguageSelector from "./base/language";
 
 export const Navbar = ({ ...props } : NavbarProps) => {

@@ -23,7 +23,7 @@ export default function VenuePage() {
 
   useEffect(() => {
     if (data && data.events.length < 2) {
-      navigate(`/area/${data.parentId}`, { replace: true });
+      navigate(data.parentPath, { replace: true });
     }
   }, [data, navigate]);
 

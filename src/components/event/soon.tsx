@@ -24,7 +24,7 @@ export function EventSoon({ firstDate, online } : EventSoonProps) {
     {online ?
       t('details.starting_soon') :
       t('details.starting_on', {
-        date: nextDate.toLocaleString({ month: 'short', day: 'numeric' }),
+        date: firstDate.toLocaleString({ month: 'short', day: 'numeric' }),
       })}
   </Chip>;
 }

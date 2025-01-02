@@ -24,9 +24,9 @@ export default defineConfig({
       },
     },
   },
-  experimental: {
+  /*experimental: {
     renderBuiltUrl(filename: string) {
       return "http://localhost:4173/" + filename;
     },
-  },
+  },*/
 })
