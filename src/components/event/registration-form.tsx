@@ -100,13 +100,22 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
       </Button>
 
       {mutation.isError &&
-        <Alert className="mt-4" color="secondary" title="Something went wrong">
-          {mutation.error.message}
-        </Alert>}
+        <Alert
+          className="mt-4"
+          color="secondary"
+          title="Something went wrong"
+          description={mutation.error.message}
+        />}
 
-      <Alert className="mt-4" color="primary" title={t('registration.online_notice_title')} variant="bordered" size="xs" hideIconWrapper>
-        {t('registration.online_notice')}
-      </Alert>
+      <Alert
+        className="mt-4"
+        color="primary"
+        title={t('registration.online_notice_title')}
+        description={t('registration.online_notice')}
+        variant="bordered"
+        size="xs"
+        hideIconWrapper
+      />
 
     </Form>
   );
