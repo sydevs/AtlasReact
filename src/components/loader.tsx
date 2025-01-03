@@ -32,7 +32,7 @@ export default function Loader({ isLoading, data, error, children }: Props) {
   if (error) {
     return (
       <div className="p-10 bg-background text-center">
-        <Alert color="danger" title={error.message} />
+        <Alert color="danger" title={error.message} description={null} />
       </div>
     );
   }
