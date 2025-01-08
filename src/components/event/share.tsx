@@ -60,7 +60,7 @@ export default function ShareModal({
         <ModalHeader className="flex flex-col gap-1">{t('registration.invite_friend')}</ModalHeader>
         <ModalBody>
           <div>
-            <Snippet color="secondary" className="text-sm w-full">
+            <Snippet color="secondary" className="text-sm w-full" hideSymbol={true}>
               {url}
             </Snippet>
           </div>

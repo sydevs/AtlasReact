@@ -83,7 +83,7 @@ export default function EventDetails({ event } : EventDetailsProps) {
         }}></div>}
       <EmblaCarousel
         slides={event.images || []}
-        options={{ containScroll: false }}
+        options={{ containScroll: false, duration: 20, loop: true }}
       />
       <div ref={registrationRef}>
         <RegistrationSection event={event} onShareOpen={onOpen} />

@@ -2,16 +2,22 @@ import * as React from "react";
 import { IconSvgProps } from "@/types";
 
 type BaseIconProps = {
-  view: string;
-  fill?: string;
+  view?: string;
+  size?: number;
   paths?: string[] | undefined;
+  pathProps?: React.SVGProps<SVGPathElement>;
 };
 
 export const BaseIcon: React.FC<BaseIconProps & IconSvgProps> = ({
   size = 24,
+  view = "0 0 24 24",
   paths = [],
-  fill = "currentColor",
-  children, height, view, ...props
+  pathProps = {
+    fill: "currentColor",
+    fillRule: "evenodd",
+    clipRule: "evenodd"
+  },
+  children, height, ...props
 }) => (
   <svg
     fill="none"
@@ -27,7 +33,7 @@ export const BaseIcon: React.FC<BaseIconProps & IconSvgProps> = ({
     {children ?
       children :
       paths.map((path, index) => (
-        <path key={index} fill={fill} fillRule="evenodd" d={path} clipRule="evenodd" />
+        <path key={index} d={path} {...pathProps} />
       ))}
   </svg>
 );

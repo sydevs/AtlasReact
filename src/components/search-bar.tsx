@@ -1,9 +1,9 @@
 import React, { useCallback, useRef } from 'react';
-import { OnlineIcon, LeftArrowIcon, DownArrowIcon, SearchIcon, CloseIcon } from "@/components/icons";
+import { LeftArrowIcon, DownArrowIcon, SearchIcon, CloseIcon } from "@/components/icons";
 import SearchBox from "@/components/mapbox/search";
 import { GeocodeFeature } from '@mapbox/search-js-core';
 import { useNavigate } from "react-router";
-import { Chip } from "@nextui-org/react";
+import { Switch } from "@nextui-org/react";
 import { useSearchState } from '@/config/store';
 import { useTranslation } from 'react-i18next';
 import { useBreakpoint } from '@/config/responsive';
@@ -64,20 +64,17 @@ export default function SearchBar({
           <CloseIcon size={24} onClick={() => setIsSearching(false)} /> :
           <SearchIcon size={24} onClick={() => setIsSearching(true)} />)}
       </div>
-      {filterable && <Chip
-          color={onlineOnly ? "secondary" : "primary"}
-          variant={onlineOnly ? "shadow" : "light"}
-          radius="sm"
-          size="sm"
-          classNames={{
-            base: "mt-2 hover:opacity-hover cursor-pointer",
-            content: "uppercase font-bold"
-          }}
-          onClick={() => setOnlineOnly(!onlineOnly)}
-          startContent={<OnlineIcon className='mr-0.5' />}
-        >
-          {t('show_online_classes')}
-        </Chip>}
+      {filterable && <Switch
+        color="primary"
+        size="sm"
+        className="mt-2 hover:opacity-hover"
+        isSelected={onlineOnly}
+        onValueChange={setOnlineOnly}
+      >
+        <div className="font-semibold text-content1-foreground">
+          {t(onlineOnly ? 'showing_online_classes' : 'show_online_classes')}
+        </div>
+      </Switch>}
       {!isMd && eventCount &&
         <div className="mt-2 text-center text-sm font-semibold uppercase leading-snug">
           <span className="hover:underline cursor-pointer" onClick={executeScroll}>

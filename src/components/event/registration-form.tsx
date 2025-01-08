@@ -107,14 +107,15 @@ export default function RegistrationForm({ event, setSubmitted }: Props) {
           description={mutation.error.message}
         />}
 
-      <Alert
-        className="mt-4"
-        color="primary"
-        title={t('registration.online_notice_title')}
-        description={t('registration.online_notice')}
-        variant="bordered"
-        hideIconWrapper
-      />
+      {event.online &&
+        <Alert
+          className="mt-4"
+          color="primary"
+          title={t('registration.online_notice_title')}
+          description={t('registration.online_notice')}
+          variant="bordered"
+          hideIconWrapper
+        />}
 
     </Form>
   );

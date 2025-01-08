@@ -1,8 +1,9 @@
 import { Event } from "@/types";
 import { useState } from "react";
-import { ShareIcon, PlusSquareIcon } from "@/components/icons";
+import { ShareIcon, PlusSquareIcon, ExternalIcon } from "@/components/icons";
 import { useTranslation } from "react-i18next";
 import RegistrationForm from "./registration-form";
+import { Button, Link } from "@nextui-org/react";
 
 type Props = {
   event: Event;
@@ -44,10 +45,21 @@ export default function RegistrationSection({ event, onShareOpen }: Props) {
             </div>
           </div>
         </> :
-        <RegistrationForm
-          event={event}
-          setSubmitted={setSubmitted}
-        />}
+        event.registration.mode == 'native' ?
+          <RegistrationForm
+            event={event}
+            setSubmitted={setSubmitted}
+          /> :
+          <Link className="block w-full" href={event.registration.externalUrl} target="_blank">
+            <Button
+              className="w-full rounded-sm font-semibold tracking-wider"
+              color="primary"
+              variant="flat"
+            >
+              {t('registration.submit')}
+              <ExternalIcon />
+            </Button>
+          </Link>}
     </>
   );
 }

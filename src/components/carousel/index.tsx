@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef } from 'react'
-import { Image } from '@nextui-org/react'
 import {
   EmblaCarouselType,
   EmblaEventType,
@@ -13,6 +12,7 @@ import {
 } from './arrows'
 import { DotButton, useDotButton } from './dots'
 import { EventImage } from '@/types/event'
+import LightboxImage from '../base/lightbox-image'
 
 const TWEEN_FACTOR_BASE = 0.2
 
@@ -108,20 +108,19 @@ const EmblaCarousel: React.FC<PropType> = ({
     <div className="embla">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {slides.map((_image, index) => (
+          {slides.map((image, index) => (
             <div className="embla__slide cursor-zoom-in" key={index}>
               <div className="embla__parallax">
-                <a className="embla__parallax__layer cursor-zoom-in" target="_blank" rel="noopener noreferrer" href={`https://picsum.photos/600/350?v=${index}`}>
-                  <Image
-                    width="320px"
-                    height="192px"
-                    alt="Your alt text"
+                <a className="embla__parallax__layer">
+                  <LightboxImage
                     className="embla__slide__img embla__parallax__img"
                     classNames={{
                       wrapper: "rounded-sm",
                       img: "embla__slide__img embla__parallax__img",
                     }}
-                    src={`https://picsum.photos/600/350?v=${index}`}
+                    thumbnailUrl={image.thumbnailUrl}
+                    imageUrl={image.url}
+                    alt={image.altText || undefined}
                   />
                 </a>
               </div>
