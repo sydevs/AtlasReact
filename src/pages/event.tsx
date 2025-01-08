@@ -7,9 +7,9 @@ import { Main } from "@/components/base/main";
 import { useNavigationState, useViewState } from "@/config/store";
 import { useMap } from "react-map-gl";
 import EventMetadata from "@/components/event/metadata";
-import EventDetails from "@/components/event/details";
 import { Link } from "@nextui-org/react";
 import { LeftArrowIcon } from "@/components/icons";
+import EventPanel from "@/components/event/panel";
 
 export default function EventPage() {
   const { id } = useParams();
@@ -50,14 +50,14 @@ export default function EventPage() {
 
   return (
     <Main width={467} mapWindow={180}>
-      <Link className="text-3xl absolute top-7 left-1.5 z-10" href={returnPath || "/"}>
+      <Link className="text-3xl absolute top-5 left-2.5 z-20 bg-background rounded-md hover:opacity-100 hover:bg-primary-50 transition-colors" href={returnPath || "/"}>
         <LeftArrowIcon size={32} className="text-lg" />
       </Link>
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
             <EventMetadata event={data} />
-            <EventDetails event={data} />
+            <EventPanel event={data} />
           </>}
       </Loader>
     </Main>

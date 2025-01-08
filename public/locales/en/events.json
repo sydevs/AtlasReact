@@ -1,14 +1,16 @@
 {
   "details": {
     "this_class_is": "This class is",
+    "online_class_via": "Online Class via %{software}",
     "hosted_from": "Hosted from %{city}",
     "online": "Online",
     "get_directions": "Get Directions",
-    "register": "Register",
+    "contact_host": "Contact the host",
     "tel": "tel: %{phoneNumber}",
     "starting_soon": "Starting soon",
     "starting_on": "Starting %{date}",
-    "more_info": "More info"
+    "more_info": "More info",
+    "share": "Share"
   },
   "timing": {
     "converted_to": "Converted to %{timezone} (%{offset})",
@@ -24,16 +26,17 @@
     "name": "Your name",
     "email": "Your email",
     "submit": "Register",
-    "confirmation": "Thank you for registering!",
+    "cancel": "Cancel",
+    "thank_you": "Thank you for registering!",
     "followup": "You will receive an email confirmation shortly",
-    "register_again": "Register someone else",
     "invite_friend": "Invite a friend along",
     "privacy_policy": "By submitting you confirm you agree to receive follow up messages about this and similar events, in accordance with our privacy policy.",
     "online_notice_title": "Online Session",
-    "online_notice": "The link to this class will be emailed to you."
+    "online_notice": "The link to this class will be emailed to you.",
+    "okay": "Okay"
   },
   "recurrence": {
-    "daily": "Daily",
+    "daily": "Every Day",
     "monday": "Mondays",
     "tuesday": "Tuesdays",
     "wednesday": "Wednesdays",

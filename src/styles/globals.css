@@ -30,3 +30,21 @@
     @apply backdrop-blur-lg backdrop-saturate-150 bg-background/90 hover:bg-background/70;
   }
 }
+
+@layer utilities {
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .flex-center-x {
+    @apply flex justify-center;
+  }
+
+  .flex-center-y {
+    @apply flex items-center;
+  }
+
+  .colored-links a {
+    @apply text-primary hover:opacity-hover !important;
+  }
+}

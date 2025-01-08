@@ -41,7 +41,7 @@ export const EventRegistrationSchema = z.object({
 export const EventImageSchema = z.object({
   url: z.string().url(),
   thumbnailUrl: z.string().url(),
-  altText: z.string().nullish(),
+  altText: z.string().optional(),
 })
 
 export const EventQuestionSchema = z.object({
