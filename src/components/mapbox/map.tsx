@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
-import ReactMapGL, { GeoJSONSource, GeolocateControl, Layer, MapMouseEvent, MapRef, Source } from 'react-map-gl';
+import { useCallback, useEffect } from 'react';
+import ReactMapGL, { GeoJSONSource, GeolocateControl, Layer, MapMouseEvent, PaddingOptions, Source } from 'react-map-gl';
 import { clusterLayer, selectedPointLayer, unclusteredPointLayer, selectedAreaLayer, boundsLayer } from './layers';
 import { useNavigationState, useViewState } from "@/config/store";
 import { useQuery } from '@tanstack/react-query';
 import api from '@/config/api';
 import { useLocation, useNavigate } from 'react-router';
-import { useRef } from 'react';
 import { useBreakpoint } from '@/config/responsive';
 import useLocale from '@/hooks/use-locale';
 import { useTheme } from '@/hooks/use-theme';
 import { useShallow } from 'zustand/react/shallow';
+import useMapbox from '@/hooks/use-mapbox';
 
 const MAP_STYLES = {
   light: "mapbox://styles/sydevadmin/ck7g6nag70rn11io09f45odkq",
@@ -19,23 +19,9 @@ const MAP_STYLES = {
 const DEBUG_BOUNDARY = false
 const DEBUG_PADDING = false
 
-export function computePadding(isMd: boolean) {
-  const mapRect = document.getElementById('mapbox')?.getBoundingClientRect()
-  const mainRect = document.getElementById('main')?.getBoundingClientRect()
-
-  if (!mapRect || !mainRect) return { top: 20, bottom: 20, left: 20, right: 20 }
-
-  return {
-    top: 20,
-    bottom: 20 + (!isMd ? mapRect.bottom - mainRect.top : 0),
-    left: 20 + (isMd ? mainRect.right - mainRect.left : 0),
-    right: 20,
-  }
-}
-
 export default function Mapbox() {
   let navigate = useNavigate();
-  const mapRef = useRef<MapRef>(null);
+  const { mapbox, padding, updatePadding, moveMap } = useMapbox();
   const { zoom, latitude, longitude, setViewState, selection, boundary } = useViewState(
     useShallow((s) => ({
       zoom: s.zoom, latitude: s.latitude, longitude: s.longitude,
@@ -49,27 +35,24 @@ export default function Mapbox() {
   const { locale } = useLocale();
   const { theme } = useTheme();
 
-  // TODO: Remove this debug code (DEBUG_PADDING)
-  const [ padding, setPadding ] = useState({ top: 20, bottom: 20, left: 20, right: 20 })
-
   const { data } = useQuery({
     queryKey: ['geojson'],
     queryFn: () => api.getGeojson()
   });
 
   const selectFeature = useCallback((evt: MapMouseEvent) => {
-    if (!evt.features || !evt.features.length || !mapRef.current) return
+    if (!evt.features || !evt.features.length || !mapbox) return
     const feature = evt.features[0]
 
     if (feature.layer?.id === clusterLayer.id) {
-      const source = mapRef.current.getSource("events") as GeoJSONSource;
+      const source = mapbox.getSource("events") as GeoJSONSource;
       source.getClusterExpansionZoom(feature.properties?.cluster_id, (err, zoom) => {
-        if (err || !mapRef.current) return console.error(err)
+        if (err || !mapbox) return console.error(err)
   
-        mapRef.current.easeTo({
+        moveMap({
           // @ts-ignore
           center: feature.geometry.coordinates,
-          zoom: (zoom || mapRef.current.getZoom()) + 1,
+          zoom: (zoom || mapbox.getZoom()) + 1,
           duration: 500
         });
       });
@@ -83,55 +66,41 @@ export default function Mapbox() {
         });
       }
     }
-  }, [navigate, mapRef, zoom, latitude, longitude, setNavigationState]);
+  }, [navigate, mapbox, zoom, latitude, longitude, setNavigationState]);
 
   const hoverOnFeature = useCallback((evt: MapMouseEvent) => {
-    if (!mapRef.current) return
+    if (!mapbox) return
 
     // This is in order to render a clickable cursor on hover
-    mapRef.current.getCanvas().style.cursor = evt.features?.length ? 'pointer' : ''
-  }, [mapRef])
+    mapbox.getCanvas().style.cursor = evt.features?.length ? 'pointer' : ''
+  }, [mapbox])
 
   useEffect(() => {
-    if (!mapRef.current) return
-    const map = mapRef.current
+    if (!mapbox) return
 
-    const updatePadding = (evt?: Event) => {
-      const mapRect = map.getCanvas().getBoundingClientRect()
-      const mainRect = document.getElementById('main')?.getBoundingClientRect()
+    const resetPadding = (evt?: Event) => {
+      const padding = updatePadding()
 
-      if (!mapRect || !mainRect) return
-
-      const padding = {
-        top: 20,
-        bottom: 20 + (!isMd ? mapRect.bottom - mainRect.top : 0),
-        left: 20 + (isMd ? mainRect.right - mainRect.left : 0),
-        right: 20,
-      }
-
-      if (evt?.type) {
-        map.setPadding(padding)
+      if (evt?.type || mapbox.isEasing()) {
+        console.log('set padding', padding)
+        mapbox.setPadding(padding as PaddingOptions)
       } else {
-        map.easeTo({ padding })
-      }
-
-      if (DEBUG_PADDING) {
-        console.log('updatePadding', mapRect, mainRect, "=>", padding)
-        setPadding(padding)
+        console.log('ease to padding', padding)
+        moveMap({ padding })
       }
     }
 
-    updatePadding()
-    window.addEventListener('resize', updatePadding)
-    window.addEventListener('orientationchange', updatePadding)
-    window.addEventListener('scroll', updatePadding)
+    resetPadding()
+    window.addEventListener('resize', resetPadding)
+    window.addEventListener('orientationchange', resetPadding)
+    window.addEventListener('scroll', resetPadding)
 
     return () => {
-      window.removeEventListener('resize', updatePadding)
-      window.removeEventListener('orientationchange', updatePadding)
-      window.removeEventListener('scroll', updatePadding)
+      window.removeEventListener('resize', resetPadding)
+      window.removeEventListener('orientationchange', resetPadding)
+      window.removeEventListener('scroll', resetPadding)
     }
-  }, [mapRef, isMd, location])
+  }, [mapbox, isMd, location])
 
   return (
     <ReactMapGL
@@ -148,7 +117,6 @@ export default function Mapbox() {
       attributionControl={false}
       // @ts-ignore - Language is a valid property
       language={locale} // TOOD: Make sure this switches when locale changes
-      ref={mapRef}
     >
       {DEBUG_PADDING &&
         <div className='absolute border-3 border-dashed border-red-700 pointer-events-none' style={padding} />}

@@ -87,6 +87,7 @@ function EventImageCarousel({
         height="100%"
         className={`rounded-lg ${onOpen && 'cursor-zoom-in'}`}
         onClick={onOpen}
+        isBlurred
       />
       {/*images.map((image, i) =>
         <Image

@@ -6,15 +6,15 @@ import SearchBar from "@/components/search-bar";
 import { List, ListItem } from "@/components/list";
 import { Main } from "@/components/base/main";
 import { Helmet } from "react-helmet-async";
-import { useMap } from "react-map-gl";
 import { useEffect } from "react";
 import { bboxPolygon } from "@turf/bbox-polygon";
 import { useViewState } from "@/config/store";
 import { useTranslation } from "react-i18next";
+import useMapbox from "@/hooks/use-mapbox";
 
 export default function RegionPage() {
   let { id } = useParams();
-  const { mapbox } = useMap();
+  const { fitBounds } = useMapbox();
   const { t } = useTranslation('common');
   const setBoundary = useViewState(s => s.setBoundary);
   const { data, isLoading, error } = useQuery({
@@ -23,11 +23,11 @@ export default function RegionPage() {
   });
 
   useEffect(() => {
-    if (mapbox && data) {
+    if (data) {
       setBoundary(bboxPolygon(data.bounds))
-      mapbox.fitBounds(data.bounds)
+      fitBounds(data.bounds)
     }
-  }, [data, mapbox]);
+  }, [data, fitBounds]);
 
   return (
     <Main>

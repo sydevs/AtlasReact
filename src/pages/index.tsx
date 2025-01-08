@@ -10,14 +10,16 @@ import { Helmet } from "react-helmet-async";
 import { CircleFlag } from 'react-circle-flags'
 import { useTranslation } from "react-i18next";
 import useLocale from "@/hooks/use-locale";
-import { useMap } from "react-map-gl";
 import { useEffect } from "react";
+import { useSearchParams } from "react-router";
+import useMapbox from "@/hooks/use-mapbox";
 
 export default function IndexPage() {
   const { t } = useTranslation('common');
+  const [searchParams] = useSearchParams();
   const { regionNames } = useLocale();
   const onlineOnly = useSearchState(s => s.onlineOnly);
-  const { mapbox } = useMap();
+  const { moveMap, fitBounds } = useMapbox();
   const setBoundary = useViewState(s => s.setBoundary);
   const [ zoom, latitude, longitude ] = useViewState(useShallow(s => [s.zoom, s.latitude, s.longitude]))
   const { data, isLoading, error } = useQuery({
@@ -28,11 +30,20 @@ export default function IndexPage() {
   const showCountries = zoom < 7 && !onlineOnly;
 
   useEffect(() => {
-    if (mapbox) {
-      setBoundary(undefined)
-      mapbox.easeTo({ zoom: 0 })
+    setBoundary(undefined)
+    const bbox = searchParams.get('bbox')
+    const center = searchParams.get('center')
+
+    if (bbox) {
+      let bounds = bbox.split(',').map(v => parseFloat(v)) as [number, number, number, number]
+      fitBounds(bounds)
+    } else if (center) {
+      let coords = center.split(',').map(v => parseFloat(v)) as [number, number]
+      moveMap({ center: { lng: coords[0], lat: coords[1] }, zoom: 15 })
+    } else {
+      moveMap({ zoom: 0 })
     }
-  }, [data, mapbox, setBoundary]);
+  }, [data, fitBounds, moveMap, setBoundary]);
 
   return (
     <Main footerHeight={170}>

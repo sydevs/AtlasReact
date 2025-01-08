@@ -7,12 +7,12 @@ import { EventsList } from "@/components/list";
 import { useEffect } from "react";
 import { Main } from "@/components/base/main";
 import { Helmet } from "react-helmet-async";
-import { useMap } from "react-map-gl";
 import { useTranslation } from "react-i18next";
+import useMapbox from "@/hooks/use-mapbox";
 
 export default function VenuePage() {
   const { id } = useParams();
-  const { mapbox } = useMap();
+  const { moveMap } = useMapbox();
   const { t } = useTranslation('common');
   const navigate = useNavigate();
 
@@ -28,10 +28,10 @@ export default function VenuePage() {
   }, [data, navigate]);
 
   useEffect(() => {
-    if (mapbox && data) {
-      mapbox.easeTo({ center: [data.longitude, data.latitude], zoom: 13 })
+    if (data) {
+      moveMap({ center: [data.longitude, data.latitude], zoom: 13 })
     }
-  }, [data, mapbox]);
+  }, [data, moveMap]);
 
   return (
     <Main mapWindow={240}>

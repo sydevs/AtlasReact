@@ -5,15 +5,15 @@ import { useParams } from "react-router";
 import { useEffect } from "react";
 import { Main } from "@/components/base/main";
 import { useNavigationState, useViewState } from "@/config/store";
-import { useMap } from "react-map-gl";
 import EventMetadata from "@/components/event/metadata";
 import { Link } from "@nextui-org/react";
 import { LeftArrowIcon } from "@/components/icons";
 import EventPanel from "@/components/event/panel";
+import useMapbox from "@/hooks/use-mapbox";
 
 export default function EventPage() {
   const { id } = useParams();
-  const { mapbox } = useMap();
+  const { mapbox, moveMap } = useMapbox();
   const returnPath = useNavigationState(s => s.returnPath);
   const returnViewState = useNavigationState(s => s.returnViewState);
   const setMapSelection = useViewState(s => s.setSelection);
@@ -30,7 +30,7 @@ export default function EventPage() {
     if (!mapbox || !data) return;
     
     setMapSelection({ ...data.location, approximate: data.online })
-    mapbox.easeTo({
+    moveMap({
       center: [data.location.longitude, data.location.latitude],
       zoom: data.online ? 10 : 15,
     })
@@ -38,12 +38,12 @@ export default function EventPage() {
     return () => {
       setMapSelection(null)
       if (returnViewState) {
-        mapbox.easeTo({
+        moveMap({
           center: [returnViewState.longitude, returnViewState.latitude],
           zoom: returnViewState.zoom,
         })
       } else {
-        mapbox.zoomTo(mapbox.getZoom() - 2)
+        moveMap({ zoom: mapbox.getZoom() - 2 })
       }
     }
   }, [data, mapbox])

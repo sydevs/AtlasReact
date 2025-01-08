@@ -6,16 +6,16 @@ import { List, ListItem } from "@/components/list";
 import SearchBar from "@/components/search-bar";
 import { Main } from "@/components/base/main";
 import { Helmet } from "react-helmet-async";
-import { useMap } from "react-map-gl";
 import { useEffect } from "react";
 import { useViewState } from "@/config/store";
 import { bboxPolygon } from "@turf/bbox-polygon";
 import { useTranslation } from "react-i18next";
 import useLocale from "@/hooks/use-locale";
+import useMapbox from "@/hooks/use-mapbox";
 
 export default function CountryPage() {
   let { countryCode } = useParams();
-  const { mapbox } = useMap();
+  const { fitBounds } = useMapbox();
   const { t } = useTranslation('common');
   const { regionNames } = useLocale();
   const setBoundary = useViewState(s => s.setBoundary);
@@ -25,11 +25,11 @@ export default function CountryPage() {
   });
 
   useEffect(() => {
-    if (mapbox && data) {
+    if (data) {
       setBoundary(bboxPolygon(data.bounds))
-      mapbox.fitBounds(data.bounds)
+      fitBounds(data.bounds)
     }
-  }, [data, mapbox]);
+  }, [data, fitBounds]);
 
   const countryName = data && (regionNames.of(data.code) || data.label)
 

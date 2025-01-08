@@ -13,7 +13,6 @@ type Theme = typeof ThemeProps.light | typeof ThemeProps.dark;
 export const useTheme = (defaultTheme?: Theme) => {
   const [theme, setTheme] = useState<Theme>(() => {
     const storedTheme = localStorage.getItem(ThemeProps.key) as Theme | null;
-
     return storedTheme || (defaultTheme ?? ThemeProps.light);
   });
 
