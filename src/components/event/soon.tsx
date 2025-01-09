@@ -1,10 +1,12 @@
 import Chip from "@/components/base/chip";
+import useLocale from "@/hooks/use-locale";
 import { DateTime } from "luxon";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-type EventSoonProps = {
+type EventSoonChipProps = {
   online: boolean;
-  firstDate: DateTime;
+  firstDate: Date;
 };
 
 export function isSoon(nextDate: DateTime, online: boolean) {
@@ -13,18 +15,21 @@ export function isSoon(nextDate: DateTime, online: boolean) {
   return 0 < diff && diff < 1;
 }
 
-export function EventSoon({ firstDate, online } : EventSoonProps) {
-  if (!isSoon(firstDate, online)) {
+export function EventSoonChip({ firstDate, online } : EventSoonChipProps) {
+  const date = useMemo(() => DateTime.fromJSDate(firstDate), [firstDate]);
+
+  if (!isSoon(date, online)) {
     return null;
   }
 
   const { t } = useTranslation('events');
+  const { locale } = useLocale();
 
   return <Chip color="primary">
     {online ?
       t('details.starting_soon') :
       t('details.starting_on', {
-        date: firstDate.toLocaleString({ month: 'short', day: 'numeric' }),
+        date: date.setLocale(locale).toLocaleString({ month: 'short', day: 'numeric' }),
       })}
   </Chip>;
 }

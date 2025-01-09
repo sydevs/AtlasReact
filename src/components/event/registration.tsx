@@ -16,7 +16,7 @@ import {
   Link,
   ButtonProps,
 } from "@nextui-org/react";
-import { Event } from "@/types";
+import { Event, EventRegistration, EventTiming } from "@/types";
 import { FieldErrors, useForm, UseFormRegister } from "react-hook-form"
 import { Registration, RegistrationSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,6 +41,7 @@ type RegistrationButtonProps = {
 } & ButtonProps;
 
 export function RegistrationButton({ event, ...buttonProps }: RegistrationButtonProps) {
+  if (!event.registration || !event.timing) return null;
   const {t} = useTranslation('events');
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const isNative = event.registration.mode == 'native'
@@ -58,7 +59,14 @@ export function RegistrationButton({ event, ...buttonProps }: RegistrationButton
             {t('registration.register_now')}
           </span>
         </Button>
-        <RegistrationModal event={event} isOpen={isOpen} onOpenChange={onOpenChange} />
+        <RegistrationModal
+          eventId={event.id}
+          eventLabel={event.label}
+          eventUrl={event.url}
+          eventTiming={event.timing}
+          eventRegistration={event.registration}
+          isOnline={event.online}
+          isOpen={isOpen} onOpenChange={onOpenChange} />
       </>
     );
   } else {
@@ -84,12 +92,20 @@ export function RegistrationButton({ event, ...buttonProps }: RegistrationButton
 }
 
 type RegistrationModalProps = {
-  event: Event;
+  eventId: number;
+  eventLabel: string;
+  eventUrl: string;
+  eventTiming: EventTiming;
+  eventRegistration: EventRegistration;
+  isOnline: boolean;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
 };
 
-export function RegistrationModal({ event, isOpen, onOpenChange }: RegistrationModalProps) {
+export function RegistrationModal({
+  eventId, eventLabel, eventUrl, eventTiming, eventRegistration, isOnline,
+  isOpen, onOpenChange
+}: RegistrationModalProps) {
   const [ submitted, setSubmitted ] = useState(false);
   const { t } = useTranslation('events');
 
@@ -101,9 +117,9 @@ export function RegistrationModal({ event, isOpen, onOpenChange }: RegistrationM
   } = useForm<Registration>({ resolver: zodResolver(RegistrationSchema) });
 
   const mutation = useMutation({
-    scope: { id: `registration-for-${event.id}` },
+    scope: { id: `registration-for-${eventId}` },
     mutationFn: (newRegistration: Registration) => {
-      return api.createRegistration(event.id, newRegistration);
+      return api.createRegistration(eventId, newRegistration);
     },
     onSuccess: () => {
       setSubmitted(true)
@@ -115,7 +131,7 @@ export function RegistrationModal({ event, isOpen, onOpenChange }: RegistrationM
     <Modal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      placement="top-center"
+      placement="bottom-center"
       backdrop="blur"
       onClose={() => setSubmitted(false)}
     >
@@ -127,7 +143,9 @@ export function RegistrationModal({ event, isOpen, onOpenChange }: RegistrationM
           {(onClose) => (
             <>
               <ModalHeader>
-                {t(submitted ? 'registration.thank_you' : 'registration.register_now')}
+                <h2 className="text-center text-xl font-semibold flex-grow mt-2">
+                  {t(submitted ? 'registration.thank_you' : 'registration.register_now')}
+                </h2>
               </ModalHeader>
               <ModalBody>
                 {submitted ? 
@@ -136,10 +154,10 @@ export function RegistrationModal({ event, isOpen, onOpenChange }: RegistrationM
                     <div className="font-semibold mt-2">
                       {t('registration.invite_friend')}
                     </div>
-                    <ShareContent label={event.label} url={event.url} />
+                    <ShareContent label={eventLabel} url={eventUrl} />
                   </div> :
                   <>
-                    <RegistrationFields event={event} register={register} errors={errors} />
+                    <RegistrationFields timingOptions={eventTiming} registrationOptions={eventRegistration} register={register} errors={errors} />
 
                     {mutation.isError &&
                       <Alert
@@ -150,9 +168,9 @@ export function RegistrationModal({ event, isOpen, onOpenChange }: RegistrationM
                       />}
                   </>}
                 
-                {event.online &&
+                {isOnline &&
                     <Alert
-                      className="mt-4"
+                      classNames={{ base: "mt-3" }}
                       color="primary"
                       title={t('registration.online_notice_title')}
                       description={t('registration.online_notice')}
@@ -183,16 +201,17 @@ export function RegistrationModal({ event, isOpen, onOpenChange }: RegistrationM
 }
 
 type RegistrationFieldsProps = {
-  event: Event;
+  timingOptions: EventTiming;
+  registrationOptions: EventRegistration;
   register: UseFormRegister<Registration>;
   errors: FieldErrors<Registration>;
 }
 
-export function RegistrationFields({ event, register, errors }: RegistrationFieldsProps) {
+export function RegistrationFields({ timingOptions, registrationOptions, register, errors }: RegistrationFieldsProps) {
   const { t } = useTranslation('events');
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <Select
         {...register("startingAt", { required: true })}
         {...INPUT_STYLE}
@@ -200,9 +219,9 @@ export function RegistrationFields({ event, register, errors }: RegistrationFiel
         isRequired
         errorMessage={errors.startingAt?.message}
         isInvalid={!!errors.startingAt}
-        defaultSelectedKeys={[event.timing.upcomingDates[0]?.toISOString()]}
+        defaultSelectedKeys={[timingOptions.upcomingDates[0]?.toISOString()]}
       >
-        {event.timing.upcomingDates.map((date) => {
+        {timingOptions.upcomingDates.map((date) => {
           let dateTime = DateTime.fromJSDate(date);
           return (
             <SelectItem key={date.toISOString()} value={date.toISOString()} textValue={dateTime.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)} className="capitalize">
@@ -232,7 +251,7 @@ export function RegistrationFields({ event, register, errors }: RegistrationFiel
         isInvalid={!!errors.email}
       />
       
-      {event.registration.questions.map((question, index) => 
+      {registrationOptions.questions.map((question, index) => 
         <Textarea
           {...register(`questions.${question.slug}`)}
           {...INPUT_STYLE}
@@ -246,6 +265,6 @@ export function RegistrationFields({ event, register, errors }: RegistrationFiel
       <p className="text-xs text-center">
         {t('registration.privacy_policy')}
       </p>
-    </>
+    </div>
   );
 }

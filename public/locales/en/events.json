@@ -1,11 +1,10 @@
 {
   "details": {
     "this_class_is": "This class is",
-    "online_class_via": "Online Class via %{software}",
-    "hosted_from": "Hosted from %{city}",
     "online": "Online",
     "get_directions": "Get Directions",
     "contact_host": "Contact the host",
+    "contact_for_timing": "Contact host for timings",
     "tel": "tel: %{phoneNumber}",
     "starting_soon": "Starting soon",
     "starting_on": "Starting %{date}",

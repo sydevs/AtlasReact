@@ -14,17 +14,19 @@ export const EventTimingSchema = z.object({
 })
 
 export const EventContactSchema = z.object({
-  phoneName: z.string().nullable(),
-  phoneNumber: z.string().nullable(),
+  phoneName: z.string(),
+  phoneNumber: z.string(),
 })
 
 export const EventLocationSchema = z.object({
   id: z.number(),
-  type: z.string(),
-  directionsUrl: z.string().nullish(),
-  address: z.string(),
+  type: z.enum(['venue', 'area']),
+  label: z.string(),
+  subtitle: z.string(),
   latitude: z.number(),
   longitude: z.number(),
+  directionsUrl: z.string().optional(),
+  platform: z.enum(['zoom', 'google_meet', 'youtube']).optional(),
 })
 
 export const EventRegistrationSchema = z.object({
@@ -77,9 +79,9 @@ export const EventSchema = z.object({
   descriptionHtml: z.string().nullable(),
   category: z.enum(['dropin', 'course', 'single', 'festival', 'concert', 'inactive']),
 
-  registration: EventRegistrationSchema,
-  timing: EventTimingSchema,
-  contact: EventContactSchema,
+  registration: z.nullable(EventRegistrationSchema),
+  timing: z.nullable(EventTimingSchema),
+  contact: z.nullable(EventContactSchema),
   images: z.array(EventImageSchema),
   location: EventLocationSchema,
 }).merge(EventCoreSchema)

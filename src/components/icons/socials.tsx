@@ -112,9 +112,9 @@ const SOCIAL_ICONS : { [key: string]: React.FC<IconSvgProps> } = {
 }
 
 export function SocialIcon({
-  social,
+  platform,
   ...props
-}: { social : string } & IconSvgProps) {
-  const SocialIcon = SOCIAL_ICONS[social]
+}: { platform : string } & IconSvgProps) {
+  const SocialIcon = SOCIAL_ICONS[platform]
   return <SocialIcon {...props} />
 }

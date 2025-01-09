@@ -18,8 +18,8 @@ export default function EventMetaevent({ event } : EventMetaeventProps) {
     "@id": event.url,
     name: event.label,
     description: description,
-    startDate: event.timing.firstDate.toISOString(),
-    endDate: event.timing.lastDate?.toISOString(),
+    startDate: event.timing ? event.timing.firstDate.toISOString() : undefined,
+    endDate: event.timing ? event.timing.lastDate?.toISOString() : undefined,
     image: event.images[0]?.url,
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: `https://schema.org/${event.online ? 'OnlineEventAttendanceMode' : 'OfflineEventAttendanceMode'}`,
@@ -28,10 +28,11 @@ export default function EventMetaevent({ event } : EventMetaeventProps) {
       url: event.url,
     } : {
       "@type": "Place",
-      name: event.location.address,
+      name: event.location.label,
       address: {
         "@type": "PostalAddress",
-        streetAddress: event.location.address,
+        // TODO: Implement address fields in data
+        // streetAddress: event.location.street,
         // addressLocality: event.location.city,
         // addressRegion: event.location.state,
         // postalCode: event.location.postalCode,
@@ -43,7 +44,7 @@ export default function EventMetaevent({ event } : EventMetaeventProps) {
         longitude: event.location.longitude,
       },
     },
-    offers: {
+    offers: event.timing && event.registration ? {
       "@type": "Offer",
       url: event.url,
       price: 0,
@@ -51,7 +52,7 @@ export default function EventMetaevent({ event } : EventMetaeventProps) {
       availability: `https://schema.org/${event.registration.maxParticipants && event.registration.maxParticipants <= event.registration.participantCount ? 'OutOfStock' : 'InStock'}`,
       validFrom: event.timing.firstDate.toISOString(),
       validThrough: event.timing.lastDate?.toISOString(),
-    },
+    } : undefined,
     organizer: {
       "@type": "Organization",
       name: "We Meditate",
@@ -69,9 +70,10 @@ export default function EventMetaevent({ event } : EventMetaeventProps) {
       <meta property="og:title" content={event.label} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={event.url} />
-      <meta property="og:event:start_time" content={event.timing.firstDate.toISOString()} />
       <meta property="og:locale:alternate" content={event.languageCode} />
-      {event.timing.lastDate &&
+      {event.timing &&
+        <meta property="og:event:start_time" content={event.timing.firstDate.toISOString()} />}
+      {event.timing && event.timing.lastDate &&
         <meta property="og:event:end_time" content={event.timing.lastDate?.toISOString()} />}
       {event.images && event.images.length > 0 &&
         <meta property="og:image" content={event.images[0].url} />}

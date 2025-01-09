@@ -82,10 +82,8 @@ export default function Mapbox() {
       const padding = updatePadding()
 
       if (evt?.type || mapbox.isEasing()) {
-        console.log('set padding', padding)
         mapbox.setPadding(padding as PaddingOptions)
       } else {
-        console.log('ease to padding', padding)
         moveMap({ padding })
       }
     }

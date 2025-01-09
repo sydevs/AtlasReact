@@ -50,7 +50,7 @@ export default function EventPage() {
 
   return (
     <Main width={467} mapWindow={180}>
-      <Link className="text-3xl absolute top-5 left-2.5 z-20 bg-background rounded-md hover:opacity-100 hover:bg-primary-50 transition-colors" href={returnPath || "/"}>
+      <Link className="text-3xl absolute top-5 left-2.5 z-20 bg-background rounded hover:opacity-100 hover:bg-primary-50 transition-colors" href={returnPath || "/"}>
         <LeftArrowIcon size={32} className="text-lg" />
       </Link>
       <Loader isLoading={isLoading} error={error}>

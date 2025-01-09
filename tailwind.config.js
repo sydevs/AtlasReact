@@ -91,6 +91,13 @@ module.exports = {
   defaultTheme: 'light',
   darkMode: "class",
   plugins: [nextui({
+    layout: {
+      radius: {
+        small: "2px", // rounded-small
+        medium: "4px", // rounded-medium
+        large: "8px", // rounded-large
+      },
+    },
     themes: {
       light: {
         colors: {

@@ -7,7 +7,7 @@ import { useLocation } from "react-router";
 import { useCallback, useMemo } from "react";
 import { useShallow } from 'zustand/react/shallow'
 import { EventTime } from "../event/time";
-import { EventSoon } from "../event/soon";
+import { EventSoonChip } from "../event/soon";
 import { DateTime } from "luxon";
 import useLocale from "@/hooks/use-locale";
 import { useTranslation } from "react-i18next";
@@ -33,7 +33,6 @@ export default function EventItem({ event }: Props) {
   }, [location, zoom, latitude, longitude, setNavigationState]);
 
   const nextDate = useMemo(() => DateTime.fromJSDate(event.nextDate), [event.nextDate]);
-  const firstDate = useMemo(() => DateTime.fromJSDate(event.firstDate), [event.firstDate]);
 
   return (
     <Link href={event.path} onPress={handlePress} className="block px-6 text-inherit transition-colors hover:bg-primary-10">
@@ -54,8 +53,8 @@ export default function EventItem({ event }: Props) {
             />
           </div>
           <div className="flex mt-1 gap-1">
-            <EventSoon firstDate={firstDate.setLocale(locale)} online={event.online} />
-            
+            {event.firstDate &&
+              <EventSoonChip firstDate={event.firstDate} online={event.online} />}
             {event.online &&
               <Chip>{t('details.online')}</Chip>}
             {event.languageCode != locale &&

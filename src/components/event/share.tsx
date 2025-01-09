@@ -34,8 +34,8 @@ export function ShareButton({
   return (
     <>
       <Button
-        color="secondary"
-        variant="flat"
+        color="primary"
+        variant="faded"
         onPress={onOpen}
         {...buttonProps}
       >

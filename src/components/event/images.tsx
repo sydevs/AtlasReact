@@ -89,41 +89,26 @@ function EventImageCarousel({
         onClick={onOpen}
         isBlurred
       />
-      {/*images.map((image, i) =>
-        <Image
-          key={image.url}
-          src={image.url}
-          alt={image.altText}
-          width="100%"
-          height="100%"
-          onClick={onOpen}
+      {images.length > 1 &&
+        <div
           className={`
-            ${index === i && 'absolute bottom-0 left-0 right-0 z-0 opacity-0 pointer-events-none'}
-            ${onOpen && 'cursor-zoom-in'}
-            transition-opacity
-            rounded-sm
+            absolute left-0 right-0 z-10
+            ${isLarge ? 'bottom-5' : '-bottom-7'}
+            flex-center-x gap-2
           `}
-        />
-      )*/}
-      <div
-        className={`
-          absolute left-0 right-0 z-10
-          ${isLarge ? 'bottom-5' : '-bottom-7'}
-          flex-center-x gap-2
-        `}
-      >
-        {images.map((_image, i) => 
-          <Button
-            key={i}
-            className={`
-              min-w-0 w-20 h-${isLarge ? 5 : 4}
-              rounded-full shadow-md hover:opacity-hover
-              ${i === index ? 'bg-primary' : ''}
-            `}
-            onPress={() => setIndex(i)}
-          />
-        )}
-      </div>
+        >
+          {images.map((_image, i) => 
+            <Button
+              key={i}
+              className={`
+                min-w-0 w-20 h-${isLarge ? 5 : 4}
+                rounded-full shadow-md hover:opacity-hover
+                ${i === index ? 'bg-primary' : ''}
+              `}
+              onPress={() => setIndex(i)}
+            />
+          )}
+        </div>}
     </div>
   )
 }
