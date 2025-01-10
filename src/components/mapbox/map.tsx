@@ -130,6 +130,14 @@ export default function Mapbox() {
           <Layer {...clusterLayer} />
           <Layer {...unclusteredPointLayer} />
         </Source>}
+      {DEBUG_BOUNDARY && boundary &&
+        <Source
+          id="bounds"
+          type="geojson"
+          data={boundary}
+        >
+          <Layer {...boundsLayer} /> 
+        </Source>}
       {selection &&
         <Source
           id="selection"
@@ -146,14 +154,6 @@ export default function Mapbox() {
           }}
         >
           <Layer {...(selection.approximate ? selectedAreaLayer : selectedPointLayer)} /> 
-        </Source>}
-      {DEBUG_BOUNDARY && boundary &&
-        <Source
-          id="bounds"
-          type="geojson"
-          data={boundary}
-        >
-          <Layer {...boundsLayer} /> 
         </Source>}
       <GeolocateControl />
     </ReactMapGL>
