@@ -4,11 +4,12 @@
     "get_directions": "Obtenir un itinéraire",
     "contact_host": "Contacter l'hôte",
     "contact_for_timing": "Contacter l'hôte pour les horaires",
-    "tel": "tél : %{phoneNumber}",
+    "tel": "tél: %{phoneNumber}",
     "starting_soon": "Bientôt",
     "starting_on": "À partir du %{date}",
     "more_info": "Plus d'informations",
-    "share": "Partager"
+    "share": "Partager",
+    "hosted_from": "Organisé depuis %{city}"
   },
   "timing": {
     "converted_to": "Converti en %{timezone} (%{offset})"

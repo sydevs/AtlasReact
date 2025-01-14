@@ -8,7 +8,8 @@
     "starting_soon": "Binnenkort van start",
     "starting_on": "Vanaf %{date}",
     "more_info": "Meer informatie",
-    "share": "Deel"
+    "share": "Deel",
+    "hosted_from": "Gehost vanuit %{city}"
   },
   "timing": {
     "converted_to": "Omgerekend naar %{timezone} (%{offset})"

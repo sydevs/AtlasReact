@@ -8,7 +8,8 @@
     "starting_soon": "Starting soon",
     "starting_on": "Starting %{date}",
     "more_info": "More info",
-    "share": "Share"
+    "share": "Share",
+    "hosted_from": "Hosted from %{city}"
   },
   "timing": {
     "converted_to": "Converted to %{timezone} (%{offset})"

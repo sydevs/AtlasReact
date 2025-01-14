@@ -8,7 +8,8 @@
     "starting_soon": "Již brzy",
     "starting_on": "Od %{date}",
     "more_info": "Více informací",
-    "share": "Podíl"
+    "share": "Podíl",
+    "hosted_from": "Hostováno z %{city}"
   },
   "timing": {
     "converted_to": "Převedeno na %{timezone} (%{offset})"

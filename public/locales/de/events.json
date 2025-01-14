@@ -8,7 +8,8 @@
     "starting_soon": "Bald geht es los",
     "starting_on": "Beginn am %{date}",
     "more_info": "Weitere Informationen",
-    "share": "Aktie"
+    "share": "Aktie",
+    "hosted_from": "Gastgeber aus %{city}"
   },
   "timing": {
     "converted_to": "Konvertiert in %{timezone} (%{offset})"

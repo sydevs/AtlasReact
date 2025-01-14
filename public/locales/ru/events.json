@@ -8,7 +8,8 @@
     "starting_soon": "Скоро начнётся",
     "starting_on": "Начало %{date}",
     "more_info": "Дополнительная информация",
-    "share": "Делиться"
+    "share": "Делиться",
+    "hosted_from": "Ведущий из %{city}"
   },
   "timing": {
     "converted_to": "Преобразовано в %{timezone} (%{offset})"
