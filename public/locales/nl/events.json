@@ -37,12 +37,12 @@
     "friday": "Vrijdag",
     "saturday": "Zaterdag",
     "sunday": "Zondagen",
-    "weekly_1": "Elke %{weekdag}",
-    "weekly_2": "Elke 2e %{weekdag}",
-    "monthly_1st": "1e %{weekdag} van elke maand",
-    "monthly_2nd": "2e %{weekdag} van elke maand",
-    "monthly_3rd": "3e %{weekdag} van elke maand",
-    "monthly_4th": "4e %{weekdag} van elke maand",
-    "monthly_last": "Laatste %{weekdag} van elke maand"
+    "weekly_1": "Elke %{weekday}",
+    "weekly_2": "Elke 2e %{weekday}",
+    "monthly_1st": "1e %{weekday} van elke maand",
+    "monthly_2nd": "2e %{weekday} van elke maand",
+    "monthly_3rd": "3e %{weekday} van elke maand",
+    "monthly_4th": "4e %{weekday} van elke maand",
+    "monthly_last": "Laatste %{weekday} van elke maand"
   }
 }
