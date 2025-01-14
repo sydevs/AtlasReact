@@ -1,6 +1,5 @@
 {
   "details": {
-    "this_class_is": "This class is",
     "online": "Online",
     "get_directions": "Get Directions",
     "contact_host": "Contact the host",
@@ -12,12 +11,7 @@
     "share": "Share"
   },
   "timing": {
-    "converted_to": "Converted to %{timezone} (%{offset})",
-    "descriptor": {
-      "sessions_one": "One-time event",
-      "sessions_other": "%{count}-session course",
-      "ongoing": "This class is on-going"
-    }
+    "converted_to": "Converted to %{timezone} (%{offset})"
   },
   "registration": {
     "register_now": "Register Now",

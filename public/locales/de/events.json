@@ -1,0 +1,48 @@
+{
+  "details": {
+    "online": "Online",
+    "get_directions": "Wegbeschreibung abrufen",
+    "contact_host": "Kontaktieren Sie den Gastgeber",
+    "contact_for_timing": "Kontaktieren Sie den Gastgeber für die Zeiten",
+    "tel": "Tel.: %{phoneNumber}",
+    "starting_soon": "Bald geht es los",
+    "starting_on": "Beginn am %{date}",
+    "more_info": "Weitere Informationen",
+    "share": "Aktie"
+  },
+  "timing": {
+    "converted_to": "Konvertiert in %{timezone} (%{offset})"
+  },
+  "registration": {
+    "register_now": "Registrieren Sie sich jetzt",
+    "starting_date": "Startdatum",
+    "name": "Ihr Name",
+    "email": "Ihre E-Mail",
+    "submit": "Registrieren",
+    "cancel": "Stornieren",
+    "thank_you": "Vielen Dank für Ihre Registrierung!",
+    "followup": "Sie erhalten in Kürze eine E-Mail-Bestätigung",
+    "invite_friend": "Laden Sie einen Freund ein",
+    "privacy_policy": "Mit dem Absenden bestätigen Sie, dass Sie gemäß unserer Datenschutzrichtlinie damit einverstanden sind, Folgenachrichten zu diesem und ähnlichen Ereignissen zu erhalten.",
+    "online_notice_title": "Online-Sitzung",
+    "online_notice": "Der Link zu diesem Kurs wird Ihnen per E-Mail zugesandt.",
+    "okay": "Okay"
+  },
+  "recurrence": {
+    "daily": "Täglich",
+    "monday": "Montags",
+    "tuesday": "Dienstags",
+    "wednesday": "Mittwochs",
+    "thursday": "Donnerstags",
+    "friday": "Freitags",
+    "saturday": "Samstags",
+    "sunday": "Sonntags",
+    "weekly_1": "Jeden %{Wochentag}",
+    "weekly_2": "Jeden 2. %{Wochentag}",
+    "monthly_1st": "1. %{weekday} jedes Monats",
+    "monthly_2nd": "2. %{weekday} jedes Monats",
+    "monthly_3rd": "3. %{weekday} jedes Monats",
+    "monthly_4th": "4. %{weekday} jedes Monats",
+    "monthly_last": "Letzter %{weekday} jedes Monats"
+  }
+}

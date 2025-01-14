@@ -1,0 +1,23 @@
+{
+  "free_meditation_class": "Безкоштовний курс медитації",
+  "free_meditation_classes": "Безкоштовні заняття з медитації",
+  "language_selector": "Селектор мови",
+  "loading": "Завантаження...",
+  "show_online_classes": "Показати онлайн-класи",
+  "showing_online_classes": "Показ онлайн-класів",
+  "events": "події",
+  "locations": {
+    "title": "Безкоштовні курси медитації в %{location}",
+    "description_one": "%{count} безкоштовний курс медитації в %{location}",
+    "description_few": "%{count} безкоштовні заняття з медитації в %{location}",
+    "description_many": "%{count} безкоштовні заняття з медитації в %{location}",
+    "description_other": "%{count} безкоштовні заняття з медитації в %{location}"
+  },
+  "venues": {
+    "title": "Безкоштовні заняття з медитації в %{venue}",
+    "description_one": "%{count} безкоштовний курс медитації в %{venue}",
+    "description_few": "%{count} безкоштовні заняття з медитації в %{venue}",
+    "description_many": "%{count} безкоштовні заняття з медитації в %{venue}",
+    "description_other": "%{count} безкоштовні заняття з медитації в %{venue}"
+  }
+}

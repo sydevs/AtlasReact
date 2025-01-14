@@ -1,0 +1,48 @@
+{
+  "details": {
+    "online": "En línea",
+    "get_directions": "Obtener direcciones",
+    "contact_host": "Contacta al anfitrión",
+    "contact_for_timing": "Contacta al anfitrión para conocer los horarios.",
+    "tel": "teléfono: %{phoneNumber}",
+    "starting_soon": "Empezando pronto",
+    "starting_on": "%{fecha inicial}",
+    "more_info": "Más información",
+    "share": "Compartir"
+  },
+  "timing": {
+    "converted_to": "Convertido a %{timezone} (%{offset})"
+  },
+  "registration": {
+    "register_now": "Regístrese ahora",
+    "starting_date": "Fecha de inicio",
+    "name": "Su nombre",
+    "email": "Tu correo electrónico",
+    "submit": "Registro",
+    "cancel": "Cancelar",
+    "thank_you": "¡Gracias por registrarte!",
+    "followup": "Recibirás una confirmación por correo electrónico en breve",
+    "invite_friend": "Invita a un amigo",
+    "privacy_policy": "Al enviar, confirma que acepta recibir mensajes de seguimiento sobre este y eventos similares, de acuerdo con nuestra política de privacidad.",
+    "online_notice_title": "Sesión en línea",
+    "online_notice": "El enlace a esta clase se le enviará por correo electrónico.",
+    "okay": "Bueno"
+  },
+  "recurrence": {
+    "daily": "Cada día",
+    "monday": "lunes",
+    "tuesday": "martes",
+    "wednesday": "miércoles",
+    "thursday": "jueves",
+    "friday": "viernes",
+    "saturday": "sabados",
+    "sunday": "domingos",
+    "weekly_1": "Cada %{día laborable}",
+    "weekly_2": "Cada segundo %{día de la semana}",
+    "monthly_1st": "1er %{weekday} de cada mes",
+    "monthly_2nd": "2do %{weekday} de cada mes",
+    "monthly_3rd": "3er %{weekday} de cada mes",
+    "monthly_4th": "4.° %{weekday} de cada mes",
+    "monthly_last": "Último %{weekday} de cada mes"
+  }
+}

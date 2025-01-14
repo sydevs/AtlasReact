@@ -1,0 +1,21 @@
+{
+  "free_meditation_class": "Aula de meditação gratuita",
+  "free_meditation_classes": "Aulas gratuitas de meditação",
+  "language_selector": "Seletor de idioma",
+  "loading": "Carregando...",
+  "show_online_classes": "Mostrar aulas on-line",
+  "showing_online_classes": "Mostrando aulas on-line",
+  "events": "eventos",
+  "locations": {
+    "title": "Aulas gratuitas de meditação em %{location}",
+    "description_one": "%{count} aulas de meditação gratuitas em %{location}",
+    "description_many": "%{count} aulas de meditação gratuitas em %{location}",
+    "description_other": "%{count} aulas de meditação gratuitas em %{location}"
+  },
+  "venues": {
+    "title": "Aulas gratuitas de meditação em %{venue}",
+    "description_one": "%{count} aulas de meditação gratuitas em %{venue}",
+    "description_many": "%{count} aulas de meditação gratuitas em %{venue}",
+    "description_other": "%{count} aulas de meditação gratuitas em %{venue}"
+  }
+}

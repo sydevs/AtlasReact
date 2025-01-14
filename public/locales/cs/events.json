@@ -1,0 +1,48 @@
+{
+  "details": {
+    "online": "Online",
+    "get_directions": "Získejte trasu",
+    "contact_host": "Kontaktujte hostitele",
+    "contact_for_timing": "Kontaktujte hostitele pro načasování",
+    "tel": "tel: %{phoneNumber}",
+    "starting_soon": "Již brzy",
+    "starting_on": "Od %{date}",
+    "more_info": "Více informací",
+    "share": "Podíl"
+  },
+  "timing": {
+    "converted_to": "Převedeno na %{timezone} (%{offset})"
+  },
+  "registration": {
+    "register_now": "Zaregistrujte se nyní",
+    "starting_date": "Datum zahájení",
+    "name": "Vaše jméno",
+    "email": "Váš email",
+    "submit": "Rejstřík",
+    "cancel": "Zrušit",
+    "thank_you": "Děkujeme za registraci!",
+    "followup": "Brzy obdržíte potvrzení e-mailem",
+    "invite_friend": "Pozvěte přítele",
+    "privacy_policy": "Odesláním potvrzujete, že souhlasíte s přijímáním následných zpráv o této a podobných událostech v souladu s našimi zásadami ochrany osobních údajů.",
+    "online_notice_title": "Online relace",
+    "online_notice": "Odkaz na tento kurz vám bude zaslán e-mailem.",
+    "okay": "Dobře"
+  },
+  "recurrence": {
+    "daily": "Každý den",
+    "monday": "pondělí",
+    "tuesday": "úterý",
+    "wednesday": "středy",
+    "thursday": "čtvrtky",
+    "friday": "pátky",
+    "saturday": "soboty",
+    "sunday": "neděle",
+    "weekly_1": "Každý %{weekday}",
+    "weekly_2": "Každý 2. %{weekday}",
+    "monthly_1st": "1. %{weekday} každého měsíce",
+    "monthly_2nd": "2. %{weekday} každého měsíce",
+    "monthly_3rd": "3. %{weekday} každého měsíce",
+    "monthly_4th": "4. %{weekday} každého měsíce",
+    "monthly_last": "Poslední %{weekday} každého měsíce"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "details": {
+    "online": "Online",
+    "get_directions": "Routebeschrijving opvragen",
+    "contact_host": "Neem contact op met de gastheer",
+    "contact_for_timing": "Neem contact op met de gastheer voor de tijden",
+    "tel": "tel: %{telefoonnummer}",
+    "starting_soon": "Binnenkort van start",
+    "starting_on": "Vanaf %{date}",
+    "more_info": "Meer informatie",
+    "share": "Deel"
+  },
+  "timing": {
+    "converted_to": "Omgerekend naar %{timezone} (%{offset})"
+  },
+  "registration": {
+    "register_now": "Registreer nu",
+    "starting_date": "Startdatum",
+    "name": "Jouw naam",
+    "email": "Uw e-mail",
+    "submit": "Register",
+    "cancel": "Annuleren",
+    "thank_you": "Bedankt voor uw registratie!",
+    "followup": "U ontvangt binnenkort een e-mailbevestiging",
+    "invite_friend": "Nodig een vriend uit",
+    "privacy_policy": "Door uw bericht in te dienen, bevestigt u dat u akkoord gaat met het ontvangen van vervolgberichten over deze en soortgelijke evenementen, in overeenstemming met ons privacybeleid.",
+    "online_notice_title": "Online sessie",
+    "online_notice": "De link naar deze les wordt naar je gemaild.",
+    "okay": "Oké"
+  },
+  "recurrence": {
+    "daily": "Elke dag",
+    "monday": "Maandag",
+    "tuesday": "dinsdag",
+    "wednesday": "Woensdag",
+    "thursday": "Donderdagen",
+    "friday": "Vrijdag",
+    "saturday": "Zaterdag",
+    "sunday": "Zondagen",
+    "weekly_1": "Elke %{weekdag}",
+    "weekly_2": "Elke 2e %{weekdag}",
+    "monthly_1st": "1e %{weekdag} van elke maand",
+    "monthly_2nd": "2e %{weekdag} van elke maand",
+    "monthly_3rd": "3e %{weekdag} van elke maand",
+    "monthly_4th": "4e %{weekdag} van elke maand",
+    "monthly_last": "Laatste %{weekdag} van elke maand"
+  }
+}

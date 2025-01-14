@@ -1,0 +1,48 @@
+{
+  "details": {
+    "online": "Онлайн",
+    "get_directions": "Отримати напрямки",
+    "contact_host": "Зв'яжіться з господарем",
+    "contact_for_timing": "Зв'яжіться з господарем для уточнення часу",
+    "tel": "тел: %{phoneNumber}",
+    "starting_soon": "Скоро почнеться",
+    "starting_on": "Починаючи з %{date}",
+    "more_info": "Більше інформації",
+    "share": "Поділіться"
+  },
+  "timing": {
+    "converted_to": "Перетворено на %{timezone} (%{offset})"
+  },
+  "registration": {
+    "register_now": "Зареєструватися зараз",
+    "starting_date": "Дата початку",
+    "name": "Ваше ім'я",
+    "email": "Ваш email",
+    "submit": "зареєструватися",
+    "cancel": "Скасувати",
+    "thank_you": "Дякуємо за реєстрацію!",
+    "followup": "Незабаром ви отримаєте підтвердження електронною поштою",
+    "invite_friend": "Запросіть друга разом",
+    "privacy_policy": "Надсилаючи, ви підтверджуєте, що погоджуєтесь отримувати подальші повідомлення про цю та подібні події відповідно до нашої політики конфіденційності.",
+    "online_notice_title": "Онлайн-сесія",
+    "online_notice": "Посилання на цей курс буде надіслано вам електронною поштою.",
+    "okay": "Гаразд"
+  },
+  "recurrence": {
+    "daily": "Кожен день",
+    "monday": "понеділок",
+    "tuesday": "вівторок",
+    "wednesday": "Середа",
+    "thursday": "четвергах",
+    "friday": "п'ятниці",
+    "saturday": "суботи",
+    "sunday": "неділі",
+    "weekly_1": "Кожен %{weekday}",
+    "weekly_2": "Кожен 2-й %{weekday}",
+    "monthly_1st": "1-й %{weekday} кожного місяця",
+    "monthly_2nd": "2-й %{weekday} кожного місяця",
+    "monthly_3rd": "3-й %{weekday} кожного місяця",
+    "monthly_4th": "4-й %{weekday} кожного місяця",
+    "monthly_last": "Останній %{weekday} кожного місяця"
+  }
+}

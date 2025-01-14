@@ -1,0 +1,48 @@
+{
+  "details": {
+    "online": "On-line",
+    "get_directions": "Obter direções",
+    "contact_host": "Entre em contato com o anfitrião",
+    "contact_for_timing": "Entre em contato com o anfitrião para saber os horários",
+    "tel": "telefone: %{número de telefone}",
+    "starting_soon": "Começando em breve",
+    "starting_on": "Começando em %{data}",
+    "more_info": "Mais informações",
+    "share": "Compartilhar"
+  },
+  "timing": {
+    "converted_to": "Convertido para %{timezone} (%{offset})"
+  },
+  "registration": {
+    "register_now": "Cadastre-se agora",
+    "starting_date": "Data de início",
+    "name": "Seu nome",
+    "email": "Seu e-mail",
+    "submit": "Cadastre-se",
+    "cancel": "Cancelar",
+    "thank_you": "Obrigado por se registrar!",
+    "followup": "Você receberá um e-mail de confirmação em breve",
+    "invite_friend": "Convide um amigo junto",
+    "privacy_policy": "Ao enviar você confirma que concorda em receber mensagens de acompanhamento sobre este e eventos semelhantes, de acordo com nossa política de privacidade.",
+    "online_notice_title": "Sessão On-line",
+    "online_notice": "O link para esta aula será enviado para você por e-mail.",
+    "okay": "OK"
+  },
+  "recurrence": {
+    "daily": "Diariamente",
+    "monday": "Segundas-feiras",
+    "tuesday": "Terças-feiras",
+    "wednesday": "Quartas-feiras",
+    "thursday": "Quintas-feiras",
+    "friday": "Sextas-feiras",
+    "saturday": "Sábados",
+    "sunday": "Domingos",
+    "weekly_1": "Todos os %{dias da semana}",
+    "weekly_2": "Todo dia 2%{dia da semana}",
+    "monthly_1st": "1º %{weekday} de cada mês",
+    "monthly_2nd": "2º %{weekday} de cada mês",
+    "monthly_3rd": "3º %{weekday} de cada mês",
+    "monthly_4th": "4º %{weekday} de cada mês",
+    "monthly_last": "Último %{weekday} de cada mês"
+  }
+}

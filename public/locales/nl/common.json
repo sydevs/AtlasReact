@@ -1,0 +1,19 @@
+{
+  "free_meditation_class": "Gratis meditatieles",
+  "free_meditation_classes": "Gratis meditatielessen",
+  "language_selector": "Taalkiezer",
+  "loading": "Laden...",
+  "show_online_classes": "Toon online lessen",
+  "showing_online_classes": "Online lessen tonen",
+  "events": "evenementen",
+  "locations": {
+    "title": "Gratis meditatielessen in %{location}",
+    "description_one": "%{count} gratis meditatieles in %{location}",
+    "description_other": "%{count} gratis meditatielessen in %{location}"
+  },
+  "venues": {
+    "title": "Gratis meditatielessen op %{venue}",
+    "description_one": "%{count} gratis meditatieles op %{venue}",
+    "description_other": "%{count} gratis meditatielessen op %{venue}"
+  }
+}
