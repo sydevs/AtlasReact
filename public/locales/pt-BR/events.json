@@ -4,7 +4,7 @@
     "get_directions": "Obter direções",
     "contact_host": "Entre em contato com o anfitrião",
     "contact_for_timing": "Entre em contato com o anfitrião para saber os horários",
-    "tel": "telefone: %{número de telefone}",
+    "tel": "tel: %{phoneNumber}",
     "starting_soon": "Começando em breve",
     "starting_on": "Começando em %{data}",
     "more_info": "Mais informações",

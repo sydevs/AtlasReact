@@ -34,7 +34,7 @@ export default function EventPage() {
     setMapSelection({ ...data.location, approximate: data.online })
     moveMap({
       center: [data.location.longitude, data.location.latitude],
-      zoom: data.online ? 10 : 15,
+      zoom: data.online ? 7 : 15,
     })
 
     return () => {
