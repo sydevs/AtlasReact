@@ -24,7 +24,7 @@ export default function EventPanel({ event } : EventPanelProps) {
       <div className="flex w-full justify-center items-center">
         <EventImages images={event.images} />
       </div>
-      <div className="flex flex-col gap-3 px-8 pt-6 pb-12">
+      <div className="flex flex-col gap-3 px-8 pt-3 pb-12">
         <h1 className={`
           text-[1.5rem] font-semibold leading-7 tracking-wide
           ${event.images.length > 0 ? '' : 'pl-5 -mt-0.5'}
