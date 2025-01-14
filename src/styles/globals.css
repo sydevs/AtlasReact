@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://iosevka-webfonts.github.io/iosevka-term/iosevka-term.css');
 @import url('https://api.tiles.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css');
 @import 'mapbox-gl/dist/mapbox-gl.css';
 @import 'swiper/css';
@@ -25,6 +24,7 @@
 
   main {
     color: #7b7b7b;
+    @apply lining-nums;
   }
 
   a {
@@ -62,40 +62,4 @@
   .colored-links a {
     @apply text-primary hover:opacity-hover !important;
   }
-}
-
-@font-face {
-  font-family: "Raleway";
-  src: url("/fonts/RalewayRegular.ttf");
-  font-weight: normal;
-}
-
-@font-face {
-  font-family: "Raleway";
-  src: url("/fonts/RalewayExtraLight.ttf");
-  font-weight: 200;
-}
-
-@font-face {
-  font-family: "Raleway";
-  src: url("/fonts/RalewayLight.ttf");
-  font-weight: 300;
-}
-
-@font-face {
-  font-family: "Raleway";
-  src: url("/fonts/RalewayMedium.ttf");
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: "Raleway";
-  src: url("/fonts/RalewaySemiBold.ttf");
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: "Raleway";
-  src: url("/fonts/RalewayBold.ttf");
-  font-weight: bold;
 }

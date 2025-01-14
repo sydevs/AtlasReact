@@ -41,7 +41,7 @@ export default function EventPanel({ event } : EventPanelProps) {
         </div>
         {event.descriptionHtml &&
           <div
-            className="flex flex-col gap-2 my-2 colored-links"
+            className="flex flex-col gap-2 my-2 colored-links normal-nums"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(event.descriptionHtml, {
                 USE_PROFILES: { html: true },

@@ -81,8 +81,8 @@ module.exports = {
     },
     fontFamily: {
       'sans': ['Raleway', ...defaultTheme.fontFamily.sans],
-      'serif': [...defaultTheme.fontFamily.serif],
-      'mono': ['Iosevka Term Web', ...defaultTheme.fontFamily.mono],
+      'serif': defaultTheme.fontFamily.serif,
+      'mono': defaultTheme.fontFamily.mono,
     },
     backgroundImage: {
       'circle-pattern': "url('/graphics/circle.svg')",
