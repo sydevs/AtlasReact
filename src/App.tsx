@@ -12,7 +12,7 @@ import { Provider } from "./provider";
 import useLocale from "./hooks/use-locale";
 
 import "@/styles/globals.css";
-import '@/config/i18n';
+import "@/config/i18n";
 
 export default function App() {
   const { locale } = useLocale();

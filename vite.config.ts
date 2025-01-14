@@ -7,13 +7,16 @@ import { resolve } from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    cssInjectedByJsPlugin({
+      styleId: 'syatlas-map-style',
+      relativeCSSInjection: true,
+      dev: { enableDev: true }
+    }),
     react(),
     tsconfigPaths(),
-    cssInjectedByJsPlugin({
-      relativeCSSInjection: true,
-    }) //{ dev: { enableDev: true }})
   ],
   build: {
+    cssCodeSplit: true,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
@@ -21,7 +24,7 @@ export default defineConfig({
       },
       output: {
         entryFileNames: (assetInfo) => {
-          return assetInfo.name === 'widget' ? 'assets/js/[name].js' : 'assets/[name].js';
+          return assetInfo.name === 'widget' ? 'assets/atlas.js' : 'assets/[name]-[hash].js';
         },
       },
     },

@@ -8,8 +8,10 @@ import { useNavigationState, useViewState } from "@/config/store";
 import EventMetadata from "@/components/event/metadata";
 import { Link } from "@nextui-org/react";
 import { LeftArrowIcon } from "@/components/icons";
-import EventPanel from "@/components/event/panel";
 import useMapbox from "@/hooks/use-mapbox";
+import { lazy } from "react";
+
+const EventPanel = lazy(() => import("@/components/event/panel"))
 
 export default function EventPage() {
   const { id } = useParams();

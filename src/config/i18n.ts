@@ -18,6 +18,8 @@ i18n
   .init<HttpBackendOptions>({
     debug: true,
     fallbackLng: 'en',
+    defaultNS: 'common',
+    ns: ['common', 'events'],
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
       prefix: '%{',
@@ -27,7 +29,8 @@ i18n
       lookupQuerystring: 'locale',
     },
     backend: {
-      loadPath: (lng, ns) => `/locales/${lng}/${ns}.json`,
+      crossDomain: true,
+      loadPath: (lng, ns) => `${import.meta.env.VITE_HOST}/locales/${lng}/${ns}.json`,
     },
   });
 
