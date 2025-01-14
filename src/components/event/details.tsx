@@ -110,12 +110,12 @@ export function EventDetail({
           >
             {title}
           </Link> :
-          <p className="text-medium font-medium">
+          <div className="text-medium font-medium">
             {title}
-          </p>}
-        <p className="text-small text-default-500">
+          </div>}
+        <div className="text-small text-default-500">
           {content}
-        </p>
+        </div>
       </div>
     </div>
   )

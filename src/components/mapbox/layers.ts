@@ -75,9 +75,9 @@ export const selectedAreaLayer: LayerProps = {
   type: 'symbol',
   source: 'selection',
   layout: {
-    'icon-size': 0.85,
+    'icon-size': 1.25,
     'icon-ignore-placement': true,
-    'icon-image': 'selected', //'selected_cluster',
+    'icon-image': 'cluster-selected',
   },
 };
 
