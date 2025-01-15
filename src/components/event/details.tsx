@@ -132,7 +132,7 @@ export function EventDetail({
           <div className="text-medium font-medium">
             {title}
           </div>}
-        <div className="text-small text-default-500">
+        <div className="text-small text-default-500 max-w-72">
           {content}
         </div>
       </div>

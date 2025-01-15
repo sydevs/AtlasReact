@@ -52,8 +52,8 @@ export default function SearchBar({
   }, [searchBarRef])
   
   return (
-    <div ref={searchBarRef} className="sticky top-0 z-10 p-4 pb-3 bg-background border-b-1.5 border-default-300">
-      <div className="flex flex-row gap-2 items-center">
+    <div ref={searchBarRef} className="sticky top-0 z-10 p-4 pb-3 bg-background border-b-1.5 border-default-300 min-h-20 flex-center-x flex-col">
+      <div className="flex-center-y gap-2 w-full">
         {returnLink &&
           <UpArrowIcon size={32} onClick={() => navigate(returnLink)} />}
 
@@ -65,9 +65,12 @@ export default function SearchBar({
               <div className="px-3 text-md">{subheader || t('free_meditation_classes')}</div>
             </>}
         </div>
-        {header && (isSearching ?
-          <CloseIcon size={24} onClick={() => setIsSearching(false)} /> :
-          <SearchIcon size={24} onClick={() => setIsSearching(true)} />)}
+        {header && 
+          <div className='p-2'>
+            {isSearching ?
+              <CloseIcon size={24} onClick={() => setIsSearching(false)} /> :
+              <SearchIcon size={24} onClick={() => setIsSearching(true)} />}
+          </div>}
       </div>
       {filterable && <Switch
         color="primary"

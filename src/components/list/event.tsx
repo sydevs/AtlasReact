@@ -43,13 +43,15 @@ export default function EventItem({ event }: Props) {
               delay={500}
             />
           </div>
-          <div className="flex mt-1 gap-1">
+          <div className="flex items-center mt-1 gap-1">
             {event.firstDate &&
               <EventSoonChip firstDate={event.firstDate} online={event.online} />}
             {event.online &&
               <Chip>{t('details.online')}</Chip>}
             {event.languageCode.split('-')[0] !== locale.split('-')[0] &&
               <Chip color="secondary">{languageNames.of(event.languageCode)}</Chip>}
+            {event.distance && event.distance > 10 &&
+              <div className="text-primary font-medium text-sm">{event.distance.toLocaleString(locale, { maximumFractionDigits: 0 })} km</div>}
           </div>
         </div>
         <div className="text-right font-semibold ml-4 text-sm max-w-24">
