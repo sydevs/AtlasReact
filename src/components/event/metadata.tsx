@@ -23,27 +23,6 @@ export default function EventMetaevent({ event } : EventMetaeventProps) {
     image: event.images[0]?.url,
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: `https://schema.org/${event.online ? 'OnlineEventAttendanceMode' : 'OfflineEventAttendanceMode'}`,
-    location: event.online ? {
-      "@type": "VirtualLocation",
-      url: event.url,
-    } : {
-      "@type": "Place",
-      name: event.location.label,
-      address: {
-        "@type": "PostalAddress",
-        // TODO: Implement address fields in data
-        // streetAddress: event.location.street,
-        // addressLocality: event.location.city,
-        // addressRegion: event.location.state,
-        // postalCode: event.location.postalCode,
-        // addressCountry: event.location.country,
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: event.location.latitude,
-        longitude: event.location.longitude,
-      },
-    },
     offers: event.timing && event.registration ? {
       "@type": "Offer",
       url: event.url,
@@ -59,6 +38,31 @@ export default function EventMetaevent({ event } : EventMetaeventProps) {
       url: "https://wemeditate.com",
       logo: "https://wemeditate.com/logo.svg",
     },
+  }
+
+  if (event.online) {
+    schema.location = {
+      "@type": "VirtualLocation",
+      url: event.url,
+    }
+  } else if (event.location.venue) {
+    schema.location = {
+      "@type": "Place",
+      name: event.location.venue.name || event.location.venue.street,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: event.location.venue.street,
+        addressLocality: event.location.venue.city,
+        addressRegion: event.location.regionCode,
+        addressCountry: event.location.countryCode,
+        //postalCode: event.location.postalCode,
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: event.location.latitude,
+        longitude: event.location.longitude,
+      },
+    }
   }
 
   return (

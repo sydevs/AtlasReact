@@ -15,6 +15,7 @@ export default function useLocale() {
 
   return {
     locale: locale,
+    languageCode: locale.split("-")[0],
     languageNames,
     regionNames,
     setLocale: (locale: string) => {

@@ -26,6 +26,24 @@ export const useViewState = create<ViewState & ViewAction>((set) => ({
   setBoundary: (boundary: ViewState['boundary']) => set(() => ({ boundary })),
 }))
 
+type NavigationState = {
+  previousPath: string
+  currentPath: string
+}
+
+type NavigationAction = {
+  setCurrentPath: (currentPath: string) => void
+}
+
+export const useNavigationState = create<NavigationState & NavigationAction>((set) => ({
+  previousPath: '',
+  currentPath: '',
+  setCurrentPath: (currentPath) => set((state) => ({
+    previousPath: state.currentPath,
+    currentPath,
+  })),
+}))
+
 type SearchState = {
   onlineOnly: boolean;
 }

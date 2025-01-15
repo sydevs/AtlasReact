@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes, useLocation } from "react-router";
 
 import IndexPage from "@/pages/index";
 import CountryPage from "@/pages/country";
@@ -13,9 +13,14 @@ import useLocale from "./hooks/use-locale";
 
 import "@/styles/globals.css";
 import "@/config/i18n";
+import { useEffect } from "react";
+import { useNavigationState } from "./config/store";
 
 export default function App() {
   const { locale } = useLocale();
+  const location = useLocation();
+  const setCurrentPath = useNavigationState(s => s.setCurrentPath);
+  useEffect(() => setCurrentPath(location.pathname), [location]);
 
   return (
     <Provider>

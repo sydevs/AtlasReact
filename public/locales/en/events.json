@@ -1,6 +1,7 @@
 {
   "details": {
     "online": "Online",
+    "online_class": "Online Class",
     "get_directions": "Get Directions",
     "contact_host": "Contact the host",
     "contact_for_timing": "Contact host for timings",
@@ -30,6 +31,7 @@
     "okay": "Okay"
   },
   "recurrence": {
+    "null": "Contact host for timings",
     "daily": "Every Day",
     "weekly_1": "Every %{weekday}",
     "weekly_2": "Every 2nd %{weekday}",

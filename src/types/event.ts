@@ -20,14 +20,21 @@ export const EventContactSchema = z.object({
 })
 
 export const EventLocationSchema = z.object({
-  id: z.number(),
-  type: z.enum(['venue', 'area']),
-  label: z.string(),
-  subtitle: z.string(),
+  countryCode: z.string().length(2),
+  regionCode: z.string().optional(), // TODO: Should be required
+  areaPath: z.string(),
+  venuePath: z.string().optional(),
+  platform: z.enum(['zoom', 'google_meet', 'youtube']).optional(),
+  areaName: z.string(),
   latitude: z.number(),
   longitude: z.number(),
-  directionsUrl: z.string().optional(),
-  platform: z.enum(['zoom', 'google_meet', 'youtube']).optional(),
+  venue: z.object({
+    name: z.string().nullable(),
+    street: z.string(),
+    city: z.string(),
+    directionsUrl: z.string(),
+    address: z.string(),
+  }).nullable(),
 })
 
 export const EventRegistrationSchema = z.object({
@@ -58,6 +65,7 @@ export const EventCoreSchema = z.object({
   label: z.string(),
   online: z.boolean(),
   languageCode: z.string(),
+  category: z.enum(['dropin', 'course', 'single', 'festival', 'concert', 'inactive']),
 })
 
 export const EventSlimSchema = z.object({
@@ -78,7 +86,6 @@ export const EventSchema = z.object({
   url: z.string(),
   description: z.string().nullable(),
   descriptionHtml: z.string().nullable(),
-  category: z.enum(['dropin', 'course', 'single', 'festival', 'concert', 'inactive']),
 
   registration: z.nullable(EventRegistrationSchema),
   timing: z.nullable(EventTimingSchema),

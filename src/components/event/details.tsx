@@ -65,11 +65,27 @@ export function EventLocationDetails({
 } : {
   location: EventLocation
 }) {
+  const { t } = useTranslation('events');
+  let title: string, subtitle: string;
+
+  if (location.venue) {
+    if (location.venue.name) {
+      title = location.venue.name;
+      subtitle = location.venue.address;
+    } else {
+      title = location.venue.street;
+      subtitle = location.venue.address.split(', ')[1];
+    }
+  } else {
+    title = t('details.online_class');
+    subtitle = t('details.hosted_from', { city: `${location.areaName}, ${location.countryCode}` });
+  }
+
   return (
     <EventDetail
-      title={location.label}
-      content={location.subtitle}
-      url={location.directionsUrl || undefined}
+      title={title}
+      content={subtitle}
+      url={location.venue?.directionsUrl || undefined}
       isExternal={true}
     >
       <div className="flex-center h-full text-primary">

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import { useEffect } from "react";
 import { Main } from "@/components/base/main";
-import { useViewState } from "@/config/store";
+import { useNavigationState, useViewState } from "@/config/store";
 import EventMetadata from "@/components/event/metadata";
 import { Link } from "@nextui-org/react";
 import { UpArrowIcon } from "@/components/icons";
@@ -40,12 +40,15 @@ export default function EventPage() {
     }
   }, [data, mapbox])
 
+  const previousPath = useNavigationState(s => s.previousPath);
+  const parentPath = data && (data.online || previousPath != data.location.venuePath ? data.location.areaPath : data.location.venuePath)
+
   return (
     <Main width={467} mapWindow={180}>
       <Loader isLoading={isLoading} error={error}>
         {data &&
           <>
-            <Link className="text-3xl absolute top-5 left-2.5 z-20 bg-background rounded hover:opacity-100 hover:bg-primary-50 transition-colors" href={data.location.path}>
+            <Link className="text-3xl absolute top-5 left-2.5 z-20 bg-background rounded hover:opacity-100 hover:bg-primary-50 transition-colors" href={parentPath}>
               <UpArrowIcon size={32} className="text-lg" />
             </Link>
             <EventMetadata event={data} />
