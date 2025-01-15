@@ -31,13 +31,6 @@
   },
   "recurrence": {
     "daily": "Každý den",
-    "monday": "pondělí",
-    "tuesday": "úterý",
-    "wednesday": "středy",
-    "thursday": "čtvrtky",
-    "friday": "pátky",
-    "saturday": "soboty",
-    "sunday": "neděle",
     "weekly_1": "Každý %{weekday}",
     "weekly_2": "Každý 2. %{weekday}",
     "monthly_1st": "1. %{weekday} každého měsíce",

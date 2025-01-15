@@ -31,13 +31,6 @@
   },
   "recurrence": {
     "daily": "Diariamente",
-    "monday": "Segundas-feiras",
-    "tuesday": "Terças-feiras",
-    "wednesday": "Quartas-feiras",
-    "thursday": "Quintas-feiras",
-    "friday": "Sextas-feiras",
-    "saturday": "Sábados",
-    "sunday": "Domingos",
     "weekly_1": "Todos os %{weekday}",
     "weekly_2": "Todo dia 2nd %{weekday}",
     "monthly_1st": "1º %{weekday} de cada mês",

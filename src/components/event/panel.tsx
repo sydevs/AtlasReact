@@ -36,7 +36,7 @@ export default function EventPanel({ event } : EventPanelProps) {
             <EventSoonChip firstDate={event.timing.firstDate} online={event.online} />}
           {event.online &&
             <Chip>{t('details.online')}</Chip>}
-          {event.languageCode != locale &&
+          {event.languageCode.split('-')[0] !== locale.split('-')[0] &&
             <Chip color="secondary">{languageNames.of(event.languageCode)}</Chip>}
         </div>
         {event.descriptionHtml &&

@@ -38,7 +38,9 @@ export default function EventItem({ event }: Props) {
     <Link href={event.path} onPress={handlePress} className="block px-6 text-inherit transition-colors hover:bg-primary-10">
       <li key={event.id} className="flex flex-row py-5 items-center border-b border-divider">
         <div className="flex flex-grow flex-col gap-1">
-          <div className="font-semibold text-lg leading-tight">{event.label}</div>
+          <div className="font-semibold text-lg leading-tight">
+            {event.label}
+          </div>
           <div className="text-sm leading-tight">
             {event.online ? t('details.hosted_from', { city: event.address }) : event.address}
           </div>
@@ -57,7 +59,7 @@ export default function EventItem({ event }: Props) {
               <EventSoonChip firstDate={event.firstDate} online={event.online} />}
             {event.online &&
               <Chip>{t('details.online')}</Chip>}
-            {event.languageCode != locale &&
+            {event.languageCode.split('-')[0] !== locale.split('-')[0] &&
               <Chip color="secondary">{languageNames.of(event.languageCode)}</Chip>}
           </div>
         </div>

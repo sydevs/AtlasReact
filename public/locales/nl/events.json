@@ -31,13 +31,6 @@
   },
   "recurrence": {
     "daily": "Elke dag",
-    "monday": "Maandag",
-    "tuesday": "dinsdag",
-    "wednesday": "Woensdag",
-    "thursday": "Donderdagen",
-    "friday": "Vrijdag",
-    "saturday": "Zaterdag",
-    "sunday": "Zondagen",
     "weekly_1": "Elke %{weekday}",
     "weekly_2": "Elke 2e %{weekday}",
     "monthly_1st": "1e %{weekday} van elke maand",

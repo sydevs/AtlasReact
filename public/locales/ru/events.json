@@ -31,13 +31,6 @@
   },
   "recurrence": {
     "daily": "Каждый день",
-    "monday": "Понедельник",
-    "tuesday": "Вторник",
-    "wednesday": "среда",
-    "thursday": "Четверги",
-    "friday": "Пятница",
-    "saturday": "Суббота",
-    "sunday": "воскресенья",
     "weekly_1": "Каждый %{weekday}",
     "weekly_2": "Каждый второй %{weekday}",
     "monthly_1st": "1-й %{weekday} каждого месяца",

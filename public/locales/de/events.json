@@ -7,8 +7,8 @@
     "tel": "Tel.: %{phoneNumber}",
     "starting_soon": "Bald geht es los",
     "starting_on": "Beginn am %{date}",
-    "more_info": "Weitere Informationen",
-    "share": "Aktie",
+    "more_info": "Mehr info",
+    "share": "Teilen",
     "hosted_from": "Gastgeber aus %{city}"
   },
   "timing": {
@@ -31,13 +31,6 @@
   },
   "recurrence": {
     "daily": "Täglich",
-    "monday": "Montags",
-    "tuesday": "Dienstags",
-    "wednesday": "Mittwochs",
-    "thursday": "Donnerstags",
-    "friday": "Freitags",
-    "saturday": "Samstags",
-    "sunday": "Sonntags",
     "weekly_1": "Jeden %{weekday}",
     "weekly_2": "Jeden 2. %{weekday}",
     "monthly_1st": "1. %{weekday} jedes Monats",

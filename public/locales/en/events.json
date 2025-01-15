@@ -31,13 +31,6 @@
   },
   "recurrence": {
     "daily": "Every Day",
-    "monday": "Mondays",
-    "tuesday": "Tuesdays",
-    "wednesday": "Wednesdays",
-    "thursday": "Thursdays",
-    "friday": "Fridays",
-    "saturday": "Saturdays",
-    "sunday": "Sundays",
     "weekly_1": "Every %{weekday}",
     "weekly_2": "Every 2nd %{weekday}",
     "monthly_1st": "1st %{weekday} of Every Month",
