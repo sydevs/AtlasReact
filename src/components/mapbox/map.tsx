@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import ReactMapGL, { GeoJSONSource, GeolocateControl, Layer, MapMouseEvent, PaddingOptions, Source } from 'react-map-gl';
 import { clusterLayer, selectedPointLayer, unclusteredPointLayer, selectedAreaLayer, boundsLayer } from './layers';
-import { useNavigationState, useViewState } from "@/config/store";
+import { useViewState } from "@/config/store";
 import { useQuery } from '@tanstack/react-query';
 import api from '@/config/api';
 import { useLocation, useNavigate } from 'react-router';
@@ -14,6 +14,23 @@ import useMapbox from '@/hooks/use-mapbox';
 const MAP_STYLES = {
   light: "mapbox://styles/sydevadmin/ck7g6nag70rn11io09f45odkq",
   dark: "mapbox://styles/sydevadmin/cl4nw934f001j14l8jnof3a7w",
+}
+
+const MAP_WORLDVIEWS : Record<string, string> = {
+  zh: "CN", // Chinese
+  jp: "JP", // Japanese
+  hi: "IN", // Hindi
+  bn: "IN", // Bengali
+  pa: "IN", // Punjabi
+  gu: "IN", // Gujarati
+  kn: "IN", // Kannada
+  kok: "IN", // Konkani
+  ml: "IN", // Malayalam
+  mr: "IN", // Marathi
+  sa: "IN", // Sanskrit
+  ta: "IN", // Tamil
+  te: "IN", // Telugu
+  default: "US", // Default
 }
 
 const DEBUG_BOUNDARY = false
@@ -30,9 +47,8 @@ export default function Mapbox() {
     })),
   );
   const location = useLocation();
-  const setNavigationState = useNavigationState(s => s.setNavigationState);
   const { isMd } = useBreakpoint("md");
-  const { locale } = useLocale();
+  const { locale, languageCode } = useLocale();
   const { theme } = useTheme();
 
   const { data } = useQuery({
@@ -58,15 +74,8 @@ export default function Mapbox() {
       });
     } else if (feature.layer?.id === unclusteredPointLayer.id) {
       navigate(feature.properties?.path)
-
-      if (feature.properties?.type === "event") {
-        setNavigationState({
-          returnPath: location.pathname,
-          returnViewState: { zoom, latitude, longitude },
-        });
-      }
     }
-  }, [navigate, mapbox, zoom, latitude, longitude, setNavigationState]);
+  }, [navigate, mapbox, zoom, latitude, longitude]);
 
   const hoverOnFeature = useCallback((evt: MapMouseEvent) => {
     if (!mapbox) return
@@ -115,6 +124,7 @@ export default function Mapbox() {
       attributionControl={false}
       // @ts-ignore - Language is a valid property
       language={locale} // TOOD: Make sure this switches when locale changes
+      worldview={MAP_WORLDVIEWS[languageCode] || MAP_WORLDVIEWS.default}
     >
       {DEBUG_PADDING &&
         <div className='absolute border-3 border-dashed border-red-700 pointer-events-none' style={padding} />}

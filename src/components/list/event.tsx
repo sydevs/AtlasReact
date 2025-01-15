@@ -2,10 +2,7 @@ import { EventSlim } from "@/types";
 import { RightArrowIcon } from "../icons";
 import { Link } from "@nextui-org/react";
 import Chip from "@/components/base/chip";
-import { useNavigationState, useViewState } from "@/config/store";
-import { useLocation } from "react-router";
-import { useCallback, useMemo } from "react";
-import { useShallow } from 'zustand/react/shallow'
+import { useMemo } from "react";
 import { EventTime } from "../event/time";
 import { EventSoonChip } from "../event/soon";
 import { DateTime } from "luxon";
@@ -17,25 +14,13 @@ interface Props {
 }
 
 export default function EventItem({ event }: Props) {
-  const location = useLocation();
   const { t } = useTranslation('events');
   const { locale, languageNames } = useLocale();
-  const { zoom, latitude, longitude } = useViewState(
-    useShallow((s) => ({ zoom: s.zoom, latitude: s.latitude, longitude: s.longitude })),
-  )
-  const setNavigationState = useNavigationState(s => s.setNavigationState);
-
-  const handlePress = useCallback(() => {
-    setNavigationState({
-      returnPath: location.pathname,
-      returnViewState: { zoom, latitude, longitude },
-    });
-  }, [location, zoom, latitude, longitude, setNavigationState]);
 
   const nextDate = useMemo(() => DateTime.fromJSDate(event.nextDate), [event.nextDate]);
 
   return (
-    <Link href={event.path} onPress={handlePress} className="block px-6 text-inherit transition-colors hover:bg-primary-10">
+    <Link href={event.path} className="block px-6 text-inherit transition-colors hover:bg-primary-10">
       <li key={event.id} className="flex flex-row py-5 items-center border-b border-divider">
         <div className="flex flex-grow flex-col gap-1">
           <div className="font-semibold text-lg leading-tight">

@@ -46,7 +46,7 @@ export default function VenuePage() {
             <SearchBar
               onSelect={value => console.log(value)}
               header={data.label}
-              returnLink='/'
+              returnLink={data.parentPath}
             />
             <EventsList events={data.events} />
           </>}

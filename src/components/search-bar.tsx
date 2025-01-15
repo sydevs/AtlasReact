@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { LeftArrowIcon, DownArrowIcon, SearchIcon, CloseIcon } from "@/components/icons";
+import { UpArrowIcon, DownArrowIcon, SearchIcon, CloseIcon } from "@/components/icons";
 import SearchBox from "@/components/mapbox/search";
 import { GeocodeFeature } from '@mapbox/search-js-core';
 import { useNavigate } from "react-router";
@@ -55,7 +55,7 @@ export default function SearchBar({
     <div ref={searchBarRef} className="sticky top-0 z-10 p-4 pb-3 bg-background border-b-1.5 border-default-300">
       <div className="flex flex-row gap-2 items-center">
         {returnLink &&
-          <LeftArrowIcon size={32} onClick={() => navigate(returnLink)} />}
+          <UpArrowIcon size={32} onClick={() => navigate(returnLink)} />}
 
         <div className="flex-grow">
           {isSearching || !header ?
