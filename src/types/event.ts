@@ -11,6 +11,7 @@ export const EventTimingSchema = z.object({
   lastDate: z.coerce.date().nullable(),
   upcomingDates: z.array(z.coerce.date()),
   recurrenceCount: z.number().nullable(),
+  recurrenceType: z.enum(["daily", "weekly_1", "weekly_2", "monthly_1st", "monthly_2nd", "monthly_3rd", "monthly_4th", "monthly_last"])
 })
 
 export const EventContactSchema = z.object({
@@ -60,7 +61,7 @@ export const EventCoreSchema = z.object({
 })
 
 export const EventSlimSchema = z.object({
-  recurrence: z.string().nullable(), // TODO: Remove this in favour of calculating it
+  recurrenceType: z.enum(["daily", "weekly_1", "weekly_2", "monthly_1st", "monthly_2nd", "monthly_3rd", "monthly_4th", "monthly_last"]),
   address: z.string(),
   latitude: z.number(),
   longitude: z.number(),
