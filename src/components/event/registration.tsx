@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import { AnchorIcon } from "../icons";
 import { useState } from "react";
 import { ShareContent } from "./share";
+import useLocale from "@/hooks/use-locale";
 
 const INPUT_STYLE = {
   variant: "bordered",
@@ -209,6 +210,7 @@ type RegistrationFieldsProps = {
 
 export function RegistrationFields({ timingOptions, registrationOptions, register, errors }: RegistrationFieldsProps) {
   const { t } = useTranslation('events');
+  const { locale } = useLocale();
 
   return (
     <div className="flex flex-col gap-4">
@@ -217,12 +219,12 @@ export function RegistrationFields({ timingOptions, registrationOptions, registe
         {...INPUT_STYLE}
         label={t('registration.starting_date')}
         isRequired
-        errorMessage={errors.startingAt?.message}
+        errorMessage={errors.startingAt && t('errors.starting_at')}
         isInvalid={!!errors.startingAt}
         defaultSelectedKeys={[timingOptions.upcomingDates[0]?.toISOString()]}
       >
         {timingOptions.upcomingDates.map((date) => {
-          let dateTime = DateTime.fromJSDate(date);
+          let dateTime = DateTime.fromJSDate(date).setLocale(locale);
           return (
             <SelectItem key={date.toISOString()} value={date.toISOString()} textValue={dateTime.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)} className="capitalize">
               {dateTime.toRelativeCalendar()} - {dateTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}
@@ -237,7 +239,7 @@ export function RegistrationFields({ timingOptions, registrationOptions, registe
         label={t('registration.name')}
         type="text"
         isRequired
-        errorMessage={errors.name?.message}
+        errorMessage={errors.name && t('errors.name')}
         isInvalid={!!errors.name}
       />
 
@@ -247,7 +249,7 @@ export function RegistrationFields({ timingOptions, registrationOptions, registe
         label={t('registration.email')}
         type="email"
         isRequired
-        errorMessage={errors.email?.message}
+        errorMessage={errors.email && t('errors.email')}
         isInvalid={!!errors.email}
       />
       

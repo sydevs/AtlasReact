@@ -38,5 +38,10 @@
     "monthly_3rd": "3e %{weekday} van elke maand",
     "monthly_4th": "4e %{weekday} van elke maand",
     "monthly_last": "Laatste %{weekday} van elke maand"
+  },
+  "errors": {
+    "starting_at": "Selecteer uw startdatum",
+    "name": "Voer uw volledige naam in",
+    "email": "Voer een geldig e-mailadres in"
   }
 }

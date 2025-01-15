@@ -41,7 +41,10 @@ export function EventTimingDetails({
   
   return (
     <EventDetail
-      title={t(`recurrence.${timing.type}`, { weekday: nextDate.toLocaleString({ weekday: 'long' }) })}
+      title={
+        timing.type ?
+          t(`recurrence.${timing.type}`, { weekday: nextDate.toLocaleString({ weekday: 'long' }) }) :
+          t('details.contact_for_timing')}
       content={
         <EventTime
           nextDate={nextDate}

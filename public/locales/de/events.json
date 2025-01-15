@@ -38,5 +38,10 @@
     "monthly_3rd": "3. %{weekday} jedes Monats",
     "monthly_4th": "4. %{weekday} jedes Monats",
     "monthly_last": "Letzter %{weekday} jedes Monats"
+  },
+  "errors": {
+    "starting_at": "Wählen Sie Ihr Startdatum",
+    "name": "Geben Sie Ihren vollständigen Namen ein",
+    "email": "Geben Sie eine gültige E-Mail-Adresse ein"
   }
 }

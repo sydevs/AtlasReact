@@ -40,5 +40,10 @@
     "monthly_3rd": "3rd %{weekday} of Every Month",
     "monthly_4th": "4th %{weekday} of Every Month",
     "monthly_last": "Last %{weekday} of Every Month"
+  },
+  "errors": {
+    "starting_at": "Select your starting date",
+    "name": "Enter your full name",
+    "email": "Enter a valid email"
   }
 }

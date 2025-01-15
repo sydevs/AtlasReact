@@ -30,7 +30,9 @@ export default function EventItem({ event }: Props) {
             {event.online ? t('details.hosted_from', { city: event.address }) : event.address}
           </div>
           <div className="text-xs uppercase">
-            {t(`recurrence.${event.recurrenceType}`, { weekday: nextDate.toLocaleString({ weekday: 'long' }) })}
+            {event.recurrenceType ? 
+              t(`recurrence.${event.recurrenceType}`, { weekday: nextDate.toLocaleString({ weekday: 'long' }) }) :
+              t('details.contact_for_timing')}
           </div>
           <div className="text-xs text-gray-500">
             <EventTime
