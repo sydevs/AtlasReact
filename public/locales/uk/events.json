@@ -9,7 +9,8 @@
     "starting_on": "Починаючи з %{date}",
     "more_info": "Більше інформації",
     "share": "Поділіться",
-    "hosted_from": "Організовано з %{city}"
+    "hosted_from": "Організовано з %{city}",
+    "km": "км"
   },
   "timing": {
     "converted_to": "Перетворено на %{timezone} (%{offset})"

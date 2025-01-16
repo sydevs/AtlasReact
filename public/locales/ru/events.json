@@ -9,7 +9,8 @@
     "starting_on": "Начало %{date}",
     "more_info": "Дополнительная информация",
     "share": "Делиться",
-    "hosted_from": "Ведущий из %{city}"
+    "hosted_from": "Ведущий из %{city}",
+    "km": "км"
   },
   "timing": {
     "converted_to": "Преобразовано в %{timezone} (%{offset})"

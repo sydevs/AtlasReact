@@ -51,7 +51,9 @@ export default function EventItem({ event }: Props) {
             {event.languageCode.split('-')[0] !== locale.split('-')[0] &&
               <Chip color="secondary">{languageNames.of(event.languageCode)}</Chip>}
             {event.distance && event.distance > 10 &&
-              <div className="text-primary font-medium text-sm">{event.distance.toLocaleString(locale, { maximumFractionDigits: 0 })} km</div>}
+              <div className="text-primary font-medium text-sm">
+                {event.distance.toLocaleString(locale, { maximumFractionDigits: 0 })} {t('details.km')}
+              </div>}
           </div>
         </div>
         <div className="text-right font-semibold ml-4 text-sm max-w-24">

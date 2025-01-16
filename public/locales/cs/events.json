@@ -7,9 +7,10 @@
     "tel": "tel: %{phoneNumber}",
     "starting_soon": "Již brzy",
     "starting_on": "Od %{date}",
-    "more_info": "Více informací",
+    "more_info": "Více info",
     "share": "Podíl",
-    "hosted_from": "Hostováno z %{city}"
+    "hosted_from": "Hostováno z %{city}",
+    "km": "km"
   },
   "timing": {
     "converted_to": "Převedeno na %{timezone} (%{offset})"

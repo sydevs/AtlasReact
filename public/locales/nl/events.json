@@ -7,9 +7,10 @@
     "tel": "tel: %{telefoonnummer}",
     "starting_soon": "Binnenkort van start",
     "starting_on": "Vanaf %{date}",
-    "more_info": "Meer informatie",
+    "more_info": "Meer info",
     "share": "Deel",
-    "hosted_from": "Gehost vanuit %{city}"
+    "hosted_from": "Gehost vanuit %{city}",
+    "km": "km"
   },
   "timing": {
     "converted_to": "Omgerekend naar %{timezone} (%{offset})"

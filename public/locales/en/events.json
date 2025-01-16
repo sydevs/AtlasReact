@@ -10,7 +10,8 @@
     "starting_on": "Starting %{date}",
     "more_info": "More info",
     "share": "Share",
-    "hosted_from": "Hosted from %{city}"
+    "hosted_from": "Hosted from %{city}",
+    "km": "km"
   },
   "timing": {
     "converted_to": "Converted to %{timezone} (%{offset})"

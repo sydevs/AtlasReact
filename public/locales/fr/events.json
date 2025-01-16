@@ -9,7 +9,8 @@
     "starting_on": "À partir du %{date}",
     "more_info": "Plus d'infos",
     "share": "Partager",
-    "hosted_from": "Organisé depuis %{city}"
+    "hosted_from": "Organisé depuis %{city}",
+    "km": "km"
   },
   "timing": {
     "converted_to": "Converti en %{timezone} (%{offset})"

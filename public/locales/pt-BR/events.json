@@ -7,9 +7,10 @@
     "tel": "tel: %{phoneNumber}",
     "starting_soon": "Começando em breve",
     "starting_on": "Começando em %{data}",
-    "more_info": "Mais informações",
+    "more_info": "Mais info",
     "share": "Compartilhar",
-    "hosted_from": "Hospedado em %{city}"
+    "hosted_from": "Hospedado em %{city}",
+    "km": "km"
   },
   "timing": {
     "converted_to": "Convertido para %{timezone} (%{offset})"

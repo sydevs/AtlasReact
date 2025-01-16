@@ -52,14 +52,16 @@ export default function SearchBar({
   }, [searchBarRef])
   
   return (
-    <div ref={searchBarRef} className="sticky top-0 z-10 p-4 pb-3 bg-background border-b-1.5 border-default-300 min-h-20 flex-center-x flex-col">
+    <div ref={searchBarRef} className="sticky top-0 z-10 p-4 pb-3 bg-background border-b-1.5 border-default-300 flex-center-x flex-col">
       <div className="flex-center-y gap-2 w-full">
         {returnLink &&
           <UpArrowIcon size={32} onClick={() => navigate(returnLink)} />}
 
         <div className="flex-grow">
           {isSearching || !header ?
-            <SearchBox onSelect={handleSelect} />
+            <div className='py-0.5'>
+              <SearchBox onSelect={handleSelect} />
+            </div>
             : <>
               <div className="px-3 text-lg font-bold">{header}</div>
               <div className="px-3 text-md">{subheader || t('free_meditation_classes')}</div>
