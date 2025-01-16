@@ -255,12 +255,12 @@ export function RegistrationFields({ timingOptions, registrationOptions, registe
       
       {registrationOptions.questions.map((question, index) => 
         <Textarea
-          {...register(`questions.${question.slug}`)}
+          {...register(`questions.${question}`)}
           {...INPUT_STYLE}
-          label={question.title}
+          label={t(`questions.${question}`)}
           key={index}
-          errorMessage={errors.questions?.[question.slug]?.message}
-          isInvalid={!!errors.questions?.[question.slug]}
+          errorMessage={errors.questions?.[question]?.message}
+          isInvalid={!!errors.questions?.[question]}
         />
       )}
 

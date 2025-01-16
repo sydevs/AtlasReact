@@ -39,6 +39,12 @@
     "monthly_4th": "4e %{weekday} van elke maand",
     "monthly_last": "Laatste %{weekday} van elke maand"
   },
+  "questions": {
+    "questions": "Heeft u vragen?",
+    "experience": "Heb jij deze meditatie al ervaren?",
+    "aspirations": "Wat zoek jij in meditatie?",
+    "referral": "Hoe heb je over ons gehoord?"
+  },
   "errors": {
     "starting_at": "Selecteer uw startdatum",
     "name": "Voer uw volledige naam in",

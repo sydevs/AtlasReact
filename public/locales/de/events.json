@@ -39,6 +39,12 @@
     "monthly_4th": "4. %{weekday} jedes Monats",
     "monthly_last": "Letzter %{weekday} jedes Monats"
   },
+  "questions": {
+    "questions": "Haben Sie Fragen zu Veranstaltung?",
+    "experience": "Haben Sie schon Erfahrung mit Sahaja Yoga Meditation?",
+    "aspirations": "Was erwarten Sie von der Meditation?",
+    "referral": "Wie/Wo haben Sie von uns Erfahren?"
+  },
   "errors": {
     "starting_at": "Wählen Sie Ihr Startdatum",
     "name": "Geben Sie Ihren vollständigen Namen ein",

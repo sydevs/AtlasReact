@@ -42,10 +42,7 @@ export const EventRegistrationSchema = z.object({
   externalUrl: z.string().optional(),
   maxParticipants: z.number().nullable(),
   participantCount: z.number(),
-  questions: z.array(z.object({
-    slug: z.string(),
-    title: z.string(),
-  })),
+  questions: z.array(z.string()),
 })
 
 export const EventImageSchema = z.object({

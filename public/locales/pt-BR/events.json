@@ -39,6 +39,12 @@
     "monthly_4th": "4º %{weekday} de cada mês",
     "monthly_last": "Último %{weekday} de cada mês"
   },
+  "questions": {
+    "questions": "Você tem alguma dúvida?",
+    "experience": "Você já experimentou essa meditação antes?",
+    "aspirations": "O que você procura na meditação?",
+    "referral": "Como você ouviu falar de nós?"
+  },
   "errors": {
     "starting_at": "Selecione sua data de início",
     "name": "Digite seu nome completo",

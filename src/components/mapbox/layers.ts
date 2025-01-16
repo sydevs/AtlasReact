@@ -22,18 +22,6 @@ export const clusterLayer: Props = {
   },
 };
 
-/*export const clusterCountLayer: Props = {
-  id: 'cluster-count',
-  type: 'symbol',
-  source: 'events',
-  filter: ['has', 'point_count'],
-  layout: {
-    'text-field': '{point_count_abbreviated}',
-    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-    'text-size': 12
-  }
-};*/
-
 export const unclusteredPointLayer: Props = {
   id: 'unclustered-point',
   type: 'symbol',
@@ -44,11 +32,6 @@ export const unclusteredPointLayer: Props = {
     'icon-size': 0.85,
     'icon-ignore-placement': true,
     'icon-image': 'point',
-    'text-font': ['DIN Offc Pro Bold', 'Arial Unicode MS Bold'],
-    'text-size': 12,
-  },
-  paint: {
-    'text-color': '#FFFFFF',
   },
 };
 
@@ -62,11 +45,6 @@ export const selectedPointLayer: LayerProps = {
     'icon-size': 0.85,
     'icon-ignore-placement': true,
     'icon-image': 'selected',
-    'text-font': ['Iosevka Term Web', 'DIN Offc Pro Bold', 'Arial Unicode MS Bold'],
-    'text-size': 12,
-  },
-  paint: {
-    'text-color': '#FFFFFF',
   },
 };
 

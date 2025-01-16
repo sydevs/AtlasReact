@@ -39,6 +39,12 @@
     "monthly_4th": "4. %{weekday} každého měsíce",
     "monthly_last": "Poslední %{weekday} každého měsíce"
   },
+  "questions": {
+    "questions": "Máte nějaké dotazy?",
+    "experience": "Zažili jste již tuto meditaci?",
+    "aspirations": "Co od meditace hledáte?",
+    "referral": "Jak jste se o nás dozvěděli?"
+  },
   "errors": {
     "starting_at": "Vyberte datum zahájení",
     "name": "Zadejte své celé jméno",
