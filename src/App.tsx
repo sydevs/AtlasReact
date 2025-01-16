@@ -24,8 +24,10 @@ export default function App() {
   const setCurrentPath = useNavigationState(s => s.setCurrentPath);
   useEffect(() => setCurrentPath(location.pathname), [location]);
 
-  const searchParams = new URLSearchParams(window.location.search);
-  atlasAuth.apiKey = searchParams.get('key') || import.meta.env.VITE_ATLAS_API_KEY;
+  if (!atlasAuth.apiKey) {
+    const searchParams = new URLSearchParams(window.location.search);
+    atlasAuth.apiKey = searchParams.get('key') || import.meta.env.VITE_ATLAS_API_KEY;
+  }
 
   if (!atlasAuth.apiKey) {
     return <div className="flex-center w-dvw h-dvh p-10 bg-background">

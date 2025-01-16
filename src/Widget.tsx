@@ -23,7 +23,9 @@ export default function Widget({
 } : WidgetProps) {
   let Router: typeof BrowserRouter | typeof HashRouter;
 
-  atlasAuth.apiKey = apiKey;
+  if (!atlasAuth.apiKey) {
+    atlasAuth.apiKey = apiKey;
+  }
 
   if (locale) {
     i18n.changeLanguage(locale)
