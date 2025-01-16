@@ -53,9 +53,9 @@ export default function EventMetaevent({ event } : EventMetaeventProps) {
         "@type": "PostalAddress",
         streetAddress: event.location.venue.street,
         addressLocality: event.location.venue.city,
-        addressRegion: event.location.regionCode,
+        addressRegion: event.location.regionCode || undefined,
         addressCountry: event.location.countryCode,
-        //postalCode: event.location.postalCode,
+        postalCode: event.location.venue.postalCode || undefined,
       },
       geo: {
         "@type": "GeoCoordinates",

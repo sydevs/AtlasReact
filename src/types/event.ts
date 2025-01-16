@@ -34,6 +34,7 @@ export const EventLocationSchema = z.object({
     city: z.string(),
     directionsUrl: z.string(),
     address: z.string(),
+    postalCode: z.string().optional(),
   }).nullable(),
 })
 

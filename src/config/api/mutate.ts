@@ -24,7 +24,7 @@ client.interceptors.request.use((request) => {
   return {
     ...request,
     data,
-    key: import.meta.env.VITE_API_KEY,
+    key: import.meta.env.VITE_ATLAS_API_KEY,
   };
 });
 
