@@ -21,7 +21,7 @@ export const EventContactSchema = z.object({
 
 export const EventLocationSchema = z.object({
   countryCode: z.string().length(2),
-  regionCode: z.string().nullable(),
+  regionCode: z.string().nullish(),
   areaPath: z.string(),
   venuePath: z.string().optional(),
   platform: z.enum(['zoom', 'google_meet', 'youtube']).optional(),
