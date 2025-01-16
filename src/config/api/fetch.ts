@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AreaSchema, CountrySchema, RegionSchema, VenueSchema, CountrySlimSchema, EventSlimSchema, EventSchema } from "@/types";
 import i18n from "@/config/i18n";
+import atlasAuth from "./auth";
 
 const client = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT,
@@ -9,17 +10,13 @@ const client = axios.create({
   }
 });
 
-client.interceptors.request.use((config) => {
-  // use config.params if it has been set
-  config.params = config.params || {};
+client.interceptors.request.use((request) => {
+  request.headers['Authorization'] = `Bearer ${atlasAuth.apiKey}`
 
-  // add any client instance specific params to config
-  config.params['locale'] = i18n.resolvedLanguage;
+  request.params = request.params || {}
+  request.params['locale'] = i18n.resolvedLanguage
 
-  //const params = new URLSearchParams();
-  //config.params['api-key'] = process.env.VUE_APP_API_KEY;
-
-  return config;
+  return request;
 });
 
 const getGeojson = async () => {

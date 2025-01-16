@@ -2,6 +2,9 @@
 import { create } from 'zustand'
 import { Feature } from 'geojson'
 
+
+// ===== VIEW STATE ===== //
+
 type ViewState = {
   zoom: number
   latitude: number
@@ -26,6 +29,9 @@ export const useViewState = create<ViewState & ViewAction>((set) => ({
   setBoundary: (boundary: ViewState['boundary']) => set(() => ({ boundary })),
 }))
 
+
+// ===== NAVIGATION STATE ===== //
+
 type NavigationState = {
   previousPath: string
   currentPath: string
@@ -43,6 +49,9 @@ export const useNavigationState = create<NavigationState & NavigationAction>((se
     currentPath,
   })),
 }))
+
+
+// ===== SEARCH STATE ===== //
 
 type SearchState = {
   onlineOnly: boolean;

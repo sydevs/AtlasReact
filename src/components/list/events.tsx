@@ -24,7 +24,8 @@ function calculateOrder(event: EventSlim) {
 
 export function DynamicEventsList({ latitude, longitude, onlineOnly = false }: DynamicProps) {
   const { data, isFetching, error } = useQuery({
-    queryKey: ['events', latitude, longitude, onlineOnly],
+    // Latitude and Longitude are rounded to reduce re-fetching when the map is moved.
+    queryKey: ['events', latitude.toFixed(2), longitude.toFixed(2), onlineOnly],
     queryFn: () => api.getEvents(latitude, longitude, onlineOnly).then(data => {
       return data.sort((a, b) => {
         return calculateOrder(a) - calculateOrder(b)

@@ -2,6 +2,7 @@ import r2wc from '@r2wc/react-to-web-component';
 import App from './App';
 import { BrowserRouter, HashRouter } from 'react-router';
 import i18n from './config/i18n';
+import atlasAuth from './config/api/auth';
 
 // Implementation of embeddable Widget
 // Demo in: demo.html
@@ -21,6 +22,8 @@ export default function Widget({
   basePath
 } : WidgetProps) {
   let Router: typeof BrowserRouter | typeof HashRouter;
+
+  atlasAuth.apiKey = apiKey;
 
   if (locale) {
     i18n.changeLanguage(locale)

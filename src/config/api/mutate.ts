@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Registration, RegistrationSchema } from "@/types";
 import i18n from "@/config/i18n";
+import atlasAuth from "./auth";
 
 const client = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT,
@@ -21,6 +22,8 @@ const convertToSnakeCase = (obj: any) => {
 
 client.interceptors.request.use((request) => {
   const data = convertToSnakeCase(request.data);
+  request.headers['Authorization'] = `Bearer ${atlasAuth.apiKey}`
+
   return {
     ...request,
     data,
