@@ -2,6 +2,7 @@ import axios from "axios";
 import { AreaSchema, CountrySchema, RegionSchema, VenueSchema, CountrySlimSchema, EventSlimSchema, EventSchema } from "@/types";
 import i18n from "@/config/i18n";
 import atlasAuth from "./auth";
+import { ClientSchema } from "@/types";
 
 const client = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT,
@@ -66,6 +67,11 @@ const getEvent = async (id: number) => {
   return EventSchema.parse(response.data);
 };
 
+const getClient = async (uuid: string) => {
+  const response = await client.get(`/clients/${uuid}.json`);
+  return ClientSchema.parse(response.data);
+};
+
 export default {
   getGeojson,
   getCountries,
@@ -75,4 +81,5 @@ export default {
   getArea,
   getVenue,
   getEvent,
+  getClient,
 };

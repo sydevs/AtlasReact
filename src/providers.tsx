@@ -6,20 +6,26 @@ import { StrictMode, Suspense } from "react";
 
 const queryClient = new QueryClient()
 
-export function Provider({ children }: { children: React.ReactNode }) {
-  const navigate = useNavigate();
-
+export function OuterProviders({ children }: { children: React.ReactNode }) {
   return (
     <StrictMode>
       <Suspense fallback={<div>Loading...</div>}>
         <QueryClientProvider client={queryClient}>
           <HelmetProvider>
-            <NextUIProvider navigate={navigate} useHref={useHref}>
-              {children}
-            </NextUIProvider>
+            {children}
           </HelmetProvider>
         </QueryClientProvider>
       </Suspense>
     </StrictMode>
+  );
+}
+
+export function InnerProviders({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
+
+  return (
+    <NextUIProvider navigate={navigate} useHref={useHref}>
+      {children}
+    </NextUIProvider>
   );
 }

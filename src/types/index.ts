@@ -1,4 +1,5 @@
 import { SVGProps } from "react";
+export * from "./client";
 export * from "./country";
 export * from "./event";
 export * from "./area";
