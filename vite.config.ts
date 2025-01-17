@@ -24,7 +24,7 @@ export default defineConfig({
       },
       output: {
         entryFileNames: (assetInfo) => {
-          return assetInfo.name === 'widget' ? 'assets/embed.js' : 'assets/[name]-[hash].js';
+          return assetInfo.name === 'widget' ? 'embed.js' : 'assets/[name]-[hash].js';
         },
       },
     },
