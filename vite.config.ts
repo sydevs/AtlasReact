@@ -20,11 +20,11 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        widget: resolve(__dirname, './src/widget.tsx'),
+        embed: resolve(__dirname, 'src/widget.tsx'),
       },
       output: {
         entryFileNames: (assetInfo) => {
-          return assetInfo.name === 'widget' ? 'assets/embed.js' : 'assets/[name]-[hash].js';
+          return assetInfo.name === 'embed' ? 'assets/embed.js' : 'assets/[name]-[hash].js';
         },
       },
     },
