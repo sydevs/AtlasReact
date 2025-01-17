@@ -1,9 +1,8 @@
 import { Navbar } from "@/components/navbar";
 import Mapbox from "@/components/mapbox/map";
 import { MapProvider } from "react-map-gl";
-import { Outlet } from "react-router";
 
-export default function MapLayout() {
+export default function MapLayout({ children }: { children: React.ReactNode }) {
   const hasNavbar = false;
 
   return (
@@ -14,7 +13,7 @@ export default function MapLayout() {
         <Mapbox />
       </div>
       <div className={`flex flex-col w-screen h-screen pointer-events-none`}>
-        <Outlet />
+        {children}
       </div>
     </MapProvider>
   );

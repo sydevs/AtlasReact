@@ -75,8 +75,8 @@ function AppRouter({
     <Helmet>
       <meta property="og:locale" content={locale} />
     </Helmet>
-    <Routes>
-      <Route element={<MapLayout />} path="/">
+    <MapLayout>
+      <Routes>
         <Route path="/search" element={<IndexPage />} />
         <Route path="/countries/:countryCode" element={<CountryPage />} />
         <Route path="/regions/:id" element={<RegionPage />} />
@@ -84,7 +84,7 @@ function AppRouter({
         <Route path="/venues/:id" element={<VenuePage />} />
         <Route path="/events/:id" element={<EventPage />} />
         <Route path="*" element={<Navigate to={client.initialPath || "/search"} />} />
-      </Route>
-    </Routes>
+      </Routes>
+    </MapLayout>
   </>;
 }

@@ -2,7 +2,7 @@
 export const controlTheme = {
   variables: {
     fontFamily: 'Raleway, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-    unit: '1rem',
+    unit: '16px',
     fontWeight: '500',
     padding: '1em',
     border: '1px solid rgba(0, 0, 0, 0.1)',
