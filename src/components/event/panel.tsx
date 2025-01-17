@@ -60,7 +60,7 @@ export default function EventPanel({ event } : EventPanelProps) {
           {event.contact && !event.timing &&
             <EventContactDetails contact={event.contact} isHighlighted />}
 
-          {event.timing &&
+          {event.timing && event.timing.upcomingDates.length > 0 &&
             <EventTimingDetails timing={event.timing} convertTimeZone={event.online} />}
           
           {event.location &&

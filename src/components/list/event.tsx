@@ -17,7 +17,7 @@ export default function EventItem({ event }: Props) {
   const { t } = useTranslation('events');
   const { locale, languageNames } = useLocale();
 
-  const nextDate = useMemo(() => DateTime.fromJSDate(event.nextDate), [event.nextDate]);
+  const nextDate = useMemo(() => DateTime.fromJSDate(event.nextDate).setLocale(locale), [event.nextDate, locale]);
 
   return (
     <Link href={event.path} className="block px-6 text-inherit transition-colors hover:bg-primary-10">
