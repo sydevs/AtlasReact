@@ -20,7 +20,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        widget: './src/widget.tsx',
+        widget: resolve(__dirname, './src/widget.tsx'),
       },
       output: {
         entryFileNames: (assetInfo) => {
