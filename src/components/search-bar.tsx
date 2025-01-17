@@ -39,7 +39,7 @@ export default function SearchBar({
     value.properties.bbox && searchParams.set('bbox', value.properties.bbox?.toString())
     console.log(value.properties.coordinates)
     searchParams.set('center', `${value.properties.coordinates.longitude},${value.properties.coordinates.latitude}`)
-    navigate(`/?${searchParams.toString()}`);
+    navigate(`/search?${searchParams.toString()}`);
   }, [onSelect, navigate]);
 
   const searchBarRef = useRef<HTMLDivElement>(null);

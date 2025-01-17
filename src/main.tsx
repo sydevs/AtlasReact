@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import atlasAuth from "./config/api/auth";
+import { BrowserRouter } from "react-router";
 
 if (!atlasAuth.apiKey) {
   const searchParams = new URLSearchParams(window.location.search);
@@ -8,5 +9,7 @@ if (!atlasAuth.apiKey) {
 }
 
 ReactDOM.createRoot(document.getElementById("syatlas")!).render(
-  <App apiKey={atlasAuth.apiKey} />
+  <BrowserRouter>
+    <App apiKey={atlasAuth.apiKey} />
+  </BrowserRouter>
 );

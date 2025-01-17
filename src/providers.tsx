@@ -12,24 +12,18 @@ const queryClient = new QueryClient({
   },
 });
 
-export function OuterProviders({ children }: { children: React.ReactNode }) {
+export default function Providers({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
+
   return (
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <HelmetProvider>
-          {children}
+          <NextUIProvider navigate={navigate} useHref={useHref}>
+            {children}
+          </NextUIProvider>
         </HelmetProvider>
       </QueryClientProvider>
     </StrictMode>
-  );
-}
-
-export function InnerProviders({ children }: { children: React.ReactNode }) {
-  const navigate = useNavigate();
-
-  return (
-    <NextUIProvider navigate={navigate} useHref={useHref}>
-      {children}
-    </NextUIProvider>
   );
 }

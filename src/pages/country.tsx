@@ -38,7 +38,7 @@ function CountryPanel({ countryCode }: { countryCode: string }) {
       <SearchBar
         onSelect={value => console.log(value)}
         header={countryName}
-        returnLink="/"
+        returnLink="/search"
       />
       <List>
         {country.children.map((child) => (
