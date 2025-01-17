@@ -28,6 +28,10 @@ export default function Widget({
     i18n.changeLanguage(locale)
   }
 
+  if (!window.location.hash) {
+    window.location.hash = HASH_BASE;
+  }
+
   return (
     <HashRouter basename={HASH_BASE}>
       <App apiKey={apiKey} />
