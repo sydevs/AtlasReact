@@ -34,7 +34,7 @@ export default function Widget({
 
   return (
     <HashRouter basename={HASH_BASE}>
-      <App apiKey={apiKey} />
+      <App apiKey={apiKey} defaultLocale={locale} />
     </HashRouter>
   );
 }
@@ -42,7 +42,6 @@ export default function Widget({
 customElements.define('syatlas-map', r2wc(Widget, {
   props: {
     apiKey: 'string',
-    basePath: 'string',
     locale: 'string',
   },
 }));

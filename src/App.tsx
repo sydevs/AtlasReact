@@ -21,12 +21,14 @@ import { ErrorFallback, LoadingFallback } from "./components/base/fallbacks";
 
 import "@/styles/globals.css";
 import "@/config/i18n";
+import i18n from "@/config/i18n";
 
 
 // ===== APP ===== //
 
 type AppProps = {
   apiKey: string | undefined | null,
+  defaultLocale: string | undefined | null,
 }
 
 export default function App(props: AppProps) {
@@ -45,7 +47,8 @@ export default function App(props: AppProps) {
 // ===== APP ROUTER ===== //
 
 function AppRouter({
-  apiKey
+  apiKey,
+  defaultLocale,
 }: AppProps) {
   if (!apiKey || apiKey == "") {
     throw new Error("Missing api key.");
@@ -55,6 +58,11 @@ function AppRouter({
     queryKey: ['client', apiKey],
     queryFn: () => api.getClient(apiKey),
   });
+
+  useEffect(() => {
+    i18n.changeLanguage(defaultLocale || client.locale || "en");
+    return () => {}
+  }, [defaultLocale, client.locale]);
 
   const { locale } = useLocale();
   const location = useLocation();
