@@ -7,4 +7,6 @@ if (!atlasAuth.apiKey) {
   atlasAuth.apiKey = searchParams.get('key') || import.meta.env.VITE_ATLAS_API_KEY;
 }
 
-ReactDOM.createRoot(document.getElementById("syatlas")!).render(<App />);
+ReactDOM.createRoot(document.getElementById("syatlas")!).render(
+  <App apiKey={atlasAuth.apiKey} />
+);

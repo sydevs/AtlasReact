@@ -48,7 +48,7 @@ export default function Widget({
 
   return (
     <Router basename={basePath}>
-      <App key={apiKey} />
+      <App apiKey={apiKey} />
     </Router>
   );
 }

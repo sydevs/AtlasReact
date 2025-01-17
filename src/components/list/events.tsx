@@ -1,9 +1,8 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { EventSlim } from "@/types";
 import { isSoon } from "@/components/event/soon";
 import api from "@/config/api";
 import EventItem from "./event";
-import Loader from "../loader";
 import i18n from "@/config/i18n";
 import { DateTime } from "luxon";
 import { List } from ".";
@@ -23,7 +22,7 @@ function calculateOrder(event: EventSlim) {
 }
 
 export function DynamicEventsList({ latitude, longitude, onlineOnly = false }: DynamicProps) {
-  const { data, isFetching, error } = useQuery({
+  const { data: events } = useSuspenseQuery({
     // Latitude and Longitude are rounded to reduce re-fetching when the map is moved.
     queryKey: ['events', latitude.toFixed(2), longitude.toFixed(2), onlineOnly],
     queryFn: () => api.getEvents(latitude, longitude, onlineOnly).then(data => {
@@ -31,13 +30,11 @@ export function DynamicEventsList({ latitude, longitude, onlineOnly = false }: D
         return calculateOrder(a) - calculateOrder(b)
       });
     }),
-    placeholderData: keepPreviousData,
+    //placeholderData: keepPreviousData,
   });
 
   return (
-    <Loader data={data} isLoading={isFetching} error={error}>
-      <EventsList events={data || []} />
-    </Loader>
+    <EventsList events={events} />
   );
 }
 

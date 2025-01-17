@@ -1,4 +1,7 @@
 import { useBreakpoint } from "@/config/responsive";
+import { Suspense } from "react";
+import { ErrorFallback, LoadingFallback } from "./fallbacks";
+import { ErrorBoundary } from "react-error-boundary";
 
 type Props = {
   children: React.ReactNode;
@@ -7,7 +10,7 @@ type Props = {
   width?: number | undefined;
 }
 
-export function Main({
+export function Panel({
   width = 400,
   mapWindow,
   footerHeight = 300,
@@ -31,7 +34,11 @@ export function Main({
           { width: isLg ? width : 400 } : 
           { marginTop: mapWindow ? `${mapWindow}px` : `calc(100dvh - ${footerHeight}px)` }}
     >
-      {children}
+      <Suspense fallback={<LoadingFallback />}>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          {children}
+        </ErrorBoundary>
+      </Suspense>
     </main>
   );
 }

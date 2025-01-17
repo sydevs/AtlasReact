@@ -10,32 +10,34 @@ import MapLayout from "./layouts/map";
 import { Helmet } from "react-helmet-async";
 import { OuterProviders, InnerProviders } from "./providers";
 import useLocale from "./hooks/use-locale";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useNavigationState } from "./config/store";
-import atlasAuth from "./config/api/auth";
 import * as Fathom from "fathom-client";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { ErrorBoundary } from "react-error-boundary"
+import api from "./config/api";
+import { ErrorFallback, LoadingFallback } from "./components/base/fallbacks";
+
 
 import "@/styles/globals.css";
 import "@/config/i18n";
-import { Alert } from "@nextui-org/react";
-import useAtlasClient from "./hooks/use-atlas-client";
-import { Loading } from "./components/loader";
 
 
 // ===== APP ===== //
 
 type AppProps = {
+  apiKey: string | undefined | null,
   Router?: typeof BrowserRouter | typeof HashRouter;
 }
 
 export default function App(props: AppProps) {
-  if (!atlasAuth.apiKey) {
-    return <AppError message="Missing api key." />;
-  }
-
   return (
     <OuterProviders>
-      <AppClient apiKey={atlasAuth.apiKey} {...props} />
+      <Suspense fallback={<LoadingFallback />}>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <AppClient {...props} />
+        </ErrorBoundary>
+      </Suspense>
     </OuterProviders>
   );
 }
@@ -43,25 +45,18 @@ export default function App(props: AppProps) {
 
 // ===== APP CLIENT ===== //
 
-type AppClientProps = {
-  apiKey: string,
-  Router?: typeof BrowserRouter | typeof HashRouter,
-}
-
 function AppClient({
   apiKey,
   Router = BrowserRouter,
-} : AppClientProps) {
-
-  const { client, isClientLoading, clientError } = useAtlasClient(apiKey);
-
-  if (isClientLoading) {
-    return <div className="flex-center w-dvw h-dvh p-10 bg-background">
-        <Loading />
-      </div>;
-  } else if (clientError || !client) {
-    return <AppError message={clientError?.message || "Invalid api key."} />;
+} : AppProps) {
+  if (!apiKey || apiKey == "") {
+    throw new Error("Missing api key.");
   }
+
+  const { data: client } = useSuspenseQuery({
+    queryKey: ['client', apiKey],
+    queryFn: () => api.getClient(apiKey),
+  });
 
   return (
     <Router basename={client.basePath}>
@@ -75,7 +70,7 @@ function AppClient({
 
 // ===== APP ROUTER ===== //
 
-type AppRouterProps = AppProps & {
+type AppRouterProps = {
   domain: string
 };
 
@@ -112,10 +107,4 @@ function AppRouter({
       </Route>
     </Routes>
   </>;
-}
-
-function AppError({ message }: { message: string }) {
-  return <div className="flex-center w-dvw h-dvh p-10 bg-background">
-    <Alert color="danger" title="Sahaj Atlas" description={message} classNames={{ base: "max-w-xs" }} />
-  </div>;
 }

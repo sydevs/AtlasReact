@@ -1,9 +1,8 @@
-import Loader from "@/components/loader";
 import api from "@/config/api";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import { useEffect } from "react";
-import { Main } from "@/components/base/main";
+import { Panel } from "@/components/base/panel";
 import { useNavigationState, useViewState } from "@/config/store";
 import EventMetadata from "@/components/event/metadata";
 import { Link } from "@nextui-org/react";
@@ -11,15 +10,14 @@ import { UpArrowIcon } from "@/components/icons";
 import useMapbox from "@/hooks/use-mapbox";
 import { lazy } from "react";
 
-const EventPanel = lazy(() => import("@/components/event/panel"))
+const EventPanelContent = lazy(() => import("@/components/event/panel"))
 
-export default function EventPage() {
-  const { id } = useParams();
+function EventPanel({ eventId }: { eventId: number }) {
   const { mapbox, moveMap } = useMapbox();
   const setMapSelection = useViewState(s => s.setSelection);
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['event', id],
-    queryFn: () => api.getEvent(Number(id)),
+  const { data: event } = useSuspenseQuery({
+    queryKey: ['event', eventId],
+    queryFn: () => api.getEvent(Number(eventId)),
   });
 
   useEffect(() => {
@@ -27,34 +25,40 @@ export default function EventPage() {
   }, []);
 
   useEffect(() => {
-    if (!mapbox || !data) return;
+    if (!mapbox) return;
     
-    setMapSelection({ ...data.location, approximate: data.online })
+    setMapSelection({ ...event.location, approximate: event.online })
     moveMap({
-      center: [data.location.longitude, data.location.latitude],
-      zoom: data.online ? 7 : 15,
+      center: [event.location.longitude, event.location.latitude],
+      zoom: event.online ? 7 : 15,
     })
 
     return () => {
       setMapSelection(null)
     }
-  }, [data, mapbox])
+  }, [event, mapbox])
 
   const previousPath = useNavigationState(s => s.previousPath);
-  const parentPath = data && (data.online || previousPath != data.location.venuePath ? data.location.areaPath : data.location.venuePath)
+  const parentPath = (event.online || previousPath != event.location.venuePath ? event.location.areaPath : event.location.venuePath)
 
   return (
-    <Main width={467} mapWindow={180}>
-      <Loader isLoading={isLoading} error={error}>
-        {data &&
-          <>
-            <Link className="text-3xl absolute top-5 left-2.5 z-20 bg-background rounded hover:opacity-100 hover:bg-primary-50 transition-colors" href={parentPath}>
-              <UpArrowIcon size={32} className="text-lg" />
-            </Link>
-            <EventMetadata event={data} />
-            <EventPanel event={data} />
-          </>}
-      </Loader>
-    </Main>
+    <>
+      <Link className="text-3xl absolute top-5 left-2.5 z-20 bg-background rounded hover:opacity-100 hover:bg-primary-50 transition-colors" href={parentPath}>
+        <UpArrowIcon size={32} className="text-lg" />
+      </Link>
+      <EventMetadata event={event} />
+      <EventPanelContent event={event} />
+    </>
+  );
+}
+
+export default function EventPage() {
+  let { id } = useParams();
+
+  // This wrapper is necessary because <Panel> contains an <ErrorBoundary> and <Suspense> to handle loading
+  return (
+    <Panel width={467} mapWindow={180}>
+      <EventPanel eventId={Number(id)} />
+    </Panel>
   );
 }

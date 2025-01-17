@@ -1,10 +1,9 @@
 import { useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import api from "@/config/api";
-import Loader from "@/components/loader";
 import { List, ListItem } from "@/components/list";
 import SearchBar from "@/components/search-bar";
-import { Main } from "@/components/base/main";
+import { Panel } from "@/components/base/panel";
 import { Helmet } from "react-helmet-async";
 import { useEffect } from "react";
 import { useViewState } from "@/config/store";
@@ -13,49 +12,51 @@ import { useTranslation } from "react-i18next";
 import useLocale from "@/hooks/use-locale";
 import useMapbox from "@/hooks/use-mapbox";
 
-export default function CountryPage() {
-  let { countryCode } = useParams();
+function CountryPanel({ countryCode }: { countryCode: string }) {
   const { fitBounds } = useMapbox();
   const { t } = useTranslation('common');
   const { regionNames } = useLocale();
   const setBoundary = useViewState(s => s.setBoundary);
-  const { data, isLoading, error } = useQuery({
+  const { data: country } = useSuspenseQuery({
     queryKey: ['country', countryCode],
-    queryFn: () => api.getCountry(countryCode || ""),
+    queryFn: () => api.getCountry(countryCode),
   });
 
   useEffect(() => {
-    if (data) {
-      setBoundary(bboxPolygon(data.bounds))
-      fitBounds(data.bounds)
-    }
-  }, [data, fitBounds]);
+    setBoundary(bboxPolygon(country.bounds))
+    fitBounds(country.bounds)
+  }, [country, fitBounds]);
 
-  const countryName = data && (regionNames.of(data.code) || data.label)
+  const countryName = regionNames.of(country.code) || country.label
 
   return (
-    <Main>
-      {data &&
-        <Helmet>
-          <title>{t('locations.title', { location: countryName })}</title>
-          <meta name="description" content={t('locations.description', { count: data.eventCount, location: countryName })} />
-        </Helmet>}
-      <Loader isLoading={isLoading} error={error}>
-        {data &&
-          <>
-            <SearchBar
-              onSelect={value => console.log(value)}
-              header={countryName}
-              returnLink="/"
-            />
-            <List>
-              {data.children.map((child) => (
-                child.eventCount > 0 &&
-                  <ListItem key={child.id} label={child.label} subtitle={child.subtitle} count={child.eventCount} link={child.path} />
-              ))}
-            </List>
-          </>}
-      </Loader>
-    </Main>
+    <>
+      <Helmet>
+        <title>{t('locations.title', { location: countryName })}</title>
+        <meta name="description" content={t('locations.description', { count: country.eventCount, location: countryName })} />
+      </Helmet>
+      <SearchBar
+        onSelect={value => console.log(value)}
+        header={countryName}
+        returnLink="/"
+      />
+      <List>
+        {country.children.map((child) => (
+          child.eventCount > 0 &&
+            <ListItem key={child.id} label={child.label} subtitle={child.subtitle} count={child.eventCount} link={child.path} />
+        ))}
+      </List>
+    </>
+  );
+}
+
+export default function CountryPage() {
+  let { countryCode } = useParams();
+
+  // This wrapper is necessary because <Panel> contains an <ErrorBoundary> and <Suspense> to handle loading
+  return (
+    <Panel>
+      <CountryPanel countryCode={countryCode || ""} />
+    </Panel>
   );
 }

@@ -1,10 +1,9 @@
 import api from "@/config/api";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
-import Loader from "@/components/loader";
 import SearchBar from "@/components/search-bar";
 import { List, ListItem } from "@/components/list";
-import { Main } from "@/components/base/main";
+import { Panel } from "@/components/base/panel";
 import { Helmet } from "react-helmet-async";
 import { useEffect } from "react";
 import { bboxPolygon } from "@turf/bbox-polygon";
@@ -12,45 +11,47 @@ import { useViewState } from "@/config/store";
 import { useTranslation } from "react-i18next";
 import useMapbox from "@/hooks/use-mapbox";
 
-export default function RegionPage() {
-  let { id } = useParams();
+function RegionPanel({ regionId }: { regionId: number }) {
   const { fitBounds } = useMapbox();
   const { t } = useTranslation('common');
   const setBoundary = useViewState(s => s.setBoundary);
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['region', id],
-    queryFn: () => api.getRegion(Number(id)),
+  const { data: region } = useSuspenseQuery({
+    queryKey: ['region', regionId],
+    queryFn: () => api.getRegion(regionId),
   });
 
   useEffect(() => {
-    if (data) {
-      setBoundary(bboxPolygon(data.bounds))
-      fitBounds(data.bounds)
-    }
-  }, [data, fitBounds]);
+    setBoundary(bboxPolygon(region.bounds))
+    fitBounds(region.bounds)
+  }, [region, fitBounds]);
 
   return (
-    <Main>
-      {data &&
-        <Helmet>
-          <title>{t('locations.title', { location: data.label })}</title>
-          <meta name="description" content={t('locations.description', { count: data.eventCount, location: data.label })} />
-        </Helmet>}
-      <Loader isLoading={isLoading} error={error}>
-        {data &&
-          <>
-            <SearchBar
-              onSelect={value => console.log(value)}
-              header={data.label}
-              returnLink={data.parentPath}
-            />
-            <List>
-              {data.areas.filter(area => area.eventCount > 0).map((area) => (
-                <ListItem key={area.id} label={area.label} subtitle={area.subtitle} count={area.eventCount} link={area.path} />
-              ))}
-            </List>
-          </>}
-      </Loader>
-    </Main>
+    <>
+      <Helmet>
+        <title>{t('locations.title', { location: region.label })}</title>
+        <meta name="description" content={t('locations.description', { count: region.eventCount, location: region.label })} />
+      </Helmet>
+      <SearchBar
+        onSelect={value => console.log(value)}
+        header={region.label}
+        returnLink={region.parentPath}
+      />
+      <List>
+        {region.areas.filter(area => area.eventCount > 0).map((area) => (
+          <ListItem key={area.id} label={area.label} subtitle={area.subtitle} count={area.eventCount} link={area.path} />
+        ))}
+      </List>
+    </>
+  );
+}
+
+export default function RegionPage() {
+  let { id } = useParams();
+
+  // This wrapper is necessary because <Panel> contains an <ErrorBoundary> and <Suspense> to handle loading
+  return (
+    <Panel>
+      <RegionPanel regionId={Number(id)} />
+    </Panel>
   );
 }

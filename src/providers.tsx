@@ -2,20 +2,24 @@ import { NextUIProvider } from "@nextui-org/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useNavigate, useHref } from "react-router";
 import { HelmetProvider } from "react-helmet-async";
-import { StrictMode, Suspense } from "react";
+import { StrictMode } from "react";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export function OuterProviders({ children }: { children: React.ReactNode }) {
   return (
     <StrictMode>
-      <Suspense fallback={<div>Loading...</div>}>
-        <QueryClientProvider client={queryClient}>
-          <HelmetProvider>
-            {children}
-          </HelmetProvider>
-        </QueryClientProvider>
-      </Suspense>
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          {children}
+        </HelmetProvider>
+      </QueryClientProvider>
     </StrictMode>
   );
 }
