@@ -56,7 +56,7 @@ export function EventTimingDetails({
       <div className="text-tiny bg-primary-100 py-0.5 font-semibold">
         {nextDate.toLocaleString({ month: 'short' }).toUpperCase()}
       </div>
-      <div className="flex items-center justify-center font-semibold text-medium h-6 text-default-500">
+      <div className="flex items-center justify-center font-semibold text-md h-6 text-default-500">
         {nextDate.day}
       </div>
     </EventDetail>
@@ -123,16 +123,16 @@ export function EventDetail({
             isExternal={isExternal}
             showAnchorIcon={isExternal}
             anchorIcon={isExternal && <AnchorIcon />}
-            className="group gap-x-0.5 text-medium text-foreground font-medium"
+            className="group gap-x-0.5 text-md text-foreground font-medium"
             href={url}
             rel="noreferrer noopener"
           >
             {title}
           </Link> :
-          <div className="text-medium font-medium">
+          <div className="text-md font-medium">
             {title}
           </div>}
-        <div className="text-small text-default-500 max-w-72">
+        <div className="text-base text-default-500 max-w-72">
           {content}
         </div>
       </div>

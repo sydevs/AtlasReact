@@ -1,6 +1,6 @@
 import r2wc from '@r2wc/react-to-web-component';
 import App from './App';
-import { BrowserRouter, HashRouter } from 'react-router';
+import { HashRouter } from 'react-router';
 import i18n from './config/i18n';
 import atlasAuth from './config/api/auth';
 
@@ -18,11 +18,8 @@ type WidgetProps = {
 
 export default function Widget({
   apiKey,
-  locale,
-  basePath
+  locale
 } : WidgetProps) {
-  let Router: typeof BrowserRouter | typeof HashRouter;
-
   if (!atlasAuth.apiKey) {
     atlasAuth.apiKey = apiKey;
   }
@@ -31,25 +28,10 @@ export default function Widget({
     i18n.changeLanguage(locale)
   }
 
-  if (!!basePath) {
-    if (!window.location.pathname.startsWith(basePath)) {
-      window.location.pathname = basePath + window.location.pathname
-    }
-
-    Router = BrowserRouter
-  } else {
-    if (!window.location.hash.startsWith("#" + HASH_BASE)) {
-      window.location.hash = HASH_BASE + window.location.hash
-    }
-
-    Router = HashRouter
-    basePath = HASH_BASE
-  }
-
   return (
-    <Router basename={basePath}>
+    <HashRouter basename={HASH_BASE}>
       <App apiKey={apiKey} />
-    </Router>
+    </HashRouter>
   );
 }
 

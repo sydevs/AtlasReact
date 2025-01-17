@@ -26,7 +26,7 @@ export default function EventPanel({ event } : EventPanelProps) {
       </div>
       <div className="flex flex-col gap-3 px-8 pt-3 pb-12">
         <h1 className={`
-          text-[1.5rem] font-semibold leading-7 tracking-wide
+          text-[24px] font-semibold leading-7 tracking-wide
           ${event.images.length > 0 ? '' : 'pl-5 mt-3'}
         `}>
           {event.label}

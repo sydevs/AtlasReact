@@ -18,7 +18,7 @@ export default function ListItem({ label, subtitle, count, link, children }: Pro
           <div>{label}</div>
           {subtitle && <div className="text-md font-light">{subtitle}</div>}
         </div>
-        <div className="text-right mr-1 font-mono">{count}</div>
+        <div className="text-right mr-1">{count}</div>
         <RightArrowIcon className="text-xl" />
       </li>
     </Link>

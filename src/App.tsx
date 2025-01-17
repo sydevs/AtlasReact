@@ -77,13 +77,13 @@ function AppRouter({
     </Helmet>
     <Routes>
       <Route element={<MapLayout />} path="/">
-        <Route element={<Navigate to={client.initialPath || "/search"} />} index />
-        <Route element={<IndexPage />} path="/search" />
-        <Route element={<CountryPage />} path="/countries/:countryCode" />
-        <Route element={<RegionPage />} path="/regions/:id" />
-        <Route element={<AreaPage />} path="/areas/:id" />
-        <Route element={<VenuePage />} path="/venues/:id" />
-        <Route element={<EventPage />} path="/events/:id" />
+        <Route path="/search" element={<IndexPage />} />
+        <Route path="/countries/:countryCode" element={<CountryPage />} />
+        <Route path="/regions/:id" element={<RegionPage />} />
+        <Route path="/areas/:id" element={<AreaPage />} />
+        <Route path="/venues/:id" element={<VenuePage />} />
+        <Route path="/events/:id" element={<EventPage />} />
+        <Route path="*" element={<Navigate to={client.initialPath || "/search"} />} />
       </Route>
     </Routes>
   </>;
