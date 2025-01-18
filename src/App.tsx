@@ -28,7 +28,7 @@ import i18n from "@/config/i18n";
 
 type AppProps = {
   apiKey: string | undefined | null,
-  defaultLocale: string | undefined | null,
+  defaultLocale?: string | null,
 }
 
 export default function App(props: AppProps) {
