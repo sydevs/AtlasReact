@@ -60,7 +60,10 @@ function AppRouter({
   });
 
   useEffect(() => {
-    i18n.changeLanguage(defaultLocale || client.locale || "en");
+    if (defaultLocale || client.locale) {
+      i18n.changeLanguage(defaultLocale || client.locale || "en");
+    }
+
     return () => {}
   }, [defaultLocale, client.locale]);
 
