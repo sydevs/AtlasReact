@@ -50,6 +50,7 @@ export default function useMapbox() {
       return padding
     }, [mapbox, isMd, changePadding]),
     fitBounds: useCallback((bounds: LngLatBoundsLike) => {
+      console.log('fitBounds', bounds, mapbox?.getCanvas()?.getBoundingClientRect())
       mapbox?.fitBounds(bounds, { padding })
     }, [mapbox, padding]),
     moveMap: useCallback((options: EasingOptions) => {
