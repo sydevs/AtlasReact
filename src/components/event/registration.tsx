@@ -72,22 +72,19 @@ export function RegistrationButton({ event, ...buttonProps }: RegistrationButton
     );
   } else {
     return (
-      <Link
-        className="group w-full"
+      <Button
+        color="primary"
+        variant="flat"
+        as={Link}
         href={event.registration.externalUrl}
         target="_blank"
+        {...buttonProps}
       >
-        <Button
-          color="primary"
-          variant="flat"
-          {...buttonProps}
-        >
-          <span className="font-semibold tracking-wider">
-            {t('registration.register_now')}
-          </span>
-          <AnchorIcon className="text-primary" />
-        </Button>
-      </Link>
+        <span className="font-semibold tracking-wider">
+          {t('registration.register_now')}
+        </span>
+        <AnchorIcon className="text-primary" />
+      </Button>
     );
   }
 }
