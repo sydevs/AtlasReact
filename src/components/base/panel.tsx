@@ -20,8 +20,8 @@ export function Panel({
   const { isLg } = useBreakpoint("lg");
 
   return (
-    <main
-      id='main'
+    <div
+      id="syatlas-main"
       className={`
         flex flex-col flex-grow lg:flex-grow-0
         pointer-events-auto md:overflow-y-scroll
@@ -39,6 +39,6 @@ export function Panel({
           {children}
         </ErrorBoundary>
       </Suspense>
-    </main>
+    </div>
   );
 }

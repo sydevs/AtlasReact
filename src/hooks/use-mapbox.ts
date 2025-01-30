@@ -35,7 +35,7 @@ export default function useMapbox() {
     updatePadding: useCallback(() => {
       if (!mapbox) return
       const mapRect = mapbox.getCanvas().getBoundingClientRect()
-      const mainRect = document.getElementById('main')?.getBoundingClientRect()
+      const mainRect = document.getElementById("syatlas-main")?.getBoundingClientRect()
 
       if (!mapRect || !mainRect) return
 
@@ -50,7 +50,6 @@ export default function useMapbox() {
       return padding
     }, [mapbox, isMd, changePadding]),
     fitBounds: useCallback((bounds: LngLatBoundsLike) => {
-      console.log('fitBounds', bounds, mapbox?.getCanvas()?.getBoundingClientRect(), padding)
       mapbox?.fitBounds(bounds, { padding })
     }, [mapbox, padding]),
     moveMap: useCallback((options: EasingOptions) => {
