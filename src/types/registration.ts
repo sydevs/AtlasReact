@@ -2,7 +2,7 @@ import z from "zod"
 
 export const RegistrationSchema = z.object({
   startingAt: z.coerce.date(),
-  name: z.string().regex(/^[a-zA-Z\s]{3,}$/),
+  name: z.string().regex(/^[a-zA-Z\-\s]{3,}$/),
   email: z.string().email(),
   questions: z.record(z.string()).optional(),
 })
