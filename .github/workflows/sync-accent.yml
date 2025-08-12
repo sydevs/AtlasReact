@@ -3,6 +3,13 @@ name: Sync Accent Translations
 on:
   schedule:
     - cron: "0 4 * * *"
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: 'Branch to run the workflow on'
+        required: true
+        default: 'main'
+        type: string
 
 jobs:
   build:
