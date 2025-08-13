@@ -1,21 +1,19 @@
 {
+  "events": "événements",
   "free_meditation_class": "Cours de méditation gratuit",
   "free_meditation_classes": "Cours de méditation gratuits",
   "language_selector": "Sélecteur de langue",
-  "loading": "Chargement...",
+  "loading": "Chargement…",
+  "locations": {
+    "description_one": "%{count} cours de méditation gratuit à %{location}",
+    "description_other": "%{count} cours de méditation gratuits à %{location}",
+    "title": "Cours de méditation gratuits à %{location}"
+  },
   "show_online_classes": "Afficher les cours en ligne",
   "showing_online_classes": "Affichage des cours en ligne",
-  "events": "événements",
-  "locations": {
-    "title": "Cours de méditation gratuits à %{location}",
-    "description_one": "%{count} cours de méditation gratuit à %{location}",
-    "description_many": "%{count} cours de méditation gratuits à %{location}",
-    "description_other": "%{count} cours de méditation gratuits à %{location}"
-  },
   "venues": {
-    "title": "Cours de méditation gratuits à %{venue}",
     "description_one": "%{count} cours de méditation gratuit à %{venue}",
-    "description_many": "%{count} cours de méditation gratuits à %{venue}",
-    "description_other": "%{count} cours de méditation gratuits à %{venue}"
+    "description_other": "%{count} cours de méditation gratuits à %{venue}",
+    "title": "Cours de méditation gratuits à %{venue}"
   }
 }
