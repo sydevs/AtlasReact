@@ -1,54 +1,56 @@
 {
   "details": {
-    "online": "En línea",
-    "get_directions": "Obtener direcciones",
-    "contact_host": "Contacta al anfitrión",
     "contact_for_timing": "Contacta al anfitrión para conocer los horarios.",
-    "tel": "teléfono: %{phoneNumber}",
-    "starting_soon": "Empezando pronto",
-    "starting_on": "%{fecha inicial}",
-    "more_info": "Más info",
-    "share": "Compartir",
+    "contact_host": "Contacta al anfitrión",
+    "get_directions": "Obtener direcciones",
     "hosted_from": "Alojado desde %{city}",
-    "km": "km"
+    "km": "km",
+    "more_info": "Más info",
+    "online": "En línea",
+    "online_class": "Online Class",
+    "share": "Compartir",
+    "starting_on": "A partir del %{date}",
+    "starting_soon": "Empezando pronto",
+    "tel": "teléfono: %{phoneNumber}"
   },
-  "timing": {
-    "converted_to": "Convertido a %{timezone} (%{offset})"
+  "errors": {
+    "email": "Introduce un correo electrónico válido",
+    "name": "Introduce tu nombre completo",
+    "starting_at": "Selecciona tu fecha de inicio"
   },
-  "registration": {
-    "register_now": "Regístrese ahora",
-    "starting_date": "Fecha de inicio",
-    "name": "Su nombre",
-    "email": "Tu correo electrónico",
-    "submit": "Registro",
-    "cancel": "Cancelar",
-    "thank_you": "¡Gracias por registrarte!",
-    "followup": "Recibirás una confirmación por correo electrónico en breve",
-    "invite_friend": "Invita a un amigo",
-    "privacy_policy": "Al enviar, confirma que acepta recibir mensajes de seguimiento sobre este y eventos similares, de acuerdo con nuestra política de privacidad.",
-    "online_notice_title": "Sesión en línea",
-    "online_notice": "El enlace a esta clase se le enviará por correo electrónico.",
-    "okay": "Bueno"
+  "questions": {
+    "aspirations": "¿Qué buscas de la meditación?",
+    "experience": "¿Has experimentado esta meditación antes?",
+    "questions": "¿Tiene alguna pregunta?",
+    "referral": "¿Cómo se enteró de nosotros?"
   },
   "recurrence": {
     "daily": "Cada día",
-    "weekly_1": "Cada %{weekday}",
-    "weekly_2": "Cada segundo %{weekday}",
     "monthly_1st": "1er %{weekday} de cada mes",
     "monthly_2nd": "2do %{weekday} de cada mes",
     "monthly_3rd": "3er %{weekday} de cada mes",
     "monthly_4th": "4.° %{weekday} de cada mes",
-    "monthly_last": "Último %{weekday} de cada mes"
+    "monthly_last": "Último %{weekday} de cada mes",
+    "null": "Contact host for timings",
+    "weekly_1": "Cada %{weekday}",
+    "weekly_2": "Cada segundo %{weekday}"
   },
-  "questions": {
-    "questions": "¿Tiene alguna pregunta?",
-    "experience": "¿Has experimentado esta meditación antes?",
-    "aspirations": "¿Qué buscas de la meditación?",
-    "referral": "¿Cómo se enteró de nosotros?"
+  "registration": {
+    "cancel": "Cancelar",
+    "email": "Tu correo electrónico",
+    "followup": "Recibirás una confirmación por correo electrónico en breve",
+    "invite_friend": "Invita a un amigo",
+    "name": "Su nombre",
+    "okay": "Bueno",
+    "online_notice": "El enlace a esta clase se le enviará por correo electrónico.",
+    "online_notice_title": "Sesión en línea",
+    "privacy_policy": "Al enviar, confirma que acepta recibir mensajes de seguimiento sobre este y eventos similares, de acuerdo con nuestra política de privacidad.",
+    "register_now": "Regístrese ahora",
+    "starting_date": "Fecha de inicio",
+    "submit": "Registro",
+    "thank_you": "¡Gracias por registrarte!"
   },
-  "errors": {
-    "starting_at": "Selecciona tu fecha de inicio",
-    "name": "Introduce tu nombre completo",
-    "email": "Introduce un correo electrónico válido"
+  "timing": {
+    "converted_to": "Convertido a %{timezone} (%{offset})"
   }
 }

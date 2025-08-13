@@ -1,23 +1,19 @@
 {
+  "events": "události",
   "free_meditation_class": "Kurz meditace zdarma",
   "free_meditation_classes": "Bezplatné kurzy meditace",
   "language_selector": "Volič jazyka",
-  "loading": "Načítání...",
+  "loading": "Načítání…",
+  "locations": {
+    "description_one": "%{count} bezplatná lekce meditace v %{location}",
+    "description_other": "%{count} bezplatné lekce meditace v %{location}",
+    "title": "Bezplatné kurzy meditace v %{location}"
+  },
   "show_online_classes": "Zobrazit online kurzy",
   "showing_online_classes": "Zobrazení online kurzů",
-  "events": "události",
-  "locations": {
-    "title": "Bezplatné kurzy meditace v %{location}",
-    "description_one": "%{count} bezplatná lekce meditace v %{location}",
-    "description_few": "%{count} bezplatné lekce meditace v %{location}",
-    "description_many": "%{count} bezplatné lekce meditace v %{location}",
-    "description_other": "%{count} bezplatné lekce meditace v %{location}"
-  },
   "venues": {
-    "title": "Bezplatné kurzy meditace v %{venue}",
     "description_one": "%{count} bezplatná lekce meditace v %{venue}",
-    "description_few": "%{count} bezplatné lekce meditace v %{venue}",
-    "description_many": "%{count} bezplatné lekce meditace v %{venue}",
-    "description_other": "%{count} bezplatné lekce meditace v %{venue}"
+    "description_other": "%{count} bezplatné lekce meditace v %{venue}",
+    "title": "Bezplatné kurzy meditace v %{venue}"
   }
 }

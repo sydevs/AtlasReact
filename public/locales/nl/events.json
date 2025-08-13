@@ -1,54 +1,56 @@
 {
   "details": {
-    "online": "Online",
-    "get_directions": "Routebeschrijving opvragen",
-    "contact_host": "Neem contact op met de gastheer",
     "contact_for_timing": "Neem contact op met de gastheer voor de tijden",
-    "tel": "tel: %{telefoonnummer}",
-    "starting_soon": "Binnenkort van start",
-    "starting_on": "Vanaf %{date}",
-    "more_info": "Meer info",
-    "share": "Deel",
+    "contact_host": "Neem contact op met de gastheer",
+    "get_directions": "Routebeschrijving opvragen",
     "hosted_from": "Gehost vanuit %{city}",
-    "km": "km"
+    "km": "km",
+    "more_info": "Meer info",
+    "online": "Online",
+    "online_class": "Online Class",
+    "share": "Deel",
+    "starting_on": "Vanaf %{date}",
+    "starting_soon": "Binnenkort van start",
+    "tel": "tel: %{phoneNumber}"
   },
-  "timing": {
-    "converted_to": "Omgerekend naar %{timezone} (%{offset})"
+  "errors": {
+    "email": "Voer een geldig e-mailadres in",
+    "name": "Voer uw volledige naam in",
+    "starting_at": "Selecteer uw startdatum"
   },
-  "registration": {
-    "register_now": "Registreer nu",
-    "starting_date": "Startdatum",
-    "name": "Jouw naam",
-    "email": "Uw e-mail",
-    "submit": "Register",
-    "cancel": "Annuleren",
-    "thank_you": "Bedankt voor uw registratie!",
-    "followup": "U ontvangt binnenkort een e-mailbevestiging",
-    "invite_friend": "Nodig een vriend uit",
-    "privacy_policy": "Door uw bericht in te dienen, bevestigt u dat u akkoord gaat met het ontvangen van vervolgberichten over deze en soortgelijke evenementen, in overeenstemming met ons privacybeleid.",
-    "online_notice_title": "Online sessie",
-    "online_notice": "De link naar deze les wordt naar je gemaild.",
-    "okay": "Oké"
+  "questions": {
+    "aspirations": "Wat zoek jij in meditatie?",
+    "experience": "Heb jij deze meditatie al ervaren?",
+    "questions": "Heeft u vragen?",
+    "referral": "Hoe heb je over ons gehoord?"
   },
   "recurrence": {
     "daily": "Elke dag",
-    "weekly_1": "Elke %{weekday}",
-    "weekly_2": "Elke 2e %{weekday}",
     "monthly_1st": "1e %{weekday} van elke maand",
     "monthly_2nd": "2e %{weekday} van elke maand",
     "monthly_3rd": "3e %{weekday} van elke maand",
     "monthly_4th": "4e %{weekday} van elke maand",
-    "monthly_last": "Laatste %{weekday} van elke maand"
+    "monthly_last": "Laatste %{weekday} van elke maand",
+    "null": "Contact host for timings",
+    "weekly_1": "Elke %{weekday}",
+    "weekly_2": "Elke 2e %{weekday}"
   },
-  "questions": {
-    "questions": "Heeft u vragen?",
-    "experience": "Heb jij deze meditatie al ervaren?",
-    "aspirations": "Wat zoek jij in meditatie?",
-    "referral": "Hoe heb je over ons gehoord?"
+  "registration": {
+    "cancel": "Annuleren",
+    "email": "Uw e-mail",
+    "followup": "U ontvangt binnenkort een e-mailbevestiging",
+    "invite_friend": "Nodig een vriend uit",
+    "name": "Jouw naam",
+    "okay": "Oké",
+    "online_notice": "De link naar deze les wordt naar je gemaild.",
+    "online_notice_title": "Online sessie",
+    "privacy_policy": "Door uw bericht in te dienen, bevestigt u dat u akkoord gaat met het ontvangen van vervolgberichten over deze en soortgelijke evenementen, in overeenstemming met ons privacybeleid.",
+    "register_now": "Registreer nu",
+    "starting_date": "Startdatum",
+    "submit": "Register",
+    "thank_you": "Bedankt voor uw registratie!"
   },
-  "errors": {
-    "starting_at": "Selecteer uw startdatum",
-    "name": "Voer uw volledige naam in",
-    "email": "Voer een geldig e-mailadres in"
+  "timing": {
+    "converted_to": "Omgerekend naar %{timezone} (%{offset})"
   }
 }

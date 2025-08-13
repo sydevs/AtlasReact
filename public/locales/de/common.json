@@ -1,19 +1,19 @@
 {
+  "events": "ereignisse",
   "free_meditation_class": "Kostenloser Meditationskurs",
   "free_meditation_classes": "Kostenlose Meditationskurse",
   "language_selector": "Sprachauswahl",
-  "loading": "Laden...",
+  "loading": "Laden…",
+  "locations": {
+    "description_one": "%{count} kostenloser Meditationskurs in %{location}",
+    "description_other": "%{count} kostenlose Meditationskurse in %{location}",
+    "title": "Kostenlose Meditationskurse in %{location}"
+  },
   "show_online_classes": "Online-Kurse anzeigen",
   "showing_online_classes": "Online-Kurse anzeigen",
-  "events": "Ereignisse",
-  "locations": {
-    "title": "Kostenlose Meditationskurse in %{location}",
-    "description_one": "%{count} kostenloser Meditationskurs in %{location}",
-    "description_other": "%{count} kostenlose Meditationskurse in %{location}"
-  },
   "venues": {
-    "title": "Kostenlose Meditationskurse bei %{venue}",
     "description_one": "%{count} kostenloser Meditationskurs bei %{venue}",
-    "description_other": "%{count} kostenlose Meditationskurse bei %{venue}"
+    "description_other": "%{count} kostenlose Meditationskurse bei %{venue}",
+    "title": "Kostenlose Meditationskurse bei %{venue}"
   }
 }

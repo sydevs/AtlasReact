@@ -1,54 +1,56 @@
 {
   "details": {
-    "online": "Online",
-    "get_directions": "Získejte trasu",
-    "contact_host": "Kontaktujte hostitele",
     "contact_for_timing": "Kontaktujte hostitele pro načasování",
-    "tel": "tel: %{phoneNumber}",
-    "starting_soon": "Již brzy",
-    "starting_on": "Od %{date}",
-    "more_info": "Více info",
-    "share": "Podíl",
+    "contact_host": "Kontaktujte hostitele",
+    "get_directions": "Získejte trasu",
     "hosted_from": "Hostováno z %{city}",
-    "km": "km"
+    "km": "km",
+    "more_info": "Více info",
+    "online": "Online",
+    "online_class": "Online Class",
+    "share": "Podíl",
+    "starting_on": "Od %{date}",
+    "starting_soon": "Již brzy",
+    "tel": "tel: %{phoneNumber}"
   },
-  "timing": {
-    "converted_to": "Převedeno na %{timezone} (%{offset})"
+  "errors": {
+    "email": "Zadejte platný e-mail",
+    "name": "Zadejte své celé jméno",
+    "starting_at": "Vyberte datum zahájení"
   },
-  "registration": {
-    "register_now": "Zaregistrujte se nyní",
-    "starting_date": "Datum zahájení",
-    "name": "Vaše jméno",
-    "email": "Váš email",
-    "submit": "Rejstřík",
-    "cancel": "Zrušit",
-    "thank_you": "Děkujeme za registraci!",
-    "followup": "Brzy obdržíte potvrzení e-mailem",
-    "invite_friend": "Pozvěte přítele",
-    "privacy_policy": "Odesláním potvrzujete, že souhlasíte s přijímáním následných zpráv o této a podobných událostech v souladu s našimi zásadami ochrany osobních údajů.",
-    "online_notice_title": "Online relace",
-    "online_notice": "Odkaz na tento kurz vám bude zaslán e-mailem.",
-    "okay": "Dobře"
+  "questions": {
+    "aspirations": "Co od meditace hledáte?",
+    "experience": "Zažili jste již tuto meditaci?",
+    "questions": "Máte nějaké dotazy?",
+    "referral": "Jak jste se o nás dozvěděli?"
   },
   "recurrence": {
     "daily": "Každý den",
-    "weekly_1": "Každý %{weekday}",
-    "weekly_2": "Každý 2. %{weekday}",
     "monthly_1st": "1. %{weekday} každého měsíce",
     "monthly_2nd": "2. %{weekday} každého měsíce",
     "monthly_3rd": "3. %{weekday} každého měsíce",
     "monthly_4th": "4. %{weekday} každého měsíce",
-    "monthly_last": "Poslední %{weekday} každého měsíce"
+    "monthly_last": "Poslední %{weekday} každého měsíce",
+    "null": "Contact host for timings",
+    "weekly_1": "Každý %{weekday}",
+    "weekly_2": "Každý 2. %{weekday}"
   },
-  "questions": {
-    "questions": "Máte nějaké dotazy?",
-    "experience": "Zažili jste již tuto meditaci?",
-    "aspirations": "Co od meditace hledáte?",
-    "referral": "Jak jste se o nás dozvěděli?"
+  "registration": {
+    "cancel": "Zrušit",
+    "email": "Váš email",
+    "followup": "Brzy obdržíte potvrzení e-mailem",
+    "invite_friend": "Pozvěte přítele",
+    "name": "Vaše jméno",
+    "okay": "Dobře",
+    "online_notice": "Odkaz na tento kurz vám bude zaslán e-mailem.",
+    "online_notice_title": "Online relace",
+    "privacy_policy": "Odesláním potvrzujete, že souhlasíte s přijímáním následných zpráv o této a podobných událostech v souladu s našimi zásadami ochrany osobních údajů.",
+    "register_now": "Zaregistrujte se nyní",
+    "starting_date": "Datum zahájení",
+    "submit": "Rejstřík",
+    "thank_you": "Děkujeme za registraci!"
   },
-  "errors": {
-    "starting_at": "Vyberte datum zahájení",
-    "name": "Zadejte své celé jméno",
-    "email": "Zadejte platný e-mail"
+  "timing": {
+    "converted_to": "Převedeno na %{timezone} (%{offset})"
   }
 }

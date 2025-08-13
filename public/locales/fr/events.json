@@ -1,54 +1,56 @@
 {
   "details": {
-    "online": "En ligne",
+    "contact_for_timing": "Contactez l’hôte pour les horaires",
+    "contact_host": "Contactez l’hôte",
     "get_directions": "Obtenir un itinéraire",
-    "contact_host": "Contacter l'hôte",
-    "contact_for_timing": "Contacter l'hôte pour les horaires",
-    "tel": "tél: %{phoneNumber}",
-    "starting_soon": "Bientôt",
-    "starting_on": "À partir du %{date}",
-    "more_info": "Plus d'infos",
-    "share": "Partager",
     "hosted_from": "Organisé depuis %{city}",
-    "km": "km"
+    "km": "km",
+    "more_info": "Plus d’informations",
+    "online": "En ligne",
+    "online_class": "Online Class",
+    "share": "Partager",
+    "starting_on": "À partir du %{date}",
+    "starting_soon": "Bientôt",
+    "tel": "tél: %{phoneNumber}"
   },
-  "timing": {
-    "converted_to": "Converti en %{timezone} (%{offset})"
+  "errors": {
+    "email": "Entrez un email valide",
+    "name": "Entrez votre nom complet",
+    "starting_at": "Sélectionnez votre date de début"
   },
-  "registration": {
-    "register_now": "Inscrivez-vous maintenant",
-    "starting_date": "Date de début",
-    "name": "Votre nom",
-    "email": "Votre email",
-    "submit": "Continuer",
-    "cancel": "Annuler",
-    "thank_you": "Merci pour votre inscription !",
-    "followup": "Vous recevrez sous peu un e-mail de confirmation",
-    "invite_friend": "Invitez un ami avec vous",
-    "privacy_policy": "En soumettant, vous confirmez que vous acceptez de recevoir des messages de suivi à propos de cet événement et d'événements similaires, conformément à notre politique de confidentialité.",
-    "online_notice_title": "Séance en ligne",
-    "online_notice": "Le lien vers ce cours vous sera envoyé par email.",
-    "okay": "D'accord"
+  "questions": {
+    "aspirations": "Que recherchez-vous dans la méditation ?",
+    "experience": "Avez-vous déjà expérimenté cette méditation ?",
+    "questions": "Avez-vous des questions?",
+    "referral": "Comment avez-vous entendu parler de nous ?"
   },
   "recurrence": {
     "daily": "Tous les jours",
-    "weekly_1": "Tous les %{weekday}s",
-    "weekly_2": "Tous les 2 %{weekday}s",
     "monthly_1st": "1er %{weekday} de chaque mois",
     "monthly_2nd": "2e %{weekday} de chaque mois",
     "monthly_3rd": "3e %{weekday} de chaque mois",
     "monthly_4th": "4e %{weekday} de chaque mois",
-    "monthly_last": "Dernier %{weekday} de chaque mois"
+    "monthly_last": "Dernier %{weekday} de chaque mois",
+    "null": "Contact host for timings",
+    "weekly_1": "Tous les %{weekday}s",
+    "weekly_2": "Tous les 2 %{weekday}s"
   },
-  "questions": {
-    "questions": "Avez-vous des questions?",
-    "experience": "Avez-vous déjà expérimenté cette méditation ?",
-    "aspirations": "Que recherchez-vous dans la méditation ?",
-    "referral": "Comment avez-vous entendu parler de nous ?"
+  "registration": {
+    "cancel": "Annuler",
+    "email": "Votre email",
+    "followup": "Vous recevrez sous peu un e-mail de confirmation",
+    "invite_friend": "Invitez un ami avec vous",
+    "name": "Votre nom",
+    "okay": "D’accord",
+    "online_notice": "Le lien vers ce cours vous sera envoyé par email.",
+    "online_notice_title": "Séance en ligne",
+    "privacy_policy": "En soumettant, vous confirmez que vous acceptez de recevoir des messages de suivi à propos de cet événement et d’événements similaires, conformément à notre politique de confidentialité.",
+    "register_now": "Inscrivez-vous maintenant",
+    "starting_date": "Date de début",
+    "submit": "Continuer",
+    "thank_you": "Merci pour votre inscription !"
   },
-  "errors": {
-    "starting_at": "Sélectionnez votre date de début",
-    "name": "Entrez votre nom complet",
-    "email": "Entrez un email valide"
+  "timing": {
+    "converted_to": "Converti en %{timezone} (%{offset})"
   }
 }
