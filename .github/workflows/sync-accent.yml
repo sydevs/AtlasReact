@@ -28,7 +28,7 @@ jobs:
           ACCENT_API_KEY: ${{ secrets.ACCENT_API_KEY }}
       - uses: peter-evans/create-pull-request@v4
         with:
-          add-paths: "*.po"
+          add-paths: "public/locales/**/*.json"
           commit-message: Update Accent
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
