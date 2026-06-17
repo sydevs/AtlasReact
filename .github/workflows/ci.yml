@@ -1,0 +1,61 @@
+name: CI
+
+on: pull_request
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read # Cloudflare posts the preview URL in a PR comment
+  statuses: read # fallback: preview URL in a commit status target_url
+  deployments: read # fallback: preview URL in a deployment environment_url
+  checks: read # fallback: preview URL in a check-run output
+
+jobs:
+  gate:
+    name: Lint, Typecheck & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4 # reads packageManager from package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm build
+
+  # Smoke specs run against the Cloudflare Pages PR preview. We discover the
+  # preview URL from the GitHub API (Cloudflare posts it on the PR) and wait
+  # until it's reachable, then fetch the root page. Skips gracefully (empty
+  # preview_url) when no preview is posted — e.g. forked PRs without secrets.
+  smoke:
+    name: Smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Discover Cloudflare Pages preview URL
+        id: preview
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          CF_PROJECT: syatlas # the *.pages.dev subdomain (dashboard project: atlas-legacy)
+        run: node scripts/get-cloudflare-preview-url.mjs
+      - name: Run smoke specs against the preview
+        if: ${{ steps.preview.outputs.preview_url != '' }}
+        env:
+          PREVIEW_URL: ${{ steps.preview.outputs.preview_url }}
+        run: pnpm test:smoke

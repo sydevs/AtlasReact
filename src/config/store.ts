@@ -1,7 +1,5 @@
-
 import { create } from 'zustand'
 import { Feature } from 'geojson'
-
 
 // ===== VIEW STATE ===== //
 
@@ -9,14 +7,14 @@ type ViewState = {
   zoom: number
   latitude: number
   longitude: number
-  selection?: { latitude: number, longitude: number, approximate: boolean } | null
+  selection?: { latitude: number; longitude: number; approximate: boolean } | null
   boundary?: Feature
 }
 
 type ViewAction = {
   setViewState: (viewState: ViewState) => void
-  setSelection: (selection: ViewState['selection']) => void,
-  setBoundary: (bounds: ViewState['boundary']) => void,
+  setSelection: (selection: ViewState['selection']) => void
+  setBoundary: (bounds: ViewState['boundary']) => void
 }
 
 export const useViewState = create<ViewState & ViewAction>((set) => ({
@@ -28,7 +26,6 @@ export const useViewState = create<ViewState & ViewAction>((set) => ({
   setSelection: (selection: ViewState['selection']) => set(() => ({ selection })),
   setBoundary: (boundary: ViewState['boundary']) => set(() => ({ boundary })),
 }))
-
 
 // ===== NAVIGATION STATE ===== //
 
@@ -44,21 +41,21 @@ type NavigationAction = {
 export const useNavigationState = create<NavigationState & NavigationAction>((set) => ({
   previousPath: '',
   currentPath: '',
-  setCurrentPath: (currentPath) => set((state) => ({
-    previousPath: state.currentPath,
-    currentPath,
-  })),
+  setCurrentPath: (currentPath) =>
+    set((state) => ({
+      previousPath: state.currentPath,
+      currentPath,
+    })),
 }))
-
 
 // ===== SEARCH STATE ===== //
 
 type SearchState = {
-  onlineOnly: boolean;
+  onlineOnly: boolean
 }
 
 type SearchAction = {
-  setOnlineOnly: (onlineOnly: boolean) => void;
+  setOnlineOnly: (onlineOnly: boolean) => void
 }
 
 export const useSearchState = create<SearchState & SearchAction>((set) => ({

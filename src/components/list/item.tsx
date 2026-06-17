@@ -1,17 +1,18 @@
-import { RightArrowIcon } from "../icons";
-import { Link } from "@nextui-org/react";
+import { Link } from '@nextui-org/react'
+
+import { RightArrowIcon } from '../icons'
 
 interface Props {
-  label: string;
-  subtitle?: string | null;
-  count: number;
-  link: string;
-  children?: React.ReactNode;
+  label: string
+  subtitle?: string | null
+  count: number
+  link: string
+  children?: React.ReactNode
 }
 
 export default function ListItem({ label, subtitle, count, link, children }: Props) {
   return (
-    <Link href={link} className="px-6 block text-inherit transition-colors hover:bg-primary-10">
+    <Link className="px-6 block text-inherit transition-colors hover:bg-primary-10" href={link}>
       <li className="py-5 flex flex-row items-center font-semibold border-b border-divider">
         {children}
         <div className="text-lg flex-grow">
@@ -22,5 +23,5 @@ export default function ListItem({ label, subtitle, count, link, children }: Pro
         <RightArrowIcon className="text-xl" />
       </li>
     </Link>
-  );
+  )
 }

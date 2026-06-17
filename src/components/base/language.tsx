@@ -1,12 +1,13 @@
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
-import { LanguageIcon } from "@/components/icons";
-import { supportedLanguages } from "@/config/i18n";
-import useLocale from "@/hooks/use-locale";
-import { useTranslation } from "react-i18next";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
+import { useTranslation } from 'react-i18next'
+
+import { LanguageIcon } from '@/components/icons'
+import { supportedLanguages } from '@/config/i18n'
+import useLocale from '@/hooks/use-locale'
 
 export default function LanguageSelector() {
-  const { locale, setLocale, languageNames } = useLocale();
-  const { t } = useTranslation('common');
+  const { locale, setLocale, languageNames } = useLocale()
+  const { t } = useTranslation('common')
 
   return (
     <Dropdown>
@@ -22,12 +23,14 @@ export default function LanguageSelector() {
         selectedKeys={locale}
         selectionMode="single"
         variant="faded"
-        onSelectionChange={({ currentKey }) => setLocale(currentKey || "en")}
+        onSelectionChange={({ currentKey }) => setLocale(currentKey || 'en')}
       >
-        {supportedLanguages.map((l) => 
-          <DropdownItem key={l} value={l} className={locale == l ? "text-primary-700" : ""}>{languageNames.of(l)}</DropdownItem>
-        )}
+        {supportedLanguages.map((l) => (
+          <DropdownItem key={l} className={locale == l ? 'text-primary-700' : ''} value={l}>
+            {languageNames.of(l)}
+          </DropdownItem>
+        ))}
       </DropdownMenu>
     </Dropdown>
-  );
+  )
 }

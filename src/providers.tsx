@@ -1,8 +1,8 @@
-import { NextUIProvider } from "@nextui-org/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useNavigate, useHref } from "react-router";
-import { HelmetProvider } from "react-helmet-async";
-import { StrictMode } from "react";
+import { NextUIProvider } from '@nextui-org/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useNavigate, useHref } from 'react-router'
+import { HelmetProvider } from 'react-helmet-async'
+import { StrictMode } from 'react'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -10,10 +10,10 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
     },
   },
-});
+})
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <StrictMode>
@@ -25,5 +25,5 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         </HelmetProvider>
       </QueryClientProvider>
     </StrictMode>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import z from "zod"
+import z from 'zod'
 
 const CountryChildSchema = z.object({
   id: z.number(),
@@ -17,15 +17,15 @@ export const CountryCoreSchema = z.object({
   eventCount: z.number(),
 })
 
-export const CountrySlimSchema = z.object({
+export const CountrySlimSchema = z.object({}).merge(CountryCoreSchema)
 
-}).merge(CountryCoreSchema)
-
-export const CountrySchema = z.object({
-  url: z.string(),
-  bounds: z.tuple([z.number(), z.number(), z.number(), z.number()]),
-  children: z.array(CountryChildSchema),
-}).merge(CountryCoreSchema)
+export const CountrySchema = z
+  .object({
+    url: z.string(),
+    bounds: z.tuple([z.number(), z.number(), z.number(), z.number()]),
+    children: z.array(CountryChildSchema),
+  })
+  .merge(CountryCoreSchema)
 
 export type CountrySlimSchema = z.infer<typeof CountrySlimSchema>
 export type CountrySchema = z.infer<typeof CountrySchema>
