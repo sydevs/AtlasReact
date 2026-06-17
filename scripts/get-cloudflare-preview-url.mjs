@@ -29,7 +29,7 @@ const token = process.env.GITHUB_TOKEN
 const repo = process.env.GITHUB_REPOSITORY
 const sha = process.env.PR_HEAD_SHA
 const prNumber = process.env.PR_NUMBER
-const project = process.env.CF_PROJECT || 'atlas-legacy'
+const project = process.env.CF_PROJECT || 'syatlas' // *.pages.dev subdomain
 
 const TIMEOUT_MS = 6 * 60_000 // give Cloudflare time to build + post the URL
 const POLL_MS = 15_000

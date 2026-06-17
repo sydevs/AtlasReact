@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-          CF_PROJECT: atlas-legacy
+          CF_PROJECT: syatlas # the *.pages.dev subdomain (dashboard project: atlas-legacy)
         run: node scripts/get-cloudflare-preview-url.mjs
       - name: Run smoke specs against the preview
         if: ${{ steps.preview.outputs.preview_url != '' }}
