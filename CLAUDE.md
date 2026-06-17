@@ -36,7 +36,7 @@ event hierarchy.
 | Forms          | `react-hook-form` + `zod` (`@hookform/resolvers`) |
 | Misc           | `framer-motion`, `swiper`, `luxon` (dates), `dompurify`, `fathom-client` (analytics), `react-helmet-async` |
 | Embedding      | `@r2wc/react-to-web-component` (`src/Widget.tsx`), CSS injected by JS for shadow-free embedding |
-| Deploy         | Vercel (`vercel.json` rewrites all paths → `/` for the SPA) |
+| Deploy         | **Cloudflare Pages** (project `atlas-legacy`); SPA fallback via `public/_redirects` |
 
 The app is also runnable standalone in dev (`index.html` → `src/main.tsx`); the
 embeddable entry is `src/Widget.tsx` (demo in `demo.html`).
@@ -124,10 +124,18 @@ non-`VITE_` secrets must never appear in client code — the bundle is public.
 
 ## Deployment
 
-Vercel builds `pnpm build` and serves `dist/` with SPA rewrites
-(`vercel.json`). There is also an "accent" theme sync via
+**Cloudflare Pages** (project `atlas-legacy`) builds `pnpm build` and serves
+`dist/`. Build command and output dir are configured in the Cloudflare
+dashboard, not in the repo (there's no `wrangler`/`_routes.json`). The only
+repo-level deploy file is `public/_redirects` (`/* /index.html 200`), which
+gives the standalone `BrowserRouter` build its SPA deep-link fallback — Cloudflare
+Pages reads it from `dist/`. (The embeddable widget uses `HashRouter`, so it
+doesn't depend on the fallback; the standalone build does.)
+
+There is also an "accent" theme sync via
 `.github/workflows/{push,sync}-accent.yml` (driven by `accent.json`) — leave
-those workflows alone unless the task is about theming.
+those workflows alone unless the task is about theming. Use the **cloudflare-docs**
+MCP for Cloudflare Pages questions.
 
 ## Git / PR workflow
 

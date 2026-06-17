@@ -11,6 +11,7 @@
       "WebFetch(domain:react.i18next.com)",
       "WebFetch(domain:www.i18next.com)",
       "WebFetch(domain:zod.dev)",
+      "WebFetch(domain:developers.cloudflare.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:www.npmjs.com)",
       "WebFetch(domain:docs.claude.com)",
@@ -81,6 +82,7 @@
       "Bash(sed:*)",
       "mcp__github__*",
       "mcp__playwright__*",
+      "mcp__cloudflare-docs__*",
       "Edit(.claude/docs/**)",
       "Write(.claude/docs/**)"
     ]

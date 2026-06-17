@@ -22,11 +22,19 @@ MCP servers are declared in `.mcp.json` (project root) and enabled per-user in
 - Typical loop: `pnpm dev` (Vite on :5173) → point the Playwright MCP at
   `http://localhost:5173` → interact and screenshot.
 
+### cloudflare-docs (`mcp__cloudflare-docs__*`)
+
+- Transport: HTTP (`https://docs.mcp.cloudflare.com/mcp`).
+- Search Cloudflare docs (Pages, Workers, redirects, build settings). This app
+  deploys to **Cloudflare Pages** (project `atlas-legacy`), so reach for this
+  instead of `WebFetch` when answering Cloudflare deployment / `_redirects` /
+  build-config questions.
+
 ## Enabling
 
-`.claude/settings.local.json` lists both under `enabledMcpjsonServers`. If a
-server isn't showing up, confirm it's listed there and that `.mcp.json` is
-valid JSON.
+`.claude/settings.local.json` lists the enabled servers under
+`enabledMcpjsonServers` (`github`, `playwright`, `cloudflare-docs`). If a server
+isn't showing up, confirm it's listed there and that `.mcp.json` is valid JSON.
 
 ## Preferences
 

@@ -17,6 +17,7 @@ command=$(echo "$input" | grep -o '"command":"[^"]*"' | sed 's/"command":"//;s/"
 patterns=(
   "sk\.eyJ"                                    # Mapbox SECRET access token (sk.…)
   "MAPBOX_SECRET"
+  "CLOUDFLARE_API_TOKEN"                        # deploy/runtime secret (Cloudflare Pages)
   "AWS_SECRET_ACCESS_KEY"
   "SENTRY_AUTH_TOKEN"
   "-----BEGIN PRIVATE KEY-----"

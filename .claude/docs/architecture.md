@@ -72,8 +72,12 @@ Host page  →  <syatlas-map api-key="…" locale="…">
 - **Build**: `pnpm build` → `tsc` (typecheck gate) then `vite build` → `dist/`.
   CSS is injected by JS (`vite-plugin-css-injected-by-js`) so the widget styles
   itself when embedded.
-- **Deploy**: Vercel serves `dist/` with an SPA rewrite (`vercel.json`: all paths
-  → `/`).
+- **Deploy**: **Cloudflare Pages** (project `atlas-legacy`) builds `pnpm build`
+  and serves `dist/`. Build/output are dashboard-configured; the repo carries no
+  `wrangler`/`_routes.json`. SPA deep-link fallback for the standalone
+  `BrowserRouter` build comes from `public/_redirects` (`/* /index.html 200`),
+  which Vite copies into `dist/`. (Cloudflare ignores `vercel.json`, so it was
+  removed.) The widget build uses `HashRouter` and needs no fallback.
 - **Theming ("accent")**: `accent.json` + `.github/workflows/{push,sync}-accent.yml`
   sync a shared accent theme. Out of scope unless the task is about theming.
 
