@@ -1,8 +1,8 @@
-import type { LayerProps } from 'react-map-gl';
+import type { LayerProps } from 'react-map-gl'
 
 type Props = {
-  id: string;
-} & LayerProps;
+  id: string
+} & LayerProps
 
 export const clusterLayer: Props = {
   id: 'clusters',
@@ -20,7 +20,7 @@ export const clusterLayer: Props = {
   paint: {
     'text-color': '#FFFFFF',
   },
-};
+}
 
 export const unclusteredPointLayer: Props = {
   id: 'unclustered-point',
@@ -33,7 +33,7 @@ export const unclusteredPointLayer: Props = {
     'icon-ignore-placement': true,
     'icon-image': 'point',
   },
-};
+}
 
 export const selectedPointLayer: LayerProps = {
   id: 'selected-point',
@@ -46,7 +46,7 @@ export const selectedPointLayer: LayerProps = {
     'icon-ignore-placement': true,
     'icon-image': 'selected',
   },
-};
+}
 
 export const selectedAreaLayer: LayerProps = {
   id: 'selected-area',
@@ -57,7 +57,7 @@ export const selectedAreaLayer: LayerProps = {
     'icon-ignore-placement': true,
     'icon-image': 'cluster-selected',
   },
-};
+}
 
 export const boundsLayer: LayerProps = {
   id: 'selected-bounds',
@@ -65,10 +65,10 @@ export const boundsLayer: LayerProps = {
   source: 'bounds',
   layout: {
     'line-join': 'round',
-    'line-cap': 'round'
+    'line-cap': 'round',
   },
   paint: {
     'line-color': '#888',
-    'line-width': 4
-  }
-};
+    'line-width': 4,
+  },
+}

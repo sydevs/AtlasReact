@@ -1,4 +1,4 @@
-import { Link } from "@nextui-org/react";
+import { Link } from '@nextui-org/react'
 import {
   Navbar as NextUINavbar,
   NavbarProps,
@@ -7,25 +7,22 @@ import {
   NavbarItem,
   NavbarMenu,
   NavbarMenuItem,
-} from "@nextui-org/react";
-import { link as linkStyles } from "@nextui-org/react";
-import clsx from "clsx";
+} from '@nextui-org/react'
+import { link as linkStyles } from '@nextui-org/react'
+import clsx from 'clsx'
 
-import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
-import { Logo } from "@/components/icons";
-import LanguageSelector from "./base/language";
+import LanguageSelector from './base/language'
 
-export const Navbar = ({ ...props } : NavbarProps) => {
+import { siteConfig } from '@/config/site'
+import { ThemeSwitch } from '@/components/theme-switch'
+import { Logo } from '@/components/icons'
+
+export const Navbar = ({ ...props }: NavbarProps) => {
   return (
-    <NextUINavbar maxWidth="xl" position="static" { ...props }>
+    <NextUINavbar maxWidth="xl" position="static" {...props}>
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand className="gap-3 max-w-fit">
-          <Link
-            className="flex justify-start items-center gap-1"
-            color="foreground"
-            href="/"
-          >
+          <Link className="flex justify-start items-center gap-1" color="foreground" href="/">
             <Logo />
             <p className="font-bold text-inherit">ATLAS</p>
           </Link>
@@ -35,8 +32,8 @@ export const Navbar = ({ ...props } : NavbarProps) => {
             <NavbarItem key={item.href}>
               <Link
                 className={clsx(
-                  linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
+                  linkStyles({ color: 'foreground' }),
+                  'data-[active=true]:text-primary data-[active=true]:font-medium',
                 )}
                 color="foreground"
                 href={item.href}
@@ -48,10 +45,7 @@ export const Navbar = ({ ...props } : NavbarProps) => {
         </div>
       </NavbarContent>
 
-      <NavbarContent
-        className="hidden sm:flex basis-1/5 sm:basis-full"
-        justify="end"
-      >
+      <NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
           <LanguageSelector />
@@ -88,10 +82,10 @@ export const Navbar = ({ ...props } : NavbarProps) => {
               <Link
                 color={
                   index === 2
-                    ? "primary"
+                    ? 'primary'
                     : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
+                      ? 'danger'
+                      : 'foreground'
                 }
                 href="#"
                 size="lg"
@@ -103,5 +97,5 @@ export const Navbar = ({ ...props } : NavbarProps) => {
         </div>
       </NavbarMenu>
     </NextUINavbar>
-  );
-};
+  )
+}

@@ -9,57 +9,44 @@ import {
   Button,
   ButtonProps,
   useDisclosure,
-} from "@nextui-org/react";
+} from '@nextui-org/react'
+import { useTranslation } from 'react-i18next'
+
 import {
   FacebookIcon,
   EmailIcon,
   LinkedinIcon,
   TwitterIcon,
   FlipboardIcon,
-} from "@/components/icons";
-import { Event } from "@/types";
-import { useTranslation } from "react-i18next";
+} from '@/components/icons'
+import { Event } from '@/types'
 
 type ShareButtonProps = {
-  event: Event;
-} & ButtonProps;
+  event: Event
+} & ButtonProps
 
-export function ShareButton({
-  event,
-  ...buttonProps
-} : ShareButtonProps) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { t } = useTranslation('events');
+export function ShareButton({ event, ...buttonProps }: ShareButtonProps) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { t } = useTranslation('events')
 
   return (
     <>
-      <Button
-        color="primary"
-        variant="faded"
-        onPress={onOpen}
-        {...buttonProps}
-      >
-        <span className="font-semibold tracking-wider">
-          {t('details.share')}
-        </span>
+      <Button color="primary" variant="faded" onPress={onOpen} {...buttonProps}>
+        <span className="font-semibold tracking-wider">{t('details.share')}</span>
       </Button>
       <ShareModal event={event} isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
-  );
+  )
 }
 
 type ShareModalProps = {
-  event: Event;
-  isOpen: boolean;
-  onOpenChange: (isOpen: boolean) => void;
-};
+  event: Event
+  isOpen: boolean
+  onOpenChange: (isOpen: boolean) => void
+}
 
-export default function ShareModal({
-  event,
-  isOpen,
-  onOpenChange,
-} : ShareModalProps) {
-  const { t } = useTranslation('events');
+export default function ShareModal({ event, isOpen, onOpenChange }: ShareModalProps) {
+  const { t } = useTranslation('events')
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -68,21 +55,18 @@ export default function ShareModal({
         <ModalBody>
           <ShareContent label={event.label} url={event.url} />
         </ModalBody>
-        <ModalFooter></ModalFooter>
+        <ModalFooter />
       </ModalContent>
     </Modal>
-  );
+  )
 }
 
 type ShareContentProps = {
-  label: string;
-  url: string;
-};
+  label: string
+  url: string
+}
 
-export function ShareContent({
-  label,
-  url,
-} : ShareContentProps) {
+export function ShareContent({ label, url }: ShareContentProps) {
   label = encodeURI(label)
   url = encodeURI(url)
   const socials = [
@@ -105,23 +89,23 @@ export function ShareContent({
     {
       url: `https://share.flipboard.com/bookmarklet/popout?v=2&title=${label}&url=${url}`,
       icon: FlipboardIcon,
-    }
-  ];
+    },
+  ]
 
   return (
     <>
       <div>
-        <Snippet color="secondary" className="text-sm w-full" hideSymbol={true}>
+        <Snippet className="text-sm w-full" color="secondary" hideSymbol={true}>
           {url}
         </Snippet>
       </div>
       <div className="flex flex-row gap-4 mt-2 justify-center">
         {socials.map((social, index) => (
-          <Link key={index} href={social.url} target="_blank" rel="noopener noreferrer">
+          <Link key={index} href={social.url} rel="noopener noreferrer" target="_blank">
             <social.icon size={36} />
           </Link>
         ))}
       </div>
     </>
-  );
+  )
 }

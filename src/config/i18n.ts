@@ -1,9 +1,9 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
 import HttpBackend, { HttpBackendOptions } from 'i18next-http-backend'
 
-export const supportedLanguages = ['en', 'fr'];
+export const supportedLanguages = ['en', 'fr']
 
 i18n
   // Load translations from the backend
@@ -32,6 +32,6 @@ i18n
       crossDomain: true,
       loadPath: (lng, ns) => `${import.meta.env.VITE_HOST}/locales/${lng}/${ns}.json`,
     },
-  });
+  })
 
-export default i18n;
+export default i18n

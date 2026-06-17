@@ -1,4 +1,4 @@
-import z from "zod"
+import z from 'zod'
 
 export const EventTimingSchema = z.object({
   type: z.string(),
@@ -6,12 +6,23 @@ export const EventTimingSchema = z.object({
   localEndTime: z.string().nullable(),
   duration: z.number().nullable(),
   timeZone: z.string(),
-  
+
   firstDate: z.coerce.date(),
   lastDate: z.coerce.date().nullable(),
   upcomingDates: z.array(z.coerce.date()),
   recurrenceCount: z.number().nullable(),
-  recurrenceType: z.enum(["daily", "weekly_1", "weekly_2", "monthly_1st", "monthly_2nd", "monthly_3rd", "monthly_4th", "monthly_last"]).nullable()
+  recurrenceType: z
+    .enum([
+      'daily',
+      'weekly_1',
+      'weekly_2',
+      'monthly_1st',
+      'monthly_2nd',
+      'monthly_3rd',
+      'monthly_4th',
+      'monthly_last',
+    ])
+    .nullable(),
 })
 
 export const EventContactSchema = z.object({
@@ -28,14 +39,16 @@ export const EventLocationSchema = z.object({
   areaName: z.string(),
   latitude: z.number(),
   longitude: z.number(),
-  venue: z.object({
-    name: z.string().nullable(),
-    street: z.string(),
-    city: z.string(),
-    directionsUrl: z.string(),
-    address: z.string(),
-    postalCode: z.string().optional(),
-  }).nullable(),
+  venue: z
+    .object({
+      name: z.string().nullable(),
+      street: z.string(),
+      city: z.string(),
+      directionsUrl: z.string(),
+      address: z.string(),
+      postalCode: z.string().optional(),
+    })
+    .nullable(),
 })
 
 export const EventRegistrationSchema = z.object({
@@ -66,31 +79,46 @@ export const EventCoreSchema = z.object({
   category: z.enum(['dropin', 'course', 'single', 'festival', 'concert', 'inactive']),
 })
 
-export const EventSlimSchema = z.object({
-  recurrenceType: z.enum(["daily", "weekly_1", "weekly_2", "monthly_1st", "monthly_2nd", "monthly_3rd", "monthly_4th", "monthly_last"]).nullable(),
-  address: z.string(),
-  latitude: z.number(),
-  longitude: z.number(),
-  nextDate: z.coerce.date(),
-  firstDate: z.coerce.date(),
-  duration: z.number().nullable(),
-  timeZone: z.string(),
-  locationId: z.number(),
-  locationType: z.string(),
-  distance: z.number().optional(),
-}).merge(EventCoreSchema)
+export const EventSlimSchema = z
+  .object({
+    recurrenceType: z
+      .enum([
+        'daily',
+        'weekly_1',
+        'weekly_2',
+        'monthly_1st',
+        'monthly_2nd',
+        'monthly_3rd',
+        'monthly_4th',
+        'monthly_last',
+      ])
+      .nullable(),
+    address: z.string(),
+    latitude: z.number(),
+    longitude: z.number(),
+    nextDate: z.coerce.date(),
+    firstDate: z.coerce.date(),
+    duration: z.number().nullable(),
+    timeZone: z.string(),
+    locationId: z.number(),
+    locationType: z.string(),
+    distance: z.number().optional(),
+  })
+  .merge(EventCoreSchema)
 
-export const EventSchema = z.object({
-  url: z.string(),
-  description: z.string().nullable(),
-  descriptionHtml: z.string().nullable(),
+export const EventSchema = z
+  .object({
+    url: z.string(),
+    description: z.string().nullable(),
+    descriptionHtml: z.string().nullable(),
 
-  registration: z.nullable(EventRegistrationSchema),
-  timing: z.nullable(EventTimingSchema),
-  contact: z.nullable(EventContactSchema),
-  images: z.array(EventImageSchema),
-  location: EventLocationSchema,
-}).merge(EventCoreSchema)
+    registration: z.nullable(EventRegistrationSchema),
+    timing: z.nullable(EventTimingSchema),
+    contact: z.nullable(EventContactSchema),
+    images: z.array(EventImageSchema),
+    location: EventLocationSchema,
+  })
+  .merge(EventCoreSchema)
 
 export type Event = z.infer<typeof EventSchema>
 export type EventSlim = z.infer<typeof EventSlimSchema>
