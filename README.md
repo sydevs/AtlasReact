@@ -45,6 +45,17 @@ public-hoist-pattern[]=*@nextui-org/*
 
 After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
 
+### Testing
+
+```bash
+pnpm test         # fast unit lane (Vitest, watch)
+pnpm test:run     # unit lane, one-shot (CI + pre-PR gate)
+pnpm test:smoke   # smoke specs vs the Cloudflare preview (needs PREVIEW_URL)
+```
+
+The unit lane is node-only and co-located (`src/**/*.test.ts(x)`). See
+[`.claude/rules/tests.md`](.claude/rules/tests.md) for the testing strategy.
+
 ## License
 
 Licensed under the [MIT license](https://github.com/nextui-org/vite-template/blob/main/LICENSE).

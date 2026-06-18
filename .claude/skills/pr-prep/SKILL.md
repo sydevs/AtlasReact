@@ -1,6 +1,6 @@
 ---
 name: pr-prep
-description: Pre-PR validation — runs the lean local gate (lint + typecheck) by default, with --full to reproduce the CI checks (lint + typecheck + production build) locally. Use before opening or marking a PR ready for review.
+description: Pre-PR validation — runs the lean local gate (lint + typecheck + unit tests) by default, with --full to also reproduce the CI production build locally. Use before opening or marking a PR ready for review.
 allowed-tools: Bash, Read, Grep
 ---
 
@@ -8,18 +8,20 @@ allowed-tools: Bash, Read, Grep
 
 Validates that the current branch is PR-ready.
 
-| Gate                | Command                              | Where                          |
-| ------------------- | ------------------------------------ | ------------------------------ |
-| **Lean (default)**  | `pnpm lint && pnpm typecheck`        | This skill, locally (fast)     |
-| **Full (`--full`)** | + `pnpm build`                       | Mirrors CI (`ci.yml`)          |
+| Gate                | Command                                        | Where                      |
+| ------------------- | ---------------------------------------------- | -------------------------- |
+| **Lean (default)**  | `pnpm lint && pnpm typecheck && pnpm test:run` | This skill, locally (fast) |
+| **Full (`--full`)** | + `pnpm build`                                 | Mirrors CI (`ci.yml`)      |
 
-There is no test suite yet, so CI's gate is **lint + typecheck + build**. When a
-test suite is added, wire it in here and in `ci.yml`.
+CI's gate is **lint + typecheck + test:run + build** (plus `ladle:build`, and a
+separate smoke job against the Cloudflare preview). The lean gate runs the fast
+node-only unit lane; `--full` adds the production build. See
+`.claude/rules/tests.md`.
 
 ## Quick start
 
 ```bash
-.claude/skills/pr-prep/check.sh          # lint + typecheck
+.claude/skills/pr-prep/check.sh          # lint + typecheck + unit
 .claude/skills/pr-prep/check.sh --full   # + pnpm build (CI parity)
 ```
 
@@ -27,9 +29,10 @@ test suite is added, wire it in here and in `ci.yml`.
 
 1. **Lint passes**: `pnpm lint`
 2. **Types check**: `pnpm typecheck`
-3. **Build** (for build-affecting changes — deps, vite/ts config, entry points):
+3. **Unit tests pass**: `pnpm test:run`
+4. **Build** (for build-affecting changes — deps, vite/ts config, entry points):
    `pnpm build`
-4. **Visual check** (UI / map changes): run `pnpm dev` and verify in the widget,
+5. **Visual check** (UI / map changes): run `pnpm dev` and verify in the widget,
    or drive it with the Playwright MCP and capture a screenshot.
 
 ## When `--full` matters
@@ -48,6 +51,7 @@ Include a Verification section (CI is the source of truth):
 
 - Lint: ✓ No errors
 - Types: ✓ Clean
+- Tests: ✓ Unit lane green
 - Build: ✓ Success — or "N/A — no build-affecting changes"
 ```
 

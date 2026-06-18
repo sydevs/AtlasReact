@@ -2,13 +2,14 @@
 #
 # Pre-PR validation.
 #
-# Default (lean gate): lint + typecheck. Fast feedback before opening a PR.
-# --full: reproduce CI locally — lint + typecheck + production build.
+# Default (lean gate): lint + typecheck + unit tests. Fast feedback before a PR.
+# --full: reproduce CI locally — + the production build.
 #
-# CI (.github/workflows/ci.yml) is the source of truth: lint + typecheck + build.
+# CI (.github/workflows/ci.yml) is the source of truth:
+# lint + typecheck + test:run + build.
 #
 # Usage:
-#   .claude/skills/pr-prep/check.sh            # lint + typecheck
+#   .claude/skills/pr-prep/check.sh            # lint + typecheck + unit
 #   .claude/skills/pr-prep/check.sh --full     # + pnpm build
 
 set -u
@@ -38,6 +39,15 @@ fi
 echo "✓ Typecheck passed"
 echo
 
+echo "=== Unit tests ==="
+if ! pnpm test:run; then
+  echo
+  echo "❌ Unit tests failed. Fix them before continuing."
+  exit 1
+fi
+echo "✓ Unit tests passed"
+echo
+
 if [[ "$MODE" == "--full" ]]; then
   echo "=== Build (CI parity) ==="
   if ! pnpm build; then
@@ -48,8 +58,8 @@ if [[ "$MODE" == "--full" ]]; then
   echo "✓ Build passed"
   echo
 else
-  echo "ℹ Lean gate only (lint + typecheck). Use --full to also run the"
-  echo "  production build. CI runs lint + typecheck + build on the PR."
+  echo "ℹ Lean gate only (lint + typecheck + unit). Use --full to also run the"
+  echo "  production build. CI runs lint + typecheck + test:run + build on the PR."
   echo
 fi
 

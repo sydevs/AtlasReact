@@ -7,9 +7,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "test": "vitest",
+    "test:run": "vitest run",
     "test:smoke": "vitest run --config vitest.smoke.config.ts tests/smoke",
     "ladle": "ladle serve",
     "ladle:build": "ladle build",

@@ -90,7 +90,7 @@ edit; fix surfaced type errors before committing.
 Run the lean local gate:
 
 ```bash
-.claude/skills/implement-issue/scripts/validate.sh          # lint + typecheck
+.claude/skills/implement-issue/scripts/validate.sh          # lint + typecheck + unit
 .claude/skills/implement-issue/scripts/validate.sh --full   # + production build (CI parity)
 ```
 
@@ -143,9 +143,10 @@ gh pr checks <pr-or-branch> --watch
 gh pr checks <pr-or-branch>
 ```
 
-CI (`.github/workflows/ci.yml`) runs **lint + typecheck + build**. On a red
-check, fetch logs (`gh run view <run-id> --log-failed`), fix locally, commit,
-push, re-watch until green.
+CI (`.github/workflows/ci.yml`) runs **lint + typecheck + test:run + build**
+(plus `ladle:build`, and a separate smoke job). On a red check, fetch logs
+(`gh run view <run-id> --log-failed`), fix locally, commit, push, re-watch until
+green.
 
 ### 13. Report
 
@@ -170,9 +171,11 @@ need manual/visual verification (UI screenshots, map interaction).
 - **Vague issue** — stop at step 3 and ask; don't invent acceptance criteria.
 - **Existing PR** — `gh pr list --search "in:title <keyword>"` before branching;
   ask whether to extend or open new.
-- **No test suite** — there are no tests yet; the gate is lint + typecheck +
-  build. For behavioral changes, verify in the running widget (Playwright MCP)
-  and describe the manual check in the PR.
+- **Tests** — a fast node-only unit lane (`pnpm test:run`, co-located
+  `src/**/*.test.ts(x)`) runs on the gate; add specs for new logic/contracts
+  (schemas, stores, helpers, the api interceptor). For behavioral/UI changes the
+  lane can't cover, verify in the running widget (Playwright MCP) and describe
+  the manual check in the PR. See `.claude/rules/tests.md`.
 
 ## References
 
