@@ -14,7 +14,9 @@ import { i18nSharedOptions } from '@/config/i18n-options'
 // Ladle has no backend, so we bundle the en/fr namespaces as static resources
 // instead. Stories render this instance through <I18nextProvider> (see
 // components.tsx), which both useTranslation() and useLocale() read from — so
-// story text resolves offline without touching the app's HTTP-backed singleton.
+// story text resolves offline through this instance. (The app's HTTP-backed
+// singleton may still initialize transitively via imported components/api, but
+// it's unused for rendering here and its background locale fetch fails harmlessly.)
 //
 // Namespaces and the Ruby-style %{...} delimiters come from the shared options
 // (src/config/i18n-options.ts) so they stay in lockstep with the app.
