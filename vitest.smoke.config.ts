@@ -9,5 +9,9 @@ export default defineConfig({
     environment: 'node',
     testTimeout: 30_000,
     hookTimeout: 30_000,
+    // Network round-trips against a real edge deployment — give them room and
+    // retry transient failures rather than flaking the job.
+    retry: 2,
+    bail: 0,
   },
 })
