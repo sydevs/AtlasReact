@@ -2,11 +2,11 @@
 #
 # Validate that the current branch is ready to open a PR.
 #
-# Default (lean local gate): lint + typecheck. Fast feedback.
-# --full: reproduce CI locally — lint + typecheck + production build.
+# Default (lean local gate): lint + typecheck + unit tests. Fast feedback.
+# --full: reproduce CI locally — + the production build.
 #
 # Usage:
-#   .claude/skills/implement-issue/scripts/validate.sh           # lint + typecheck
+#   .claude/skills/implement-issue/scripts/validate.sh           # lint + typecheck + unit
 #   .claude/skills/implement-issue/scripts/validate.sh --full    # + pnpm build
 
 set -u
@@ -36,6 +36,15 @@ fi
 echo "✓ Typecheck passed"
 echo
 
+echo "=== Unit tests ==="
+if ! pnpm test:run; then
+  echo
+  echo "❌ Unit tests failed. Fix them before continuing."
+  exit 1
+fi
+echo "✓ Unit tests passed"
+echo
+
 if [[ "$MODE" == "--full" ]]; then
   echo "=== Build (CI parity) ==="
   if ! pnpm build; then
@@ -46,8 +55,8 @@ if [[ "$MODE" == "--full" ]]; then
   echo "✓ Build passed"
   echo
 else
-  echo "ℹ Lean gate only (lint + typecheck). Run --full to also reproduce the"
-  echo "  production build (CI runs lint + typecheck + build on the PR)."
+  echo "ℹ Lean gate only (lint + typecheck + unit). Run --full to also reproduce"
+  echo "  the production build (CI runs lint + typecheck + test:run + build)."
   echo
 fi
 

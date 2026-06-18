@@ -47,17 +47,22 @@ embeddable entry is `src/Widget.tsx` (demo in `demo.html`).
 pnpm dev          # Vite dev server (http://localhost:5173)
 pnpm build        # tsc (typecheck) + vite build → dist/
 pnpm preview      # serve the production build locally
-pnpm typecheck    # tsc --noEmit (no build output)
+pnpm typecheck    # tsc --noEmit (app + tests/scripts via tsconfig.test.json)
 pnpm lint         # eslint . (report only)
 pnpm lint:fix     # eslint . --fix (auto-fix + Prettier)
+pnpm test         # vitest watch (fast unit lane)
+pnpm test:run     # vitest run (one-shot — CI + pre-PR gate)
+pnpm test:smoke   # smoke specs vs the Cloudflare preview (needs PREVIEW_URL)
 pnpm ladle        # Ladle component previews (http://localhost:61000)
 pnpm ladle:build  # static Ladle build (CI gate — broken stories fail)
 ```
 
-There is **no unit/component test suite yet** (a `test:smoke` vitest spec runs
-against the Cloudflare preview). CI (`.github/workflows/ci.yml`) gates PRs on
-lint + typecheck + build + `ladle:build`. If you add tests, wire them into CI
-and the `pr-prep` skill.
+Two test lanes (see `.claude/rules/tests.md`): a **fast node-only unit lane**
+(co-located `src/**/*.test.ts(x)`, no jsdom — assert components via
+`renderToStaticMarkup`) and a **smoke lane** (`tests/smoke/`, fetch-based against
+the Cloudflare preview). CI (`.github/workflows/ci.yml`) gates PRs on
+lint + typecheck + **test:run** + build + `ladle:build`; the smoke job runs
+separately. A PostToolUse hook runs the unit lane on `src/**` edits.
 
 ## Code quality
 
@@ -112,6 +117,9 @@ public/locales/<lng>/ # translation JSON (en, fr, … hand-maintained)
   barrel per tier; prefer NextUI built-ins + `tailwind-variants`
   over hand-rolled styled components. See `DESIGN_SYSTEM.md`, `STORYBOOK.md`, and
   `.claude/rules/components.md`. Preview components with `pnpm ladle`.
+- **Tests**: node-only Vitest, co-located `src/**/*.test.ts(x)`; assert
+  components via `renderToStaticMarkup` (no jsdom). Run `pnpm test`. See
+  `.claude/rules/tests.md`.
 
 ## Environment
 
