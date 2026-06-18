@@ -2,7 +2,7 @@ import { Link } from '@nextui-org/react'
 
 import { RightArrowIcon } from '@/components/atoms/Icons'
 
-interface Props {
+interface ListItemProps {
   label: string
   subtitle?: string | null
   count: number
@@ -10,7 +10,7 @@ interface Props {
   children?: React.ReactNode
 }
 
-export function ListItem({ label, subtitle, count, link, children }: Props) {
+export function ListItem({ label, subtitle, count, link, children }: ListItemProps) {
   return (
     <Link className="px-6 block text-inherit transition-colors hover:bg-primary-10" href={link}>
       <li className="py-5 flex flex-row items-center font-semibold border-b border-divider">

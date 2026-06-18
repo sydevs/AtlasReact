@@ -3,18 +3,18 @@ import { useMemo } from 'react'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 
-import useLocale from '@/hooks/use-locale'
+import { useLocale } from '@/hooks/use-locale'
 import { EventTime } from '@/components/molecules/EventTime'
 import { EventSoonChip } from '@/components/molecules/EventSoon'
 import { RightArrowIcon } from '@/components/atoms/Icons'
 import { Chip } from '@/components/atoms/Chip'
 import { EventSlim } from '@/types'
 
-interface Props {
+interface EventItemProps {
   event: EventSlim
 }
 
-export function EventItem({ event }: Props) {
+export function EventItem({ event }: EventItemProps) {
   const { t } = useTranslation('events')
   const { locale, languageNames } = useLocale()
 

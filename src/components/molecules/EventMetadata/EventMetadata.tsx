@@ -2,7 +2,7 @@ import { Event as EventSchema } from 'schema-dts'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 
-import useLocale from '@/hooks/use-locale'
+import { useLocale } from '@/hooks/use-locale'
 import { Event } from '@/types'
 
 type EventMetadataProps = {

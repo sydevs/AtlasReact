@@ -6,7 +6,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import { useNavigationState } from './config/store'
-import useLocale from './hooks/use-locale'
+import { useLocale } from './hooks/use-locale'
 import Providers from './providers'
 import MapLayout from './layouts/map'
 import api from './config/api'

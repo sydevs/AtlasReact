@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 import { SocialIcon, AnchorIcon, CallIcon, LocationIcon } from '@/components/atoms/Icons'
 import { EventTime } from '@/components/molecules/EventTime'
 import { EventContact, EventLocation, EventTiming } from '@/types'
-import useLocale from '@/hooks/use-locale'
+import { useLocale } from '@/hooks/use-locale'
 
 export function EventContactDetails({
   contact,

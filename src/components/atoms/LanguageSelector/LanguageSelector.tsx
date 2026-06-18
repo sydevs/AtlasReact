@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { LanguageIcon } from '@/components/atoms/Icons'
 import { supportedLanguages } from '@/config/i18n'
-import useLocale from '@/hooks/use-locale'
+import { useLocale } from '@/hooks/use-locale'
 
 export function LanguageSelector() {
   const { locale, setLocale, languageNames } = useLocale()

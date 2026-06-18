@@ -22,9 +22,9 @@ import {
 import { useViewState } from '@/config/store'
 import api from '@/config/api'
 import { useBreakpoint } from '@/config/responsive'
-import useLocale from '@/hooks/use-locale'
+import { useLocale } from '@/hooks/use-locale'
 import { useTheme } from '@/hooks/use-theme'
-import useMapbox from '@/hooks/use-mapbox'
+import { useMapbox } from '@/hooks/use-mapbox'
 
 const MAP_STYLES = {
   light: 'mapbox://styles/sydevadmin/ck7g6nag70rn11io09f45odkq',

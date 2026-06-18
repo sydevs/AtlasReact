@@ -40,11 +40,11 @@ export function DynamicEventsList({ latitude, longitude, onlineOnly = false }: D
   return <EventsList events={events} />
 }
 
-interface Props {
+interface EventsListProps {
   events: EventSlim[]
 }
 
-export function EventsList({ events }: Props) {
+export function EventsList({ events }: EventsListProps) {
   return (
     <List>
       {events.map((event, _index, _arr) => (

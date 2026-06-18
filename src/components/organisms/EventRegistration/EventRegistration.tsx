@@ -28,7 +28,7 @@ import { ShareContent } from '@/components/molecules/EventShare'
 import api from '@/config/api'
 import { Registration, RegistrationSchema } from '@/types'
 import { Event, EventRegistration, EventTiming } from '@/types'
-import useLocale from '@/hooks/use-locale'
+import { useLocale } from '@/hooks/use-locale'
 
 const INPUT_STYLE = {
   variant: 'bordered',

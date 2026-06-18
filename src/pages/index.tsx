@@ -6,14 +6,14 @@ import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router'
 
-import useLocale from '@/hooks/use-locale'
+import { useLocale } from '@/hooks/use-locale'
 import { Panel } from '@/components/atoms'
 import { useSearchState, useViewState } from '@/config/store'
 import { List, ListItem } from '@/components/molecules'
 import { DynamicEventsList } from '@/components/organisms'
 import api from '@/config/api'
 import { SearchBar } from '@/components/molecules'
-import useMapbox from '@/hooks/use-mapbox'
+import { useMapbox } from '@/hooks/use-mapbox'
 
 function IndexPanel() {
   const { t } = useTranslation('common')

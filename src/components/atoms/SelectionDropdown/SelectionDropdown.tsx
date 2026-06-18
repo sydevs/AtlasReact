@@ -8,12 +8,12 @@ type DropdownItemProps = {
   label: string
 }
 
-type Props = {
+type SelectionDropdownProps = {
   startContent?: React.ReactNode
   options: DropdownItemProps[]
 }
 
-export function SelectionDropdown({ startContent, options }: Props) {
+export function SelectionDropdown({ startContent, options }: SelectionDropdownProps) {
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
 
   const selectedValue = React.useMemo(

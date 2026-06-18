@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-export default function useLocale() {
+export function useLocale() {
   const { i18n } = useTranslation()
   const [locale, setLocale] = useState(i18n.resolvedLanguage || 'en')
   const languageNames = useMemo(() => {

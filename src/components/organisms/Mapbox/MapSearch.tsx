@@ -5,8 +5,8 @@ import { useSearchParams } from 'react-router'
 
 import { controlTheme } from './themes'
 
-import useLocale from '@/hooks/use-locale'
-import useMapbox from '@/hooks/use-mapbox'
+import { useLocale } from '@/hooks/use-locale'
+import { useMapbox } from '@/hooks/use-mapbox'
 
 interface SearchProps {
   onSelect: (value: GeocodingFeature) => void

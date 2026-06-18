@@ -11,7 +11,7 @@ import { Panel } from '@/components/atoms'
 import { SearchBar } from '@/components/molecules'
 import { EventsList } from '@/components/organisms'
 import api from '@/config/api'
-import useMapbox from '@/hooks/use-mapbox'
+import { useMapbox } from '@/hooks/use-mapbox'
 
 function AreaPanel({ areaId }: { areaId: number }) {
   const { fitBounds } = useMapbox()

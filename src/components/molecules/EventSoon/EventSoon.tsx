@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import useLocale from '@/hooks/use-locale'
+import { useLocale } from '@/hooks/use-locale'
 import { Chip } from '@/components/atoms/Chip'
 
 type EventSoonChipProps = {

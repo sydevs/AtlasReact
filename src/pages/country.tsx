@@ -10,8 +10,8 @@ import { List, ListItem } from '@/components/molecules'
 import { SearchBar } from '@/components/molecules'
 import { Panel } from '@/components/atoms'
 import { useViewState } from '@/config/store'
-import useLocale from '@/hooks/use-locale'
-import useMapbox from '@/hooks/use-mapbox'
+import { useLocale } from '@/hooks/use-locale'
+import { useMapbox } from '@/hooks/use-mapbox'
 
 function CountryPanel({ countryCode }: { countryCode: string }) {
   const { fitBounds } = useMapbox()

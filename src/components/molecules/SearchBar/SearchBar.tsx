@@ -9,7 +9,7 @@ import { MapSearch } from '@/components/organisms/Mapbox/MapSearch'
 import { UpArrowIcon, DownArrowIcon, SearchIcon, CloseIcon } from '@/components/atoms/Icons'
 import { useBreakpoint } from '@/config/responsive'
 
-interface Props {
+interface SearchBarProps {
   onSelect?: (value: GeocodeFeature) => void
   header?: string
   subheader?: string
@@ -25,7 +25,7 @@ export function SearchBar({
   returnLink,
   eventCount,
   filterable = false,
-}: Props) {
+}: SearchBarProps) {
   let navigate = useNavigate()
   const { t } = useTranslation('common')
   const { isMd } = useBreakpoint('md')

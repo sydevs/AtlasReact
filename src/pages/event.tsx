@@ -9,7 +9,7 @@ import { Panel } from '@/components/atoms'
 import { useNavigationState, useViewState } from '@/config/store'
 import { EventMetadata } from '@/components/molecules'
 import { UpArrowIcon } from '@/components/atoms'
-import useMapbox from '@/hooks/use-mapbox'
+import { useMapbox } from '@/hooks/use-mapbox'
 
 const EventPanelContent = lazy(() =>
   import('@/components/organisms/EventPanel').then((m) => ({ default: m.EventPanel })),

@@ -36,6 +36,12 @@ a file manually.
   the grouped icon/mapbox sub-module source files.
 - Components are PascalCase exports; hooks are `useX` camelCase; zustand stores
   are `useXState`.
+- **Export style**: components and hooks use **named** exports; pages, layouts,
+  and entry/singleton modules (`App`, `Widget`, `providers`, `config/api/*`,
+  `config/i18n`) use default exports.
+- **Props types**: name them `<Component>Props` (e.g. `EventItemProps`); fall back
+  to a local `Props` only when that name would clash with an imported type (e.g.
+  `Chip` composes NextUI's `ChipProps`).
 - zod schemas are `XSchema`; the inferred type is `X` (see `src/types/`).
 
 ## TypeScript

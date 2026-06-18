@@ -8,7 +8,7 @@ import { SearchBar } from '@/components/molecules'
 import { EventsList } from '@/components/organisms'
 import { Panel } from '@/components/atoms'
 import api from '@/config/api'
-import useMapbox from '@/hooks/use-mapbox'
+import { useMapbox } from '@/hooks/use-mapbox'
 
 function VenuePanel({ venueId }: { venueId: number }) {
   const { moveMap } = useMapbox()

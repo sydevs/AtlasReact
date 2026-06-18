@@ -4,14 +4,14 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { ErrorFallback, LoadingFallback } from '@/components/atoms/Fallbacks'
 import { useBreakpoint } from '@/config/responsive'
 
-type Props = {
+type PanelProps = {
   children: React.ReactNode
   mapWindow?: number
   footerHeight?: number
   width?: number | undefined
 }
 
-export function Panel({ width = 400, mapWindow, footerHeight = 300, children }: Props) {
+export function Panel({ width = 400, mapWindow, footerHeight = 300, children }: PanelProps) {
   const { isMd } = useBreakpoint('md')
   const { isLg } = useBreakpoint('lg')
 

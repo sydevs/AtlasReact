@@ -15,7 +15,7 @@ export const usePaddingState = create<PaddingState>((set) => ({
   setPadding: (padding) => set(() => ({ padding })),
 }))
 
-export default function useMapbox() {
+export function useMapbox() {
   const { mapbox } = useMap()
   const { isMd } = useBreakpoint('md')
   const padding = usePaddingState((s) => s.padding)

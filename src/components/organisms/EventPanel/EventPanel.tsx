@@ -10,7 +10,7 @@ import {
   EventLocationDetails,
   EventTimingDetails,
 } from '@/components/organisms/EventDetails'
-import useLocale from '@/hooks/use-locale'
+import { useLocale } from '@/hooks/use-locale'
 import { Event } from '@/types'
 import { Chip } from '@/components/atoms/Chip'
 

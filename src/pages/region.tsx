@@ -10,7 +10,7 @@ import { List, ListItem } from '@/components/molecules'
 import { Panel } from '@/components/atoms'
 import { useViewState } from '@/config/store'
 import api from '@/config/api'
-import useMapbox from '@/hooks/use-mapbox'
+import { useMapbox } from '@/hooks/use-mapbox'
 
 function RegionPanel({ regionId }: { regionId: number }) {
   const { fitBounds } = useMapbox()
