@@ -1,33 +1,49 @@
 import type { Story, StoryDefault } from '@ladle/react'
 
-import { ListItem } from '@/components/molecules'
+import { StoryWrapper, StorySection } from '../../ladle'
 
-export default { title: 'Molecules / List Item' } satisfies StoryDefault
+import { ListItem } from './ListItem'
 
-export const Default = () => (
-  <div className="max-w-md">
-    <ListItem count={12} label="Cambridge" link="/areas/cambridge" />
-  </div>
+import { List } from '@/components/molecules/List'
+
+export default { title: 'Molecules / Display' } satisfies StoryDefault
+
+/**
+ * ListItem — a single navigable row (label, optional subtitle, count, trailing
+ * arrow) used to drill through the country → region → area hierarchy.
+ */
+export const Default: Story = () => (
+  <StoryWrapper>
+    <StorySection title="Variants">
+      <div className="flex max-w-md flex-col gap-6">
+        <StorySection title="Minimal" variant="subsection">
+          <ListItem count={12} label="Cambridge" link="#area" />
+        </StorySection>
+
+        <StorySection title="Maximal" variant="subsection">
+          <ListItem count={7} label="Oxford" link="#area" subtitle="Oxfordshire" />
+        </StorySection>
+      </div>
+    </StorySection>
+
+    <StorySection background="neutral" theme="dark" title="Dark Surface">
+      <div className="max-w-md">
+        <ListItem count={3} label="London" link="#area" subtitle="Greater London" />
+      </div>
+    </StorySection>
+
+    <StorySection inContext={true} title="Examples">
+      <div className="max-w-md rounded-lg border border-divider overflow-hidden">
+        <List>
+          <ListItem count={12} label="Cambridge" link="#area" subtitle="Cambridgeshire" />
+          <ListItem count={7} label="Oxford" link="#area" subtitle="Oxfordshire" />
+          <ListItem count={3} label="London" link="#area" subtitle="Greater London" />
+        </List>
+      </div>
+    </StorySection>
+
+    <div />
+  </StoryWrapper>
 )
 
-export const WithSubtitle = () => (
-  <div className="max-w-md">
-    <ListItem count={7} label="Oxford" link="/areas/oxford" subtitle="Oxfordshire" />
-  </div>
-)
-
-export const Playground: Story<{
-  label: string
-  subtitle: string
-  count: number
-}> = ({ label, subtitle, count }) => (
-  <div className="max-w-md">
-    <ListItem count={count} label={label} link="/areas/example" subtitle={subtitle} />
-  </div>
-)
-Playground.args = { label: 'Cambridge', subtitle: 'Cambridgeshire', count: 12 }
-Playground.argTypes = {
-  label: { control: { type: 'text' } },
-  subtitle: { control: { type: 'text' } },
-  count: { control: { type: 'number' } },
-}
+Default.storyName = 'List Item'

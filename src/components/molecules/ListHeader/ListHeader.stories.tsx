@@ -1,21 +1,50 @@
 import type { Story, StoryDefault } from '@ladle/react'
 
-import { ListHeader } from '@/components/molecules'
+import { StoryWrapper, StorySection } from '../../ladle'
 
-export default { title: 'Molecules / List Header' } satisfies StoryDefault
+import { ListHeader } from './ListHeader'
 
-export const Default = () => (
-  <div className="max-w-md">
-    <ListHeader returnLink="/" title="Cambridge" />
-  </div>
+import { List } from '@/components/molecules/List'
+import { ListItem } from '@/components/molecules/ListItem'
+
+export default { title: 'Molecules / Display' } satisfies StoryDefault
+
+/**
+ * ListHeader — a centered title with an up-arrow return link, used atop a drilled
+ * list view (e.g. a region's areas) to navigate back up the hierarchy.
+ */
+export const Default: Story = () => (
+  <StoryWrapper>
+    <StorySection title="Default">
+      <div className="max-w-md">
+        <ListHeader returnLink="#region" title="Cambridge" />
+      </div>
+    </StorySection>
+
+    <StorySection title="Long Title">
+      <div className="max-w-md">
+        <ListHeader returnLink="#region" title="Greater London and the South East" />
+      </div>
+    </StorySection>
+
+    <StorySection background="neutral" theme="dark" title="Dark Surface">
+      <div className="max-w-md">
+        <ListHeader returnLink="#region" title="Cambridge" />
+      </div>
+    </StorySection>
+
+    <StorySection inContext={true} title="Examples">
+      <div className="max-w-md rounded-lg border border-divider overflow-hidden">
+        <ListHeader returnLink="#region" title="Cambridgeshire" />
+        <List>
+          <ListItem count={12} label="Cambridge" link="#area" />
+          <ListItem count={4} label="Ely" link="#area" />
+        </List>
+      </div>
+    </StorySection>
+
+    <div />
+  </StoryWrapper>
 )
 
-export const Playground: Story<{ title: string }> = ({ title }) => (
-  <div className="max-w-md">
-    <ListHeader returnLink="/" title={title} />
-  </div>
-)
-Playground.args = { title: 'Cambridge' }
-Playground.argTypes = {
-  title: { control: { type: 'text' } },
-}
+Default.storyName = 'List Header'

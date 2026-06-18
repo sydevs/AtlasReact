@@ -1,4 +1,6 @@
-import type { StoryDefault } from '@ladle/react'
+import type { Story, StoryDefault } from '@ladle/react'
+
+import { StoryWrapper, StorySection } from '../../ladle'
 
 import {
   SearchIcon,
@@ -14,9 +16,11 @@ import {
   LanguageIcon,
   EventIcon,
   SocialIcon,
-} from '@/components/atoms'
+} from './index'
 
-export default { title: 'Atoms / Icons' } satisfies StoryDefault
+export default {
+  title: 'Atoms / Media',
+} satisfies StoryDefault
 
 const ICONS = [
   { name: 'SearchIcon', Icon: SearchIcon },
@@ -31,28 +35,67 @@ const ICONS = [
   { name: 'CallIcon', Icon: CallIcon },
   { name: 'LanguageIcon', Icon: LanguageIcon },
   { name: 'EventIcon', Icon: EventIcon },
-]
+] as const
 
-const SOCIAL_PLATFORMS = ['email', 'facebook', 'youtube']
+const SOCIAL_PLATFORMS = ['email', 'facebook', 'youtube'] as const
 
-export const Gallery = () => (
-  <div className="flex flex-wrap gap-6">
-    {ICONS.map(({ name, Icon }) => (
-      <div key={name} className="flex w-20 flex-col items-center gap-2 text-center">
-        <Icon size={28} />
-        <span className="text-tiny text-default-500">{name}</span>
+/**
+ * Icons — the app's SVG icon set (actions, symbols, records) plus the
+ * platform-keyed SocialIcon. Rendered as a labelled gallery at size 28.
+ */
+export const Default: Story = () => (
+  <StoryWrapper>
+    <StorySection description="The shared SVG icons used across the app." title="Gallery">
+      <div className="flex flex-wrap gap-6">
+        {ICONS.map(({ name, Icon }) => (
+          <div key={name} className="flex w-20 flex-col items-center gap-2 text-center">
+            <Icon size={28} />
+            <span className="text-tiny text-default-500">{name}</span>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
+    </StorySection>
+
+    <StorySection description="SocialIcon resolves a glyph from its platform key." title="Socials">
+      <div className="flex flex-wrap gap-6">
+        {SOCIAL_PLATFORMS.map((platform) => (
+          <div key={platform} className="flex w-20 flex-col items-center gap-2 text-center">
+            <SocialIcon platform={platform} size={28} />
+            <span className="text-tiny text-default-500">{platform}</span>
+          </div>
+        ))}
+      </div>
+    </StorySection>
+
+    <StorySection background="neutral" theme="dark" title="Dark Surface">
+      <div className="flex flex-wrap items-center gap-6 text-white">
+        <SearchIcon size={28} />
+        <Logo size={28} />
+        <CalendarIcon size={28} />
+        <LocationIcon size={28} />
+        <EventIcon size={28} />
+      </div>
+    </StorySection>
+
+    <StorySection inContext={true} title="Examples">
+      <div className="flex flex-col gap-3">
+        <span className="flex items-center gap-2 text-default-700">
+          <LocationIcon size={18} />
+          London, United Kingdom
+        </span>
+        <span className="flex items-center gap-2 text-default-700">
+          <CalendarIcon size={18} />
+          Every Tuesday, 7:00 PM
+        </span>
+        <span className="flex items-center gap-2 text-default-700">
+          <CallIcon size={18} />
+          +44 20 1234 5678
+        </span>
+      </div>
+    </StorySection>
+
+    <div />
+  </StoryWrapper>
 )
 
-export const Socials = () => (
-  <div className="flex flex-wrap gap-6">
-    {SOCIAL_PLATFORMS.map((platform) => (
-      <div key={platform} className="flex w-20 flex-col items-center gap-2 text-center">
-        <SocialIcon platform={platform} size={28} />
-        <span className="text-tiny text-default-500">{platform}</span>
-      </div>
-    ))}
-  </div>
-)
+Default.storyName = 'Icons'

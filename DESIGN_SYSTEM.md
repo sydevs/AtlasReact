@@ -6,7 +6,7 @@ organised, exported, typed, and styled**. It is the contract that
 every new component should follow.
 
 Companion doc: [`STORYBOOK.md`](STORYBOOK.md) — how we preview these components in
-[Ladle](https://ladle.dev/) and the planned story-helper conventions.
+[Ladle](https://ladle.dev/) using the shared story helpers (in parity with WeMeditateWeb).
 
 > **Scope guardrail.** NextUI v2 (`@nextui-org/react`) stays our primitive layer.
 > This system adds *structure and previews* around the existing components — it is
@@ -156,9 +156,12 @@ wrapper that only renames props — it's maintenance with no payoff.
 ## Previews (Ladle)
 
 Every **atom, molecule, and non-map organism** has a co-located
-`*.stories.tsx` covering its key variants in **both light and dark** themes. Map
-organisms get lighter, token-gated coverage. Run `pnpm ladle` to browse them. See
-[`STORYBOOK.md`](STORYBOOK.md) for story conventions and the global decorator.
+`<Name>.stories.tsx` — a single consolidated `Default` story built from the shared
+`StoryWrapper` / `StorySection` / `StoryGrid` helpers in
+[`src/components/ladle/`](src/components/ladle/), kept in **parity with
+WeMeditateWeb**. Map organisms get lighter, token-gated coverage. Run `pnpm ladle`
+to browse them. See [`STORYBOOK.md`](STORYBOOK.md) for the full conventions, the
+section vocabulary, and the global decorator.
 
 ## Adding a component — checklist
 

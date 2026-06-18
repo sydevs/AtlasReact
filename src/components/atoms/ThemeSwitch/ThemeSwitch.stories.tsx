@@ -1,7 +1,39 @@
-import type { StoryDefault } from '@ladle/react'
+import type { Story, StoryDefault } from '@ladle/react'
 
-import { ThemeSwitch } from '@/components/atoms'
+import { StoryWrapper, StorySection } from '../../ladle'
 
-export default { title: 'Atoms / Theme Switch' } satisfies StoryDefault
+import { ThemeSwitch } from './ThemeSwitch'
 
-export const Default = () => <ThemeSwitch />
+export default {
+  title: 'Atoms / Form',
+} satisfies StoryDefault
+
+/**
+ * ThemeSwitch — toggles light/dark mode via useTheme, rendering a sun or moon
+ * icon for the active theme. Takes no props.
+ */
+export const Default: Story = () => (
+  <StoryWrapper>
+    <StorySection
+      description="Click to toggle the app theme; the glyph reflects the current mode."
+      title="Variants"
+    >
+      <ThemeSwitch />
+    </StorySection>
+
+    <StorySection background="neutral" theme="dark" title="Dark Surface">
+      <ThemeSwitch />
+    </StorySection>
+
+    <StorySection inContext={true} title="Examples">
+      <div className="flex items-center gap-3 text-default-700">
+        <span className="text-sm">Appearance</span>
+        <ThemeSwitch />
+      </div>
+    </StorySection>
+
+    <div />
+  </StoryWrapper>
+)
+
+Default.storyName = 'Theme Switch'

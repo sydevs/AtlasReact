@@ -1,31 +1,41 @@
-import type { StoryDefault } from '@ladle/react'
+import type { Story, StoryDefault } from '@ladle/react'
 
 import { MapProvider } from 'react-map-gl'
 
-import { Mapbox } from '@/components/organisms'
+import { StoryWrapper, StorySection } from '../../ladle'
 
-export default { title: 'Organisms / Mapbox / Map' } satisfies StoryDefault
+import { Mapbox } from './Map'
+
+export default { title: 'Organisms' } satisfies StoryDefault
 
 // Map coverage is intentionally light: the map needs VITE_MAPBOX_ACCESSTOKEN and
 // fetches live GeoJSON from the Atlas API. Without a token we show a notice.
 const hasToken = Boolean(import.meta.env.VITE_MAPBOX_ACCESSTOKEN)
 
-export const Map = () =>
-  hasToken ? (
-    <div className="h-[70vh] w-full">
-      <MapProvider>
-        <Mapbox />
-      </MapProvider>
-    </div>
-  ) : (
-    <NeedsToken what="the live map" />
-  )
-Map.storyName = 'Map (needs token)'
+/**
+ * Mapbox — the full interactive map (clustered event points, selection, camera).
+ * It needs VITE_MAPBOX_ACCESSTOKEN and live data, so the story is light: it
+ * renders the real map when a token is present, otherwise a "needs token" notice.
+ */
+export const Default: Story = () => (
+  <StoryWrapper>
+    <StorySection title="Map">
+      {hasToken ? (
+        <div className="h-[70vh] w-full">
+          <MapProvider>
+            <Mapbox />
+          </MapProvider>
+        </div>
+      ) : (
+        <div className="max-w-md rounded border border-default-200 p-4 text-sm text-default-600">
+          Set <code>VITE_MAPBOX_ACCESSTOKEN</code> in <code>.env.local</code> to preview the live
+          map.
+        </div>
+      )}
+    </StorySection>
 
-function NeedsToken({ what }: { what: string }) {
-  return (
-    <div className="max-w-md rounded border border-default-200 p-4 text-sm text-default-600">
-      Set <code>VITE_MAPBOX_ACCESSTOKEN</code> in <code>.env.local</code> to preview {what}.
-    </div>
-  )
-}
+    <div />
+  </StoryWrapper>
+)
+
+Default.storyName = 'Map'

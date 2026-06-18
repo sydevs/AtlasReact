@@ -20,24 +20,26 @@ import '@/styles/globals.css'
 //   2. i18n with bundled resources (see ./i18n) wired through I18nextProvider.
 //
 // The widget injects its CSS via JS in production, so stories must import
-// globals.css explicitly. Ladle's theme addon drives globalState.theme, which we
-// map onto the `dark`/`light` class that Tailwind (darkMode: 'class') and NextUI
-// read — so every story renders correctly in both themes.
-export const Provider: GlobalProvider = ({ children, globalState }) => {
-  const isDark = globalState.theme === 'dark'
-
+// globals.css explicitly.
+//
+// Theme: matching WeMeditateWeb, the story canvas is **always light** so the
+// StorySection helper's gray-900 titles stay legible. Dark previews are shown
+// per-section via <StorySection theme="dark">, which applies the `dark` class to
+// its own subtree (so NextUI components there render dark). We force the `light`
+// class here rather than mapping Ladle's theme toggle to the whole canvas.
+export const Provider: GlobalProvider = ({ children }) => {
   useEffect(() => {
     const root = document.documentElement
 
-    root.classList.toggle('dark', isDark)
-    root.classList.toggle('light', !isDark)
-  }, [isDark])
+    root.classList.add('light')
+    root.classList.remove('dark')
+  }, [])
 
   return (
     <I18nextProvider i18n={storyI18n}>
       <MemoryRouter>
         <Providers>
-          <main className="min-h-screen bg-background p-6 text-foreground">{children}</main>
+          <main className="min-h-screen bg-white p-6 text-gray-900">{children}</main>
         </Providers>
       </MemoryRouter>
     </I18nextProvider>

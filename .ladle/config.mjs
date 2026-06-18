@@ -15,6 +15,8 @@ export default {
   port: 61000,
   previewPort: 61001,
   title: 'Sahaj Atlas Component Library',
+  hmr: true,
+  base: '/',
   addons: {
     // Light/dark toggle — the decorator maps this onto the `dark` class that
     // Tailwind (darkMode: 'class') and NextUI read. Stories should look right
