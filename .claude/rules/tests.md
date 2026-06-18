@@ -35,8 +35,9 @@ sneak it in.
 - **Co-locate** specs next to the code they cover: `Foo.tsx` → `Foo.test.tsx`,
   `store.ts` → `store.test.ts`. Smoke specs are the only ones under `tests/`.
 - **Import explicitly** from `vitest` (`import { describe, it, expect, vi }`) and
-  use `it` (not `test`). `globals: true` is set, but explicit imports keep the
-  files honest under the type-checker.
+  use `it` in the unit lane (the smoke specs keep `test`/`test.skipIf`).
+  `globals: true` is set, but explicit imports keep the files honest under the
+  type-checker.
 - **Fixtures**: reuse the schema-typed Ladle mocks (`src/mocks/`) and inline
   small factory objects in the spec. Don't add a `tests/fixtures/` dump — keep
   fixtures next to the assertions that use them.
