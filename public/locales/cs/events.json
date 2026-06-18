@@ -11,7 +11,8 @@
     "share": "Podíl",
     "starting_on": "Od %{date}",
     "starting_soon": "Již brzy",
-    "tel": "tel: %{phoneNumber}"
+    "tel": "tel: %{phoneNumber}",
+    "view_photo": "Zobrazit fotku"
   },
   "errors": {
     "email": "Zadejte platný e-mail",

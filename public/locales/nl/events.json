@@ -11,7 +11,8 @@
     "share": "Deel",
     "starting_on": "Vanaf %{date}",
     "starting_soon": "Binnenkort van start",
-    "tel": "tel: %{phoneNumber}"
+    "tel": "tel: %{phoneNumber}",
+    "view_photo": "Foto bekijken"
   },
   "errors": {
     "email": "Voer een geldig e-mailadres in",

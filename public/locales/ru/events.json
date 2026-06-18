@@ -11,7 +11,8 @@
     "share": "Поделиться",
     "starting_on": "Начало %{date}",
     "starting_soon": "Скоро начнётся",
-    "tel": "тел: %{phoneNumber}"
+    "tel": "тел: %{phoneNumber}",
+    "view_photo": "Посмотреть фото"
   },
   "errors": {
     "email": "Введите действительный адрес электронной почты",

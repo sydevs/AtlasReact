@@ -11,7 +11,8 @@
     "share": "Partager",
     "starting_on": "À partir du %{date}",
     "starting_soon": "Bientôt",
-    "tel": "tél: %{phoneNumber}"
+    "tel": "tél: %{phoneNumber}",
+    "view_photo": "Voir la photo"
   },
   "errors": {
     "email": "Entrez un email valide",

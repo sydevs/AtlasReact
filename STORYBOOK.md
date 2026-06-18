@@ -126,7 +126,7 @@ Conventions:
   Organisms use just `'Organisms'`. Our subcategory map:
   - **Atoms** — Feedback (`Chip`, `Fallbacks`), Form (`SelectionDropdown`,
     `ThemeSwitch`, `LanguageSelector`), Layout (`Panel`), Media (`Icons`,
-    `LightboxImage`).
+    `Lightbox`).
   - **Molecules** — Display (`List`, `ListItem`, `ListHeader`, `EventItem`,
     `EventTime`, `EventMetadata`), Feedback (`EventSoon`), Interactive
     (`SearchBar`, `EventShare`), Media (`EventImages`), Sections (`Navbar`).
