@@ -1,8 +1,8 @@
 ---
 description: Mapbox / react-map-gl patterns — layers, sources, view state, turf.
 globs:
-  - "src/components/mapbox/**/*.ts"
-  - "src/components/mapbox/**/*.tsx"
+  - "src/components/organisms/mapbox/**/*.ts"
+  - "src/components/organisms/mapbox/**/*.tsx"
   - "src/hooks/use-mapbox.ts"
 alwaysApply: false
 ---
@@ -14,7 +14,7 @@ The map is the heart of the app and its hottest render path. Treat it carefully.
 ## Layer definitions live in `layers.ts`
 
 - Define every layer's `id`, `type`, `paint`, and `layout` in
-  `src/components/mapbox/layers.ts` and spread it into `<Layer {...clusterLayer} />`.
+  `src/components/organisms/mapbox/layers.ts` and spread it into `<Layer {...clusterLayer} />`.
   **Never inline paint/layout objects in JSX** — they'd be recreated every render
   and the map would reflow. Existing layers: `clusterLayer`,
   `unclusteredPointLayer`, `selectedPointLayer`, `selectedAreaLayer`, `boundsLayer`.

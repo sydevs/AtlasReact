@@ -10,20 +10,25 @@ alwaysApply: false
 
 # Components (NextUI + Tailwind)
 
+> **Taxonomy & conventions live in [`DESIGN_SYSTEM.md`](../../DESIGN_SYSTEM.md)**
+> (atoms / molecules / organisms, named exports + per-tier barrels, props typing,
+> `tailwind-variants`, when-to-wrap-NextUI). Story/preview conventions live in
+> [`STORYBOOK.md`](../../STORYBOOK.md) (Ladle). Skim those before adding a component.
+
 ## Prefer built-ins
 
 Before hand-rolling UI, check **NextUI v2** (`@nextui-org/react`) for an existing
 component (Button, Card, Chip, Dropdown, Modal, Listbox, Spinner, Skeleton…).
 Fewer custom components means less maintenance and a consistent look. Reach for
-a custom component only when no NextUI primitive fits, and keep it under
-`src/components/base/`.
+a custom component only when no NextUI primitive fits, and place it in the right
+atomic tier (`src/components/atoms|molecules|organisms/`) per `DESIGN_SYSTEM.md`.
 
 ## Styling
 
 - Tailwind 3 utility classes are the default. For components with variants
   (size/color/state), use **`tailwind-variants`** (`tv(...)`) rather than
   ad-hoc `clsx` string concatenation — it's already a dependency and matches the
-  NextUI styling model.
+  NextUI styling model. See `src/components/atoms/chip.tsx` for the reference usage.
 - `clsx` is fine for simple conditional class joins.
 - Global styles and Tailwind layers live in `src/styles/globals.css`. The
   widget injects its CSS via JS (`vite-plugin-css-injected-by-js`) so it works
@@ -43,7 +48,11 @@ in host pages, **and** runs standalone in dev. Because of that:
 
 ## Structure
 
-- Group multi-file features in a folder (`event/`, `list/`, `mapbox/`).
+- Components are grouped by atomic tier — `src/components/{atoms,molecules,organisms}/`,
+  each with a barrel `index.ts` (the cohesive `icons/` and `mapbox/` sub-modules
+  keep their own folders); `src/layouts/` holds templates. App code imports from
+  the tier barrels; components import each other by direct file path. See
+  `DESIGN_SYSTEM.md`.
 - Keep components presentational where possible; pull data via hooks
   (`src/hooks/`) and React Query (`src/config/api`), and read shared state from
   zustand selectors. See `.claude/rules/data-layer.md` and

@@ -53,7 +53,7 @@ a file manually.
 ## Icons & emojis
 
 - Don't use emojis as UI icons. This repo has its own SVG icon components under
-  `src/components/icons/` (`actions`, `socials`, `symbols`, …) — reuse those.
+  `src/components/atoms/icons/` (`actions`, `socials`, `symbols`, …) — reuse those.
   NextUI components also accept icon slots.
 
 ## After code changes
