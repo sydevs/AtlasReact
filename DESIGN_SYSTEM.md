@@ -57,7 +57,7 @@ here is **organisms own data/network/map lifecycles; atoms and molecules don't.*
 | `SelectionDropdown/`  | `SelectionDropdown`                  | Single-select wrapper over NextUI `Dropdown`  |
 | `LanguageSelector/`   | `LanguageSelector`                   | Locale switcher (`useLocale`)                 |
 | `Panel/`              | `Panel`                              | Suspense + ErrorBoundary layout shell         |
-| `LightboxImage/`      | `LightboxImage`                      | Thumbnail → modal lightbox                    |
+| `Lightbox/`           | `Lightbox`                           | Lazy YARL fullscreen overlay (own code-split chunk; barrel re-exports the `React.lazy` shim) |
 | `Fallbacks/`          | `LoadingFallback`, `ErrorFallback`   | Suspense / error-boundary fallbacks           |
 | `ThemeSwitch/`        | `ThemeSwitch`                        | Light/dark toggle (`useTheme`)                |
 
