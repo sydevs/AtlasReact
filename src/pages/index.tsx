@@ -7,11 +7,12 @@ import { useEffect } from 'react'
 import { useSearchParams } from 'react-router'
 
 import useLocale from '@/hooks/use-locale'
-import { Panel } from '@/components/base/panel'
+import { Panel } from '@/components/atoms'
 import { useSearchState, useViewState } from '@/config/store'
-import { List, DynamicEventsList, ListItem } from '@/components/list'
+import { List, ListItem } from '@/components/molecules'
+import { DynamicEventsList } from '@/components/organisms'
 import api from '@/config/api'
-import SearchBar from '@/components/search-bar'
+import { SearchBar } from '@/components/molecules'
 import useMapbox from '@/hooks/use-mapbox'
 
 function IndexPanel() {

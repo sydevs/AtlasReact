@@ -4,9 +4,9 @@ import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 
-import SearchBar from '@/components/search-bar'
-import { EventsList } from '@/components/list'
-import { Panel } from '@/components/base/panel'
+import { SearchBar } from '@/components/molecules'
+import { EventsList } from '@/components/organisms'
+import { Panel } from '@/components/atoms'
 import api from '@/config/api'
 import useMapbox from '@/hooks/use-mapbox'
 

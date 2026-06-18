@@ -7,9 +7,9 @@ import { bbox } from '@turf/bbox'
 import { useTranslation } from 'react-i18next'
 
 import { useViewState } from '@/config/store'
-import { Panel } from '@/components/base/panel'
-import SearchBar from '@/components/search-bar'
-import { EventsList } from '@/components/list'
+import { Panel } from '@/components/atoms'
+import { SearchBar } from '@/components/molecules'
+import { EventsList } from '@/components/organisms'
 import api from '@/config/api'
 import useMapbox from '@/hooks/use-mapbox'
 

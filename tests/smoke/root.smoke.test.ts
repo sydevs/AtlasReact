@@ -15,9 +15,11 @@ const PREVIEW_URL = process.env.PREVIEW_URL?.replace(/\/$/, '')
 describe('root page', () => {
   test.skipIf(!PREVIEW_URL)('serves the SPA shell at /', async () => {
     const res = await fetch(`${PREVIEW_URL}/`)
+
     expect(res.status).toBe(200)
 
     const html = await res.text()
+
     // The standalone build mounts into <div id="syatlas"> (see index.html).
     expect(html).toContain('id="syatlas"')
     expect(html).toMatch(/<title>[^<]*Sahaj Atlas/i)

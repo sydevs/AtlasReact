@@ -1,4 +1,4 @@
-import { Navbar } from '@/components/navbar'
+import { Navbar } from '@/components/molecules'
 
 export default function DefaultLayout({ children }: { children: React.ReactNode }) {
   const hasNavbar = window.location.hostname == 'atlas.sydevelopers.com'

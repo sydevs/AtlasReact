@@ -92,13 +92,21 @@ are the template tier and are not re-exported through the component barrels.
 - **Use named exports** for every component (no `export default`). This makes the
   per-tier barrels (`atoms/index.ts`, …) clean and keeps import names greppable.
   The `icons/` sub-module already worked this way; we extend it everywhere.
-- **Import from the tier barrel**, not the file:
-  `import { Chip } from '@/components/atoms'` — never
-  `@/components/atoms/chip`. The barrel is the public surface; file layout can
-  change behind it.
+- **App code (pages, layouts, stories) imports from the tier barrel**:
+  `import { Chip } from '@/components/atoms'`. The barrel is the public surface;
+  file layout can change behind it.
+- **Inside `src/components`, components import each other by _direct file path_**
+  (`@/components/atoms/chip`, `@/components/molecules/event-time`), not through a
+  tier barrel. Going through barrels here risks import cycles (a molecule that
+  embeds an organism vs. an organism that embeds a molecule) and TDZ bugs.
 - Each tier's `index.ts` re-exports its components (and the `icons/` / `mapbox/`
   sub-barrels). Keep barrels free of logic — re-exports only (the one tolerated
   exception is the tiny `List` wrapper, co-located in `list.tsx`).
+- **Code-split exception:** a heavy organism that is lazy-loaded (the event detail
+  page lazy-imports `event-panel`) is intentionally left _out_ of its barrel, so a
+  barrel import doesn't pull it back into the static graph. Such components — and
+  any reached only through them (`event-details`, `event-registration`) — are
+  imported by direct path. See `organisms/index.ts`.
 - Filenames stay **kebab-case**; components are `PascalCase`; hooks `useX`;
   zustand stores `useXState` (see [`.claude/rules/code-style.md`](.claude/rules/code-style.md)).
 

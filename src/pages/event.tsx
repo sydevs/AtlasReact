@@ -5,13 +5,15 @@ import { Link } from '@nextui-org/react'
 import { lazy } from 'react'
 
 import api from '@/config/api'
-import { Panel } from '@/components/base/panel'
+import { Panel } from '@/components/atoms'
 import { useNavigationState, useViewState } from '@/config/store'
-import EventMetadata from '@/components/event/metadata'
-import { UpArrowIcon } from '@/components/icons'
+import { EventMetadata } from '@/components/molecules'
+import { UpArrowIcon } from '@/components/atoms'
 import useMapbox from '@/hooks/use-mapbox'
 
-const EventPanelContent = lazy(() => import('@/components/event/panel'))
+const EventPanelContent = lazy(() =>
+  import('@/components/organisms/event-panel').then((m) => ({ default: m.EventPanel })),
+)
 
 function EventPanel({ eventId }: { eventId: number }) {
   const { mapbox, moveMap } = useMapbox()
