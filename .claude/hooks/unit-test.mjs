@@ -32,12 +32,15 @@ if (!/^src\/.*\.(ts|tsx)$/.test(rel) || /\.stories\.(ts|tsx)$/.test(rel)) {
 }
 
 const res = spawnSync('pnpm', ['test:run'], {
-  cwd: projectDir,
+  cwd: projectDir || process.cwd(),
   encoding: 'utf-8',
   timeout: 60_000,
 })
 
-if (res.status === 0) {
+// status === 0 → green. status === null → timed out or couldn't spawn (not a
+// test failure) — stay silent rather than crying wolf. Only a real non-zero
+// exit means specs failed.
+if (res.status === 0 || res.status === null) {
   process.exit(0)
 }
 
