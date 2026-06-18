@@ -1,5 +1,6 @@
 import { Suspense, useState } from 'react'
 import { Image } from '@nextui-org/react'
+import { useTranslation } from 'react-i18next'
 import { Autoplay, Pagination, A11y, EffectFade } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -9,6 +10,7 @@ import { Lightbox } from '@/components/atoms/Lightbox'
 import { EventImage } from '@/types'
 
 export function EventImages({ images }: { images: EventImage[] }) {
+  const { t } = useTranslation('events')
   const [open, setOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
 
@@ -39,6 +41,7 @@ export function EventImages({ images }: { images: EventImage[] }) {
         {images.map((image, index) => (
           <SwiperSlide key={image.url} className="p-6 pb-10">
             <button
+              aria-label={image.altText ?? t('details.view_photo')}
               className="block w-full cursor-zoom-in"
               type="button"
               onClick={() => openAt(index)}

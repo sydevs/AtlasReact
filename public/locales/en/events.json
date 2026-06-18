@@ -11,7 +11,8 @@
     "share": "Share",
     "starting_on": "Starting %{date}",
     "starting_soon": "Starting soon",
-    "tel": "tel: %{phoneNumber}"
+    "tel": "tel: %{phoneNumber}",
+    "view_photo": "View photo"
   },
   "errors": {
     "email": "Enter a valid email",

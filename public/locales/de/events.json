@@ -11,7 +11,8 @@
     "share": "Teilen",
     "starting_on": "Beginn am %{date}",
     "starting_soon": "Bald geht es los",
-    "tel": "tel: %{phoneNumber}"
+    "tel": "tel: %{phoneNumber}",
+    "view_photo": "Foto ansehen"
   },
   "errors": {
     "email": "Geben Sie eine gültige E-Mail-Adresse ein",
