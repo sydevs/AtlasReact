@@ -40,7 +40,6 @@ export function SearchBar({
 
       searchParams.set('q', value.properties.full_address)
       value.properties.bbox && searchParams.set('bbox', value.properties.bbox?.toString())
-      console.log(value.properties.coordinates)
       searchParams.set(
         'center',
         `${value.properties.coordinates.longitude},${value.properties.coordinates.latitude}`,

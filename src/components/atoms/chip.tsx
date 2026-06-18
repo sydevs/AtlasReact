@@ -7,7 +7,8 @@ import { tv, type VariantProps } from 'tailwind-variants'
 import { IconSvgProps } from '@/types'
 
 // Reference tailwind-variants usage for the design system (see DESIGN_SYSTEM.md).
-// Chip content is always uppercased; `emphasis` controls its weight.
+// Content is always uppercased; `emphasis` is a design-system variant exposed for
+// the component library (previewed in chip.stories) — the app uses the default.
 const chipContent = tv({
   base: 'uppercase',
   variants: {

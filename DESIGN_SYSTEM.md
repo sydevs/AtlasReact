@@ -48,8 +48,8 @@ here is **organisms own data/network/map lifecycles; atoms and molecules don't.*
 | --------------------- | ------------------------------------ | --------------------------------------------- |
 | `icons/` (sub-module) | `*Icon`, `Logo`, `SocialIcon`, …     | SVG primitives; keeps its own `index.tsx` barrel |
 | `chip.tsx`            | `Chip`, `TimezoneChip`               | Wraps NextUI `Chip` with app defaults (`tv()`) |
-| `dropdown.tsx`        | `Dropdown`                           | Single-select wrapper over NextUI `Dropdown`  |
-| `language.tsx`        | `LanguageSelect`                     | Locale switcher (`useLocale`)                 |
+| `dropdown.tsx`        | `SelectionDropdown`                  | Single-select wrapper over NextUI `Dropdown`  |
+| `language.tsx`        | `LanguageSelector`                   | Locale switcher (`useLocale`)                 |
 | `panel.tsx`           | `Panel`                              | Suspense + ErrorBoundary layout shell         |
 | `lightbox-image.tsx`  | `LightboxImage`                      | Thumbnail → modal lightbox                    |
 | `fallbacks.tsx`       | `LoadingFallback`, `ErrorFallback`   | Suspense / error-boundary fallbacks           |
@@ -75,7 +75,7 @@ here is **organisms own data/network/map lifecycles; atoms and molecules don't.*
 
 | File                     | Exports                                                       | Notes                              |
 | ------------------------ | ------------------------------------------------------------- | ---------------------------------- |
-| `mapbox/` (sub-module)   | `Map`, `MapSearch`, `layers.ts`, `themes.ts`                  | The Mapbox surface; see [`.claude/rules/mapbox.md`](.claude/rules/mapbox.md) |
+| `mapbox/` (sub-module)   | `Mapbox`, `MapSearch`, `layers.ts`, `themes.ts`               | The Mapbox surface; see [`.claude/rules/mapbox.md`](.claude/rules/mapbox.md) |
 | `events-list.tsx`        | `EventsList`, `DynamicEventsList`                              | List + distance-sorted fetch       |
 | `event-panel.tsx`        | `EventPanel`                                                   | Full event detail panel            |
 | `event-details.tsx`      | `EventContactDetails`, `EventTimingDetails`, `EventLocationDetails`, `EventDetail` | Detail cards     |
@@ -112,11 +112,13 @@ are the template tier and are not re-exported through the component barrels.
 
 ### Props typing
 
-- Every component that takes props declares a named props type called
-  `<Component>Props` and destructures it in the signature.
+- Every component that takes props declares a named props type and destructures
+  it in the signature. Prefer `<Component>Props`; fall back to a local `Props`
+  when that name would clash with an imported type — e.g. `Chip` composes NextUI's
+  `ChipProps`, so its own props type is `Props` to avoid the collision.
 - Use an **`interface`** for a plain object shape; use a **`type`** when composing
-  with `&` (e.g. extending a NextUI component's props, as `Chip` extends
-  `ChipProps`). Don't inline non-trivial prop shapes.
+  with `&` (extending a NextUI component's props, as `Chip` does). Don't inline
+  non-trivial prop shapes.
 - `strict` is on — prefer precise types over `any` (see code-style rules).
 
 ### Styling & `tailwind-variants`
