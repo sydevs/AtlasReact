@@ -16,6 +16,7 @@ export default [
   {
     ignores: [
       'dist/**',
+      'build/**', // Ladle's static build output (pnpm ladle:build)
       'node_modules/**',
       'public/**',
       'coverage/**',
@@ -79,7 +80,16 @@ export default [
       'import/order': [
         'warn',
         {
-          groups: ['type', 'builtin', 'object', 'external', 'internal', 'parent', 'sibling', 'index'],
+          groups: [
+            'type',
+            'builtin',
+            'object',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+          ],
           pathGroups: [
             {
               pattern: '~/**',

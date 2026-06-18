@@ -27,11 +27,21 @@ a file manually.
 
 ## Naming
 
-- Files are **kebab-case** (`search-bar.tsx`, `use-mapbox.ts`,
-  `lightbox-image.tsx`) — match the existing tree; don't introduce PascalCase
-  filenames.
+- **Components** use **PascalCase, folder-per-component** (mirroring WeMeditateWeb):
+  `src/components/<tier>/<Name>/{<Name>.tsx, <Name>.stories.tsx, index.ts}` — e.g.
+  `atoms/SearchBar/SearchBar.tsx`. A folder may hold a small family of related
+  exports named after the primary (e.g. `EventShare/`). See `DESIGN_SYSTEM.md`.
+- **Everything else stays kebab-case**: hooks (`use-mapbox.ts`), config
+  (`store.ts`), types (`event.ts`), pages (`area.tsx`), layouts (`map.tsx`), and
+  the grouped icon/mapbox sub-module source files.
 - Components are PascalCase exports; hooks are `useX` camelCase; zustand stores
   are `useXState`.
+- **Export style**: components and hooks use **named** exports; pages, layouts,
+  and entry/singleton modules (`App`, `Widget`, `providers`, `config/api/*`,
+  `config/i18n`) use default exports.
+- **Props types**: name them `<Component>Props` (e.g. `EventItemProps`); fall back
+  to a local `Props` only when that name would clash with an imported type (e.g.
+  `Chip` composes NextUI's `ChipProps`).
 - zod schemas are `XSchema`; the inferred type is `X` (see `src/types/`).
 
 ## TypeScript
@@ -53,7 +63,7 @@ a file manually.
 ## Icons & emojis
 
 - Don't use emojis as UI icons. This repo has its own SVG icon components under
-  `src/components/icons/` (`actions`, `socials`, `symbols`, …) — reuse those.
+  `src/components/atoms/icons/` (`actions`, `socials`, `symbols`, …) — reuse those.
   NextUI components also accept icon slots.
 
 ## After code changes

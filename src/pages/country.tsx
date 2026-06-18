@@ -6,12 +6,12 @@ import { bboxPolygon } from '@turf/bbox-polygon'
 import { useTranslation } from 'react-i18next'
 
 import api from '@/config/api'
-import { List, ListItem } from '@/components/list'
-import SearchBar from '@/components/search-bar'
-import { Panel } from '@/components/base/panel'
+import { List, ListItem } from '@/components/molecules'
+import { SearchBar } from '@/components/molecules'
+import { Panel } from '@/components/atoms'
 import { useViewState } from '@/config/store'
-import useLocale from '@/hooks/use-locale'
-import useMapbox from '@/hooks/use-mapbox'
+import { useLocale } from '@/hooks/use-locale'
+import { useMapbox } from '@/hooks/use-mapbox'
 
 function CountryPanel({ countryCode }: { countryCode: string }) {
   const { fitBounds } = useMapbox()

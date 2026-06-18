@@ -3,6 +3,8 @@ import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import HttpBackend, { HttpBackendOptions } from 'i18next-http-backend'
 
+import { i18nSharedOptions } from './i18n-options'
+
 export const supportedLanguages = ['en', 'fr']
 
 i18n
@@ -17,14 +19,7 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init<HttpBackendOptions>({
     debug: true,
-    fallbackLng: 'en',
-    defaultNS: 'common',
-    ns: ['common', 'events'],
-    interpolation: {
-      escapeValue: false, // not needed for react as it escapes by default
-      prefix: '%{',
-      suffix: '}',
-    },
+    ...i18nSharedOptions,
     detection: {
       lookupQuerystring: 'locale',
     },

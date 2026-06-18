@@ -1,7 +1,7 @@
 import { MapProvider } from 'react-map-gl'
 
-import { Navbar } from '@/components/navbar'
-import Mapbox from '@/components/mapbox/map'
+import { Navbar } from '@/components/molecules'
+import { Mapbox } from '@/components/organisms'
 
 export default function MapLayout({ children }: { children: React.ReactNode }) {
   const hasNavbar = false

@@ -50,11 +50,14 @@ pnpm preview      # serve the production build locally
 pnpm typecheck    # tsc --noEmit (no build output)
 pnpm lint         # eslint . (report only)
 pnpm lint:fix     # eslint . --fix (auto-fix + Prettier)
+pnpm ladle        # Ladle component previews (http://localhost:61000)
+pnpm ladle:build  # static Ladle build (CI gate — broken stories fail)
 ```
 
-There is **no test suite yet**. CI (`.github/workflows/ci.yml`) gates PRs on
-lint + typecheck + build. If you add tests, wire them into CI and the
-`pr-prep` skill.
+There is **no unit/component test suite yet** (a `test:smoke` vitest spec runs
+against the Cloudflare preview). CI (`.github/workflows/ci.yml`) gates PRs on
+lint + typecheck + build + `ladle:build`. If you add tests, wire them into CI
+and the `pr-prep` skill.
 
 ## Code quality
 
@@ -74,12 +77,12 @@ src/
   App.tsx             # Router + providers + client bootstrap (HashRouter)
   main.tsx            # Standalone dev entry
   providers.tsx       # NextUI + React Query + Helmet providers
-  components/
-    base/             # Generic UI (chip, dropdown, panel, language, fallbacks…)
-    event/            # Event detail subcomponents
-    list/             # Event list views
-    mapbox/           # Map, search, layer defs (layers.ts), themes
-    icons/            # SVG icon components
+  components/         # atomic taxonomy, folder-per-component — see DESIGN_SYSTEM.md
+    atoms/            # Primitives: Chip/, SelectionDropdown/, Panel/, LanguageSelector/, Fallbacks/, ThemeSwitch/, Icons/
+    molecules/        # Compositions: Navbar/, SearchBar/, List*/, EventTime|Share|Images|Soon/, EventItem/, EventMetadata/
+    organisms/        # Data-connected: EventsList/, EventPanel|Details|Registration/, Mapbox/
+    <tier>/<Name>/    # PascalCase folder: <Name>.tsx + <Name>.stories.tsx + index.ts
+    <tier>/index.ts   # one barrel per tier
   config/
     api/              # axios client + zod-parsed fetchers (fetch.ts, mutate.ts, auth.ts)
     store.ts          # zustand stores (view / navigation / search state)
@@ -102,10 +105,13 @@ public/locales/<lng>/ # translation JSON (en, fr, … hand-maintained)
 - **State**: zustand stores are the single source of truth for map view,
   navigation history, and search filters. Read with `useShallow` selectors in
   hot paths (the map). See `.claude/rules/i18n-and-state.md`.
-- **Map**: layer definitions live in `src/components/mapbox/layers.ts`; never
-  inline layer paint/layout in JSX. See `.claude/rules/mapbox.md`.
-- **Components**: prefer NextUI built-ins + `tailwind-variants` over hand-rolled
-  styled components. See `.claude/rules/components.md`.
+- **Map**: layer definitions live in `src/components/organisms/Mapbox/layers.ts`;
+  never inline layer paint/layout in JSX. See `.claude/rules/mapbox.md`.
+- **Components**: atomic tiers (`atoms/molecules/organisms`), **PascalCase
+  folder-per-component** (`Chip/Chip.tsx` + stories + `index.ts`), named exports,
+  barrel per tier; prefer NextUI built-ins + `tailwind-variants`
+  over hand-rolled styled components. See `DESIGN_SYSTEM.md`, `STORYBOOK.md`, and
+  `.claude/rules/components.md`. Preview components with `pnpm ladle`.
 
 ## Environment
 

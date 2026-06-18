@@ -1,8 +1,8 @@
 ---
 description: Mapbox / react-map-gl patterns — layers, sources, view state, turf.
 globs:
-  - "src/components/mapbox/**/*.ts"
-  - "src/components/mapbox/**/*.tsx"
+  - "src/components/organisms/Mapbox/**/*.ts"
+  - "src/components/organisms/Mapbox/**/*.tsx"
   - "src/hooks/use-mapbox.ts"
 alwaysApply: false
 ---
@@ -14,13 +14,13 @@ The map is the heart of the app and its hottest render path. Treat it carefully.
 ## Layer definitions live in `layers.ts`
 
 - Define every layer's `id`, `type`, `paint`, and `layout` in
-  `src/components/mapbox/layers.ts` and spread it into `<Layer {...clusterLayer} />`.
+  `src/components/organisms/Mapbox/layers.ts` and spread it into `<Layer {...clusterLayer} />`.
   **Never inline paint/layout objects in JSX** — they'd be recreated every render
   and the map would reflow. Existing layers: `clusterLayer`,
   `unclusteredPointLayer`, `selectedPointLayer`, `selectedAreaLayer`, `boundsLayer`.
 - `interactiveLayerIds` on `<ReactMapGL>` must list exactly the layers that
   respond to clicks/hover. Keep it in sync when adding a clickable layer.
-- Map styles (light/dark) are referenced by Mapbox style URL in `map.tsx`
+- Map styles (light/dark) are referenced by Mapbox style URL in `Map.tsx`
   (`MAP_STYLES`); theme switches via `useTheme()`.
 
 ## Sources and clustering
@@ -35,7 +35,7 @@ The map is the heart of the app and its hottest render path. Treat it carefully.
 ## View state lives in zustand, not local state
 
 - `useViewState` (`src/config/store.ts`) holds `zoom/latitude/longitude/selection/boundary`.
-  Read it with a **`useShallow` selector** (as `map.tsx` does) so the map only
+  Read it with a **`useShallow` selector** (as `Map.tsx` does) so the map only
   re-renders when the fields it uses change.
 - Drive imperative camera moves through `useMapbox().moveMap(...)` / padding
   helpers — don't call `map.flyTo` directly from components.
