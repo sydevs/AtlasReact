@@ -27,9 +27,13 @@ a file manually.
 
 ## Naming
 
-- Files are **kebab-case** (`search-bar.tsx`, `use-mapbox.ts`,
-  `lightbox-image.tsx`) — match the existing tree; don't introduce PascalCase
-  filenames.
+- **Components** use **PascalCase, folder-per-component** (mirroring WeMeditateWeb):
+  `src/components/<tier>/<Name>/{<Name>.tsx, <Name>.stories.tsx, index.ts}` — e.g.
+  `atoms/SearchBar/SearchBar.tsx`. A folder may hold a small family of related
+  exports named after the primary (e.g. `EventShare/`). See `DESIGN_SYSTEM.md`.
+- **Everything else stays kebab-case**: hooks (`use-mapbox.ts`), config
+  (`store.ts`), types (`event.ts`), pages (`area.tsx`), layouts (`map.tsx`), and
+  the grouped icon/mapbox sub-module source files.
 - Components are PascalCase exports; hooks are `useX` camelCase; zustand stores
   are `useXState`.
 - zod schemas are `XSchema`; the inferred type is `X` (see `src/types/`).

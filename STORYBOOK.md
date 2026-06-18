@@ -28,8 +28,9 @@ themselves in providers** — they just render the component.
 
 ## Writing a story (current convention)
 
-Co-locate `<component>.stories.tsx` next to the component. Follow the established
-shape (see `src/components/atoms/chip.stories.tsx` for the reference):
+Co-locate `<Name>.stories.tsx` inside the component's folder (e.g.
+`src/components/atoms/Chip/Chip.stories.tsx`). Follow the established shape (see
+`Chip/Chip.stories.tsx` for the reference):
 
 ```tsx
 import type { Story, StoryDefault } from '@ladle/react'
@@ -63,8 +64,8 @@ Playground.argTypes = {
 Rules:
 
 - **Import the subject from its tier barrel** (`@/components/atoms|molecules|organisms`).
-  The barrel-excluded, lazy-loaded organisms (`event-panel`, `event-details`,
-  `event-registration`) are imported by direct path — see `DESIGN_SYSTEM.md`.
+  The barrel-excluded, lazy-loaded organisms (`EventPanel`, `EventDetails`,
+  `EventRegistration`) are imported by direct folder path — see `DESIGN_SYSTEM.md`.
 - **Light + dark** is covered by the toolbar theme toggle (the decorator maps it
   onto the `dark` class); don't duplicate stories per theme.
 - **Mock data** comes from `src/mocks/` (e.g. `mockEvent`, `mockEventSlim`,

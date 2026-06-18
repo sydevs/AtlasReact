@@ -12,7 +12,7 @@ import { UpArrowIcon } from '@/components/atoms'
 import useMapbox from '@/hooks/use-mapbox'
 
 const EventPanelContent = lazy(() =>
-  import('@/components/organisms/event-panel').then((m) => ({ default: m.EventPanel })),
+  import('@/components/organisms/EventPanel').then((m) => ({ default: m.EventPanel })),
 )
 
 function EventPanel({ eventId }: { eventId: number }) {

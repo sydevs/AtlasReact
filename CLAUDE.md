@@ -77,11 +77,12 @@ src/
   App.tsx             # Router + providers + client bootstrap (HashRouter)
   main.tsx            # Standalone dev entry
   providers.tsx       # NextUI + React Query + Helmet providers
-  components/         # atomic taxonomy — see DESIGN_SYSTEM.md
-    atoms/            # Primitives (chip, dropdown, panel, language, fallbacks, theme-switch, icons/)
-    molecules/        # Compositions (navbar, search-bar, list*, event-time/share/images/soon, event-item)
-    organisms/        # Data-connected (events-list, event-panel/details/registration, mapbox/)
-    {atoms,molecules,organisms}/index.ts  # one barrel per tier
+  components/         # atomic taxonomy, folder-per-component — see DESIGN_SYSTEM.md
+    atoms/            # Primitives: Chip/, SelectionDropdown/, Panel/, LanguageSelector/, Fallbacks/, ThemeSwitch/, Icons/
+    molecules/        # Compositions: Navbar/, SearchBar/, List*/, EventTime|Share|Images|Soon/, EventItem/, EventMetadata/
+    organisms/        # Data-connected: EventsList/, EventPanel|Details|Registration/, Mapbox/
+    <tier>/<Name>/    # PascalCase folder: <Name>.tsx + <Name>.stories.tsx + index.ts
+    <tier>/index.ts   # one barrel per tier
   config/
     api/              # axios client + zod-parsed fetchers (fetch.ts, mutate.ts, auth.ts)
     store.ts          # zustand stores (view / navigation / search state)
@@ -104,10 +105,11 @@ public/locales/<lng>/ # translation JSON (en, fr, … hand-maintained)
 - **State**: zustand stores are the single source of truth for map view,
   navigation history, and search filters. Read with `useShallow` selectors in
   hot paths (the map). See `.claude/rules/i18n-and-state.md`.
-- **Map**: layer definitions live in `src/components/organisms/mapbox/layers.ts`;
+- **Map**: layer definitions live in `src/components/organisms/Mapbox/layers.ts`;
   never inline layer paint/layout in JSX. See `.claude/rules/mapbox.md`.
-- **Components**: organized by atomic tier (`atoms/molecules/organisms`) with a
-  barrel per tier and named exports; prefer NextUI built-ins + `tailwind-variants`
+- **Components**: atomic tiers (`atoms/molecules/organisms`), **PascalCase
+  folder-per-component** (`Chip/Chip.tsx` + stories + `index.ts`), named exports,
+  barrel per tier; prefer NextUI built-ins + `tailwind-variants`
   over hand-rolled styled components. See `DESIGN_SYSTEM.md`, `STORYBOOK.md`, and
   `.claude/rules/components.md`. Preview components with `pnpm ladle`.
 

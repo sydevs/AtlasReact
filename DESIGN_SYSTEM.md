@@ -18,12 +18,18 @@ We follow [atomic design](https://bradfrost.com/blog/post/atomic-web-design/),
 adapted to our NextUI + Mapbox stack. Components live under `src/components/`,
 grouped by **tier** rather than by domain:
 
+Each component lives in its own **PascalCase folder** (mirroring WeMeditateWeb):
+
 ```
 src/components/
   atoms/        # primitives: render from props; no data fetching or navigation
   molecules/    # small compositions of atoms; data passed in via props
   organisms/    # data-connected / stateful sections (React Query, the map, forms)
-  <tier>/index.ts   # one barrel per tier — the public import surface
+  atoms/Chip/                 # one folder per component
+    Chip.tsx                  #   the component (PascalCase, matches the folder)
+    Chip.stories.tsx          #   co-located Ladle stories
+    index.ts                  #   component barrel: `export * from './Chip'`
+  <tier>/index.ts             # tier barrel — the public import surface
 src/layouts/    # templates: page-level layout scaffolds (see below)
 ```
 
@@ -44,42 +50,42 @@ here is **organisms own data/network/map lifecycles; atoms and molecules don't.*
 
 **Atoms** (`src/components/atoms/`)
 
-| File                  | Exports                              | Notes                                         |
+| Folder                | Exports                              | Notes                                         |
 | --------------------- | ------------------------------------ | --------------------------------------------- |
-| `icons/` (sub-module) | `*Icon`, `Logo`, `SocialIcon`, …     | SVG primitives; keeps its own `index.tsx` barrel |
-| `chip.tsx`            | `Chip`, `TimezoneChip`               | Wraps NextUI `Chip` with app defaults (`tv()`) |
-| `dropdown.tsx`        | `SelectionDropdown`                  | Single-select wrapper over NextUI `Dropdown`  |
-| `language.tsx`        | `LanguageSelector`                   | Locale switcher (`useLocale`)                 |
-| `panel.tsx`           | `Panel`                              | Suspense + ErrorBoundary layout shell         |
-| `lightbox-image.tsx`  | `LightboxImage`                      | Thumbnail → modal lightbox                    |
-| `fallbacks.tsx`       | `LoadingFallback`, `ErrorFallback`   | Suspense / error-boundary fallbacks           |
-| `theme-switch.tsx`    | `ThemeSwitch`                        | Light/dark toggle (`useTheme`)                |
+| `Icons/` (sub-module) | `*Icon`, `Logo`, `SocialIcon`, …     | SVG primitives; grouped module with its own `index.tsx` |
+| `Chip/`               | `Chip`, `TimezoneChip`               | Wraps NextUI `Chip` with app defaults (`tv()`) |
+| `SelectionDropdown/`  | `SelectionDropdown`                  | Single-select wrapper over NextUI `Dropdown`  |
+| `LanguageSelector/`   | `LanguageSelector`                   | Locale switcher (`useLocale`)                 |
+| `Panel/`              | `Panel`                              | Suspense + ErrorBoundary layout shell         |
+| `LightboxImage/`      | `LightboxImage`                      | Thumbnail → modal lightbox                    |
+| `Fallbacks/`          | `LoadingFallback`, `ErrorFallback`   | Suspense / error-boundary fallbacks           |
+| `ThemeSwitch/`        | `ThemeSwitch`                        | Light/dark toggle (`useTheme`)                |
 
 **Molecules** (`src/components/molecules/`)
 
-| File                  | Exports                                        | Notes                                  |
-| --------------------- | ---------------------------------------------- | -------------------------------------- |
-| `navbar.tsx`          | `Navbar`                                        | Logo + theme switch + language         |
-| `search-bar.tsx`      | `SearchBar`                                     | Search input; reads `useSearchState`   |
-| `list.tsx`            | `List`                                          | Scrollable `<ul>` container            |
-| `list-item.tsx`       | `ListItem`                                      | Generic labelled list row              |
-| `list-header.tsx`     | `ListHeader`                                    | Back-button + title row                |
-| `event-item.tsx`      | `EventItem`                                     | Per-event summary card in a list       |
-| `event-time.tsx`      | `EventTime`                                     | Formatted event time range             |
-| `event-share.tsx`     | `ShareButton`, `ShareModal`, `ShareContent`     | Share-event modal                      |
-| `event-images.tsx`    | `EventImages`                                   | Swiper image carousel                  |
-| `event-soon.tsx`      | `EventSoonChip`, `isSoon`                       | "Starting soon" chip + predicate       |
-| `event-metadata.tsx`  | `EventMetadata`                                 | Schema.org / OG `<head>` tags (Helmet) |
+| Folder              | Exports                                        | Notes                                  |
+| ------------------- | ---------------------------------------------- | -------------------------------------- |
+| `Navbar/`           | `Navbar`                                        | Logo + theme switch + language         |
+| `SearchBar/`        | `SearchBar`                                     | Search input; reads `useSearchState`   |
+| `List/`             | `List`                                          | Scrollable `<ul>` container            |
+| `ListItem/`         | `ListItem`                                      | Generic labelled list row              |
+| `ListHeader/`       | `ListHeader`                                    | Back-button + title row                |
+| `EventItem/`        | `EventItem`                                     | Per-event summary card in a list       |
+| `EventTime/`        | `EventTime`                                     | Formatted event time range             |
+| `EventShare/`       | `ShareButton`, `ShareModal`, `ShareContent`     | Share-event modal                      |
+| `EventImages/`      | `EventImages`                                   | Swiper image carousel                  |
+| `EventSoon/`        | `EventSoonChip`, `isSoon`                       | "Starting soon" chip + predicate       |
+| `EventMetadata/`    | `EventMetadata`                                 | Schema.org / OG `<head>` tags (Helmet) |
 
 **Organisms** (`src/components/organisms/`)
 
-| File                     | Exports                                                       | Notes                              |
+| Folder                   | Exports                                                       | Notes                              |
 | ------------------------ | ------------------------------------------------------------- | ---------------------------------- |
-| `mapbox/` (sub-module)   | `Mapbox`, `MapSearch`, `layers.ts`, `themes.ts`               | The Mapbox surface; see [`.claude/rules/mapbox.md`](.claude/rules/mapbox.md) |
-| `events-list.tsx`        | `EventsList`, `DynamicEventsList`                              | List + distance-sorted fetch       |
-| `event-panel.tsx`        | `EventPanel`                                                   | Full event detail panel            |
-| `event-details.tsx`      | `EventContactDetails`, `EventTimingDetails`, `EventLocationDetails`, `EventDetail` | Detail cards     |
-| `event-registration.tsx` | `RegistrationButton`, `RegistrationModal`, `RegistrationFields` | Registration form (RHF + mutation) |
+| `Mapbox/` (sub-module)   | `Mapbox`, `MapSearch` (+ `layers.ts`, `themes.ts` helpers)    | The Mapbox surface; see [`.claude/rules/mapbox.md`](.claude/rules/mapbox.md) |
+| `EventsList/`            | `EventsList`, `DynamicEventsList`                              | List + distance-sorted fetch       |
+| `EventPanel/`            | `EventPanel`                                                   | Full event detail panel            |
+| `EventDetails/`          | `EventContactDetails`, `EventTimingDetails`, `EventLocationDetails`, `EventDetail` | Detail cards     |
+| `EventRegistration/`     | `RegistrationButton`, `RegistrationModal`, `RegistrationFields` | Registration form (RHF + mutation) |
 
 **Templates** — `src/layouts/{default,map}.tsx` (`DefaultLayout`, `MapLayout`).
 Layouts stay in `src/layouts/` (route-level scaffolds owned by `App.tsx`); they
@@ -89,26 +95,30 @@ are the template tier and are not re-exported through the component barrels.
 
 ### Exports — named, one barrel per tier
 
-- **Use named exports** for every component (no `export default`). This makes the
-  per-tier barrels (`atoms/index.ts`, …) clean and keeps import names greppable.
-  The `icons/` sub-module already worked this way; we extend it everywhere.
+- **Use named exports** for every component (no `export default`). This keeps the
+  barrels clean and import names greppable.
+- **Two barrel layers.** Each component folder has an `index.ts`
+  (`export * from './Chip'`); each tier has an `index.ts` re-exporting its
+  component folders. The `Icons/` and `Mapbox/` sub-modules group several files
+  behind their own `index`.
 - **App code (pages, layouts, stories) imports from the tier barrel**:
   `import { Chip } from '@/components/atoms'`. The barrel is the public surface;
-  file layout can change behind it.
-- **Inside `src/components`, components import each other by _direct file path_**
-  (`@/components/atoms/chip`, `@/components/molecules/event-time`), not through a
-  tier barrel. Going through barrels here risks import cycles (a molecule that
-  embeds an organism vs. an organism that embeds a molecule) and TDZ bugs.
-- Each tier's `index.ts` re-exports its components (and the `icons/` / `mapbox/`
-  sub-barrels). Keep barrels free of logic — re-exports only (the one tolerated
-  exception is the tiny `List` wrapper, co-located in `list.tsx`).
+  layout can change behind it.
+- **Inside `src/components`, components import each other by the _component folder_
+  path** (`@/components/atoms/Chip`, `@/components/molecules/EventTime`), not
+  through a tier barrel. Going through the tier barrel here risks import cycles (a
+  molecule that embeds an organism vs. an organism that embeds a molecule) and TDZ
+  bugs; the per-component folder index is cycle-safe.
+- Keep barrels free of logic — re-exports only (the one tolerated exception is the
+  tiny `List` wrapper, co-located in `List/List.tsx`).
 - **Code-split exception:** a heavy organism that is lazy-loaded (the event detail
-  page lazy-imports `event-panel`) is intentionally left _out_ of its barrel, so a
-  barrel import doesn't pull it back into the static graph. Such components — and
-  any reached only through them (`event-details`, `event-registration`) — are
-  imported by direct path. See `organisms/index.ts`.
-- Filenames stay **kebab-case**; components are `PascalCase`; hooks `useX`;
-  zustand stores `useXState` (see [`.claude/rules/code-style.md`](.claude/rules/code-style.md)).
+  page lazy-imports `EventPanel`) is intentionally left _out_ of its tier barrel,
+  so a barrel import doesn't pull it back into the static graph. Such components —
+  and any reached only through them (`EventDetails`, `EventRegistration`) — are
+  imported by direct folder path. See `organisms/index.ts`.
+- Component folders and files are **PascalCase** (`Chip/Chip.tsx`); non-component
+  files stay kebab-case (hooks `use-x.ts` exporting `useX`, config, types, pages,
+  layouts); zustand stores `useXState` (see [`.claude/rules/code-style.md`](.claude/rules/code-style.md)).
 
 ### Props typing
 
@@ -153,9 +163,11 @@ organisms get lighter, token-gated coverage. Run `pnpm ladle` to browse them. Se
 ## Adding a component — checklist
 
 1. Pick the tier (atom / molecule / organism) using the table above.
-2. Create `src/components/<tier>/<kebab-name>.tsx` with a **named** export and a
-   `<Name>Props` type.
-3. Re-export it from `src/components/<tier>/index.ts`.
-4. Use `tv()` if it has variants; reuse existing icons from `atoms/icons/`.
-5. Add `<kebab-name>.stories.tsx` next to it (light + dark; key variants).
+2. Create the folder `src/components/<tier>/<Name>/` with:
+   - `<Name>.tsx` — **named** export(s) and a `<Name>Props` type;
+   - `index.ts` — `export * from './<Name>'`;
+   - `<Name>.stories.tsx` — co-located stories (light + dark; key variants).
+3. Re-export the folder from `src/components/<tier>/index.ts`.
+4. Use `tv()` if it has variants; reuse existing icons from `atoms/Icons/`.
+5. Reference siblings by component-folder path (`@/components/<tier>/<Other>`).
 6. `pnpm typecheck` and `pnpm ladle:build` must stay green.

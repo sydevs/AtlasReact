@@ -48,11 +48,12 @@ in host pages, **and** runs standalone in dev. Because of that:
 
 ## Structure
 
-- Components are grouped by atomic tier — `src/components/{atoms,molecules,organisms}/`,
-  each with a barrel `index.ts` (the cohesive `icons/` and `mapbox/` sub-modules
-  keep their own folders); `src/layouts/` holds templates. App code imports from
-  the tier barrels; components import each other by direct file path. See
-  `DESIGN_SYSTEM.md`.
+- Components are grouped by atomic tier — `src/components/{atoms,molecules,organisms}/`
+  — each component in its own **PascalCase folder** (`Chip/Chip.tsx` + stories +
+  `index.ts`), with a barrel `index.ts` per tier (the `Icons/` and `Mapbox/`
+  sub-modules group several files); `src/layouts/` holds templates. App code
+  imports from the tier barrels; components import each other by component-folder
+  path. See `DESIGN_SYSTEM.md`.
 - Keep components presentational where possible; pull data via hooks
   (`src/hooks/`) and React Query (`src/config/api`), and read shared state from
   zustand selectors. See `.claude/rules/data-layer.md` and
