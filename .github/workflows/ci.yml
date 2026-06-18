@@ -29,6 +29,7 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm build
+      - run: pnpm ladle:build # fail the gate on broken component stories
 
   # Smoke specs run against the Cloudflare Pages PR preview. We discover the
   # preview URL from the GitHub API (Cloudflare posts it on the PR) and wait
