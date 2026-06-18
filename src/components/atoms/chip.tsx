@@ -2,19 +2,36 @@ import React from 'react'
 import { Chip as NextUIChip, ChipProps, Tooltip } from '@nextui-org/react'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
+import { tv, type VariantProps } from 'tailwind-variants'
 
 import { IconSvgProps } from '@/types'
+
+// Reference tailwind-variants usage for the design system (see DESIGN_SYSTEM.md).
+// Chip content is always uppercased; `emphasis` controls its weight.
+const chipContent = tv({
+  base: 'uppercase',
+  variants: {
+    emphasis: {
+      solid: 'font-bold',
+      subtle: 'font-medium',
+    },
+  },
+  defaultVariants: {
+    emphasis: 'solid',
+  },
+})
 
 type Props = {
   children: React.ReactNode
   icon?: React.ReactElement<IconSvgProps>
+  emphasis?: VariantProps<typeof chipContent>['emphasis']
 } & ChipProps
 
-export function Chip({ children, icon, ...props }: Props) {
+export function Chip({ children, icon, emphasis, ...props }: Props) {
   return (
     <NextUIChip
       classNames={{
-        content: 'uppercase font-bold',
+        content: chipContent({ emphasis }),
       }}
       color="primary"
       radius="sm"
