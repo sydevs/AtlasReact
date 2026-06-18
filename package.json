@@ -11,6 +11,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:smoke": "vitest run --config vitest.smoke.config.ts tests/smoke",
+    "ladle": "ladle serve",
+    "ladle:build": "ladle build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -55,6 +57,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@ladle/react": "4.1.2",
     "@types/node": "20.5.7",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
