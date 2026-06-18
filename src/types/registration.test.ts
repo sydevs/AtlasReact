@@ -12,7 +12,9 @@ describe('RegistrationSchema', () => {
   })
 
   it('accepts accented names', () => {
-    expect(() => RegistrationSchema.parse({ ...base, name: 'José Müller' })).not.toThrow()
+    const parsed = RegistrationSchema.parse({ ...base, name: 'José Müller' })
+
+    expect(parsed.name).toBe('José Müller')
   })
 
   it('rejects a name containing digits', () => {

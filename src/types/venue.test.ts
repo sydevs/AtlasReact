@@ -29,15 +29,15 @@ describe('VenueSchema', () => {
 
 describe('VenueSlimSchema', () => {
   it('parses a slim venue with an event count', () => {
-    expect(() =>
-      VenueSlimSchema.parse({
-        id: 8001,
-        path: '/venues/town-hall',
-        label: 'Town Hall',
-        latitude: 52.2053,
-        longitude: 0.1218,
-        eventCount: 4,
-      }),
-    ).not.toThrow()
+    const parsed = VenueSlimSchema.parse({
+      id: 8001,
+      path: '/venues/town-hall',
+      label: 'Town Hall',
+      latitude: 52.2053,
+      longitude: 0.1218,
+      eventCount: 4,
+    })
+
+    expect(parsed.eventCount).toBe(4)
   })
 })

@@ -32,7 +32,9 @@ const countrySlim = {
 
 describe('CountrySlimSchema', () => {
   it('parses a country list entry', () => {
-    expect(() => CountrySlimSchema.parse(countrySlim)).not.toThrow()
+    const parsed = CountrySlimSchema.parse(countrySlim)
+
+    expect(parsed.code).toBe('GB')
   })
 
   it('rejects a non-numeric eventCount', () => {

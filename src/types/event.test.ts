@@ -11,7 +11,9 @@ import { mockEvent, mockEventSlim, mockEventSlimList } from '@/mocks/events'
 
 describe('EventSlimSchema', () => {
   it('parses the slim list fixtures', () => {
-    expect(() => EventSlimSchema.array().parse(mockEventSlimList)).not.toThrow()
+    const parsed = EventSlimSchema.array().parse(mockEventSlimList)
+
+    expect(parsed).toHaveLength(mockEventSlimList.length)
   })
 
   it('coerces ISO date strings from the wire into Date objects', () => {

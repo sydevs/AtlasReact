@@ -4,25 +4,25 @@ import { ClientSchema } from './client'
 
 describe('ClientSchema', () => {
   it('parses a client with a locale and initial path', () => {
-    expect(() =>
-      ClientSchema.parse({
-        name: 'Host Site',
-        domain: 'host.example',
-        locale: 'en',
-        initialPath: '/search',
-      }),
-    ).not.toThrow()
+    const parsed = ClientSchema.parse({
+      name: 'Host Site',
+      domain: 'host.example',
+      locale: 'en',
+      initialPath: '/search',
+    })
+
+    expect(parsed).toMatchObject({ locale: 'en', initialPath: '/search' })
   })
 
   it('allows null locale and initialPath', () => {
-    expect(() =>
-      ClientSchema.parse({
-        name: 'Host Site',
-        domain: 'host.example',
-        locale: null,
-        initialPath: null,
-      }),
-    ).not.toThrow()
+    const parsed = ClientSchema.parse({
+      name: 'Host Site',
+      domain: 'host.example',
+      locale: null,
+      initialPath: null,
+    })
+
+    expect(parsed.locale).toBeNull()
   })
 
   it('rejects a missing domain', () => {

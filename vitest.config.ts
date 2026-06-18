@@ -15,7 +15,9 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    include: ['**/*.{test,spec}.{ts,tsx}'],
+    // Co-located specs live under src/; smoke specs hit the network and run via
+    // their own config — keep them (and build output) out of the unit lane.
     exclude: ['node_modules', 'dist', 'build', '.ladle', 'tests/smoke/**'],
   },
 })

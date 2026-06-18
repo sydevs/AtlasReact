@@ -31,13 +31,13 @@ describe('AreaSchema', () => {
 
 describe('AreaSlimSchema', () => {
   it('parses a slim area with an event count', () => {
-    expect(() =>
-      AreaSlimSchema.parse({
-        id: 100,
-        path: '/areas/cambridge',
-        label: 'Cambridge',
-        eventCount: 3,
-      }),
-    ).not.toThrow()
+    const parsed = AreaSlimSchema.parse({
+      id: 100,
+      path: '/areas/cambridge',
+      label: 'Cambridge',
+      eventCount: 3,
+    })
+
+    expect(parsed.eventCount).toBe(3)
   })
 })

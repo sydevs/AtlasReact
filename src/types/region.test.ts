@@ -29,13 +29,13 @@ describe('RegionSchema', () => {
 
 describe('RegionSlimSchema', () => {
   it('parses a slim region (core fields only)', () => {
-    expect(() =>
-      RegionSlimSchema.parse({
-        id: 10,
-        path: '/regions/cam',
-        label: 'Cambridgeshire',
-        eventCount: 5,
-      }),
-    ).not.toThrow()
+    const parsed = RegionSlimSchema.parse({
+      id: 10,
+      path: '/regions/cam',
+      label: 'Cambridgeshire',
+      eventCount: 5,
+    })
+
+    expect(parsed.id).toBe(10)
   })
 })
