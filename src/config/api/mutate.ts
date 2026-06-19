@@ -1,49 +1,29 @@
-import axios from 'axios'
+import type { Registration } from '@/types'
 
-import atlasAuth from './auth'
+import z from 'zod'
 
-import { Registration, RegistrationSchema } from '@/types'
-import i18n from '@/config/i18n'
+import client from './client'
 
-const client = axios.create({
-  baseURL: import.meta.env.VITE_API_ENDPOINT,
-  headers: {
-    'Content-type': 'application/json',
-  },
+// Confirmation returned by `POST /api/events/:id/register` (EventRegistrationResponse).
+const RegistrationResponseSchema = z.object({
+  ok: z.literal(true),
+  registration: z.object({ id: z.number(), uuid: z.string() }),
 })
 
-const convertToSnakeCase = (obj: any) => {
-  const snakeCasedObj: any = {}
+export type RegistrationResponse = z.infer<typeof RegistrationResponseSchema>
 
-  Object.keys(obj).forEach((key) => {
-    const newKey = key.replace(/([A-Z])/g, (match) => `_${match.toLowerCase()}`)
-
-    snakeCasedObj[newKey] = obj[key]
+const createRegistration = async (
+  eventId: number,
+  data: Registration,
+): Promise<RegistrationResponse> => {
+  const response = await client.post(`/events/${eventId}/register`, {
+    email: data.email,
+    name: data.name,
+    startingAt: data.startingAt.toISOString(),
+    questions: data.questions,
   })
 
-  return snakeCasedObj
-}
-
-client.interceptors.request.use((request) => {
-  const data = convertToSnakeCase(request.data)
-
-  request.headers['Authorization'] = `Bearer ${atlasAuth.apiKey}`
-
-  return {
-    ...request,
-    data,
-    key: import.meta.env.VITE_ATLAS_API_KEY,
-  }
-})
-
-const createRegistration = async (eventId: number, data: Registration) => {
-  const response = await client.post(`/events/${eventId}/registrations.json`, {
-    ...data,
-    locale: i18n.resolvedLanguage,
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-  })
-
-  return RegistrationSchema.parse(response.data)
+  return RegistrationResponseSchema.parse(response.data)
 }
 
 export default {

@@ -1,31 +1,23 @@
 import z from 'zod'
 
-const CountryChildSchema = z.object({
+import { BoundsSchema, RegionListItemSchema } from './region'
+
+// A country is a region with level='country'. These derived view-models carry
+// the geojson-derived eventCount/bounds and the ISO code (from legacyData) that
+// drives the flag + localized country name.
+
+export const CountrySlimSchema = z.object({
   id: z.number(),
-  path: z.string(),
-  type: z.string(),
-  label: z.string(),
-  subtitle: z.string().nullish(),
+  slug: z.string(),
+  name: z.string(),
+  countryCode: z.string().nullish(),
   eventCount: z.number(),
-})
-
-export const CountryCoreSchema = z.object({
-  id: z.number(),
   path: z.string(),
-  code: z.string(),
-  label: z.string(),
-  eventCount: z.number(),
 })
+export type CountrySlim = z.infer<typeof CountrySlimSchema>
 
-export const CountrySlimSchema = z.object({}).merge(CountryCoreSchema)
-
-export const CountrySchema = z
-  .object({
-    url: z.string(),
-    bounds: z.tuple([z.number(), z.number(), z.number(), z.number()]),
-    children: z.array(CountryChildSchema),
-  })
-  .merge(CountryCoreSchema)
-
-export type CountrySlimSchema = z.infer<typeof CountrySlimSchema>
-export type CountrySchema = z.infer<typeof CountrySchema>
+export const CountrySchema = CountrySlimSchema.extend({
+  bounds: BoundsSchema.nullable(),
+  children: z.array(RegionListItemSchema),
+})
+export type Country = z.infer<typeof CountrySchema>

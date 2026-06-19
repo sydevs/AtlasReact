@@ -23,7 +23,12 @@ type LexicalNode = {
   [k: string]: unknown
 }
 
-export type LexicalDocument = { root?: LexicalNode } | null | undefined
+type LexicalDocument = { root?: LexicalNode }
+
+// Narrow the open `description` shape (validated only structurally by zod) to the
+// nodes we serialize.
+const asDocument = (doc: unknown): LexicalDocument | null =>
+  doc && typeof doc === 'object' && 'root' in doc ? (doc as LexicalDocument) : null
 
 const escapeHtml = (value: string): string =>
   value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -67,10 +72,12 @@ const renderNode = (node: LexicalNode): string => {
 }
 
 /** Serialize a Lexical document to a sanitizable HTML string (empty when absent). */
-export const lexicalToHtml = (doc: LexicalDocument): string => {
-  if (!doc?.root) return ''
+export const lexicalToHtml = (doc: unknown): string => {
+  const root = asDocument(doc)?.root
 
-  return renderChildren(doc.root).trim()
+  if (!root) return ''
+
+  return renderChildren(root).trim()
 }
 
 const collectText = (node: LexicalNode): string => {
@@ -82,10 +89,12 @@ const collectText = (node: LexicalNode): string => {
 }
 
 /** Flatten a Lexical document to plain text (for meta/OG descriptions). */
-export const lexicalToText = (doc: LexicalDocument): string => {
-  if (!doc?.root) return ''
+export const lexicalToText = (doc: unknown): string => {
+  const root = asDocument(doc)?.root
 
-  return collectText(doc.root)
+  if (!root) return ''
+
+  return collectText(root)
     .replace(/\n{2,}/g, '\n')
     .trim()
 }

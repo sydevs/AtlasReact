@@ -1,43 +1,29 @@
 import { describe, it, expect } from 'vitest'
 
-import { VenueSchema, VenueSlimSchema } from './venue'
+import { VenueSchema } from './venue'
 
 import { mockEventSlimList } from '@/mocks/events'
 
 const venue = {
-  id: 8001,
+  id: 13,
+  slug: 'town-hall',
+  name: 'Town Hall',
+  eventCount: mockEventSlimList.length,
+  center: [4.35, 50.85],
   path: '/venues/town-hall',
-  label: 'Town Hall',
-  latitude: 52.2053,
-  longitude: 0.1218,
-  url: 'https://atlas.example/venues/town-hall',
-  parentPath: '/areas/cambridge',
+  parentPath: '/areas/antwerpen',
   events: mockEventSlimList,
 }
 
 describe('VenueSchema', () => {
-  it('parses a venue with embedded slim events', () => {
+  it('parses a venue with a derived center point and events', () => {
     const parsed = VenueSchema.parse(venue)
 
+    expect(parsed.center).toEqual([4.35, 50.85])
     expect(parsed.events).toHaveLength(mockEventSlimList.length)
   })
 
-  it('rejects a venue missing its coordinates', () => {
-    expect(() => VenueSchema.parse({ ...venue, latitude: undefined })).toThrow()
-  })
-})
-
-describe('VenueSlimSchema', () => {
-  it('parses a slim venue with an event count', () => {
-    const parsed = VenueSlimSchema.parse({
-      id: 8001,
-      path: '/venues/town-hall',
-      label: 'Town Hall',
-      latitude: 52.2053,
-      longitude: 0.1218,
-      eventCount: 4,
-    })
-
-    expect(parsed.eventCount).toBe(4)
+  it('allows a null center when the venue has no located events', () => {
+    expect(VenueSchema.parse({ ...venue, center: null }).center).toBeNull()
   })
 })
