@@ -61,6 +61,13 @@ const renderNode = (node: LexicalNode): string => {
 
       return `<${tag}>${renderChildren(node)}</${tag}>`
     }
+    case 'list': {
+      const tag = node.tag === 'ol' ? 'ol' : 'ul'
+
+      return `<${tag}>${renderChildren(node)}</${tag}>`
+    }
+    case 'listitem':
+      return `<li>${renderChildren(node)}</li>`
     case 'link': {
       const url = node.fields?.url ?? node.url ?? ''
 
@@ -84,8 +91,8 @@ const collectText = (node: LexicalNode): string => {
   if (node.type === 'text') return node.text ?? ''
   const inner = (node.children ?? []).map(collectText).join('')
 
-  // Block-level nodes get a trailing newline so paragraphs don't run together.
-  return node.type === 'paragraph' || node.type === 'heading' ? `${inner}\n` : inner
+  // Block-level nodes get a trailing newline so they don't run together.
+  return ['paragraph', 'heading', 'listitem'].includes(node.type ?? '') ? `${inner}\n` : inner
 }
 
 /** Flatten a Lexical document to plain text (for meta/OG descriptions). */

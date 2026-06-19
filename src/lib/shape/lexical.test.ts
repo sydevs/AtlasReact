@@ -43,6 +43,26 @@ describe('lexicalToHtml', () => {
     expect(lexicalToHtml({ root: { type: 'root', children: [] } })).toBe('')
   })
 
+  it('renders lists with their item wrappers', () => {
+    const withList = {
+      root: {
+        type: 'root',
+        children: [
+          {
+            type: 'list',
+            tag: 'ul',
+            children: [
+              { type: 'listitem', children: [{ type: 'text', text: 'one' }] },
+              { type: 'listitem', children: [{ type: 'text', text: 'two' }] },
+            ],
+          },
+        ],
+      },
+    }
+
+    expect(lexicalToHtml(withList)).toBe('<ul><li>one</li><li>two</li></ul>')
+  })
+
   it('escapes HTML special characters in text', () => {
     const malicious = {
       root: {

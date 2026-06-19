@@ -67,6 +67,7 @@ export function RegistrationButton({ event, ...buttonProps }: RegistrationButton
         as={Link}
         color="primary"
         href={event.externalRegistrationUrl}
+        rel="noopener noreferrer"
         target="_blank"
         variant="flat"
         {...buttonProps}

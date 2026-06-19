@@ -62,6 +62,17 @@ export const LexicalDocumentSchema = z
   .passthrough()
 export type LexicalDocument = z.infer<typeof LexicalDocumentSchema>
 
+// CMS-authored URLs that get rendered into an `<a href>` (NextUI Link, outside
+// the DOMPurify path). Reject non-http(s) schemes so a `javascript:`/`data:`
+// value can't reach an href; drop the offending value rather than failing the
+// whole event read.
+const SafeUrlSchema = z
+  .string()
+  .url()
+  .refine((url) => /^https?:/i.test(url), 'must be an http(s) URL')
+  .nullish()
+  .catch(null)
+
 // Raw event as it appears in a geojson feature's `properties` (the fields the
 // feed `select`s). Map points + list items are built from this.
 export const FeedEventSchema = z.object({
@@ -89,7 +100,7 @@ export const EventDocSchema = z.object({
   title: z.string(),
   eventType: EventTypeSchema,
   languages: z.array(z.string()),
-  onlineUrl: z.string().nullish(),
+  onlineUrl: SafeUrlSchema,
   address: EventAddressSchema.nullish(),
   schedule: EventScheduleSchema.nullish(),
   description: LexicalDocumentSchema.nullish(),
@@ -97,11 +108,11 @@ export const EventDocSchema = z.object({
   contactPhone: z.string().nullish(),
   contactName: z.string().nullish(),
   registrationMode: z.enum(['sahaj-atlas', 'external']),
-  externalRegistrationUrl: z.string().nullish(),
+  externalRegistrationUrl: SafeUrlSchema,
   registrationLimit: z.number().nullish(),
   registrationQuestions: RegistrationQuestionsSchema.nullish(),
   region: RegionRefSchema,
-  webUrl: z.string().nullish(),
+  webUrl: SafeUrlSchema,
 })
 export type EventDoc = z.infer<typeof EventDocSchema>
 

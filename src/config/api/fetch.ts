@@ -88,7 +88,9 @@ const getGeojson = async (): Promise<Geojson> => {
 // shared React Query cache (the key the map also uses) so it's fetched + parsed
 // once per stale window rather than on every navigation.
 const loadGeojson = (): Promise<Geojson> =>
-  queryClient.ensureQueryData({
+  // fetchQuery (not ensureQueryData) so a feed older than the stale window is
+  // refetched rather than served indefinitely from cache.
+  queryClient.fetchQuery({
     queryKey: ['geojson'],
     queryFn: getGeojson,
     staleTime: GEOJSON_STALE_TIME,
@@ -161,11 +163,13 @@ const getChildRegions = async (parentId: number): Promise<RegionDoc[]> => {
   return RegionDocSchema.array().parse(response.data.docs)
 }
 
-// ISO alpha-2 country code (drives the flag + localized name) survives on legacyData.
+// ISO alpha-2 country code (drives the flag + localized name) survives on
+// legacyData. Validate the shape so a malformed value can't throw in
+// `Intl.DisplayNames`/`CircleFlag` downstream.
 const countryCodeOf = (doc: RegionDoc): string | undefined => {
   const code = doc.legacyData?.countryCode
 
-  return typeof code === 'string' ? code : undefined
+  return typeof code === 'string' && /^[A-Za-z]{2}$/.test(code) ? code : undefined
 }
 
 const parentPathOf = (doc: RegionDoc): string | undefined =>
