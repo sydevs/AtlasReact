@@ -9,7 +9,7 @@ import type { EventImage } from '@/types'
 export function imagesToSlides(images: EventImage[]): LightboxSlide[] {
   return images.map((image) => ({
     src: image.url,
-    alt: image.altText,
-    description: image.altText,
+    alt: image.alt ?? undefined,
+    description: image.alt ?? undefined,
   }))
 }

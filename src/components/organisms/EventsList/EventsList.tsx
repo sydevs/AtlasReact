@@ -16,10 +16,13 @@ interface DynamicProps {
 
 function calculateOrder(event: EventSlim) {
   let order = event.distance || 100
+  const online = event.eventType === 'online'
+  const languageCode = event.languages[0] ?? ''
+  const next = event.schedule?.upcomingDates?.[0]
 
-  if (i18n.resolvedLanguage != event.languageCode) order *= 2
-  if (isSoon(DateTime.fromJSDate(event.nextDate), event.online)) order *= 0.5
-  if (event.online) order *= 1.5
+  if (i18n.resolvedLanguage != languageCode) order *= 2
+  if (next && isSoon(DateTime.fromJSDate(next), online)) order *= 0.5
+  if (online) order *= 1.5
 
   return order
 }

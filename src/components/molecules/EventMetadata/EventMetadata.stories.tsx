@@ -21,7 +21,7 @@ export const Default: Story = () => (
         <p className="font-semibold text-foreground">EventMetadata renders nothing visible.</p>
         <p className="mt-1">
           It injects canonical, OpenGraph, and Schema.org JSON-LD tags into the document head for{' '}
-          <span className="font-medium">{mockEvent.label}</span>. Open <code>&lt;head&gt;</code> in
+          <span className="font-medium">{mockEvent.title}</span>. Open <code>&lt;head&gt;</code> in
           devtools to see them.
         </p>
       </div>

@@ -25,7 +25,7 @@ export const Default: Story = () => (
 
     <StorySection description="An online event in French." title="Online">
       <div className="max-w-md border border-default-200">
-        <EventPanel event={{ ...mockEvent, online: true, languageCode: 'fr' }} />
+        <EventPanel event={{ ...mockEvent, eventType: 'online', languages: ['fr'] }} />
       </div>
     </StorySection>
 

@@ -21,6 +21,7 @@ import {
 
 import { useViewState } from '@/config/store'
 import api from '@/config/api'
+import { eventPath } from '@/lib/shape'
 import { useBreakpoint } from '@/config/responsive'
 import { useLocale } from '@/hooks/use-locale'
 import { useTheme } from '@/hooks/use-theme'
@@ -93,7 +94,7 @@ export function Mapbox() {
           })
         })
       } else if (feature.layer?.id === unclusteredPointLayer.id) {
-        navigate(feature.properties?.path)
+        navigate(eventPath(Number(feature.properties?.id)))
       }
     },
     [navigate, mapbox, zoom, latitude, longitude],

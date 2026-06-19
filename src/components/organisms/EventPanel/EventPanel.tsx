@@ -11,6 +11,7 @@ import {
   EventTimingDetails,
 } from '@/components/organisms/EventDetails'
 import { useLocale } from '@/hooks/use-locale'
+import { lexicalToHtml } from '@/lib/shape'
 import { Event } from '@/types'
 import { Chip } from '@/components/atoms/Chip'
 
@@ -24,6 +25,12 @@ export function EventPanel({ event }: EventPanelProps) {
   const { t } = useTranslation('events')
   const { locale, languageNames } = useLocale()
 
+  const online = event.eventType === 'online'
+  const languageCode = event.languages[0] ?? ''
+  const next = event.schedule?.upcomingDates?.[0]
+  const hasTiming = (event.schedule?.upcomingDates?.length ?? 0) > 0
+  const descriptionHtml = lexicalToHtml(event.description)
+
   return (
     <>
       <div className="flex w-full justify-center items-center">
@@ -36,23 +43,34 @@ export function EventPanel({ event }: EventPanelProps) {
           ${event.images.length > 0 ? '' : 'pl-5 mt-3'}
         `}
         >
-          {event.label}
+          {event.title}
         </h1>
         <div className="flex gap-1">
-          {event.timing && (
-            <EventSoonChip firstDate={event.timing.firstDate} online={event.online} />
-          )}
-          {event.online && <Chip>{t('details.online')}</Chip>}
-          {event.languageCode.split('-')[0] !== locale.split('-')[0] && (
-            <Chip color="secondary">{languageNames.of(event.languageCode)}</Chip>
+          {next && <EventSoonChip firstDate={next} online={online} />}
+          {online && <Chip>{t('details.online')}</Chip>}
+          {languageCode && languageCode.split('-')[0] !== locale.split('-')[0] && (
+            <Chip color="secondary">{languageNames.of(languageCode)}</Chip>
           )}
         </div>
-        {event.descriptionHtml && (
+        {descriptionHtml && (
           <div
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(event.descriptionHtml, {
+              __html: DOMPurify.sanitize(descriptionHtml, {
                 USE_PROFILES: { html: true },
-                ALLOWED_TAGS: ['p', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'del', 'br'],
+                ALLOWED_TAGS: [
+                  'p',
+                  'b',
+                  'i',
+                  'em',
+                  'strong',
+                  'a',
+                  'ul',
+                  'ol',
+                  'li',
+                  'del',
+                  'br',
+                  'h3',
+                ],
                 ALLOWED_ATTR: ['href'],
                 ADD_ATTR: ['target'],
               }),
@@ -60,24 +78,18 @@ export function EventPanel({ event }: EventPanelProps) {
             className="flex flex-col gap-2 my-2 colored-links normal-nums"
           />
         )}
-        {event.registration && (
-          <div className="flex-center-x gap-1">
-            <RegistrationButton className="flex-grow-[3]" event={event} />
-            <ShareButton className="flex-grow" event={event} />
-          </div>
-        )}
+        <div className="flex-center-x gap-1">
+          <RegistrationButton className="flex-grow-[3]" event={event} />
+          <ShareButton className="flex-grow" event={event} />
+        </div>
         <div className="mt-5 flex flex-col gap-4">
-          {event.contact && !event.timing && (
-            <EventContactDetails isHighlighted contact={event.contact} />
-          )}
+          {!hasTiming && <EventContactDetails isHighlighted event={event} />}
 
-          {event.timing && event.timing.upcomingDates.length > 0 && (
-            <EventTimingDetails convertTimeZone={event.online} timing={event.timing} />
-          )}
+          {hasTiming && <EventTimingDetails convertTimeZone={online} event={event} />}
 
-          {event.location && <EventLocationDetails location={event.location} />}
+          <EventLocationDetails event={event} />
 
-          {event.contact && event.timing && <EventContactDetails contact={event.contact} />}
+          {hasTiming && <EventContactDetails event={event} />}
         </div>
       </div>
     </>

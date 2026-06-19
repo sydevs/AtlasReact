@@ -6,10 +6,11 @@ import { lazy } from 'react'
 
 import api from '@/config/api'
 import { Panel } from '@/components/atoms'
-import { useNavigationState, useViewState } from '@/config/store'
+import { useViewState } from '@/config/store'
 import { EventMetadata } from '@/components/molecules'
 import { UpArrowIcon } from '@/components/atoms'
 import { useMapbox } from '@/hooks/use-mapbox'
+import { regionPath } from '@/lib/shape'
 
 const EventPanelContent = lazy(() =>
   import('@/components/organisms/EventPanel').then((m) => ({ default: m.EventPanel })),
@@ -30,22 +31,20 @@ function EventPanel({ eventId }: { eventId: number }) {
   useEffect(() => {
     if (!mapbox) return
 
-    setMapSelection({ ...event.location, approximate: event.online })
-    moveMap({
-      center: [event.location.longitude, event.location.latitude],
-      zoom: event.online ? 7 : 15,
-    })
+    const { latitude, longitude } = event.address ?? {}
+
+    if (latitude != null && longitude != null) {
+      setMapSelection({ latitude, longitude, approximate: event.eventType === 'online' })
+      moveMap({ center: [longitude, latitude], zoom: event.eventType === 'online' ? 7 : 15 })
+    }
 
     return () => {
       setMapSelection(null)
     }
   }, [event, mapbox])
 
-  const previousPath = useNavigationState((s) => s.previousPath)
-  const parentPath =
-    event.online || previousPath != event.location.venuePath
-      ? event.location.areaPath
-      : event.location.venuePath
+  // Back-button target: the event's city/center region page.
+  const parentPath = regionPath(event.region.level, event.region.slug)
 
   return (
     <>
