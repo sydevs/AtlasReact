@@ -17,7 +17,7 @@ secret that ends up in the bundle.
 | `VITE_SAHAJCLOUD_URL`       | `.env`       | SahajCloud origin; the client appends `/api` (`https://cloud.sydevelopers.com`; local backend: `http://localhost:3000`) |
 | `VITE_HOST`                 | `.env`       | Origin used to load `public/locales/<lng>/<ns>.json` over HTTP |
 | `VITE_MAPBOX_ACCESSTOKEN`   | `.env.local` | Mapbox GL **public** token (`pk.…`) — safe to ship in the bundle |
-| `VITE_ATLAS_API_KEY`        | `.env.local` | Published `sahaj-atlas-client` API key the widget uses in dev (passed as the `apiKey` prop; sent as `Authorization: clients API-Key …`) |
+| `VITE_SAHAJCLOUD_API_KEY`   | `.env.local` | Published `sahaj-atlas-client` API key the widget uses in dev (passed as the `apiKey` prop; sent as `Authorization: clients API-Key …`) |
 | `VITE_FATHOM_ID`            | `.env.local` | Fathom analytics site id (optional; analytics disabled if unset / on localhost) |
 | `VITE_GOOGLE_PLACES_API_KEY`| `.env.local` | Google Places key (optional, location search) |
 
@@ -38,7 +38,7 @@ element props:
 <syatlas-map api-key="…" locale="en"></syatlas-map>
 ```
 
-In dev/standalone, the key comes from `VITE_ATLAS_API_KEY`. See `src/Widget.tsx`
+In dev/standalone, the key comes from `VITE_SAHAJCLOUD_API_KEY`. See `src/Widget.tsx`
 and `src/config/api/auth.ts`.
 
 ## Rule of thumb

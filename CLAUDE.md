@@ -130,7 +130,7 @@ matched by `*.local`). Full list in `.claude/docs/environment.md`. Key vars:
 - `VITE_SAHAJCLOUD_URL` — SahajCloud origin; the client appends `/api` (default `https://cloud.sydevelopers.com`)
 - `VITE_MAPBOX_ACCESSTOKEN` — Mapbox GL public token (`pk.…`)
 - `VITE_HOST` — origin used to load `public/locales` over HTTP
-- `VITE_ATLAS_API_KEY` — published `sahaj-atlas-client` API key passed to the widget in dev
+- `VITE_SAHAJCLOUD_API_KEY` — published `sahaj-atlas-client` API key passed to the widget in dev
 - `VITE_FATHOM_ID` — Fathom analytics site id (optional)
 
 **Never** commit real secrets. `MAPBOX_SECRET_ACCESSTOKEN` (`sk.…`) and other
