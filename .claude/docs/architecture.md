@@ -17,17 +17,17 @@ Host page  →  <syatlas-map api-key="…" locale="…">
    ┌─────────────┼──────────────────────────────┐
    │ Providers   │ Routes (react-router v7)      │
    │ (NextUI,    │  /search          IndexPage   │
-   │  ReactQuery,│  /countries/:code CountryPage  │
-   │  Helmet)    │  /regions/:id     RegionPage   │
-   │             │  /areas/:id       AreaPage     │
-   │  MapLayout  │  /venues/:id      VenuePage    │
+   │  ReactQuery,│  /countries/:slug CountryPage  │
+   │  Helmet)    │  /regions/:slug   RegionPage   │
+   │             │  /areas/:slug     AreaPage     │
+   │  MapLayout  │  /venues/:slug    VenuePage    │
    │   └ Mapbox  │  /events/:id      EventPage    │
    └─────────────┴──────────────────────────────┘
                  │
             React Query  →  axios client (src/config/api)
-                 │              │ Bearer <apiKey>, ?locale=<lng>
+                 │              │ clients API-Key <apiKey>, ?locale=<lng>
                  ▼              ▼
-            zod parse      Atlas REST API (VITE_API_ENDPOINT)
+   zod parse + client-side shaping   SahajCloud REST (VITE_SAHAJCLOUD_URL + /api)
 ```
 
 ## Entry points

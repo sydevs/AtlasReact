@@ -127,10 +127,10 @@ Vite env vars are prefixed `VITE_` and read via `import.meta.env`. Public
 (non-secret) defaults live in `.env`; secrets live in `.env.local` (gitignored,
 matched by `*.local`). Full list in `.claude/docs/environment.md`. Key vars:
 
-- `VITE_API_ENDPOINT` — Atlas REST API base (default `https://atlas.sydevelopers.com/api`)
+- `VITE_SAHAJCLOUD_URL` — SahajCloud origin; the client appends `/api` (default `https://cloud.sydevelopers.com`)
 - `VITE_MAPBOX_ACCESSTOKEN` — Mapbox GL public token (`pk.…`)
 - `VITE_HOST` — origin used to load `public/locales` over HTTP
-- `VITE_ATLAS_API_KEY` — client API key passed to the widget in dev
+- `VITE_ATLAS_API_KEY` — published `sahaj-atlas-client` API key passed to the widget in dev
 - `VITE_FATHOM_ID` — Fathom analytics site id (optional)
 
 **Never** commit real secrets. `MAPBOX_SECRET_ACCESSTOKEN` (`sk.…`) and other
