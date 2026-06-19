@@ -15,7 +15,8 @@
     "test:smoke": "vitest run --config vitest.smoke.config.ts tests/smoke",
     "ladle": "ladle serve",
     "ladle:build": "ladle build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "types:cms": "mkdir -p src/types/payload && curl -fsSL -o src/types/payload/payload-types.ts https://raw.githubusercontent.com/sydevs/SahajCloud/refs/heads/main/src/payload-types.ts && curl -fsSL -o src/types/payload/response-types.ts https://raw.githubusercontent.com/sydevs/SahajCloud/refs/heads/main/src/collections/Events/endpoints/responseTypes.ts && node scripts/strip-payload-augmentation.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -28,6 +29,7 @@
     "@turf/bbox": "^7.2.0",
     "@turf/bbox-polygon": "^7.2.0",
     "@turf/circle": "^7.2.0",
+    "@turf/distance": "^7.3.5",
     "@types/geojson": "^7946.0.15",
     "@types/luxon": "^3.4.2",
     "axios": "^1.7.9",
@@ -40,6 +42,7 @@
     "i18next-http-backend": "^3.0.1",
     "luxon": "^3.5.0",
     "mapbox-gl": "^3.9.2",
+    "qs": "^6.15.2",
     "react": "^18.3.1",
     "react-circle-flags": "^0.0.23",
     "react-dom": "^18.3.1",
@@ -62,6 +65,7 @@
   "devDependencies": {
     "@ladle/react": "4.1.2",
     "@types/node": "20.5.7",
+    "@types/qs": "^6.15.1",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "@typescript-eslint/eslint-plugin": "8.11.0",

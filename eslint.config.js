@@ -21,6 +21,7 @@ export default [
       'public/**',
       'coverage/**',
       '.claude/**',
+      'src/types/payload/**', // generated/synced from SahajCloud via `pnpm types:cms`
       '*.config.js',
       '*.config.ts',
     ],
