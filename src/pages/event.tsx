@@ -10,7 +10,7 @@ import { useViewState } from '@/config/store'
 import { EventMetadata } from '@/components/molecules'
 import { UpArrowIcon } from '@/components/atoms'
 import { useMapbox } from '@/hooks/use-mapbox'
-import { regionPath } from '@/lib/shape'
+import { isOnline, regionPath } from '@/lib/shape'
 
 const EventPanelContent = lazy(() =>
   import('@/components/organisms/EventPanel').then((m) => ({ default: m.EventPanel })),
@@ -32,10 +32,11 @@ function EventPanel({ eventId }: { eventId: number }) {
     if (!mapbox) return
 
     const { latitude, longitude } = event.address ?? {}
+    const online = isOnline(event)
 
     if (latitude != null && longitude != null) {
-      setMapSelection({ latitude, longitude, approximate: event.eventType === 'online' })
-      moveMap({ center: [longitude, latitude], zoom: event.eventType === 'online' ? 7 : 15 })
+      setMapSelection({ latitude, longitude, approximate: online })
+      moveMap({ center: [longitude, latitude], zoom: online ? 7 : 15 })
     }
 
     return () => {

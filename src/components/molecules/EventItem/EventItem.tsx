@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 
 import { useLocale } from '@/hooks/use-locale'
+import { eventTimeZone, isOnline, nextOccurrence } from '@/lib/shape'
 import { EventTime } from '@/components/molecules/EventTime'
 import { EventSoonChip } from '@/components/molecules/EventSoon'
 import { RightArrowIcon } from '@/components/atoms/Icons'
@@ -18,12 +19,12 @@ export function EventItem({ event }: EventItemProps) {
   const { t } = useTranslation('events')
   const { locale, languageNames } = useLocale()
 
-  const online = event.eventType === 'online'
+  const online = isOnline(event)
   const schedule = event.schedule
   const recurrence = schedule?.recurrenceType
-  const next = schedule?.upcomingDates?.[0]
+  const next = nextOccurrence(event)
   const languageCode = event.languages[0] ?? ''
-  const timeZone = online ? (DateTime.local().zoneName ?? 'UTC') : (schedule?.firstDate_tz ?? 'UTC')
+  const timeZone = eventTimeZone(event)
 
   const nextDate = useMemo(
     () => (next ? DateTime.fromJSDate(next).setLocale(locale) : null),

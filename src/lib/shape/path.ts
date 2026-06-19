@@ -1,3 +1,4 @@
+import type { RegionLevel } from '@/types'
 import type { Region } from '@/types/payload/payload-types'
 
 /**
@@ -15,8 +16,6 @@ export const LEVEL_ROUTES = {
   city: 'areas',
   center: 'venues',
 } as const satisfies Record<Region['level'], string>
-
-export type RegionLevel = keyof typeof LEVEL_ROUTES
 
 /** Flat route for a region, e.g. `regionPath('city', 'antwerpen')` → `/areas/antwerpen`. */
 export const regionPath = (level: RegionLevel, slug: string): string =>

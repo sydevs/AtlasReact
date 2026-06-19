@@ -21,6 +21,7 @@ import {
 
 import { useViewState } from '@/config/store'
 import api from '@/config/api'
+import { GEOJSON_STALE_TIME } from '@/config/query-client'
 import { eventPath } from '@/lib/shape'
 import { useBreakpoint } from '@/config/responsive'
 import { useLocale } from '@/hooks/use-locale'
@@ -73,6 +74,7 @@ export function Mapbox() {
   const { data } = useQuery({
     queryKey: ['geojson'],
     queryFn: () => api.getGeojson(),
+    staleTime: GEOJSON_STALE_TIME,
   })
 
   const selectFeature = useCallback(

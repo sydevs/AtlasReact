@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 
 import { useLocale } from '@/hooks/use-locale'
-import { lexicalToText } from '@/lib/shape'
+import { isOnline, lexicalToText, nextOccurrence } from '@/lib/shape'
 import { Event } from '@/types'
 
 type EventMetadataProps = {
@@ -14,11 +14,11 @@ export function EventMetadata({ event }: EventMetadataProps) {
   const { locale } = useLocale()
   const { t } = useTranslation('common')
 
-  const online = event.eventType === 'online'
+  const online = isOnline(event)
   const url = event.webUrl ?? ''
   const languageCode = event.languages[0] ?? locale
   const description = lexicalToText(event.description) || 'Free meditation class'
-  const startDate = (event.schedule?.upcomingDates?.[0] ?? event.schedule?.firstDate)?.toISOString()
+  const startDate = (nextOccurrence(event) ?? event.schedule?.firstDate)?.toISOString()
   const image = event.images[0]?.url
 
   const schema: EventSchema = {

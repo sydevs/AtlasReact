@@ -11,7 +11,7 @@ import {
   EventTimingDetails,
 } from '@/components/organisms/EventDetails'
 import { useLocale } from '@/hooks/use-locale'
-import { lexicalToHtml } from '@/lib/shape'
+import { isOnline, lexicalToHtml, nextOccurrence } from '@/lib/shape'
 import { Event } from '@/types'
 import { Chip } from '@/components/atoms/Chip'
 
@@ -25,10 +25,9 @@ export function EventPanel({ event }: EventPanelProps) {
   const { t } = useTranslation('events')
   const { locale, languageNames } = useLocale()
 
-  const online = event.eventType === 'online'
+  const online = isOnline(event)
   const languageCode = event.languages[0] ?? ''
-  const next = event.schedule?.upcomingDates?.[0]
-  const hasTiming = (event.schedule?.upcomingDates?.length ?? 0) > 0
+  const next = nextOccurrence(event)
   const descriptionHtml = lexicalToHtml(event.description)
 
   return (
@@ -83,13 +82,13 @@ export function EventPanel({ event }: EventPanelProps) {
           <ShareButton className="flex-grow" event={event} />
         </div>
         <div className="mt-5 flex flex-col gap-4">
-          {!hasTiming && <EventContactDetails isHighlighted event={event} />}
+          {!next && <EventContactDetails isHighlighted event={event} />}
 
-          {hasTiming && <EventTimingDetails convertTimeZone={online} event={event} />}
+          {next && <EventTimingDetails convertTimeZone={online} event={event} />}
 
           <EventLocationDetails event={event} />
 
-          {hasTiming && <EventContactDetails event={event} />}
+          {next && <EventContactDetails event={event} />}
         </div>
       </div>
     </>

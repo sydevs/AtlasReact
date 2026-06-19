@@ -16,17 +16,18 @@ import type { Position } from 'geojson'
 
 import client from './client'
 
+import { GEOJSON_STALE_TIME, queryClient } from '@/config/query-client'
 import { centerOfBounds, distanceKm } from '@/lib/geo'
 import {
   ancestorIdsFromBreadcrumbs,
   boundsUnder,
   countUnder,
   eventPath,
+  eventsUnder,
   regionPath,
 } from '@/lib/shape'
 import {
   AreaSchema,
-  AtlasConfigSchema,
   ClientSchema,
   CountrySchema,
   CountrySlimSchema,
@@ -83,22 +84,32 @@ const getGeojson = async (): Promise<Geojson> => {
   return GeojsonSchema.parse(response.data)
 }
 
-// A feature's full region ancestry (direct region + breadcrumb chain), deduped.
-const ancestryOf = (feature: GeoFeature): number[] => [
-  ...new Set([
-    feature.properties.region.id,
-    ...ancestorIdsFromBreadcrumbs(feature.properties.region.breadcrumbs),
-  ]),
-]
+// The hierarchy/events fetchers all need the same feed. Read it through the
+// shared React Query cache (the key the map also uses) so it's fetched + parsed
+// once per stale window rather than on every navigation.
+const loadGeojson = (): Promise<Geojson> =>
+  queryClient.ensureQueryData({
+    queryKey: ['geojson'],
+    queryFn: getGeojson,
+    staleTime: GEOJSON_STALE_TIME,
+  })
 
-const toGeoEvents = (geojson: Geojson): GeoEvent[] =>
+// A feature paired with its region ancestry (direct region + breadcrumb chain).
+// `GeoEvent`-compatible, so the hierarchy helpers can aggregate over it while the
+// `feature` rides along for building the event list — computed once per feature.
+type IndexedFeature = GeoEvent & { feature: GeoFeature }
+
+const indexFeatures = (geojson: Geojson): IndexedFeature[] =>
   geojson.features.map((feature) => ({
+    feature,
     point: feature.geometry?.coordinates ?? null,
-    ancestorIds: ancestryOf(feature),
+    ancestorIds: [
+      ...new Set([
+        feature.properties.region.id,
+        ...ancestorIdsFromBreadcrumbs(feature.properties.region.breadcrumbs),
+      ]),
+    ],
   }))
-
-const featuresUnder = (geojson: Geojson, regionId: number): GeoFeature[] =>
-  geojson.features.filter((feature) => ancestryOf(feature).includes(regionId))
 
 const toSlim = (feature: GeoFeature, from?: Position): EventSlim =>
   EventSlimSchema.parse({
@@ -177,7 +188,7 @@ const toListItem = (doc: RegionDoc, events: GeoEvent[]) =>
 
 const getCountries = async (): Promise<CountrySlim[]> => {
   const [geojson, response] = await Promise.all([
-    getGeojson(),
+    loadGeojson(),
     client.get('/regions', {
       params: {
         where: { level: { equals: 'country' } },
@@ -189,7 +200,7 @@ const getCountries = async (): Promise<CountrySlim[]> => {
     }),
   ])
 
-  const events = toGeoEvents(geojson)
+  const events = indexFeatures(geojson)
 
   return RegionDocSchema.array()
     .parse(response.data.docs)
@@ -208,8 +219,8 @@ const getCountries = async (): Promise<CountrySlim[]> => {
 
 const getCountry = async (slug: string): Promise<Country> => {
   const doc = await getRegionDoc(slug, 'country')
-  const [geojson, children] = await Promise.all([getGeojson(), getChildRegions(doc.id)])
-  const events = toGeoEvents(geojson)
+  const [geojson, children] = await Promise.all([loadGeojson(), getChildRegions(doc.id)])
+  const events = indexFeatures(geojson)
 
   return CountrySchema.parse({
     id: doc.id,
@@ -225,8 +236,8 @@ const getCountry = async (slug: string): Promise<Country> => {
 
 const getRegion = async (slug: string): Promise<Region> => {
   const doc = await getRegionDoc(slug, 'region')
-  const [geojson, children] = await Promise.all([getGeojson(), getChildRegions(doc.id)])
-  const events = toGeoEvents(geojson)
+  const [geojson, children] = await Promise.all([loadGeojson(), getChildRegions(doc.id)])
+  const events = indexFeatures(geojson)
 
   return RegionSchema.parse({
     id: doc.id,
@@ -242,39 +253,39 @@ const getRegion = async (slug: string): Promise<Region> => {
 
 const getArea = async (slug: string): Promise<Area> => {
   const doc = await getRegionDoc(slug, 'city')
-  const geojson = await getGeojson()
-  const events = toGeoEvents(geojson)
-  const features = featuresUnder(geojson, doc.id)
+  const geojson = await loadGeojson()
+  const events = indexFeatures(geojson)
+  const under = eventsUnder(events, doc.id)
 
   return AreaSchema.parse({
     id: doc.id,
     slug: doc.slug,
     name: doc.name ?? doc.slug,
     subtitle: doc.subtitle,
-    eventCount: features.length,
+    eventCount: under.length,
     bounds: boundsUnder(events, doc.id),
     path: regionPath('city', doc.slug),
     parentPath: parentPathOf(doc),
-    events: features.map((feature) => toSlim(feature)),
+    events: under.map((indexed) => toSlim(indexed.feature)),
   })
 }
 
 const getVenue = async (slug: string): Promise<Venue> => {
   const doc = await getRegionDoc(slug, 'center')
-  const geojson = await getGeojson()
-  const events = toGeoEvents(geojson)
-  const features = featuresUnder(geojson, doc.id)
+  const geojson = await loadGeojson()
+  const events = indexFeatures(geojson)
+  const under = eventsUnder(events, doc.id)
   const bounds = boundsUnder(events, doc.id)
 
   return VenueSchema.parse({
     id: doc.id,
     slug: doc.slug,
     name: doc.name ?? doc.slug,
-    eventCount: features.length,
+    eventCount: under.length,
     center: bounds ? centerOfBounds(bounds) : null,
     path: regionPath('center', doc.slug),
     parentPath: parentPathOf(doc),
-    events: features.map((feature) => toSlim(feature)),
+    events: under.map((indexed) => toSlim(indexed.feature)),
   })
 }
 
@@ -285,7 +296,7 @@ const getEvents = async (
   longitude: number,
   onlineOnly: boolean = false,
 ): Promise<EventSlim[]> => {
-  const geojson = await getGeojson()
+  const geojson = await loadGeojson()
   const from: Position = [longitude, latitude]
 
   return geojson.features
@@ -357,14 +368,6 @@ const getClient = async () => {
   return ClientSchema.parse(user)
 }
 
-const getAtlasConfig = async () => {
-  const response = await client.get('/globals/sy-atlas-config', {
-    params: { select: { defaultMapCenter: true, defaultZoomLevel: true } },
-  })
-
-  return AtlasConfigSchema.parse(response.data)
-}
-
 export default {
   getGeojson,
   getCountries,
@@ -375,5 +378,4 @@ export default {
   getVenue,
   getEvent,
   getClient,
-  getAtlasConfig,
 }

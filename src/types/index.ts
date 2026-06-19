@@ -1,6 +1,5 @@
 import { SVGProps } from 'react'
 export * from './client'
-export * from './config'
 export * from './country'
 export * from './event'
 export * from './geojson'

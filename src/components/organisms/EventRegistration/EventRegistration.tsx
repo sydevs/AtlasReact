@@ -28,6 +28,7 @@ import { ShareContent } from '@/components/molecules/EventShare'
 import api from '@/config/api'
 import { Registration, RegistrationSchema } from '@/types'
 import { Event } from '@/types'
+import { isOnline } from '@/lib/shape'
 import { useLocale } from '@/hooks/use-locale'
 
 const INPUT_STYLE = {
@@ -90,7 +91,7 @@ export function RegistrationButton({ event, ...buttonProps }: RegistrationButton
         eventId={event.id}
         eventTitle={event.title}
         eventUrl={event.webUrl ?? ''}
-        isOnline={event.eventType === 'online'}
+        isOnline={isOnline(event)}
         isOpen={isOpen}
         questions={enabledQuestions(event)}
         upcomingDates={upcomingDates}

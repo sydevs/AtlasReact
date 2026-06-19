@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import { SocialIcon, AnchorIcon, CallIcon, LocationIcon } from '@/components/atoms/Icons'
 import { EventTime } from '@/components/molecules/EventTime'
 import { Event } from '@/types'
+import { isOnline, nextOccurrence } from '@/lib/shape'
 import { useLocale } from '@/hooks/use-locale'
 
 // Detect the meeting platform from an online event's join URL (for its icon).
@@ -70,7 +71,7 @@ export function EventTimingDetails({
   const { t } = useTranslation('events')
   const { locale } = useLocale()
   const schedule = event.schedule
-  const next = schedule?.upcomingDates?.[0]
+  const next = nextOccurrence(event)
   const recurrence = schedule?.recurrenceType
 
   const nextDate = useMemo(
@@ -114,7 +115,7 @@ export function EventTimingDetails({
 
 export function EventLocationDetails({ event }: { event: Event }) {
   const { t } = useTranslation('events')
-  const online = event.eventType === 'online'
+  const online = isOnline(event)
 
   let title: string
   let subtitle: string
