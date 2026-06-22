@@ -83,7 +83,7 @@ src/
   main.tsx            # Standalone dev entry
   providers.tsx       # NextUI + React Query + Helmet providers
   components/         # atomic taxonomy, folder-per-component — see DESIGN_SYSTEM.md
-    atoms/            # Primitives: Chip/, SelectionDropdown/, Panel/, LanguageSelector/, Fallbacks/, ThemeSwitch/, Icons/
+    atoms/            # Primitives: Chip/, Dropdown/, Panel/, LanguageSelector/, Fallbacks/, ThemeSwitch/, Icons/
     molecules/        # Compositions: Navbar/, SearchBar/, List*/, EventTime|Share|Images|Soon/, EventItem/, EventMetadata/
     organisms/        # Data-connected: EventsList/, EventPanel|Details|Registration/, Mapbox/
     <tier>/<Name>/    # PascalCase folder: <Name>.tsx + <Name>.stories.tsx + index.ts
