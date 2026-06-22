@@ -82,6 +82,13 @@ interface DropdownItemOwnProps {
   /** Additional CSS classes */
   className?: string
   children?: ReactNode
+  /**
+   * Click handler shared by the link (`<a>`) and action (`<button>`) variants.
+   * Declared here (and omitted from the element arms below) so an inline
+   * `onClick={(e) => …}` infers a typed event for either element instead of
+   * `any`.
+   */
+  onClick?: React.MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>
 }
 
 /**
@@ -90,8 +97,8 @@ interface DropdownItemOwnProps {
  * element's props and keyboard semantics.
  */
 export type DropdownItemProps =
-  | (DropdownItemOwnProps & ComponentProps<'a'>)
-  | (DropdownItemOwnProps & ComponentProps<'button'>)
+  | (DropdownItemOwnProps & Omit<ComponentProps<'a'>, 'onClick'>)
+  | (DropdownItemOwnProps & Omit<ComponentProps<'button'>, 'onClick'>)
 
 const dropdownItem = tv({
   // `w-full text-left` keep the <button> variant reading as a full-width menu
@@ -120,8 +127,16 @@ export function DropdownItem({ size = 'md', className, children, ...props }: Dro
   // Link vs. action: an href means navigation (render an <a>); otherwise it's an
   // action item (render a real <button> so click/keyboard semantics are correct).
   if ('href' in props && props.href != null) {
+    const anchorProps = props as ComponentProps<'a'>
+
     return (
-      <a className={classNames} {...(props as ComponentProps<'a'>)}>
+      <a
+        className={classNames}
+        // Safe default for new-tab links — the widget is embedded in untrusted
+        // host pages. A caller-provided rel still wins via the spread below.
+        rel={anchorProps.target === '_blank' ? 'noopener noreferrer' : undefined}
+        {...anchorProps}
+      >
         {children}
       </a>
     )
