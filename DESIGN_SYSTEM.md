@@ -54,7 +54,7 @@ here is **organisms own data/network/map lifecycles; atoms and molecules don't.*
 | --------------------- | ------------------------------------ | --------------------------------------------- |
 | `Icons/` (sub-module) | `*Icon`, `Logo`, `SocialIcon`, …     | SVG primitives; grouped module with its own `index.tsx` |
 | `Chip/`               | `Chip`, `TimezoneChip`               | Wraps NextUI `Chip` with app defaults (`tv()`) |
-| `SelectionDropdown/`  | `SelectionDropdown`                  | Single-select wrapper over NextUI `Dropdown`  |
+| `Dropdown/`           | `Dropdown`, `DropdownItem`           | Floating-UI popover: portaled, flip/shift, NextUI tokens (`tv()`) |
 | `LanguageSelector/`   | `LanguageSelector`                   | Locale switcher (`useLocale`)                 |
 | `Panel/`              | `Panel`                              | Suspense + ErrorBoundary layout shell         |
 | `Lightbox/`           | `Lightbox`                           | Lazy YARL fullscreen overlay (own code-split chunk; barrel re-exports the `React.lazy` shim) |

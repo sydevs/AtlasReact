@@ -124,7 +124,7 @@ Conventions:
 
 - **Title** = `'<Tier> / <Subcategory>'`; `Default.storyName` = the component name.
   Organisms use just `'Organisms'`. Our subcategory map:
-  - **Atoms** — Feedback (`Chip`, `Fallbacks`), Form (`SelectionDropdown`,
+  - **Atoms** — Feedback (`Chip`, `Fallbacks`), Form (`Dropdown`,
     `ThemeSwitch`, `LanguageSelector`), Layout (`Panel`), Media (`Icons`,
     `Lightbox`).
   - **Molecules** — Display (`List`, `ListItem`, `ListHeader`, `EventItem`,
