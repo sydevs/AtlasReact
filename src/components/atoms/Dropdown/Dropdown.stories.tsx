@@ -1,7 +1,5 @@
 import type { Story, StoryDefault } from '@ladle/react'
 
-import { Button } from '@nextui-org/react'
-
 import { StoryWrapper, StorySection } from '../../ladle'
 
 import { Dropdown, DropdownItem } from './Dropdown'
@@ -13,6 +11,13 @@ export default {
 } satisfies StoryDefault
 
 const sizes = ['sm', 'md', 'lg'] as const
+
+// A plain styled trigger. The Dropdown wrapper makes it the focusable
+// `role="button"` (NextUI's <Button> swallows the click via react-aria, so it
+// can't drive the dropdown's useClick — the shipping LanguageSelector uses a
+// plain element for the same reason).
+const triggerClass =
+  'inline-flex cursor-pointer items-center gap-2 rounded-md border border-default-300 px-4 py-2 text-sm font-medium text-foreground'
 
 /**
  * Dropdown — a portaled popover with viewport-aware placement (flip/shift) built
@@ -29,9 +34,10 @@ export const Default: Story = () => (
             <Dropdown
               size={size}
               trigger={
-                <Button endContent={<DownArrowIcon size={16} />} variant="bordered">
+                <span className={triggerClass}>
                   {size}
-                </Button>
+                  <DownArrowIcon size={16} />
+                </span>
               }
             >
               <DropdownItem href="#" size={size}>
@@ -55,9 +61,10 @@ export const Default: Story = () => (
     >
       <Dropdown
         trigger={
-          <Button startContent={<LocationIcon size={18} />} variant="bordered">
+          <span className={triggerClass}>
+            <LocationIcon size={18} />
             Open menu
-          </Button>
+          </span>
         }
       >
         <DropdownItem href="#">Link item (anchor)</DropdownItem>
@@ -78,7 +85,7 @@ export const Default: Story = () => (
             <Dropdown
               align="center"
               side={side}
-              trigger={<Button variant="flat">Open {side}</Button>}
+              trigger={<span className={triggerClass}>Open {side}</span>}
             >
               <DropdownItem href="#">Menu item 1</DropdownItem>
               <DropdownItem href="#">Menu item 2</DropdownItem>
@@ -91,9 +98,10 @@ export const Default: Story = () => (
     <StorySection background="neutral" theme="dark" title="Dark Surface">
       <Dropdown
         trigger={
-          <Button startContent={<LanguageIcon size={18} />} variant="bordered">
+          <span className={triggerClass}>
+            <LanguageIcon size={18} />
             Language
-          </Button>
+          </span>
         }
       >
         <DropdownItem className="text-primary" onClick={() => {}}>
@@ -109,9 +117,10 @@ export const Default: Story = () => (
         <Dropdown
           align="end"
           trigger={
-            <Button startContent={<LocationIcon size={18} />} variant="bordered">
+            <span className={triggerClass}>
+              <LocationIcon size={18} />
               All countries
-            </Button>
+            </span>
           }
         >
           <DropdownItem onClick={() => {}}>All countries</DropdownItem>
