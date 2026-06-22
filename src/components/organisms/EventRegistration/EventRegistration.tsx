@@ -27,7 +27,8 @@ import { AnchorIcon } from '@/components/atoms/Icons'
 import { ShareContent } from '@/components/molecules/EventShare'
 import api from '@/config/api'
 import { Registration, RegistrationSchema } from '@/types'
-import { Event, EventRegistration, EventTiming } from '@/types'
+import { Event } from '@/types'
+import { isOnline } from '@/lib/shape'
 import { useLocale } from '@/hooks/use-locale'
 
 const INPUT_STYLE = {
@@ -38,40 +39,35 @@ const INPUT_STYLE = {
   radius: InputProps['radius']
 }
 
+// The registration questions enabled on this event (each `true` boolean → a field).
+function enabledQuestions(event: Event): string[] {
+  const questions = event.registrationQuestions
+
+  if (!questions) return []
+
+  return Object.entries(questions)
+    .filter(([, enabled]) => enabled)
+    .map(([key]) => key)
+}
+
 type RegistrationButtonProps = {
   event: Event
 } & ButtonProps
 
 export function RegistrationButton({ event, ...buttonProps }: RegistrationButtonProps) {
-  if (!event.registration || !event.timing) return null
   const { t } = useTranslation('events')
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const isNative = event.registration.mode == 'native'
 
-  if (isNative) {
-    return (
-      <>
-        <Button color="primary" variant="flat" onPress={onOpen} {...buttonProps}>
-          <span className="font-semibold tracking-wider">{t('registration.register_now')}</span>
-        </Button>
-        <RegistrationModal
-          eventId={event.id}
-          eventLabel={event.label}
-          eventRegistration={event.registration}
-          eventTiming={event.timing}
-          eventUrl={event.url}
-          isOnline={event.online}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        />
-      </>
-    )
-  } else {
+  // External registration: just link out.
+  if (event.registrationMode === 'external') {
+    if (!event.externalRegistrationUrl) return null
+
     return (
       <Button
         as={Link}
         color="primary"
-        href={event.registration.externalUrl}
+        href={event.externalRegistrationUrl}
+        rel="noopener noreferrer"
         target="_blank"
         variant="flat"
         {...buttonProps}
@@ -81,14 +77,37 @@ export function RegistrationButton({ event, ...buttonProps }: RegistrationButton
       </Button>
     )
   }
+
+  // In-app registration needs at least one upcoming date to register against.
+  const upcomingDates = event.schedule?.upcomingDates ?? []
+
+  if (upcomingDates.length === 0) return null
+
+  return (
+    <>
+      <Button color="primary" variant="flat" onPress={onOpen} {...buttonProps}>
+        <span className="font-semibold tracking-wider">{t('registration.register_now')}</span>
+      </Button>
+      <RegistrationModal
+        eventId={event.id}
+        eventTitle={event.title}
+        eventUrl={event.webUrl ?? ''}
+        isOnline={isOnline(event)}
+        isOpen={isOpen}
+        questions={enabledQuestions(event)}
+        upcomingDates={upcomingDates}
+        onOpenChange={onOpenChange}
+      />
+    </>
+  )
 }
 
 type RegistrationModalProps = {
   eventId: number
-  eventLabel: string
+  eventTitle: string
   eventUrl: string
-  eventTiming: EventTiming
-  eventRegistration: EventRegistration
+  upcomingDates: Date[]
+  questions: string[]
   isOnline: boolean
   isOpen: boolean
   onOpenChange: (isOpen: boolean) => void
@@ -96,10 +115,10 @@ type RegistrationModalProps = {
 
 export function RegistrationModal({
   eventId,
-  eventLabel,
+  eventTitle,
   eventUrl,
-  eventTiming,
-  eventRegistration,
+  upcomingDates,
+  questions,
   isOnline,
   isOpen,
   onOpenChange,
@@ -150,15 +169,15 @@ export function RegistrationModal({
                   <div className="text-center flex flex-col gap-3">
                     <p>{t('registration.followup')}</p>
                     <div className="font-semibold mt-2">{t('registration.invite_friend')}</div>
-                    <ShareContent label={eventLabel} url={eventUrl} />
+                    <ShareContent label={eventTitle} url={eventUrl} />
                   </div>
                 ) : (
                   <>
                     <RegistrationFields
                       errors={errors}
+                      questions={questions}
                       register={register}
-                      registrationOptions={eventRegistration}
-                      timingOptions={eventTiming}
+                      upcomingDates={upcomingDates}
                     />
 
                     {mutation.isError && (
@@ -213,15 +232,15 @@ export function RegistrationModal({
 }
 
 type RegistrationFieldsProps = {
-  timingOptions: EventTiming
-  registrationOptions: EventRegistration
+  upcomingDates: Date[]
+  questions: string[]
   register: UseFormRegister<Registration>
   errors: FieldErrors<Registration>
 }
 
 export function RegistrationFields({
-  timingOptions,
-  registrationOptions,
+  upcomingDates,
+  questions,
   register,
   errors,
 }: RegistrationFieldsProps) {
@@ -234,12 +253,12 @@ export function RegistrationFields({
         {...register('startingAt', { required: true })}
         {...INPUT_STYLE}
         isRequired
-        defaultSelectedKeys={[timingOptions.upcomingDates[0]?.toISOString()]}
+        defaultSelectedKeys={[upcomingDates[0]?.toISOString()]}
         errorMessage={errors.startingAt && t('errors.starting_at')}
         isInvalid={!!errors.startingAt}
         label={t('registration.starting_date')}
       >
-        {timingOptions.upcomingDates.map((date) => {
+        {upcomingDates.map((date) => {
           let dateTime = DateTime.fromJSDate(date).setLocale(locale)
 
           return (
@@ -276,7 +295,7 @@ export function RegistrationFields({
         type="email"
       />
 
-      {registrationOptions.questions.map((question, index) => (
+      {questions.map((question, index) => (
         <Textarea
           {...register(`questions.${question}`)}
           {...INPUT_STYLE}

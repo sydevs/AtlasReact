@@ -1,28 +1,19 @@
 import z from 'zod'
 
 import { EventSlimSchema } from './event'
+import { PositionSchema } from './region'
 
-export const VenueCoreSchema = z.object({
+// A "venue" is a region with level='center'. Derived view-model for its page:
+// the center point is derived from its events' coordinates (centers carry no
+// stored lat/lng).
+export const VenueSchema = z.object({
   id: z.number(),
+  slug: z.string(),
+  name: z.string(),
+  eventCount: z.number(),
+  center: PositionSchema.nullable(),
   path: z.string(),
-  label: z.string(),
-  latitude: z.number(),
-  longitude: z.number(),
+  parentPath: z.string().nullish(),
+  events: z.array(EventSlimSchema),
 })
-
-export const VenueSlimSchema = z
-  .object({
-    eventCount: z.number(),
-  })
-  .merge(VenueCoreSchema)
-
-export const VenueSchema = z
-  .object({
-    url: z.string(),
-    parentPath: z.string(),
-    events: z.array(EventSlimSchema),
-  })
-  .merge(VenueCoreSchema)
-
 export type Venue = z.infer<typeof VenueSchema>
-export type VenueSlim = z.infer<typeof VenueSlimSchema>

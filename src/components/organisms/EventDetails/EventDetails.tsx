@@ -5,24 +5,52 @@ import { useMemo } from 'react'
 
 import { SocialIcon, AnchorIcon, CallIcon, LocationIcon } from '@/components/atoms/Icons'
 import { EventTime } from '@/components/molecules/EventTime'
-import { EventContact, EventLocation, EventTiming } from '@/types'
+import { Event } from '@/types'
+import { isOnline, nextOccurrence } from '@/lib/shape'
 import { useLocale } from '@/hooks/use-locale'
 
+// Detect the meeting platform from an online event's join URL (for its icon).
+function detectPlatform(url?: string | null): 'zoom' | 'google_meet' | 'youtube' | undefined {
+  if (!url) return undefined
+  if (/zoom\./i.test(url)) return 'zoom'
+  if (/meet\.google\./i.test(url)) return 'google_meet'
+  if (/youtu\.?be/i.test(url)) return 'youtube'
+
+  return undefined
+}
+
+// A Google Maps directions link from the event's coordinates (or address text).
+function directionsUrl(event: Event): string | undefined {
+  const { latitude, longitude, street, city, country } = event.address ?? {}
+
+  if (latitude != null && longitude != null) {
+    return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
+  }
+
+  const query = [street, city, country].filter(Boolean).join(', ')
+
+  return query
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
+    : undefined
+}
+
 export function EventContactDetails({
-  contact,
+  event,
   isHighlighted = false,
 }: {
-  contact: EventContact
+  event: Event
   isHighlighted?: boolean
 }) {
   const { t } = useTranslation('events')
 
+  if (!event.contactPhone) return null
+
   return (
     <EventDetail
-      content={t('details.tel', { phoneNumber: contact.phoneNumber })}
+      content={t('details.tel', { phoneNumber: event.contactPhone })}
       isExternal={true}
       title={isHighlighted ? t('details.contact_for_timing') : t('details.contact_host')}
-      url={`tel: ${contact.phoneNumber}`}
+      url={`tel: ${event.contactPhone}`}
     >
       <div
         className={`flex-center h-full ${isHighlighted ? 'text-background bg-primary-100' : 'text-primary'}`}
@@ -34,32 +62,42 @@ export function EventContactDetails({
 }
 
 export function EventTimingDetails({
-  timing,
+  event,
   convertTimeZone = false,
 }: {
-  timing: EventTiming
+  event: Event
   convertTimeZone?: boolean
 }) {
   const { t } = useTranslation('events')
   const { locale } = useLocale()
+  const schedule = event.schedule
+  const next = nextOccurrence(event)
+  const recurrence = schedule?.recurrenceType
+
   const nextDate = useMemo(
-    () => DateTime.fromJSDate(timing.upcomingDates[0]).setLocale(locale),
-    [timing],
+    () => (next ? DateTime.fromJSDate(next).setLocale(locale) : null),
+    [next, locale],
   )
+
+  if (!nextDate) return null
 
   return (
     <EventDetail
       content={
         <EventTime
-          duration={timing.duration}
+          endTime={schedule?.endTime}
           nextDate={nextDate}
           showTimeZone={convertTimeZone}
-          timeZone={convertTimeZone ? DateTime.local().zoneName : timing.timeZone}
+          timeZone={
+            convertTimeZone
+              ? (DateTime.local().zoneName ?? 'UTC')
+              : (schedule?.firstDate_tz ?? 'UTC')
+          }
         />
       }
       title={
-        timing.type
-          ? t(`recurrence.${timing.type}`, {
+        recurrence
+          ? t(`recurrence.${recurrence.toLowerCase()}`, {
               weekday: nextDate.toLocaleString({ weekday: 'long' }),
             })
           : t('details.contact_for_timing')
@@ -75,36 +113,38 @@ export function EventTimingDetails({
   )
 }
 
-export function EventLocationDetails({ location }: { location: EventLocation }) {
+export function EventLocationDetails({ event }: { event: Event }) {
   const { t } = useTranslation('events')
-  let title: string, subtitle: string
+  const online = isOnline(event)
 
-  if (location.venue) {
-    if (location.venue.name) {
-      title = location.venue.name
-      subtitle = location.venue.address
-    } else {
-      title = location.venue.street
-      subtitle = location.venue.address.split(', ')[1]
-    }
-  } else {
+  let title: string
+  let subtitle: string
+
+  if (online) {
     title = t('details.online_class')
-    subtitle = t('details.hosted_from', { city: `${location.areaName}, ${location.countryCode}` })
+    const city = event.address?.city ?? event.region.name ?? event.region.slug
+
+    subtitle = t('details.hosted_from', {
+      city: event.address?.country ? `${city}, ${event.address.country}` : city,
+    })
+  } else {
+    title = event.region.name || event.address?.street || event.region.slug
+    subtitle = [event.address?.street, event.address?.city, event.address?.country]
+      .filter(Boolean)
+      .join(', ')
   }
+
+  const platform = detectPlatform(event.onlineUrl)
 
   return (
     <EventDetail
       content={subtitle}
       isExternal={true}
       title={title}
-      url={location.venue?.directionsUrl || undefined}
+      url={online ? (event.onlineUrl ?? undefined) : directionsUrl(event)}
     >
       <div className="flex-center h-full text-primary">
-        {location.platform ? (
-          <SocialIcon platform={location.platform} size={24} />
-        ) : (
-          <LocationIcon />
-        )}
+        {platform ? <SocialIcon platform={platform} size={24} /> : <LocationIcon />}
       </div>
     </EventDetail>
   )

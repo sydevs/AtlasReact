@@ -1,130 +1,123 @@
 import z from 'zod'
 
-export const EventTimingSchema = z.object({
-  type: z.string(),
-  localStartTime: z.string(),
-  localEndTime: z.string().nullable(),
-  duration: z.number().nullable(),
-  timeZone: z.string(),
+import { RegionRefSchema } from './region'
 
+export const EventTypeSchema = z.enum(['offline', 'online'])
+export type EventType = z.infer<typeof EventTypeSchema>
+
+// SahajCloud recurrence basis (the cadence detail is pre-computed server-side
+// into `upcomingDates`, so the widget only distinguishes the broad type).
+export const RecurrenceTypeSchema = z.enum(['DAILY', 'WEEKLY', 'MONTHLY'])
+export type RecurrenceType = z.infer<typeof RecurrenceTypeSchema>
+
+// Offline event location (`event.address` group). All fields are nullable; the
+// geojson geometry comes from latitude/longitude when present.
+export const EventAddressSchema = z.object({
+  mapboxId: z.string().nullish(),
+  street: z.string().nullish(),
+  room: z.string().nullish(),
+  postCode: z.string().nullish(),
+  country: z.string().nullish(), // ISO 3166-1 alpha-2
+  region: z.string().nullish(), // ISO 3166-2 subdivision
+  city: z.string().nullish(),
+  latitude: z.number().nullish(),
+  longitude: z.number().nullish(),
+})
+export type EventAddress = z.infer<typeof EventAddressSchema>
+
+// `event.schedule` group. `upcomingDates` is a virtual field of ISO date strings
+// pre-computed by SahajCloud; `upcomingDates[0]` is the next occurrence.
+export const EventScheduleSchema = z.object({
   firstDate: z.coerce.date(),
-  lastDate: z.coerce.date().nullable(),
-  upcomingDates: z.array(z.coerce.date()),
-  recurrenceCount: z.number().nullable(),
-  recurrenceType: z
-    .enum([
-      'daily',
-      'weekly_1',
-      'weekly_2',
-      'monthly_1st',
-      'monthly_2nd',
-      'monthly_3rd',
-      'monthly_4th',
-      'monthly_last',
-    ])
-    .nullable(),
+  firstDate_tz: z.string(),
+  endTime: z.string().nullish(), // "HH:MM", same day
+  recurrenceType: RecurrenceTypeSchema.nullish(),
+  upcomingDates: z.array(z.coerce.date()).nullish(),
+  icalRule: z.string().nullish(),
 })
+export type EventSchedule = z.infer<typeof EventScheduleSchema>
 
-export const EventContactSchema = z.object({
-  phoneName: z.string(),
-  phoneNumber: z.string(),
-})
-
-export const EventLocationSchema = z.object({
-  countryCode: z.string().length(2),
-  regionCode: z.string().nullish(),
-  areaPath: z.string(),
-  venuePath: z.string().optional(),
-  platform: z.enum(['zoom', 'google_meet', 'youtube']).optional(),
-  areaName: z.string(),
-  latitude: z.number(),
-  longitude: z.number(),
-  venue: z
-    .object({
-      name: z.string().nullable(),
-      street: z.string(),
-      city: z.string(),
-      directionsUrl: z.string(),
-      address: z.string(),
-      postalCode: z.string().optional(),
-    })
-    .nullable(),
-})
-
-export const EventRegistrationSchema = z.object({
-  mode: z.string(),
-  externalUrl: z.string().optional(),
-  maxParticipants: z.number().nullable(),
-  participantCount: z.number(),
-  questions: z.array(z.string()),
-})
-
+// Populated `images` upload (the SahajCloud `Image` collection).
 export const EventImageSchema = z.object({
-  url: z.string().url(),
-  thumbnailUrl: z.string().url(),
-  altText: z.string().optional(),
+  url: z.string(),
+  thumbnailURL: z.string().nullish(),
+  alt: z.string().nullish(),
 })
-
-export const EventQuestionSchema = z.object({
-  slug: z.string(),
-  title: z.string(),
-})
-
-export const EventCoreSchema = z.object({
-  id: z.number(),
-  path: z.string(),
-  label: z.string(),
-  online: z.boolean(),
-  languageCode: z.string(),
-  category: z.enum(['dropin', 'course', 'single', 'festival', 'concert', 'inactive']),
-})
-
-export const EventSlimSchema = z
-  .object({
-    recurrenceType: z
-      .enum([
-        'daily',
-        'weekly_1',
-        'weekly_2',
-        'monthly_1st',
-        'monthly_2nd',
-        'monthly_3rd',
-        'monthly_4th',
-        'monthly_last',
-      ])
-      .nullable(),
-    address: z.string(),
-    latitude: z.number(),
-    longitude: z.number(),
-    nextDate: z.coerce.date(),
-    firstDate: z.coerce.date(),
-    duration: z.number().nullable(),
-    timeZone: z.string(),
-    locationId: z.number(),
-    locationType: z.string(),
-    distance: z.number().optional(),
-  })
-  .merge(EventCoreSchema)
-
-export const EventSchema = z
-  .object({
-    url: z.string(),
-    description: z.string().nullable(),
-    descriptionHtml: z.string().nullable(),
-
-    registration: z.nullable(EventRegistrationSchema),
-    timing: z.nullable(EventTimingSchema),
-    contact: z.nullable(EventContactSchema),
-    images: z.array(EventImageSchema),
-    location: EventLocationSchema,
-  })
-  .merge(EventCoreSchema)
-
-export type Event = z.infer<typeof EventSchema>
-export type EventSlim = z.infer<typeof EventSlimSchema>
-export type EventTiming = z.infer<typeof EventTimingSchema>
-export type EventContact = z.infer<typeof EventContactSchema>
-export type EventLocation = z.infer<typeof EventLocationSchema>
-export type EventQuestion = z.infer<typeof EventQuestionSchema>
-export type EventRegistration = z.infer<typeof EventRegistrationSchema>
 export type EventImage = z.infer<typeof EventImageSchema>
+
+// `event.registrationQuestions` — each enabled boolean adds a question to the form.
+export const RegistrationQuestionsSchema = z.object({
+  priorExperience: z.boolean().nullish(),
+  referralSource: z.boolean().nullish(),
+  healthInfo: z.boolean().nullish(),
+  accessibility: z.boolean().nullish(),
+  guests: z.boolean().nullish(),
+})
+export type RegistrationQuestions = z.infer<typeof RegistrationQuestionsSchema>
+
+// Lexical richText document (`event.description`). Validated structurally; the
+// minimal serializer in src/lib/shape/lexical.ts renders/flattens it.
+export const LexicalDocumentSchema = z
+  .object({ root: z.object({ children: z.array(z.unknown()) }).passthrough() })
+  .passthrough()
+export type LexicalDocument = z.infer<typeof LexicalDocumentSchema>
+
+// CMS-authored URLs that get rendered into an `<a href>` (NextUI Link, outside
+// the DOMPurify path). Reject non-http(s) schemes so a `javascript:`/`data:`
+// value can't reach an href; drop the offending value rather than failing the
+// whole event read.
+const SafeUrlSchema = z
+  .string()
+  .url()
+  .refine((url) => /^https?:/i.test(url), 'must be an http(s) URL')
+  .nullish()
+  .catch(null)
+
+// Raw event as it appears in a geojson feature's `properties` (the fields the
+// feed `select`s). Map points + list items are built from this.
+export const FeedEventSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  eventType: EventTypeSchema,
+  languages: z.array(z.string()),
+  address: EventAddressSchema.nullish(),
+  schedule: EventScheduleSchema.nullish(),
+  region: RegionRefSchema,
+})
+export type FeedEvent = z.infer<typeof FeedEventSchema>
+
+// Derived list/map view-model: a feed event plus its route and (when sorting by
+// proximity) the distance from the search point in kilometres.
+export const EventSlimSchema = FeedEventSchema.extend({
+  path: z.string(),
+  distance: z.number().optional(),
+})
+export type EventSlim = z.infer<typeof EventSlimSchema>
+
+// Raw full event document from `GET /api/events/:id`.
+export const EventDocSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  eventType: EventTypeSchema,
+  languages: z.array(z.string()),
+  onlineUrl: SafeUrlSchema,
+  address: EventAddressSchema.nullish(),
+  schedule: EventScheduleSchema.nullish(),
+  description: LexicalDocumentSchema.nullish(),
+  images: z.array(EventImageSchema).default([]),
+  contactPhone: z.string().nullish(),
+  contactName: z.string().nullish(),
+  registrationMode: z.enum(['sahaj-atlas', 'external']),
+  externalRegistrationUrl: SafeUrlSchema,
+  registrationLimit: z.number().nullish(),
+  registrationQuestions: RegistrationQuestionsSchema.nullish(),
+  region: RegionRefSchema,
+  webUrl: SafeUrlSchema,
+})
+export type EventDoc = z.infer<typeof EventDocSchema>
+
+// Derived event-detail view-model: the document plus its route.
+export const EventSchema = EventDocSchema.extend({
+  path: z.string(),
+})
+export type Event = z.infer<typeof EventSchema>

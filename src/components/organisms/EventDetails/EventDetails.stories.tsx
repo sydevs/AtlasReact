@@ -26,23 +26,23 @@ export const Default: Story = () => (
     <StorySection title="Contact">
       <div className="max-w-md">
         <StorySection title="Default" variant="subsection">
-          <EventContactDetails contact={mockEvent.contact!} />
+          <EventContactDetails event={mockEvent} />
         </StorySection>
         <StorySection title="Highlighted" variant="subsection">
-          <EventContactDetails isHighlighted contact={mockEvent.contact!} />
+          <EventContactDetails isHighlighted event={mockEvent} />
         </StorySection>
       </div>
     </StorySection>
 
     <StorySection title="Timing">
       <div className="max-w-md">
-        <EventTimingDetails timing={mockEvent.timing!} />
+        <EventTimingDetails event={mockEvent} />
       </div>
     </StorySection>
 
     <StorySection title="Location">
       <div className="max-w-md">
-        <EventLocationDetails location={mockEvent.location} />
+        <EventLocationDetails event={mockEvent} />
       </div>
     </StorySection>
 

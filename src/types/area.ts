@@ -1,30 +1,20 @@
 import z from 'zod'
 
 import { EventSlimSchema } from './event'
+import { BoundsSchema } from './region'
 
-export const AreaCoreSchema = z.object({
+// An "area" is a region with level='city'. Derived view-model for its page:
+// geojson-derived bounds (Mapbox-resolved cities have no stored coords) plus the
+// events held there.
+export const AreaSchema = z.object({
   id: z.number(),
-  path: z.string(),
-  label: z.string(),
+  slug: z.string(),
+  name: z.string(),
   subtitle: z.string().nullish(),
+  eventCount: z.number(),
+  bounds: BoundsSchema.nullable(),
+  path: z.string(),
+  parentPath: z.string().nullish(),
+  events: z.array(EventSlimSchema),
 })
-
-export const AreaSlimSchema = z
-  .object({
-    eventCount: z.number(),
-  })
-  .merge(AreaCoreSchema)
-
-export const AreaSchema = z
-  .object({
-    url: z.string(),
-    parentPath: z.string(),
-    events: z.array(EventSlimSchema),
-    latitude: z.number(),
-    longitude: z.number(),
-    radius: z.number(),
-  })
-  .merge(AreaCoreSchema)
-
 export type Area = z.infer<typeof AreaSchema>
-export type AreaSlim = z.infer<typeof AreaSlimSchema>

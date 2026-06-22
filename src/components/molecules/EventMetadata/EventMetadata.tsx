@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 
 import { useLocale } from '@/hooks/use-locale'
+import { isOnline, lexicalToText, nextOccurrence } from '@/lib/shape'
 import { Event } from '@/types'
 
 type EventMetadataProps = {
@@ -13,29 +14,30 @@ export function EventMetadata({ event }: EventMetadataProps) {
   const { locale } = useLocale()
   const { t } = useTranslation('common')
 
-  const description = event.description || 'Free meditation class'
+  const online = isOnline(event)
+  const url = event.webUrl ?? ''
+  const languageCode = event.languages[0] ?? locale
+  const description = lexicalToText(event.description) || 'Free meditation class'
+  const startDate = (nextOccurrence(event) ?? event.schedule?.firstDate)?.toISOString()
+  const image = event.images[0]?.url
+
   const schema: EventSchema = {
     '@type': 'Event',
-    '@id': event.url,
-    name: event.label,
-    description: description,
-    startDate: event.timing ? event.timing.firstDate.toISOString() : undefined,
-    endDate: event.timing ? event.timing.lastDate?.toISOString() : undefined,
-    image: event.images[0]?.url,
+    '@id': url,
+    name: event.title,
+    description,
+    startDate,
+    image,
     eventStatus: 'https://schema.org/EventScheduled',
-    eventAttendanceMode: `https://schema.org/${event.online ? 'OnlineEventAttendanceMode' : 'OfflineEventAttendanceMode'}`,
-    offers:
-      event.timing && event.registration
-        ? {
-            '@type': 'Offer',
-            url: event.url,
-            price: 0,
-            priceCurrency: 'USD',
-            availability: `https://schema.org/${event.registration.maxParticipants && event.registration.maxParticipants <= event.registration.participantCount ? 'OutOfStock' : 'InStock'}`,
-            validFrom: event.timing.firstDate.toISOString(),
-            validThrough: event.timing.lastDate?.toISOString(),
-          }
-        : undefined,
+    eventAttendanceMode: `https://schema.org/${online ? 'OnlineEventAttendanceMode' : 'OfflineEventAttendanceMode'}`,
+    offers: {
+      '@type': 'Offer',
+      url,
+      price: 0,
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      validFrom: startDate,
+    },
     organizer: {
       '@type': 'Organization',
       name: 'We Meditate',
@@ -44,50 +46,46 @@ export function EventMetadata({ event }: EventMetadataProps) {
     },
   }
 
-  if (event.online) {
+  if (online) {
     schema.location = {
       '@type': 'VirtualLocation',
-      url: event.url,
+      url,
     }
-  } else if (event.location.venue) {
+  } else if (event.address) {
     schema.location = {
       '@type': 'Place',
-      name: event.location.venue.name || event.location.venue.street,
+      name: event.region.name || event.address.street || event.region.slug,
       address: {
         '@type': 'PostalAddress',
-        streetAddress: event.location.venue.street,
-        addressLocality: event.location.venue.city,
-        addressRegion: event.location.regionCode || undefined,
-        addressCountry: event.location.countryCode,
-        postalCode: event.location.venue.postalCode || undefined,
+        streetAddress: event.address.street || undefined,
+        addressLocality: event.address.city || undefined,
+        addressRegion: event.address.region || undefined,
+        addressCountry: event.address.country || undefined,
+        postalCode: event.address.postCode || undefined,
       },
-      geo: {
-        '@type': 'GeoCoordinates',
-        latitude: event.location.latitude,
-        longitude: event.location.longitude,
-      },
+      geo:
+        event.address.latitude != null && event.address.longitude != null
+          ? {
+              '@type': 'GeoCoordinates',
+              latitude: event.address.latitude,
+              longitude: event.address.longitude,
+            }
+          : undefined,
     }
   }
 
   return (
     <Helmet htmlAttributes={{ lang: locale }}>
-      <title>{`${event.label} - ${t('free_meditation_class')}`}</title>
-      <link href={event.url} rel="canonical" />
+      <title>{`${event.title} - ${t('free_meditation_class')}`}</title>
+      <link href={url} rel="canonical" />
       <meta content={description} name="description" />
       <meta content="event" property="og:type" />
-      <meta content={event.label} property="og:title" />
+      <meta content={event.title} property="og:title" />
       <meta content={description} property="og:description" />
-      <meta content={event.url} property="og:url" />
-      <meta content={event.languageCode} property="og:locale:alternate" />
-      {event.timing && (
-        <meta content={event.timing.firstDate.toISOString()} property="og:event:start_time" />
-      )}
-      {event.timing && event.timing.lastDate && (
-        <meta content={event.timing.lastDate?.toISOString()} property="og:event:end_time" />
-      )}
-      {event.images && event.images.length > 0 && (
-        <meta content={event.images[0].url} property="og:image" />
-      )}
+      <meta content={url} property="og:url" />
+      <meta content={languageCode} property="og:locale:alternate" />
+      {startDate && <meta content={startDate} property="og:event:start_time" />}
+      {image && <meta content={image} property="og:image" />}
       <script type="application/ld+json">{JSON.stringify(schema)}</script>
     </Helmet>
   )

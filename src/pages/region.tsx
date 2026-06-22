@@ -12,32 +12,36 @@ import { useViewState } from '@/config/store'
 import api from '@/config/api'
 import { useMapbox } from '@/hooks/use-mapbox'
 
-function RegionPanel({ regionId }: { regionId: number }) {
+function RegionPanel({ slug }: { slug: string }) {
   const { fitBounds } = useMapbox()
   const { t } = useTranslation('common')
   const setBoundary = useViewState((s) => s.setBoundary)
   const { data: region } = useSuspenseQuery({
-    queryKey: ['region', regionId],
-    queryFn: () => api.getRegion(regionId),
+    queryKey: ['region', slug],
+    queryFn: () => api.getRegion(slug),
   })
 
   useEffect(() => {
-    setBoundary(bboxPolygon(region.bounds))
-    fitBounds(region.bounds)
-  }, [region, fitBounds])
+    if (region.bounds) {
+      setBoundary(bboxPolygon(region.bounds))
+      fitBounds(region.bounds)
+    } else {
+      setBoundary(undefined)
+    }
+  }, [region, fitBounds, setBoundary])
 
   return (
     <>
       <Helmet>
-        <title>{t('locations.title', { location: region.label })}</title>
+        <title>{t('locations.title', { location: region.name })}</title>
         <meta
-          content={t('locations.description', { count: region.eventCount, location: region.label })}
+          content={t('locations.description', { count: region.eventCount, location: region.name })}
           name="description"
         />
       </Helmet>
       <SearchBar
-        header={region.label}
-        returnLink={region.parentPath}
+        header={region.name}
+        returnLink={region.parentPath ?? undefined}
         onSelect={(value) => console.log(value)}
       />
       <List>
@@ -47,7 +51,7 @@ function RegionPanel({ regionId }: { regionId: number }) {
             <ListItem
               key={area.id}
               count={area.eventCount}
-              label={area.label}
+              label={area.name}
               link={area.path}
               subtitle={area.subtitle}
             />
@@ -58,12 +62,12 @@ function RegionPanel({ regionId }: { regionId: number }) {
 }
 
 export default function RegionPage() {
-  let { id } = useParams()
+  let { slug } = useParams()
 
   // This wrapper is necessary because <Panel> contains an <ErrorBoundary> and <Suspense> to handle loading
   return (
     <Panel>
-      <RegionPanel regionId={Number(id)} />
+      <RegionPanel slug={slug || ''} />
     </Panel>
   )
 }

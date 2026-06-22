@@ -25,11 +25,11 @@ export const Default: Story = () => (
       <RegistrationModal
         isOpen
         eventId={mockEvent.id}
-        eventLabel={mockEvent.label}
-        eventRegistration={mockEvent.registration!}
-        eventTiming={mockEvent.timing!}
-        eventUrl={mockEvent.url}
-        isOnline={mockEvent.online}
+        eventTitle={mockEvent.title}
+        eventUrl={mockEvent.webUrl ?? ''}
+        isOnline={mockEvent.eventType === 'online'}
+        questions={['priorExperience', 'referralSource']}
+        upcomingDates={mockEvent.schedule?.upcomingDates ?? []}
         onOpenChange={() => {}}
       />
     </StorySection>

@@ -1,93 +1,375 @@
-import axios from 'axios'
+import type {
+  Area,
+  Country,
+  CountrySlim,
+  Event,
+  EventSlim,
+  GeoFeature,
+  Geojson,
+  Region,
+  RegionDoc,
+  RegionLevel,
+  Venue,
+} from '@/types'
+import type { GeoEvent } from '@/lib/shape'
+import type { Position } from 'geojson'
 
-import atlasAuth from './auth'
+import client from './client'
 
+import { GEOJSON_STALE_TIME, queryClient } from '@/config/query-client'
+import { centerOfBounds, distanceKm } from '@/lib/geo'
+import {
+  ancestorIdsFromBreadcrumbs,
+  boundsUnder,
+  countUnder,
+  eventPath,
+  eventsUnder,
+  regionPath,
+} from '@/lib/shape'
 import {
   AreaSchema,
+  ClientSchema,
   CountrySchema,
+  CountrySlimSchema,
+  EventSchema,
+  EventSlimSchema,
+  GeojsonSchema,
+  RegionDocSchema,
+  RegionListItemSchema,
   RegionSchema,
   VenueSchema,
-  CountrySlimSchema,
-  EventSlimSchema,
-  EventSchema,
 } from '@/types'
-import i18n from '@/config/i18n'
-import { ClientSchema } from '@/types'
 
-const client = axios.create({
-  baseURL: import.meta.env.VITE_API_ENDPOINT,
-  headers: {
-    'Content-type': 'application/json',
+// Most we return from a "near here" search, ordered by distance.
+const NEAREST_LIMIT = 50
+
+// The region fields populated into the geojson feed + raw region reads.
+const REGION_POPULATE = {
+  regions: { slug: true, name: true, level: true, subtitle: true, breadcrumbs: true },
+}
+
+// The event fields the geojson feed selects (must mirror FeedEventSchema).
+const FEED_SELECT = {
+  title: true,
+  eventType: true,
+  languages: true,
+  address: {
+    street: true,
+    room: true,
+    postCode: true,
+    country: true,
+    region: true,
+    city: true,
+    latitude: true,
+    longitude: true,
   },
-})
-
-client.interceptors.request.use((request) => {
-  request.headers['Authorization'] = `Bearer ${atlasAuth.apiKey}`
-
-  request.params = request.params || {}
-  request.params['locale'] = i18n.resolvedLanguage
-
-  return request
-})
-
-const getGeojson = async () => {
-  const response = await client.get('/geojson.json')
-
-  return response.data
+  schedule: {
+    firstDate: true,
+    firstDate_tz: true,
+    endTime: true,
+    recurrenceType: true,
+    upcomingDates: true,
+    icalRule: true,
+  },
+  region: true,
 }
 
-const getCountries = async () => {
-  const response = await client.get('/countries.json')
+// ── GeoJSON feed (single source of geometry + counts) ──────────────────────────
 
-  return CountrySlimSchema.array().parse(response.data)
+const getGeojson = async (): Promise<Geojson> => {
+  const response = await client.get('/events/geojson', {
+    params: { depth: 1, pagination: false, select: FEED_SELECT, populate: REGION_POPULATE },
+  })
+
+  return GeojsonSchema.parse(response.data)
 }
 
-const getEvents = async (latitude: number, longitude: number, onlineOnly: boolean = false) => {
-  const response = await client.get('/events.json', {
+// The hierarchy/events fetchers all need the same feed. Read it through the
+// shared React Query cache (the key the map also uses) so it's fetched + parsed
+// once per stale window rather than on every navigation.
+const loadGeojson = (): Promise<Geojson> =>
+  // fetchQuery (not ensureQueryData) so a feed older than the stale window is
+  // refetched rather than served indefinitely from cache.
+  queryClient.fetchQuery({
+    queryKey: ['geojson'],
+    queryFn: getGeojson,
+    staleTime: GEOJSON_STALE_TIME,
+  })
+
+// A feature paired with its region ancestry (direct region + breadcrumb chain).
+// `GeoEvent`-compatible, so the hierarchy helpers can aggregate over it while the
+// `feature` rides along for building the event list — computed once per feature.
+type IndexedFeature = GeoEvent & { feature: GeoFeature }
+
+const indexFeatures = (geojson: Geojson): IndexedFeature[] =>
+  geojson.features.map((feature) => ({
+    feature,
+    point: feature.geometry?.coordinates ?? null,
+    ancestorIds: [
+      ...new Set([
+        feature.properties.region.id,
+        ...ancestorIdsFromBreadcrumbs(feature.properties.region.breadcrumbs),
+      ]),
+    ],
+  }))
+
+const toSlim = (feature: GeoFeature, from?: Position): EventSlim =>
+  EventSlimSchema.parse({
+    ...feature.properties,
+    path: eventPath(feature.properties.id),
+    distance: from && feature.geometry ? distanceKm(from, feature.geometry.coordinates) : undefined,
+  })
+
+// ── Raw region reads ───────────────────────────────────────────────────────────
+
+const getRegionDoc = async (slug: string, level: RegionLevel): Promise<RegionDoc> => {
+  const response = await client.get('/regions', {
     params: {
-      latitude: latitude,
-      longitude: longitude,
-      online: onlineOnly,
+      where: { slug: { equals: slug }, level: { equals: level } },
+      depth: 1,
+      limit: 1,
+      select: {
+        slug: true,
+        name: true,
+        level: true,
+        subtitle: true,
+        mapboxId: true,
+        parent: true,
+        breadcrumbs: true,
+        legacyData: true,
+      },
+      populate: { regions: { slug: true, name: true, level: true } },
     },
   })
 
-  return EventSlimSchema.array().parse(response.data)
+  const doc = response.data?.docs?.[0]
+
+  if (!doc) throw new Error(`Region not found: ${level}/${slug}`)
+
+  return RegionDocSchema.parse(doc)
 }
 
-const getCountry = async (code: string) => {
-  const response = await client.get(`/countries/${code}.json`)
+const getChildRegions = async (parentId: number): Promise<RegionDoc[]> => {
+  const response = await client.get('/regions', {
+    params: {
+      where: { parent: { equals: parentId } },
+      depth: 0,
+      limit: 1000,
+      sort: 'name',
+      select: { slug: true, name: true, level: true, subtitle: true },
+    },
+  })
 
-  return CountrySchema.parse(response.data)
+  return RegionDocSchema.array().parse(response.data.docs)
 }
 
-const getRegion = async (id: number) => {
-  const response = await client.get(`/regions/${id}.json`)
+// ISO alpha-2 country code (drives the flag + localized name) survives on
+// legacyData. Validate the shape so a malformed value can't throw in
+// `Intl.DisplayNames`/`CircleFlag` downstream.
+const countryCodeOf = (doc: RegionDoc): string | undefined => {
+  const code = doc.legacyData?.countryCode
 
-  return RegionSchema.parse(response.data)
+  return typeof code === 'string' && /^[A-Za-z]{2}$/.test(code) ? code : undefined
 }
 
-const getArea = async (id: number) => {
-  const response = await client.get(`/areas/${id}.json`)
+const parentPathOf = (doc: RegionDoc): string | undefined =>
+  doc.parent && typeof doc.parent === 'object'
+    ? regionPath(doc.parent.level, doc.parent.slug)
+    : undefined
 
-  return AreaSchema.parse(response.data)
+const toListItem = (doc: RegionDoc, events: GeoEvent[]) =>
+  RegionListItemSchema.parse({
+    id: doc.id,
+    slug: doc.slug,
+    level: doc.level,
+    name: doc.name ?? doc.slug,
+    subtitle: doc.subtitle,
+    eventCount: countUnder(events, doc.id),
+    path: regionPath(doc.level, doc.slug),
+  })
+
+// ── Hierarchy fetchers (raw region + geojson-derived counts/bounds) ─────────────
+
+const getCountries = async (): Promise<CountrySlim[]> => {
+  const [geojson, response] = await Promise.all([
+    loadGeojson(),
+    client.get('/regions', {
+      params: {
+        where: { level: { equals: 'country' } },
+        depth: 0,
+        limit: 1000,
+        sort: 'name',
+        select: { slug: true, name: true, level: true, legacyData: true },
+      },
+    }),
+  ])
+
+  const events = indexFeatures(geojson)
+
+  return RegionDocSchema.array()
+    .parse(response.data.docs)
+    .map((doc) =>
+      CountrySlimSchema.parse({
+        id: doc.id,
+        slug: doc.slug,
+        name: doc.name ?? doc.slug,
+        countryCode: countryCodeOf(doc),
+        eventCount: countUnder(events, doc.id),
+        path: regionPath('country', doc.slug),
+      }),
+    )
+    .filter((country) => country.eventCount > 0)
 }
 
-const getVenue = async (id: number) => {
-  const response = await client.get(`/venues/${id}.json`)
+const getCountry = async (slug: string): Promise<Country> => {
+  const doc = await getRegionDoc(slug, 'country')
+  const [geojson, children] = await Promise.all([loadGeojson(), getChildRegions(doc.id)])
+  const events = indexFeatures(geojson)
 
-  return VenueSchema.parse(response.data)
+  return CountrySchema.parse({
+    id: doc.id,
+    slug: doc.slug,
+    name: doc.name ?? doc.slug,
+    countryCode: countryCodeOf(doc),
+    eventCount: countUnder(events, doc.id),
+    bounds: boundsUnder(events, doc.id),
+    path: regionPath('country', doc.slug),
+    children: children.map((child) => toListItem(child, events)).filter((c) => c.eventCount > 0),
+  })
 }
 
-const getEvent = async (id: number) => {
-  const response = await client.get(`/events/${id}.json`)
+const getRegion = async (slug: string): Promise<Region> => {
+  const doc = await getRegionDoc(slug, 'region')
+  const [geojson, children] = await Promise.all([loadGeojson(), getChildRegions(doc.id)])
+  const events = indexFeatures(geojson)
 
-  return EventSchema.parse(response.data)
+  return RegionSchema.parse({
+    id: doc.id,
+    slug: doc.slug,
+    name: doc.name ?? doc.slug,
+    eventCount: countUnder(events, doc.id),
+    bounds: boundsUnder(events, doc.id),
+    path: regionPath('region', doc.slug),
+    parentPath: parentPathOf(doc),
+    areas: children.map((child) => toListItem(child, events)).filter((c) => c.eventCount > 0),
+  })
 }
 
-const getClient = async (uuid: string) => {
-  const response = await client.get(`/clients/${uuid}.json`)
+const getArea = async (slug: string): Promise<Area> => {
+  const doc = await getRegionDoc(slug, 'city')
+  const geojson = await loadGeojson()
+  const events = indexFeatures(geojson)
+  const under = eventsUnder(events, doc.id)
 
-  return ClientSchema.parse(response.data)
+  return AreaSchema.parse({
+    id: doc.id,
+    slug: doc.slug,
+    name: doc.name ?? doc.slug,
+    subtitle: doc.subtitle,
+    eventCount: under.length,
+    bounds: boundsUnder(events, doc.id),
+    path: regionPath('city', doc.slug),
+    parentPath: parentPathOf(doc),
+    events: under.map((indexed) => toSlim(indexed.feature)),
+  })
+}
+
+const getVenue = async (slug: string): Promise<Venue> => {
+  const doc = await getRegionDoc(slug, 'center')
+  const geojson = await loadGeojson()
+  const events = indexFeatures(geojson)
+  const under = eventsUnder(events, doc.id)
+  const bounds = boundsUnder(events, doc.id)
+
+  return VenueSchema.parse({
+    id: doc.id,
+    slug: doc.slug,
+    name: doc.name ?? doc.slug,
+    eventCount: under.length,
+    center: bounds ? centerOfBounds(bounds) : null,
+    path: regionPath('center', doc.slug),
+    parentPath: parentPathOf(doc),
+    events: under.map((indexed) => toSlim(indexed.feature)),
+  })
+}
+
+// ── Events near a point (from the feed, sorted by distance) ─────────────────────
+
+const getEvents = async (
+  latitude: number,
+  longitude: number,
+  onlineOnly: boolean = false,
+): Promise<EventSlim[]> => {
+  const geojson = await loadGeojson()
+  const from: Position = [longitude, latitude]
+
+  return geojson.features
+    .filter((feature) => (onlineOnly ? feature.properties.eventType === 'online' : true))
+    .map((feature) => toSlim(feature, from))
+    .sort((a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity))
+    .slice(0, NEAREST_LIMIT)
+}
+
+// ── Single event detail ─────────────────────────────────────────────────────────
+
+const getEvent = async (id: number): Promise<Event> => {
+  const response = await client.get(`/events/${id}`, {
+    params: {
+      depth: 1,
+      select: {
+        title: true,
+        eventType: true,
+        languages: true,
+        onlineUrl: true,
+        address: true,
+        schedule: true,
+        description: true,
+        images: true,
+        contactPhone: true,
+        contactName: true,
+        registrationMode: true,
+        externalRegistrationUrl: true,
+        registrationLimit: true,
+        registrationQuestions: true,
+        region: true,
+        webUrl: true,
+      },
+      populate: {
+        ...REGION_POPULATE,
+        images: { url: true, thumbnailURL: true, alt: true },
+      },
+    },
+  })
+
+  return EventSchema.parse({ ...response.data, path: eventPath(response.data.id) })
+}
+
+// ── Widget bootstrap (client config + atlas-wide defaults) ───────────────────────
+
+const getClient = async () => {
+  const response = await client.get('/clients/me', {
+    params: {
+      depth: 1,
+      select: {
+        name: true,
+        locale: true,
+        color1: true,
+        color2: true,
+        color3: true,
+        allowedDomains: true,
+        clientId: true,
+        region: true,
+        legacyConfig: true,
+      },
+      populate: { regions: { slug: true, name: true, level: true } },
+    },
+  })
+
+  const user = response.data?.user
+
+  if (!user) throw new Error('Not authenticated as an Atlas client')
+
+  return ClientSchema.parse(user)
 }
 
 export default {
