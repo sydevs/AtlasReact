@@ -1,7 +1,7 @@
 // originally written by @imoaazahmed; reworked to observe the root class so a
 // single theme signal drives NextUI, Tailwind, and the Mapbox basemap.
 
-import { useCallback, useSyncExternalStore } from 'react'
+import { useSyncExternalStore } from 'react'
 
 const ThemeProps = {
   key: 'theme',
@@ -29,7 +29,9 @@ const getSnapshot = (): Theme =>
 // Stories and unit tests render via renderToStaticMarkup (no DOM); default light.
 const getServerSnapshot = (): Theme => ThemeProps.light
 
-const applyTheme = (theme: Theme) => {
+// The single seam for writing the theme to the root class — used by useTheme's
+// setters, initTheme, and the Ladle decorator so the mechanism never drifts.
+export const applyTheme = (theme: Theme) => {
   const root = document.documentElement
 
   root.classList.remove(ThemeProps.light, ThemeProps.dark)
@@ -53,26 +55,20 @@ export const initTheme = (defaultTheme: Theme = ThemeProps.light) => {
 export const useTheme = () => {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
-  const setTheme = useCallback((next: Theme) => {
+  const setTheme = (next: Theme) => {
     localStorage.setItem(ThemeProps.key, next)
     applyTheme(next)
-  }, [])
-
-  const setLightTheme = useCallback(() => setTheme(ThemeProps.light), [setTheme])
-  const setDarkTheme = useCallback(() => setTheme(ThemeProps.dark), [setTheme])
-  // Read the live class rather than closing over `theme`, so the callback stays
-  // stable and never toggles from a stale value.
-  const toggleTheme = useCallback(
-    () => setTheme(getSnapshot() === ThemeProps.dark ? ThemeProps.light : ThemeProps.dark),
-    [setTheme],
-  )
+  }
 
   return {
     theme,
     isDark: theme === ThemeProps.dark,
     isLight: theme === ThemeProps.light,
-    setLightTheme,
-    setDarkTheme,
-    toggleTheme,
+    setLightTheme: () => setTheme(ThemeProps.light),
+    setDarkTheme: () => setTheme(ThemeProps.dark),
+    // Read the live class rather than closing over `theme`, so the toggle never
+    // acts on a stale value.
+    toggleTheme: () =>
+      setTheme(getSnapshot() === ThemeProps.dark ? ThemeProps.light : ThemeProps.dark),
   }
 }

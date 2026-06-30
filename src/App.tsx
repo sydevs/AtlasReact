@@ -12,7 +12,6 @@ import MapLayout from './layouts/map'
 import api from './config/api'
 
 import { regionPath } from '@/lib/shape'
-import { initTheme } from '@/hooks/use-theme'
 import { ErrorFallback, LoadingFallback } from '@/components/atoms'
 import EventPage from '@/pages/event'
 import VenuePage from '@/pages/venue'
@@ -32,11 +31,6 @@ type AppProps = {
 }
 
 export default function App(props: AppProps) {
-  // Restore the persisted (or default) theme once on mount. Afterwards useTheme
-  // and ThemeSwitch keep the root class in sync; the Ladle decorator drives it
-  // there instead (stories don't render App).
-  useEffect(() => initTheme(), [])
-
   return (
     <Providers>
       <Suspense fallback={<LoadingFallback />}>

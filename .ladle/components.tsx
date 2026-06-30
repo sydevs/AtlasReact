@@ -8,6 +8,7 @@ import { I18nextProvider } from 'react-i18next'
 import storyI18n from './i18n'
 
 import Providers from '@/providers'
+import { applyTheme } from '@/hooks/use-theme'
 
 import '@/styles/globals.css'
 
@@ -24,40 +25,35 @@ import '@/styles/globals.css'
 // globals.css explicitly.
 //
 // Theme: Ladle's own light/dark/auto toggle drives the whole canvas. We map its
-// active theme onto the root `light`/`dark` class that Tailwind (darkMode:
-// 'class'), NextUI, and useTheme all read — so flipping Ladle's toggle re-themes
-// every story, including the Mapbox basemap (which follows useTheme). `auto`
-// resolves against the OS preference and tracks it live.
+// active theme onto the root `light`/`dark` class — through the same applyTheme
+// seam useTheme uses — that Tailwind (darkMode: 'class'), NextUI, and useTheme
+// all read, so flipping Ladle's toggle re-themes every story, including the
+// Mapbox basemap (which follows useTheme). `auto` resolves against the OS
+// preference and tracks it live. The canvas background is left to Ladle's own
+// theme so it matches the surrounding chrome.
 export const Provider: GlobalProvider = ({ children }) => {
   const { globalState } = useLadleContext()
   const ladleTheme = globalState.theme
 
   useEffect(() => {
-    const root = document.documentElement
-
-    const apply = (dark: boolean) => {
-      root.classList.toggle('dark', dark)
-      root.classList.toggle('light', !dark)
-    }
-
     if (ladleTheme === ThemeState.Auto) {
       const media = window.matchMedia('(prefers-color-scheme: dark)')
-      const onChange = (event: MediaQueryListEvent) => apply(event.matches)
+      const sync = () => applyTheme(media.matches ? 'dark' : 'light')
 
-      apply(media.matches)
-      media.addEventListener('change', onChange)
+      sync()
+      media.addEventListener('change', sync)
 
-      return () => media.removeEventListener('change', onChange)
+      return () => media.removeEventListener('change', sync)
     }
 
-    apply(ladleTheme === ThemeState.Dark)
+    applyTheme(ladleTheme === ThemeState.Dark ? 'dark' : 'light')
   }, [ladleTheme])
 
   return (
     <I18nextProvider i18n={storyI18n}>
       <MemoryRouter>
         <Providers>
-          <main className="min-h-screen bg-background p-6 text-foreground">{children}</main>
+          <main className="min-h-screen p-6 text-foreground">{children}</main>
         </Providers>
       </MemoryRouter>
     </I18nextProvider>
