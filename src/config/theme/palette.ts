@@ -83,7 +83,8 @@ const foregroundFor = (c: Colord) =>
 
 // Dark-mode tone shift (Material 3 tonal guidance: preserve hue, raise tone,
 // desaturate slightly) so a dark brand color stays visible on the dark canvas
-// instead of vanishing into it. Light brand colors are nudged up only if needed.
+// instead of vanishing into it. Lightness is clamped into a mid-high band (any
+// seed lands somewhere visible); saturation is eased back slightly.
 const darkTone = (c: Colord): Colord => {
   const { h, s, l } = c.toHsl()
 
@@ -117,21 +118,22 @@ const setRole = (root: HTMLElement, token: string, seedHex: string, mode: ThemeM
 
   const scale = buildScale(seedHex)
 
-  for (const shade of Object.keys(SCALE_LIGHTNESS)) {
-    root.style.setProperty(
-      `--nextui-${token}-${shade}`,
-      scale[shade as unknown as keyof ColorScale],
-    )
+  for (const [shade, value] of Object.entries(scale)) {
+    if (shade === 'DEFAULT' || shade === 'foreground') continue
+    root.style.setProperty(`--nextui-${token}-${shade}`, value)
   }
 
-  // DEFAULT + foreground are the most visible (bg-primary / text-primary). In
-  // light mode use the seed verbatim; in dark mode use the lightened tone.
-  const base = mode === 'dark' ? darkTone(seed) : seed
+  // DEFAULT + foreground are the most visible (bg-primary / text-primary). Light
+  // mode uses the scale's seed-based values as-is; dark lightens the tone so a
+  // dark brand color stays visible on the dark canvas.
+  const tone = mode === 'dark' ? darkTone(seed) : null
+  const base = tone ? toChannel(tone) : scale.DEFAULT
+  const foreground = tone ? foregroundFor(tone) : scale.foreground
 
-  root.style.setProperty(`--nextui-${token}`, toChannel(base))
-  root.style.setProperty(`--nextui-${token}-foreground`, foregroundFor(base))
+  root.style.setProperty(`--nextui-${token}`, base)
+  root.style.setProperty(`--nextui-${token}-foreground`, foreground)
 
-  return toChannel(base)
+  return base
 }
 
 // Repaint a root element in the supplied palette by writing NextUI's CSS vars
@@ -149,9 +151,11 @@ export function applyPalette(root: HTMLElement, palette: PaletteRoles, mode: The
 
   // The background override applies to light mode only; dark keeps its dark
   // neutral, so we clear any previously-set value when flipping to dark.
-  if (palette.background && colord(palette.background).isValid()) {
+  const background = palette.background ? colord(palette.background) : null
+
+  if (background?.isValid()) {
     if (mode === 'light') {
-      root.style.setProperty('--nextui-background', toChannel(colord(palette.background)))
+      root.style.setProperty('--nextui-background', toChannel(background))
     } else {
       root.style.removeProperty('--nextui-background')
     }

@@ -11,7 +11,7 @@ import { useNavigationState } from './config/store'
 import { useLocale } from './hooks/use-locale'
 import Providers from './providers'
 import MapLayout from './layouts/map'
-import api from './config/api'
+import { clientQuery } from './config/api'
 import { BrandTheme } from './config/theme/BrandTheme'
 
 import { regionPath } from '@/lib/shape'
@@ -31,7 +31,9 @@ import i18n from '@/config/i18n'
 type AppProps = {
   apiKey: string | undefined | null
   defaultLocale?: string | null
-  // Per-embed brand palette + the wrapper to scope theming to (widget only).
+  // Per-embed brand palette. Theming itself is app-wide (standalone also paints
+  // the client's colors onto <html>); only `themeRootRef` — the widget wrapper
+  // to scope the vars + theme class to — is widget-specific.
   brand?: PaletteRoles
   themeRootRef?: RefObject<HTMLElement | null>
 }
@@ -57,10 +59,7 @@ function AppRouter({ apiKey, defaultLocale }: AppProps) {
     throw new Error('Missing api key.')
   }
 
-  const { data: client } = useSuspenseQuery({
-    queryKey: ['client', apiKey],
-    queryFn: () => api.getClient(),
-  })
+  const { data: client } = useSuspenseQuery(clientQuery(apiKey))
 
   // The widget's home view is its configured region; fall back to the search index.
   const initialPath =

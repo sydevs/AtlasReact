@@ -18,7 +18,9 @@ type Theme = typeof ThemeProps.light | typeof ThemeProps.dark
 // page's <html> — its brand vars and theme class stay inside the widget.
 let themeRoot: HTMLElement | null = null
 
-const getThemeRoot = (): HTMLElement => themeRoot ?? document.documentElement
+// The element the theme machinery reads/writes — the single source of truth for
+// "what is the theme root", shared by useTheme and BrandTheme's palette paint.
+export const getThemeRoot = (): HTMLElement => themeRoot ?? document.documentElement
 
 // Subscriptions that must re-observe when the root element changes (see
 // subscribe). A Set so each live useTheme caller re-attaches its observer.

@@ -1,9 +1,9 @@
 import { useLayoutEffect, useMemo, type ReactNode, type RefObject } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
-import api from '@/config/api'
+import { clientQuery } from '@/config/api'
 import { applyPalette, type PaletteRoles } from '@/config/theme/palette'
-import { setThemeRoot, useTheme } from '@/hooks/use-theme'
+import { getThemeRoot, setThemeRoot, useTheme } from '@/hooks/use-theme'
 
 type BrandThemeProps = {
   // The widget's own service record supplies the fallback palette; its key is
@@ -27,8 +27,7 @@ export function BrandTheme({ apiKey, palette, rootRef, children }: BrandThemePro
   const { theme } = useTheme()
 
   const { data: client } = useQuery({
-    queryKey: ['client', apiKey],
-    queryFn: () => api.getClient(),
+    ...clientQuery(apiKey),
     enabled: !!apiKey,
   })
 
@@ -54,9 +53,10 @@ export function BrandTheme({ apiKey, palette, rootRef, children }: BrandThemePro
   useLayoutEffect(() => {
     if (typeof document === 'undefined') return
 
-    if (rootRef?.current) setThemeRoot(rootRef.current)
-
-    applyPalette(rootRef?.current ?? document.documentElement, resolved, theme)
+    // Adopt the widget wrapper as the theme root (null → stays <html>), then
+    // paint the resolved palette onto whichever element that resolves to.
+    setThemeRoot(rootRef?.current ?? null)
+    applyPalette(getThemeRoot(), resolved, theme)
   }, [resolved, theme, rootRef])
 
   return <>{children}</>
