@@ -25,7 +25,7 @@ export function EventItem({ event }: EventItemProps) {
 
   return (
     <Link
-      className="block px-6 text-inherit transition-colors hover:bg-primary-10"
+      className="block px-6 text-inherit transition-colors hover:bg-primary-10 dark:hover:bg-default-100"
       href={event.path}
     >
       <li key={event.id} className="flex-center-y py-5 border-b border-divider min-h-36">
@@ -42,7 +42,7 @@ export function EventItem({ event }: EventItemProps) {
               : t('details.contact_for_timing')}
           </div>
           {event.recurrenceType && (
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-default-500">
               <EventTime
                 delay={500}
                 duration={event.duration}

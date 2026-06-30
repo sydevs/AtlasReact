@@ -12,7 +12,10 @@ export interface ListItemProps {
 
 export function ListItem({ label, subtitle, count, href, children }: ListItemProps) {
   return (
-    <Link className="px-6 block text-inherit transition-colors hover:bg-primary-10" href={href}>
+    <Link
+      className="px-6 block text-inherit transition-colors hover:bg-primary-10 dark:hover:bg-default-100"
+      href={href}
+    >
       <li className="py-5 flex flex-row items-center font-semibold border-b border-divider">
         {children}
         <div className="text-lg flex-grow">

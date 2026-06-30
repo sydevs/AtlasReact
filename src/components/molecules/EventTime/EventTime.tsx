@@ -1,4 +1,17 @@
-import { Tooltip } from '@nextui-org/react'
+import { useState } from 'react'
+import {
+  useFloating,
+  autoUpdate,
+  offset,
+  flip,
+  shift,
+  useHover,
+  useFocus,
+  useDismiss,
+  useRole,
+  useInteractions,
+  FloatingPortal,
+} from '@floating-ui/react'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 
@@ -41,25 +54,61 @@ type TimezoneChipProps = {
 }
 
 /**
- * Private to EventTime: a timezone-abbreviation chip whose tooltip shows the
- * full zone name and UTC offset. A single-use composition over `Chip` — it
- * carries date/tooltip logic that the `Chip` atom must stay free of, so it lives
- * here rather than in the atom layer.
+ * Private to EventTime: a timezone-abbreviation chip whose tooltip shows the full
+ * zone name and UTC offset. A single-use composition over `Chip` — it carries
+ * date/tooltip logic the `Chip` atom must stay free of, so it lives here.
+ *
+ * The tooltip is built on `@floating-ui/react` (same library as the Dropdown
+ * atom): the bubble is portaled — so it is never clipped by an ancestor's
+ * `overflow` (the event panel scrolls) — and viewport-aware (flip/shift). The
+ * trigger is `inline-flex`, never `block`, so it sits inline with the time text
+ * without stretching the line it anchors to.
  */
 function TimezoneChip({ time, delay = 0 }: TimezoneChipProps) {
   const { t } = useTranslation('events')
-  const { abbreviation, name, offset } = formatTimeZone(time)
-  const tooltip = t('timing.converted_to', { timezone: name, offset })
+  const { abbreviation, name, offset: utcOffset } = formatTimeZone(time)
+  const tooltip = t('timing.converted_to', { timezone: name, offset: utcOffset })
+
+  const [isOpen, setIsOpen] = useState(false)
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    placement: 'top',
+    whileElementsMounted: autoUpdate,
+    middleware: [offset(6), flip({ padding: 8 }), shift({ padding: 8 })],
+  })
+
+  const hover = useHover(context, { delay: { open: delay, close: 0 }, move: false })
+  const focus = useFocus(context)
+  const dismiss = useDismiss(context)
+  const role = useRole(context, { role: 'tooltip' })
+  const { getReferenceProps, getFloatingProps } = useInteractions([hover, focus, dismiss, role])
 
   return (
-    <Tooltip className="max-w-64" closeDelay={0} content={tooltip} delay={delay} placement="top">
-      <abbr>
-        {' '}
-        {/* Tooltip wrapper needed for forwardRef to work */}
+    <>
+      {' '}
+      <button
+        ref={refs.setReference}
+        className="inline-flex cursor-default align-middle"
+        type="button"
+        {...getReferenceProps()}
+      >
         <Chip color="primary" size="sm" variant="light">
           {abbreviation}
         </Chip>
-      </abbr>
-    </Tooltip>
+      </button>
+      {isOpen && (
+        <FloatingPortal>
+          <div
+            ref={refs.setFloating}
+            className="z-50 max-w-64 rounded-md bg-foreground px-2 py-1 text-small text-background shadow-md"
+            style={floatingStyles}
+            {...getFloatingProps()}
+          >
+            {tooltip}
+          </div>
+        </FloatingPortal>
+      )}
+    </>
   )
 }

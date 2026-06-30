@@ -8,13 +8,12 @@ export type { NavbarProps } from './Navbar'
 export { SearchBar } from './SearchBar'
 export type { SearchBarProps } from './SearchBar'
 
-export { List } from './List'
+// List also surfaces its ListHeader sub-component (back link + title).
+export { List, ListHeader } from './List'
+export type { ListHeaderProps } from './List'
 
 export { ListItem } from './ListItem'
 export type { ListItemProps } from './ListItem'
-
-export { ListHeader } from './ListHeader'
-export type { ListHeaderProps } from './ListHeader'
 
 export { EventItem } from './EventItem'
 export type { EventItemProps } from './EventItem'

@@ -40,8 +40,12 @@ export const Default: Story = () => (
       title="Time Zone"
     >
       <div className="flex flex-col gap-2">
-        <EventTime duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
-        <EventTime showTimeZone duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
+        <div>
+          <EventTime duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
+        </div>
+        <div>
+          <EventTime showTimeZone duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
+        </div>
       </div>
     </StorySection>
 

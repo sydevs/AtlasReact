@@ -7,10 +7,14 @@ export interface ListHeaderProps {
   backHref: string
 }
 
+/**
+ * Sub-component of `List`: a centered title with an up-arrow back link, rendered
+ * above a `List` to navigate up the country → region → area hierarchy.
+ */
 export function ListHeader({ title, backHref }: ListHeaderProps) {
   return (
-    <h1 className="text-2xl font-bold text-center p-2 flex flex-row items-center">
-      <Link className="text-3xl" href={backHref}>
+    <h1 className="text-lg font-bold text-center p-2 flex flex-row items-center">
+      <Link href={backHref}>
         <UpArrowIcon />
       </Link>
       <span className="flex-grow">{title}</span>

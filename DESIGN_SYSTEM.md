@@ -68,15 +68,14 @@ here is **organisms own data/network/map lifecycles; atoms and molecules don't.*
 | ------------------- | ---------------------------------------------- | -------------------------------------- |
 | `Navbar/`           | `Navbar`                                        | Logo + theme switch + language         |
 | `SearchBar/`        | `SearchBar`                                     | Search input; reads `useSearchState`   |
-| `List/`             | `List`                                          | Scrollable `<ul>` container            |
+| `List/`             | `List`, `ListHeader`                            | Scrollable `<ul>` container + its back-link/title header sub-component |
 | `ListItem/`         | `ListItem`                                      | Generic labelled list row              |
-| `ListHeader/`       | `ListHeader`                                    | Back-button + title row                |
 | `EventItem/`        | `EventItem`                                     | Per-event summary card in a list       |
 | `EventTime/`        | `EventTime`                                     | Formatted event time range (timezone chip is a private composition) |
 | `EventShare/`       | `ShareButton`, `ShareContent`                   | Share button + the shared URL/social block (modal is private) |
 | `EventImages/`      | `EventImages`                                   | Swiper image carousel                  |
 | `EventSoon/`        | `EventSoonChip`                                 | "Starting soon" chip (the `isSoon` predicate lives in `src/lib`) |
-| `EventMetadata/`    | `EventMetadata`                                 | Schema.org / OG `<head>` tags (Helmet) |
+| `EventMetadata/`    | `EventMetadata`                                 | Schema.org / OG `<head>` tags (Helmet); renders no visible UI, so it has **no story** |
 
 **Organisms** (`src/components/organisms/`)
 
@@ -115,6 +114,7 @@ are the template tier and are not re-exported through the component barrels.
   5. **`EventShare/`** — `ShareButton` + the shared `ShareContent` block (reused by
      the registration "thank you" screen); the modal stays private.
   6. **`Fallbacks/`** — `LoadingFallback` + `ErrorFallback` (pending split into two folders).
+  7. **`List/`** — `List` + its `ListHeader` sub-component (back link + title).
 - **App code (pages, layouts, stories) imports from the tier barrel**:
   `import { Chip } from '@/components/atoms'`. The barrel is the public surface;
   layout can change behind it.
@@ -186,7 +186,9 @@ wrapper that only renames props — it's maintenance with no payoff.
 ## Previews (Ladle)
 
 Every **atom, molecule, and non-map organism** has a co-located
-`<Name>.stories.tsx` — a single consolidated `Default` story built from the shared
+`<Name>.stories.tsx` — the one exception is `EventMetadata`, which renders only
+`<head>` tags and so has no story. Each story is a single consolidated `Default`
+story built from the shared
 `StoryWrapper` / `StorySection` / `StoryGrid` helpers in
 [`src/components/ladle/`](src/components/ladle/), kept in **parity with
 WeMeditateWeb**. Map organisms get lighter, token-gated coverage. Run `pnpm ladle`
