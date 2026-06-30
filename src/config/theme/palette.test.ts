@@ -39,6 +39,12 @@ describe('buildScale', () => {
     // becomes a vivid color from colord's hue=0 convention.
     expect(parse(buildScale('#333333').DEFAULT).s).toBeLessThan(10)
   })
+
+  it('caps a near-white solid so it stays visible on the light canvas', () => {
+    // A near-white seed (#fafafa, L98) would be invisible as bg-primary; the solid
+    // lightness is capped, mirroring the dark-mode floor.
+    expect(parse(buildScale('#fafafa').DEFAULT).l).toBeLessThanOrEqual(70)
+  })
 })
 
 describe('foreground contrast', () => {

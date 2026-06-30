@@ -87,8 +87,11 @@ const foregroundFor = (c: Colord) =>
 // is the brand color itself (capped), lifted to a visible tone in dark mode.
 const MAX_SATURATION = 60
 
-// In dark mode the solid is lifted to at least this lightness so a dark brand
-// color stays visible on the dark canvas.
+// Keep the solid visible against the canvas at either extreme: light mode caps
+// the lightness (a near-white brand wouldn't show on the light page), dark mode
+// floors it (a near-black brand wouldn't show on the dark page). A normal
+// mid-toned brand sits between these and is used as-is.
+const LIGHT_MAX_LIGHTNESS = 70
 const DARK_MIN_LIGHTNESS = 60
 
 const darkTone = (seed: Colord): Colord => {
@@ -110,7 +113,7 @@ export function buildScale(seedHex: string): ColorScale {
     Object.entries(SCALE_LIGHTNESS).map(([shade, stepL]) => [shade, channel(h, saturation, stepL)]),
   ) as Omit<ColorScale, 'DEFAULT' | 'foreground'>
 
-  const solid = colord({ h, s: saturation, l })
+  const solid = colord({ h, s: saturation, l: Math.min(l, LIGHT_MAX_LIGHTNESS) })
 
   return {
     ...steps,
