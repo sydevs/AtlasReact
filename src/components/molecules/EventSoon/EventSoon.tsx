@@ -13,13 +13,12 @@ export type EventSoonChipProps = {
 
 export function EventSoonChip({ firstDate, online }: EventSoonChipProps) {
   const date = useMemo(() => DateTime.fromJSDate(firstDate), [firstDate])
+  const { t } = useTranslation('events')
+  const { locale } = useLocale()
 
   if (!isSoon(date, online)) {
     return null
   }
-
-  const { t } = useTranslation('events')
-  const { locale } = useLocale()
 
   return (
     <Chip color="primary">

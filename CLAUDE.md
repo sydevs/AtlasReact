@@ -48,7 +48,7 @@ pnpm dev          # Vite dev server (http://localhost:5173)
 pnpm build        # tsc (typecheck) + vite build → dist/
 pnpm preview      # serve the production build locally
 pnpm typecheck    # tsc --noEmit (app + tests/scripts via tsconfig.test.json)
-pnpm lint         # eslint . (report only)
+pnpm lint         # eslint . --max-warnings 0 (CI gate — fails on any warning)
 pnpm lint:fix     # eslint . --fix (auto-fix + Prettier)
 pnpm test         # vitest watch (fast unit lane)
 pnpm test:run     # vitest run (one-shot — CI + pre-PR gate)

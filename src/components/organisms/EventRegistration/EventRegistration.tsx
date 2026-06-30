@@ -43,9 +43,11 @@ export type RegistrationButtonProps = {
 } & ButtonProps
 
 export function RegistrationButton({ event, ...buttonProps }: RegistrationButtonProps) {
-  if (!event.registration || !event.timing) return null
   const { t } = useTranslation('events')
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+  if (!event.registration || !event.timing) return null
+
   const isNative = event.registration.mode == 'native'
 
   if (isNative) {

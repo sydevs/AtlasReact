@@ -105,11 +105,11 @@ export function SearchBar({
       )}
       {!isMd && eventCount && (
         <div className="mt-2 text-center text-sm font-semibold uppercase leading-snug">
-          <span className="hover:underline cursor-pointer" onClick={executeScroll}>
+          <button className="hover:underline cursor-pointer" type="button" onClick={executeScroll}>
             {eventCount} {t('events')}
             <br />
             <DownArrowIcon className="inline -mt-1" />
-          </span>
+          </button>
         </div>
       )}
     </div>

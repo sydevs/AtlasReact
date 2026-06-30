@@ -39,7 +39,7 @@ function CountryPanel({ countryCode }: { countryCode: string }) {
           name="description"
         />
       </Helmet>
-      <SearchBar backHref="/search" header={countryName} onSelect={(value) => console.log(value)} />
+      <SearchBar backHref="/search" header={countryName} />
       <List>
         {country.children.map(
           (child) =>

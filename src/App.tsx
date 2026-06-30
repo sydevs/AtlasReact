@@ -18,7 +18,6 @@ import AreaPage from '@/pages/area'
 import RegionPage from '@/pages/region'
 import CountryPage from '@/pages/country'
 import IndexPage from '@/pages/index'
-
 import '@/styles/globals.css'
 import '@/config/i18n'
 import i18n from '@/config/i18n'
@@ -70,13 +69,15 @@ function AppRouter({ apiKey, defaultLocale }: AppProps) {
 
   if (import.meta.env.VITE_FATHOM_ID && !client.domain.includes('localhost')) {
     Fathom.load(import.meta.env.VITE_FATHOM_ID)
+  }
 
-    useEffect(() => {
+  useEffect(() => {
+    if (import.meta.env.VITE_FATHOM_ID && !client.domain.includes('localhost')) {
       Fathom.trackPageview({
         url: `https://${client.domain}/${location.pathname}`,
       })
-    }, [location])
-  }
+    }
+  }, [location])
 
   return (
     <>
