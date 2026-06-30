@@ -23,6 +23,7 @@ where the structural change isn't apparent from individual diffs.]
 
 - Lint: ✓ No errors (`pnpm lint`)
 - Types: ✓ Clean (`pnpm typecheck`)
+- Tests: ✓ Unit lane green (`pnpm test:run`)
 - Build: ✓ Success (`pnpm build`) — or "N/A — no build-affecting changes"
 
 ## Manual / visual verification (optional)
