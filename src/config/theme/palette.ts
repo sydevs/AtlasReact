@@ -45,11 +45,9 @@ export type ColorScale = {
   900: string
 }
 
-// Per-step lightness (HSL L%) lifted from the hand-tuned TEAL_COLOR ramp in
-// tailwind.config.js. We keep the seed's hue + saturation and only walk this
-// lightness ladder, so a generated scale carries the same visual weight at each
-// step as today's default (a near-linear 5%/step ramp, with `10` a light tint).
-// Verified by palette.test.ts against the original teal hexes.
+// Per-step lightness (HSL L%) — the hand-tuned default ramp's near-linear ladder
+// (≈5%/step from 50→900, with `10` a light tint). Generated scales walk this at
+// a fixed saturation and the input hue (see SCALE_SATURATION).
 const SCALE_LIGHTNESS: Record<keyof Omit<ColorScale, 'DEFAULT' | 'foreground'>, number> = {
   10: 96,
   50: 80,
@@ -81,46 +79,41 @@ const WHITE = '0 0% 100%'
 const foregroundFor = (c: Colord) =>
   c.contrast('#000000') >= c.contrast('#ffffff') ? BLACK : WHITE
 
-// The brand palette is deliberately muted (the default teal sits near 23%
-// saturation, orange near 63%). A very saturated seed — e.g. a vivid green —
-// would generate neon shades that read as harsh/glowing next to the rest of the
-// UI and unreadable as tinted text, so cap saturation to keep generated scales
-// in the same calm register. Low-saturation seeds pass through untouched.
-const MAX_SATURATION = 60
+// Generated scales take ONLY the input hue. Saturation is fixed and lightness
+// follows SCALE_LIGHTNESS, so every brand hue yields the same consistent,
+// readable range — in the spirit of Radix's color scales — regardless of how
+// saturated or light the seed was: a neon seed and a muted one at the same hue
+// produce the identical scale. (The built-in ramps work the same way — a
+// constant saturation over a lightness ladder: teal ≈ 23%, orange ≈ 62%.)
+const SCALE_SATURATION = 60
 
-const muted = (c: Colord): Colord => {
-  const { h, s, l } = c.toHsl()
+// The solid brand color (DEFAULT). In light mode it sits at the 400 step,
+// matching the built-in teal/orange whose DEFAULT is their own 400; in dark mode
+// it shifts to a lighter step so it stays visible on the dark canvas.
+const DEFAULT_LIGHTNESS = SCALE_LIGHTNESS[400]
+const DARK_DEFAULT_LIGHTNESS = SCALE_LIGHTNESS[200]
 
-  return s <= MAX_SATURATION ? c : colord({ h, s: MAX_SATURATION, l })
-}
+const darkTone = (h: number): Colord =>
+  colord({ h, s: SCALE_SATURATION, l: DARK_DEFAULT_LIGHTNESS })
 
-// Dark-mode tone shift (Material 3 tonal guidance: preserve hue, raise tone,
-// desaturate slightly) so a dark brand color stays visible on the dark canvas
-// instead of vanishing into it. Lightness is clamped into a mid-high band (any
-// seed lands somewhere visible); saturation is eased back slightly.
-const darkTone = (c: Colord): Colord => {
-  const { h, s, l } = c.toHsl()
-
-  return colord({ h, s: s * 0.9, l: Math.min(Math.max(l, 60), 82) })
-}
-
-// Derive a NextUI color scale from a seed hex: the seed *is* the DEFAULT (so a
-// tenant's chosen brand color is used as-is in light mode), the 10…900 steps
-// follow SCALE_LIGHTNESS at the seed's hue/saturation, and `foreground` is the
-// readable on-color for the DEFAULT. Mode-aware DEFAULT/foreground for dark mode
-// are computed in applyPalette; this scale is the light-mode/canonical form.
+// Derive a NextUI color scale from a seed hex using ONLY its hue: the 10…900
+// steps walk SCALE_LIGHTNESS at the fixed SCALE_SATURATION, the DEFAULT is the
+// 400-step solid, and `foreground` is its readable on-color. Mode-aware
+// DEFAULT/foreground for dark mode are computed in applyPalette; this scale is
+// the light-mode/canonical form.
 export function buildScale(seedHex: string): ColorScale {
-  const seed = muted(colord(seedHex))
-  const { h, s } = seed.toHsl()
+  const { h } = colord(seedHex).toHsl()
 
   const steps = Object.fromEntries(
-    Object.entries(SCALE_LIGHTNESS).map(([shade, l]) => [shade, channel(h, s, l)]),
+    Object.entries(SCALE_LIGHTNESS).map(([shade, l]) => [shade, channel(h, SCALE_SATURATION, l)]),
   ) as Omit<ColorScale, 'DEFAULT' | 'foreground'>
+
+  const solid = colord({ h, s: SCALE_SATURATION, l: DEFAULT_LIGHTNESS })
 
   return {
     ...steps,
-    DEFAULT: toChannel(seed),
-    foreground: foregroundFor(seed),
+    DEFAULT: toChannel(solid),
+    foreground: foregroundFor(solid),
   }
 }
 
@@ -136,10 +129,9 @@ const setRole = (root: HTMLElement, token: string, seedHex: string, mode: ThemeM
     root.style.setProperty(`--nextui-${token}-${shade}`, value)
   }
 
-  // DEFAULT + foreground are the most visible (bg-primary / text-primary). Light
-  // mode uses the scale's seed-based values as-is; dark lightens the tone so a
-  // dark brand color stays visible on the dark canvas.
-  const tone = mode === 'dark' ? darkTone(muted(seed)) : null
+  // DEFAULT + foreground are the most visible (bg-primary / text-primary). Dark
+  // mode shifts the solid to a lighter tone so it stays visible on the dark canvas.
+  const tone = mode === 'dark' ? darkTone(seed.toHsl().h) : null
   const base = tone ? toChannel(tone) : scale.DEFAULT
   const foreground = tone ? foregroundFor(tone) : scale.foreground
 

@@ -3,23 +3,6 @@ import { colord } from 'colord'
 
 import { buildScale, applyPalette, type ColorScale } from './palette'
 
-// The hand-tuned default ramp from tailwind.config.js — buildScale should
-// reproduce it from its seed (#82b1ae) within rounding/drift tolerance.
-const TEAL = {
-  DEFAULT: '#82b1ae',
-  10: '#f4f8f7',
-  50: '#c1d8d7',
-  100: '#b1cfcc',
-  200: '#a2c5c2',
-  300: '#92bbb8',
-  400: '#82b1ae',
-  500: '#73a7a4',
-  600: '#639e99',
-  700: '#598f8a',
-  800: '#4f7f7b',
-  900: '#456f6c',
-}
-
 const SHADES = [10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900] as const
 
 const parse = (s: string) => {
@@ -40,55 +23,32 @@ describe('buildScale', () => {
     }
   })
 
-  it('approximates the hand-tuned TEAL ramp from its seed', () => {
-    const scale = buildScale('#82b1ae')
-
-    for (const shade of SHADES) {
-      const generated = parse(scale[shade])
-      const original = colord(TEAL[shade]).toHsl()
-
-      // Lightness is lifted directly from the teal ramp → near-exact.
-      expect(Math.abs(generated.l - original.l)).toBeLessThanOrEqual(1)
-      // Hue is preserved from the seed; the near-white `10` step loses hue
-      // precision, so only assert it where the color actually carries hue.
-      if (original.l < 90) expect(Math.abs(generated.h - original.h)).toBeLessThanOrEqual(6)
-    }
-  })
-
-  it('uses a muted seed verbatim as the DEFAULT', () => {
-    const scale = buildScale('#82b1ae') // teal sits below the saturation cap
-    const seed = colord('#82b1ae').toHsl()
+  it('uses only the input hue — fixed saturation, ignoring input saturation/lightness', () => {
+    // #468503 is a vivid (≈96% sat), dark (≈27% L) green; the scale keeps only
+    // its hue and pins saturation + lightness to the fixed ladders.
+    const scale = buildScale('#468503')
     const def = parse(scale.DEFAULT)
 
-    expect(def).toEqual({ h: seed.h, s: seed.s, l: seed.l })
+    expect(def.h).toBe(89) // hue preserved
+    expect(def.s).toBe(60) // fixed saturation, not the seed's 96
+    expect(def.l).toBe(60) // fixed solid lightness, not the seed's 27
+
+    for (const shade of SHADES) expect(parse(scale[shade]).s).toBe(60)
   })
 
-  it('caps the saturation of a vivid seed, leaving muted seeds untouched', () => {
-    // Neon green (#468503 ≈ 96% sat) is pulled down to the cap so it matches the
-    // muted register of the rest of the UI; hue + lightness are preserved.
-    const green = parse(buildScale('#468503').DEFAULT)
-
-    expect(green.s).toBe(60)
-    expect(green.h).toBe(89)
-
-    // The default teal (≈23% sat) is already below the cap → unchanged.
-    expect(parse(buildScale('#82b1ae').DEFAULT).s).toBe(23)
+  it('produces the identical scale for two seeds that share a hue', () => {
+    // Bright red and dark maroon are the same hue (0°) at very different
+    // saturation/lightness → identical generated scale.
+    expect(buildScale('#ff0000')).toEqual(buildScale('#800000'))
   })
 })
 
 describe('foreground contrast', () => {
-  it('picks black on a light seed and white on a dark seed', () => {
-    expect(buildScale('#ffffff').foreground).toBe('0 0% 0%')
-    expect(buildScale('#82b1ae').foreground).toBe('0 0% 0%') // teal → black (matches today)
-    expect(buildScale('#000000').foreground).toBe('0 0% 100%')
-    expect(buildScale('#64032e').foreground).toBe('0 0% 100%') // dark maroon → white
-  })
-
-  it('flips black → white as the seed darkens past the contrast boundary', () => {
-    // A mid-grey ramp crosses the boundary; the light half reads black, the
-    // dark half reads white.
-    expect(buildScale('#999999').foreground).toBe('0 0% 0%')
-    expect(buildScale('#555555').foreground).toBe('0 0% 100%')
+  it('picks a readable on-color for the fixed-lightness solid, by hue', () => {
+    // The solid sits at a fixed lightness, so the on-color depends on the hue:
+    // a luminous hue reads black, a low-luminance hue reads white.
+    expect(buildScale('#468503').foreground).toBe('0 0% 0%') // green → black
+    expect(buildScale(colord({ h: 240, s: 60, l: 40 }).toHex()).foreground).toBe('0 0% 100%') // blue → white
   })
 })
 
@@ -112,15 +72,15 @@ describe('applyPalette', () => {
 
     applyPalette(root, { primary: '#64032e' }, 'light')
 
-    expect(props.get('--nextui-primary')).toBe('333 60% 20%')
-    expect(props.get('--nextui-primary-foreground')).toBe('0 0% 100%')
+    expect(props.get('--nextui-primary')).toBe('333 60% 60%')
+    expect(props.get('--nextui-primary-foreground')).toBe('0 0% 0%')
     expect(props.get('--nextui-primary-100')).toBeDefined()
     expect(props.get('--nextui-primary-900')).toBeDefined()
     // Focus follows primary.
-    expect(props.get('--nextui-focus')).toBe('333 60% 20%')
+    expect(props.get('--nextui-focus')).toBe('333 60% 60%')
   })
 
-  it('lightens + desaturates the DEFAULT in dark mode (no vanishing primary)', () => {
+  it('uses a lighter solid tone in dark mode (no vanishing primary)', () => {
     const { root, props } = fakeRoot()
 
     applyPalette(root, { primary: '#64032e' }, 'dark')
@@ -128,8 +88,8 @@ describe('applyPalette', () => {
     const def = parse(props.get('--nextui-primary')!)
 
     expect(def.h).toBe(333) // hue preserved
-    expect(def.l).toBeGreaterThanOrEqual(60) // raised tone
-    expect(def.s).toBeLessThan(94) // slightly desaturated
+    expect(def.s).toBe(60) // fixed saturation
+    expect(def.l).toBe(70) // lighter than the light-mode 60
   })
 
   it('leaves omitted roles untouched', () => {
@@ -173,6 +133,6 @@ describe('applyPalette', () => {
     expect(props.has('--nextui-secondary')).toBe(false)
     expect(props.has('--nextui-secondary-100')).toBe(false)
     expect(props.has('--nextui-background')).toBe(false)
-    expect(props.get('--nextui-primary')).toBe('333 60% 20%')
+    expect(props.get('--nextui-primary')).toBe('333 60% 60%')
   })
 })
