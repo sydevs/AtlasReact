@@ -245,6 +245,10 @@ module.exports = {
           large: '28px', // text-large
         },
       },
+      // `danger` is intentionally left to NextUI's built-in red: it's a fixed
+      // status hue that must stay independent of the brand's `secondary`
+      // (orange) — and of any tenant palette, which only overrides
+      // primary/secondary/background at runtime (see src/config/theme/palette.ts).
       themes: {
         light: {
           colors: {
@@ -256,31 +260,25 @@ module.exports = {
               ...ORANGE_COLOR,
               foreground: '#000000',
             },
-            danger: {
-              ...ORANGE_COLOR,
-            },
             focus: TEAL_COLOR,
           },
         },
         dark: {
-          // NextUI's `extend` takes a base-theme *name* (string); nesting colors
-          // under it silently drops them, so the custom dark palette never
-          // applied. Mirror the light theme: put colors at the theme level so
-          // they merge onto NextUI's built-in dark base.
+          // Keep the brand hue in dark mode — no teal↔orange swap. Primary stays
+          // teal and secondary stays orange so a brand color reads the same in
+          // both modes; NextUI's built-in dark base still supplies the neutral
+          // surfaces. (Colors live at the theme level, not under `extend`, which
+          // takes a base-theme *name* and would silently drop a nested palette.)
           colors: {
             primary: {
-              ...ORANGE_COLOR,
-              foreground: '#FFFFFF',
-            },
-            secondary: {
               ...TEAL_COLOR,
               foreground: '#000000',
             },
-            danger: {
+            secondary: {
               ...ORANGE_COLOR,
               foreground: '#000000',
             },
-            focus: ORANGE_COLOR,
+            focus: TEAL_COLOR,
           },
         },
       },

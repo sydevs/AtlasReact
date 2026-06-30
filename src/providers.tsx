@@ -13,6 +13,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <HelmetProvider>
+          {/* Known follow-up: NextUI overlays (Modal/Dropdown/Popover) portal to
+              document.body by default — outside the brand-themed wrapper — so in
+              the embedded widget they don't inherit the wrapper-scoped CSS vars
+              or light/dark class. There's no global portalContainer on
+              NextUIProvider; the fix is to pass each overlay a portalContainer
+              pointing at the widget wrapper (see src/config/theme/BrandTheme). */}
           <NextUIProvider navigate={navigate} useHref={useHref}>
             {children}
           </NextUIProvider>

@@ -1,6 +1,6 @@
 import type { GlobalProvider } from '@ladle/react'
 
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ThemeState, useLadleContext } from '@ladle/react'
 import { MemoryRouter } from 'react-router'
 import { I18nextProvider } from 'react-i18next'
@@ -8,9 +8,19 @@ import { I18nextProvider } from 'react-i18next'
 import storyI18n from './i18n'
 
 import Providers from '@/providers'
-import { applyTheme } from '@/hooks/use-theme'
+import { applyTheme, useTheme } from '@/hooks/use-theme'
+import { applyPalette, type PaletteRoles } from '@/config/theme/palette'
 
 import '@/styles/globals.css'
+
+// Brand presets sampled from real tenants (issue #16). Selecting one runs the
+// production applyPalette on the story wrapper, so Ladle previews exactly what
+// an embed renders. "Default" applies no override (built-in teal/orange).
+const PALETTES: Record<string, PaletteRoles> = {
+  'palette: wemeditate.com': {},
+  'palette: shrimataji.org': { primary: '#64032E', secondary: '#A11F0C', background: '#F0ECE2' },
+  'palette: sahajayoga.org': { primary: '#5D6F44', secondary: '#D47B2C' },
+}
 
 // Global decorator for every story.
 //
@@ -31,6 +41,10 @@ import '@/styles/globals.css'
 // Mapbox basemap (which follows useTheme). `auto` resolves against the OS
 // preference and tracks it live. The canvas background is left to Ladle's own
 // theme so it matches the surrounding chrome.
+//
+// Brand palette: a fixed switcher applies a tenant preset to the story wrapper
+// via the production applyPalette, re-applying when the palette or the resolved
+// light/dark theme changes.
 export const Provider: GlobalProvider = ({ children }) => {
   const { globalState } = useLadleContext()
   const ladleTheme = globalState.theme
@@ -49,11 +63,40 @@ export const Provider: GlobalProvider = ({ children }) => {
     applyTheme(ladleTheme === ThemeState.Dark ? 'dark' : 'light')
   }, [ladleTheme])
 
+  const [palette, setPalette] = useState('palette: wemeditate.com')
+  const wrapperRef = useRef<HTMLElement>(null)
+  const { theme } = useTheme()
+
+  // Re-paint the wrapper when the chosen palette or the resolved theme changes.
+  // applyPalette resets the managed vars before applying, so switching back to
+  // Default restores the built-in palette on its own.
+  useEffect(() => {
+    const el = wrapperRef.current
+
+    if (!el) return
+
+    applyPalette(el, PALETTES[palette], theme)
+  }, [palette, theme])
+
   return (
     <I18nextProvider i18n={storyI18n}>
       <MemoryRouter>
         <Providers>
-          <main className="min-h-screen p-6 text-foreground">{children}</main>
+          <main ref={wrapperRef} className="min-h-screen p-6 text-foreground">
+            <select
+              aria-label="Brand palette"
+              style={{ position: 'fixed', top: 8, right: 8, zIndex: 50 }}
+              value={palette}
+              onChange={(event) => setPalette(event.target.value)}
+            >
+              {Object.keys(PALETTES).map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+            {children}
+          </main>
         </Providers>
       </MemoryRouter>
     </I18nextProvider>

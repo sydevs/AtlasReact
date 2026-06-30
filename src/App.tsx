@@ -1,6 +1,8 @@
+import type { PaletteRoles } from '@/config/theme/palette'
+
 import { Navigate, Route, Routes, useLocation } from 'react-router'
 import { Helmet } from 'react-helmet-async'
-import { Suspense, useEffect } from 'react'
+import { Suspense, useEffect, type RefObject } from 'react'
 import * as Fathom from 'fathom-client'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -9,7 +11,8 @@ import { useNavigationState } from './config/store'
 import { useLocale } from './hooks/use-locale'
 import Providers from './providers'
 import MapLayout from './layouts/map'
-import api from './config/api'
+import { clientQuery } from './config/api'
+import { BrandTheme } from './config/theme/BrandTheme'
 
 import { regionPath } from '@/lib/shape'
 import { ErrorFallback, LoadingFallback } from '@/components/atoms'
@@ -28,16 +31,23 @@ import i18n from '@/config/i18n'
 type AppProps = {
   apiKey: string | undefined | null
   defaultLocale?: string | null
+  // Per-embed brand palette. Theming itself is app-wide (standalone also paints
+  // the client's colors onto <html>); only `themeRootRef` — the widget wrapper
+  // to scope the vars + theme class to — is widget-specific.
+  brand?: PaletteRoles
+  themeRootRef?: RefObject<HTMLElement | null>
 }
 
-export default function App(props: AppProps) {
+export default function App({ apiKey, defaultLocale, brand, themeRootRef }: AppProps) {
   return (
     <Providers>
-      <Suspense fallback={<LoadingFallback />}>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <AppRouter {...props} />
-        </ErrorBoundary>
-      </Suspense>
+      <BrandTheme apiKey={apiKey} palette={brand} rootRef={themeRootRef}>
+        <Suspense fallback={<LoadingFallback />}>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <AppRouter apiKey={apiKey} defaultLocale={defaultLocale} />
+          </ErrorBoundary>
+        </Suspense>
+      </BrandTheme>
     </Providers>
   )
 }
@@ -49,10 +59,7 @@ function AppRouter({ apiKey, defaultLocale }: AppProps) {
     throw new Error('Missing api key.')
   }
 
-  const { data: client } = useSuspenseQuery({
-    queryKey: ['client', apiKey],
-    queryFn: () => api.getClient(),
-  })
+  const { data: client } = useSuspenseQuery(clientQuery(apiKey))
 
   // The widget's home view is its configured region; fall back to the search index.
   const initialPath =
