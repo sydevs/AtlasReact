@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Chip } from '@/components/atoms/Chip'
 import { formatTimeZone } from '@/lib'
 
-type EventTimeProps = {
+export type EventTimeProps = {
   nextDate: DateTime
   duration: number | null
   timeZone: string

@@ -10,7 +10,7 @@ import { RightArrowIcon } from '@/components/atoms/Icons'
 import { Chip } from '@/components/atoms/Chip'
 import { EventSlim } from '@/types'
 
-interface EventItemProps {
+export interface EventItemProps {
   event: EventSlim
 }
 

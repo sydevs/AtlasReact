@@ -2,7 +2,7 @@ import { Link } from '@nextui-org/react'
 
 import { RightArrowIcon } from '@/components/atoms/Icons'
 
-interface ListItemProps {
+export interface ListItemProps {
   label: string
   subtitle?: string | null
   count: number

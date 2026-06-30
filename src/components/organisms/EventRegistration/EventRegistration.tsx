@@ -38,7 +38,7 @@ const INPUT_STYLE = {
   radius: InputProps['radius']
 }
 
-type RegistrationButtonProps = {
+export type RegistrationButtonProps = {
   event: Event
 } & ButtonProps
 

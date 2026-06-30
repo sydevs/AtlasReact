@@ -12,7 +12,7 @@ import { Chip } from '@/components/atoms/Chip'
 
 const DOMPurify = createDOMPurify(window)
 
-type EventPanelProps = {
+export type EventPanelProps = {
   event: Event
 }
 

@@ -2,7 +2,7 @@ import { Link } from '@nextui-org/react'
 
 import { UpArrowIcon } from '@/components/atoms/Icons'
 
-interface ListHeaderProps {
+export interface ListHeaderProps {
   title: string
   backHref: string
 }

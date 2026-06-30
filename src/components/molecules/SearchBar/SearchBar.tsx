@@ -9,7 +9,7 @@ import { MapSearch } from '@/components/organisms/Mapbox/MapSearch'
 import { UpArrowIcon, DownArrowIcon, SearchIcon, CloseIcon } from '@/components/atoms/Icons'
 import { useBreakpoint } from '@/config/responsive'
 
-interface SearchBarProps {
+export interface SearchBarProps {
   onSelect?: (value: GeocodeFeature) => void
   header?: string
   subheader?: string

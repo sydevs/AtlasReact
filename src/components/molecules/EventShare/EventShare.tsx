@@ -21,7 +21,7 @@ import {
 } from '@/components/atoms/Icons'
 import { Event } from '@/types'
 
-type ShareButtonProps = {
+export type ShareButtonProps = {
   event: Event
 } & ButtonProps
 
@@ -61,7 +61,7 @@ function ShareModal({ event, isOpen, onOpenChange }: ShareModalProps) {
   )
 }
 
-type ShareContentProps = {
+export type ShareContentProps = {
   label: string
   url: string
 }

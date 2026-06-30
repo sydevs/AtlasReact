@@ -1,1 +1,1 @@
-export * from './Fallbacks'
+export { LoadingFallback, ErrorFallback } from './Fallbacks'

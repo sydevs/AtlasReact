@@ -6,7 +6,7 @@ import { useLocale } from '@/hooks/use-locale'
 import { Chip } from '@/components/atoms/Chip'
 import { isSoon } from '@/lib'
 
-type EventSoonChipProps = {
+export type EventSoonChipProps = {
   online: boolean
   firstDate: Date
 }

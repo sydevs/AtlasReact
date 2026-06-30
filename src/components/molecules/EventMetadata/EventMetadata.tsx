@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocale } from '@/hooks/use-locale'
 import { Event } from '@/types'
 
-type EventMetadataProps = {
+export type EventMetadataProps = {
   event: Event
 }
 

@@ -8,7 +8,7 @@ import { EventSlim } from '@/types'
 import api from '@/config/api'
 import i18n from '@/config/i18n'
 
-interface DynamicProps {
+export interface DynamicEventsListProps {
   latitude: number
   longitude: number
   onlineOnly?: boolean
@@ -24,7 +24,11 @@ function calculateOrder(event: EventSlim) {
   return order
 }
 
-export function DynamicEventsList({ latitude, longitude, onlineOnly = false }: DynamicProps) {
+export function DynamicEventsList({
+  latitude,
+  longitude,
+  onlineOnly = false,
+}: DynamicEventsListProps) {
   const { data: events } = useSuspenseQuery({
     // Latitude and Longitude are rounded to reduce re-fetching when the map is moved.
     queryKey: ['events', latitude.toFixed(2), longitude.toFixed(2), onlineOnly],
@@ -40,7 +44,7 @@ export function DynamicEventsList({ latitude, longitude, onlineOnly = false }: D
   return <EventsList events={events} />
 }
 
-interface EventsListProps {
+export interface EventsListProps {
   events: EventSlim[]
 }
 
