@@ -110,7 +110,7 @@ export const getInitialTheme = (defaultTheme: Theme = ThemeProps.light): Theme =
 export const initTheme = (defaultTheme: Theme = ThemeProps.light) => {
   if (typeof document === 'undefined') return
 
-  applyTheme(readStoredTheme() ?? defaultTheme)
+  applyTheme(getInitialTheme(defaultTheme))
 }
 
 export const useTheme = () => {
