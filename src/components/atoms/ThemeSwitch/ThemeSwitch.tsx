@@ -1,6 +1,4 @@
 import { FC, useState, useEffect } from 'react'
-import { VisuallyHidden } from '@react-aria/visually-hidden'
-import { SwitchProps, useSwitch } from '@nextui-org/react'
 import clsx from 'clsx'
 
 import { useTheme } from '@/hooks/use-theme'
@@ -8,63 +6,34 @@ import { SunFilledIcon, MoonFilledIcon } from '@/components/atoms/Icons'
 
 export interface ThemeSwitchProps {
   className?: string
-  classNames?: SwitchProps['classNames']
 }
 
-export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => {
+// A light/dark toggle. Visually it's an icon button (moon in light mode → switch
+// to dark, sun in dark mode → switch to light), so it's a plain accessible
+// <button> rather than a switch track — no NextUI useSwitch needed.
+export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className }) => {
   const [isMounted, setIsMounted] = useState(false)
 
-  const { theme, toggleTheme } = useTheme()
-
-  const onChange = toggleTheme
-
-  const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch({
-    isSelected: theme === 'light',
-    onChange,
-  })
+  const { isLight, toggleTheme } = useTheme()
 
   useEffect(() => {
     setIsMounted(true)
-  }, [isMounted])
+  }, [])
 
-  // Prevent Hydration Mismatch
+  // Prevent hydration mismatch (SSR/static markup has no theme yet).
   if (!isMounted) return <div className="w-6 h-6" />
 
   return (
-    <Component
-      aria-label={isSelected ? 'Switch to dark mode' : 'Switch to light mode'}
-      {...getBaseProps({
-        className: clsx(
-          'px-px transition-opacity hover:opacity-80 cursor-pointer',
-          className,
-          classNames?.base,
-        ),
-      })}
+    <button
+      aria-label={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
+      className={clsx(
+        'flex items-center justify-center px-px text-gray-11 cursor-pointer transition-opacity hover:opacity-hover',
+        className,
+      )}
+      type="button"
+      onClick={toggleTheme}
     >
-      <VisuallyHidden>
-        <input {...getInputProps()} />
-      </VisuallyHidden>
-      <div
-        {...getWrapperProps()}
-        className={slots.wrapper({
-          class: clsx(
-            [
-              'w-auto h-auto',
-              'bg-transparent',
-              'rounded-lg',
-              'flex items-center justify-center',
-              'group-data-[selected=true]:bg-transparent',
-              '!text-default-500',
-              'pt-px',
-              'px-0',
-              'mx-0',
-            ],
-            classNames?.wrapper,
-          ),
-        })}
-      >
-        {isSelected ? <MoonFilledIcon size={22} /> : <SunFilledIcon size={22} />}
-      </div>
-    </Component>
+      {isLight ? <MoonFilledIcon size={22} /> : <SunFilledIcon size={22} />}
+    </button>
   )
 }

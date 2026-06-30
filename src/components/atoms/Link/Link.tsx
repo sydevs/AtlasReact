@@ -1,0 +1,97 @@
+import { type ComponentProps, type ReactNode } from 'react'
+import { Link as RouterLink } from 'react-router'
+import { tv, type VariantProps } from 'tailwind-variants'
+
+// A styled link replacing NextUI's Link. Internal targets route through
+// react-router's <Link> (client-side, hash-aware); external ones (or any
+// target="_blank") render a plain <a> with a safe rel. Color classes match what
+// NextUI emitted — the global `a { color: inherit !important }` still governs the
+// default look, with `.colored-links` parents forcing the brand color.
+const link = tv({
+  base: 'inline-flex items-center gap-1 outline-none transition-opacity hover:opacity-hover focus-visible:ring-2 focus-visible:ring-focus rounded-sm',
+  variants: {
+    color: {
+      foreground: 'text-foreground',
+      primary: 'text-primary',
+      danger: 'text-danger',
+      default: 'text-inherit',
+    },
+    size: {
+      sm: 'text-sm',
+      md: 'text-md',
+      lg: 'text-lg',
+    },
+  },
+  defaultVariants: {
+    color: 'default',
+  },
+})
+
+// A small "opens in a new tab" glyph, shown after external link text when
+// `showAnchorIcon` is set (unless a custom `anchorIcon` is given).
+const AnchorIcon = () => (
+  <svg
+    aria-hidden="true"
+    className="inline-block h-[1em] w-[1em]"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+  >
+    <path d="M7 17 17 7M8 7h9v9" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
+type LinkVariants = VariantProps<typeof link>
+
+export type LinkProps = Omit<ComponentProps<'a'>, 'color' | 'href'> &
+  LinkVariants & {
+    href: string
+    /** Force the external (`<a>`) rendering + new-tab rel even without target. */
+    isExternal?: boolean
+    /** Show a trailing "new tab" glyph (external links). */
+    showAnchorIcon?: boolean
+    /** Override the trailing glyph. */
+    anchorIcon?: ReactNode
+    children?: ReactNode
+  }
+
+export function Link({
+  href,
+  color,
+  size,
+  isExternal,
+  showAnchorIcon,
+  anchorIcon,
+  className,
+  target,
+  rel,
+  children,
+  ...props
+}: LinkProps) {
+  const classes = link({ color, size, className })
+  const external = isExternal || target === '_blank' || /^https?:|^mailto:|^tel:/.test(href)
+  const icon = showAnchorIcon ? (anchorIcon ?? <AnchorIcon />) : null
+
+  if (external) {
+    return (
+      <a
+        className={classes}
+        href={href}
+        rel={rel ?? (target === '_blank' || isExternal ? 'noopener noreferrer' : undefined)}
+        target={target ?? (isExternal ? '_blank' : undefined)}
+        {...props}
+      >
+        {children}
+        {icon}
+      </a>
+    )
+  }
+
+  return (
+    <RouterLink className={classes} rel={rel} target={target} to={href} {...props}>
+      {children}
+      {icon}
+    </RouterLink>
+  )
+}
