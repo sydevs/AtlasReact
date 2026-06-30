@@ -1,10 +1,11 @@
 import r2wc from '@r2wc/react-to-web-component'
 import { HashRouter } from 'react-router'
+import { useRef } from 'react'
 
 import App from './App'
 import i18n from './config/i18n'
 import atlasAuth from './config/api/auth'
-import { initTheme } from './hooks/use-theme'
+import { getInitialTheme } from './hooks/use-theme'
 
 // Implementation of embeddable Widget
 // Demo in: demo.html
@@ -16,9 +17,20 @@ type WidgetProps = {
   apiKey: string
   locale?: string
   basePath?: string
+  // Per-embed brand palette (hex). Each role overrides the client record's
+  // color; omitted roles fall back to the record, then the built-in default.
+  primaryColor?: string
+  secondaryColor?: string
+  backgroundColor?: string
 }
 
-export default function Widget({ apiKey, locale }: WidgetProps) {
+export default function Widget({
+  apiKey,
+  locale,
+  primaryColor,
+  secondaryColor,
+  backgroundColor,
+}: WidgetProps) {
   if (!atlasAuth.apiKey) {
     atlasAuth.apiKey = apiKey
   }
@@ -31,12 +43,24 @@ export default function Widget({ apiKey, locale }: WidgetProps) {
     window.location.hash = HASH_BASE
   }
 
-  // Restore the persisted (or default) theme before first paint to avoid a flash.
-  initTheme()
+  // The widget scopes its theme to this wrapper so it never mutates the host
+  // page's <html>. Set the initial light/dark class synchronously to avoid a
+  // flash; BrandTheme adopts the wrapper as the theme root + paints the brand
+  // palette once mounted.
+  const themeRootRef = useRef<HTMLDivElement>(null)
 
   return (
     <HashRouter basename={HASH_BASE}>
-      <App apiKey={apiKey} defaultLocale={locale} />
+      {/* display:contents keeps the wrapper out of the layout while still
+          carrying the theme class + brand CSS vars down to every descendant. */}
+      <div ref={themeRootRef} className={getInitialTheme()} style={{ display: 'contents' }}>
+        <App
+          apiKey={apiKey}
+          brand={{ primary: primaryColor, secondary: secondaryColor, background: backgroundColor }}
+          defaultLocale={locale}
+          themeRootRef={themeRootRef}
+        />
+      </div>
     </HashRouter>
   )
 }
@@ -47,6 +71,9 @@ customElements.define(
     props: {
       apiKey: 'string',
       locale: 'string',
+      primaryColor: 'string',
+      secondaryColor: 'string',
+      backgroundColor: 'string',
     },
   }),
 )
