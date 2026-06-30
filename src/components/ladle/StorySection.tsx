@@ -33,12 +33,12 @@ export const StorySection = ({
   inContext = false,
 }: StorySectionProps) => {
   // Context backgrounds that simulate the map surface panels float over. The
-  // teal gradient is a fixed brand colour that reads on both themes; neutral
-  // uses a semantic surface token.
+  // teal gradient is a fixed dark brand colour, so its text is pinned white to
+  // read in both themes; neutral uses a theme-aware semantic surface token.
   const getBackgroundStyles = () => {
     if (background === 'neutral') return 'bg-default-100 p-6 rounded-lg'
     if (background === 'gradient')
-      return 'bg-gradient-to-b from-teal-600 to-teal-700 p-6 rounded-lg'
+      return 'bg-gradient-to-b from-teal-600 to-teal-700 p-6 rounded-lg text-white'
 
     return ''
   }
