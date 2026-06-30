@@ -38,25 +38,40 @@ export const applyTheme = (theme: Theme) => {
   root.classList.add(theme)
 }
 
+// localStorage can throw — not just be absent — in sandboxed iframes (a
+// `sandbox` without `allow-same-origin`) and some privacy modes, which matters
+// since this ships as an embeddable widget. Wrap reads/writes so the theme class
+// still updates; the choice just isn't persisted.
+const readStoredTheme = (): Theme | null => {
+  try {
+    return localStorage.getItem(ThemeProps.key) as Theme | null
+  } catch {
+    return null
+  }
+}
+
+const persistTheme = (theme: Theme) => {
+  try {
+    localStorage.setItem(ThemeProps.key, theme)
+  } catch {
+    // storage unavailable — ignore; the root class still reflects the choice
+  }
+}
+
 // Apply the persisted (or default) theme to the root class once at startup, so
 // the standalone app and widget restore the user's choice. Afterwards useTheme's
 // setters keep the class in sync. Guarded to be a no-op outside the browser.
 export const initTheme = (defaultTheme: Theme = ThemeProps.light) => {
   if (typeof document === 'undefined') return
 
-  const stored =
-    typeof localStorage === 'undefined'
-      ? null
-      : (localStorage.getItem(ThemeProps.key) as Theme | null)
-
-  applyTheme(stored ?? defaultTheme)
+  applyTheme(readStoredTheme() ?? defaultTheme)
 }
 
 export const useTheme = () => {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   const setTheme = (next: Theme) => {
-    localStorage.setItem(ThemeProps.key, next)
+    persistTheme(next)
     applyTheme(next)
   }
 
