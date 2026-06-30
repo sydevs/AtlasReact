@@ -10,7 +10,8 @@ allowed-tools: Bash(*), Read, Edit, Write, Grep, Glob, Task
 # Implement Issue
 
 End-to-end implementation of a GitHub issue: read → plan → branch → implement →
-validate → simplify → code-review → push → PR → review → verify CI.
+validate → **finalize**. The finalize pipeline (simplify → review → push → PR →
+green CI) is the shared `/finalize-pr` skill — phase 3 of the PR workflow.
 
 ## Invocation
 
@@ -87,71 +88,34 @@ edit; fix surfaced type errors before committing.
 
 ### 6. Validate
 
-Run the lean local gate:
+Run the lean local gate as you implement:
 
 ```bash
-.claude/skills/implement-issue/scripts/validate.sh          # lint + typecheck + unit
-.claude/skills/implement-issue/scripts/validate.sh --full   # + production build (CI parity)
+.claude/skills/pr-prep/check.sh          # lint + typecheck + test:run
+.claude/skills/pr-prep/check.sh --full   # + production build (CI parity)
 ```
 
-If anything fails: fix it, commit the fix separately, re-run. Don't mark the PR
-ready while CI is red.
+If anything fails: fix it, commit the fix separately, re-run. The full CI gate
+runs in the finalize step — use `--full` locally only to debug a red run.
 
-### 7. Simplify the diff
+### 7. Finalize — run the ship pipeline
 
-Run `/simplify` against the **entire branch diff** (every commit since `main`).
-Review the applied changes; revert any that are undesirable. If it changed
-anything, re-run the validation gate (step 6), then commit:
+Implementation is done and validated. Now ship it via the **finalize pipeline**:
+**follow every step in `.claude/skills/finalize-pr/SKILL.md`** — simplify → a
+single `/code-review` → conditional `/security-review` → lean gate → push → open
+the PR → watch CI (with fixes) → report. On this first run it **creates** the PR.
 
-```bash
-git commit -am "refactor: simplify per /simplify pass"
-```
+Execute that skill's steps directly here; don't re-implement them in this file —
+`finalize-pr` is the single source of truth, so the exact same pipeline runs
+whether the user types `/finalize-pr` or `/implement-issue`.
 
-### 8. Code review (`/code-review`)
+### 8. Hand off to the Adjust phase
 
-After `/simplify`, **dispatch a subagent** (Task tool) to run `/code-review` over
-the full branch diff and return findings (severity + `file:line` + fix). Don't
-run it inline. Triage every finding, fix the valid ones (each its own commit),
-re-run the validation gate. Note dismissed findings with a one-line reason.
-
-### 9. Push the branch
-
-```bash
-git push -u origin <branch>
-```
-
-### 10. Open the PR
-
-Write the body to a session-unique temp file (preserves markdown), then:
-
-```bash
-BODY_FILE=$(mktemp -t pr-body.XXXXXX).md
-# write the body (see pr-template.md) to "$BODY_FILE", then:
-gh pr create --title "<conventional title>" --body-file "$BODY_FILE" --base main
-```
-
-### 11. Review the PR (`/review`)
-
-Once open, **dispatch a subagent** to run `/review` against the PR and return its
-findings. Address valid findings (commit + push, which re-triggers CI). Don't
-report the PR ready until findings are resolved and CI is green.
-
-### 12. Wait for CI and verify
-
-```bash
-gh pr checks <pr-or-branch> --watch
-gh pr checks <pr-or-branch>
-```
-
-CI (`.github/workflows/ci.yml`) runs **lint + typecheck + test:run + build**
-(plus `ladle:build`, and a separate smoke job). On a red check, fetch logs
-(`gh run view <run-id> --log-failed`), fix locally, commit, push, re-watch until
-green.
-
-### 13. Report
-
-Output the PR URL, confirm CI is green, and note any acceptance criteria that
-need manual/visual verification (UI screenshots, map interaction).
+Once the PR is open and CI is green, report the PR URL, CI status, and any
+manual-verification items (UI screenshots, map interaction). Then note that we're
+now in the **Adjust phase**: further changes are committed locally as you go but
+**not pushed**; run `/finalize-pr` again when the batch is ready to re-review and
+re-run CI. See "Git / PR workflow" in `CLAUDE.md`.
 
 ## Hard rules
 
@@ -162,8 +126,8 @@ need manual/visual verification (UI screenshots, map interaction).
 - **Always** commit incrementally; never one monolithic commit at the end
 - **Always** use `--body-file` (a `mktemp` path) for PR creation
 - **Always** run the lean gate before pushing
-- **Always** run `/simplify` then `/code-review` (subagent) before pushing, and
-  `/review` (subagent) after opening the PR — never inline in the main thread
+- **Always** delegate finalize to `.claude/skills/finalize-pr/SKILL.md` — a
+  **single** `/code-review` pass (subagent, never inline); no redundant second review
 - **Always** wait for CI to finish and verify green before reporting
 
 ## Edge cases
@@ -179,8 +143,8 @@ need manual/visual verification (UI screenshots, map interaction).
 
 ## References
 
+- Finalize pipeline (phase 3): `.claude/skills/finalize-pr/SKILL.md`
 - Branch naming: `branch-naming.md`
-- PR template: `pr-template.md`
-- Validation script: `scripts/validate.sh`
+- Lean gate: `.claude/skills/pr-prep/`
 - Repo conventions: `.claude/skills/draft-ticket/conventions.md`
-- PR requirements: `.claude/skills/pr-prep/SKILL.md`
+- 3-phase PR workflow: `CLAUDE.md` → "Git / PR workflow"
