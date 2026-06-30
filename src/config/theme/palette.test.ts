@@ -148,4 +148,19 @@ describe('applyPalette', () => {
 
     expect(props.size).toBe(0)
   })
+
+  it('clears a role that is dropped on a later apply (reverts to the default)', () => {
+    const { root, props } = fakeRoot()
+
+    applyPalette(root, { primary: '#64032e', secondary: '#7a404e', background: '#f0ece2' }, 'light')
+    expect(props.has('--nextui-secondary')).toBe(true)
+    expect(props.has('--nextui-background')).toBe(true)
+
+    // Re-apply with only primary → secondary + background revert to the default.
+    applyPalette(root, { primary: '#64032e' }, 'light')
+    expect(props.has('--nextui-secondary')).toBe(false)
+    expect(props.has('--nextui-secondary-100')).toBe(false)
+    expect(props.has('--nextui-background')).toBe(false)
+    expect(props.get('--nextui-primary')).toBe('333 94% 20%')
+  })
 })

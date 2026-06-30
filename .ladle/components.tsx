@@ -68,14 +68,13 @@ export const Provider: GlobalProvider = ({ children }) => {
   const { theme } = useTheme()
 
   // Re-paint the wrapper when the chosen palette or the resolved theme changes.
-  // Clear prior inline vars first so switching back to Default restores the
-  // built-in palette (applyPalette no-ops omitted roles, it doesn't unset them).
+  // applyPalette resets the managed vars before applying, so switching back to
+  // Default restores the built-in palette on its own.
   useEffect(() => {
     const el = wrapperRef.current
 
     if (!el) return
 
-    el.removeAttribute('style')
     applyPalette(el, PALETTES[palette], theme)
   }, [palette, theme])
 

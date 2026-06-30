@@ -136,10 +136,27 @@ const setRole = (root: HTMLElement, token: string, seedHex: string, mode: ThemeM
   return base
 }
 
+// Every inline var applyPalette can write, cleared before each apply so a role
+// dropped between applies — or an invalid value — falls back to the static theme
+// instead of leaving a stale override. (We can't blanket-clear the root's inline
+// style: the widget wrapper carries `display: contents` there.)
+const MANAGED_VARS = [
+  ...['primary', 'secondary'].flatMap((token) => [
+    `--nextui-${token}`,
+    `--nextui-${token}-foreground`,
+    ...Object.keys(SCALE_LIGHTNESS).map((shade) => `--nextui-${token}-${shade}`),
+  ]),
+  '--nextui-focus',
+  '--nextui-background',
+]
+
 // Repaint a root element in the supplied palette by writing NextUI's CSS vars
-// inline. Omitted roles are left untouched (built-in default stands). `mode`
-// drives the DEFAULT/foreground tone and gates the background override.
+// inline. Resets to the static theme first, then layers on only the supplied
+// roles, so omitted roles fall back to the built-in default. `mode` drives the
+// DEFAULT/foreground tone and gates the background override.
 export function applyPalette(root: HTMLElement, palette: PaletteRoles, mode: ThemeMode) {
+  for (const name of MANAGED_VARS) root.style.removeProperty(name)
+
   if (palette.primary) {
     const primaryDefault = setRole(root, 'primary', palette.primary, mode)
 
@@ -149,15 +166,11 @@ export function applyPalette(root: HTMLElement, palette: PaletteRoles, mode: The
 
   if (palette.secondary) setRole(root, 'secondary', palette.secondary, mode)
 
-  // The background override applies to light mode only; dark keeps its dark
-  // neutral, so we clear any previously-set value when flipping to dark.
+  // The background override applies to light mode only; dark keeps its (already
+  // cleared) dark neutral, and an invalid value fails closed to the default.
   const background = palette.background ? colord(palette.background) : null
 
-  if (background?.isValid()) {
-    if (mode === 'light') {
-      root.style.setProperty('--nextui-background', toChannel(background))
-    } else {
-      root.style.removeProperty('--nextui-background')
-    }
+  if (background?.isValid() && mode === 'light') {
+    root.style.setProperty('--nextui-background', toChannel(background))
   }
 }
