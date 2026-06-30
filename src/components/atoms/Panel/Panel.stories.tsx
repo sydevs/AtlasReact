@@ -48,12 +48,6 @@ export const Default: Story = () => (
       </div>
     </StorySection>
 
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <Panel>
-        <Placeholder label="Panel on a dark surface" />
-      </Panel>
-    </StorySection>
-
     <div />
   </StoryWrapper>
 )

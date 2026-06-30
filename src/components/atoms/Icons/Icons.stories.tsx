@@ -67,16 +67,6 @@ export const Default: Story = () => (
       </div>
     </StorySection>
 
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <div className="flex flex-wrap items-center gap-6 text-white">
-        <SearchIcon size={28} />
-        <Logo size={28} />
-        <CalendarIcon size={28} />
-        <LocationIcon size={28} />
-        <EventIcon size={28} />
-      </div>
-    </StorySection>
-
     <StorySection inContext={true} title="Examples">
       <div className="flex flex-col gap-3">
         <span className="flex items-center gap-2 text-default-700">

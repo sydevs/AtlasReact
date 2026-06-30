@@ -22,12 +22,6 @@ export const Default: Story = () => (
       </div>
     </StorySection>
 
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <div className="border border-divider rounded-lg overflow-hidden">
-        <Navbar isBordered />
-      </div>
-    </StorySection>
-
     <StorySection inContext={true} title="Examples">
       <div className="border border-divider rounded-lg overflow-hidden">
         <Navbar isBordered />

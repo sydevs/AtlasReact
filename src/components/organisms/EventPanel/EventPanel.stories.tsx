@@ -13,7 +13,7 @@ export default { title: 'Organisms' } satisfies StoryDefault
 /**
  * EventPanel — the full event detail panel (header, images, description,
  * timing/location/contact cards, registration). Shown for an in-person event,
- * an online event, and an event with no images, plus on a dark surface.
+ * an online event, and an event with no images.
  */
 export const Default: Story = () => (
   <StoryWrapper>
@@ -32,12 +32,6 @@ export const Default: Story = () => (
     <StorySection description="An event without images." title="No Images">
       <div className="max-w-md border border-default-200">
         <EventPanel event={{ ...mockEvent, images: [] }} />
-      </div>
-    </StorySection>
-
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <div className="max-w-md border border-default-200">
-        <EventPanel event={mockEvent} />
       </div>
     </StorySection>
 
