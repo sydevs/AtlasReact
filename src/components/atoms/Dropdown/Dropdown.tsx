@@ -16,6 +16,8 @@ import {
 } from '@floating-ui/react'
 import { tv } from 'tailwind-variants'
 
+import { overlayContainer } from '@/lib/overlay'
+
 /** Side of the trigger the panel opens on. */
 export type DropdownSide = 'top' | 'bottom' | 'left' | 'right'
 
@@ -296,7 +298,7 @@ export function Dropdown({
       </div>
 
       {isOpen && (
-        <FloatingPortal>
+        <FloatingPortal root={overlayContainer()}>
           <FloatingFocusManager
             context={context}
             // Non-modal so the background stays interactive, and initialFocus={-1}

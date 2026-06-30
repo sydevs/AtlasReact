@@ -13,20 +13,33 @@ export function List({ children }: { children: React.ReactNode }) {
     if (!el) return
 
     const { scrollTop, scrollHeight, clientHeight } = el
+    const next = { top: scrollTop > 1, bottom: scrollTop + clientHeight < scrollHeight - 1 }
 
-    setShadow({ top: scrollTop > 1, bottom: scrollTop + clientHeight < scrollHeight - 1 })
+    // Bail out when nothing changed so a scroll tick doesn't force a re-render.
+    setShadow((prev) => (prev.top === next.top && prev.bottom === next.bottom ? prev : next))
   }, [])
 
   useEffect(() => {
-    update()
     const el = ref.current
+    let frame = 0
 
-    el?.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update)
+    // Coalesce scroll/resize bursts to one layout read per animation frame.
+    const schedule = () => {
+      if (frame) return
+      frame = requestAnimationFrame(() => {
+        frame = 0
+        update()
+      })
+    }
+
+    update()
+    el?.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule, { passive: true })
 
     return () => {
-      el?.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
+      if (frame) cancelAnimationFrame(frame)
+      el?.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
     }
   }, [update])
 

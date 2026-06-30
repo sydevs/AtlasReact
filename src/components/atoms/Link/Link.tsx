@@ -2,6 +2,8 @@ import { type ComponentProps, type ReactNode } from 'react'
 import { Link as RouterLink } from 'react-router'
 import { tv, type VariantProps } from 'tailwind-variants'
 
+import { AnchorIcon } from '@/components/atoms/Icons'
+
 // A styled link replacing NextUI's Link. Internal targets route through
 // react-router's <Link> (client-side, hash-aware); external ones (or any
 // target="_blank") render a plain <a> with a safe rel. Color classes match what
@@ -26,21 +28,6 @@ const link = tv({
     color: 'default',
   },
 })
-
-// A small "opens in a new tab" glyph, shown after external link text when
-// `showAnchorIcon` is set (unless a custom `anchorIcon` is given).
-const AnchorIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="inline-block h-[1em] w-[1em]"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    viewBox="0 0 24 24"
-  >
-    <path d="M7 17 17 7M8 7h9v9" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-)
 
 type LinkVariants = VariantProps<typeof link>
 
@@ -71,7 +58,9 @@ export function Link({
 }: LinkProps) {
   const classes = link({ color, size, className })
   const external = isExternal || target === '_blank' || /^https?:|^mailto:|^tel:/.test(href)
-  const icon = showAnchorIcon ? (anchorIcon ?? <AnchorIcon />) : null
+  const icon = showAnchorIcon
+    ? (anchorIcon ?? <AnchorIcon className="inline-block h-[1em] w-[1em]" />)
+    : null
 
   if (external) {
     return (

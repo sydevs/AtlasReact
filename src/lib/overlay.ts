@@ -7,7 +7,10 @@ import { getThemeRoot } from '@/hooks/use-theme'
 // document.body and lost the brand theme. Standalone / Ladle, the root is <html>;
 // a <div> can't be a valid child of <html>, so fall back to <body>, which still
 // inherits the html-level theme class + vars.
-export function overlayContainer(): HTMLElement {
+export function overlayContainer(): HTMLElement | undefined {
+  // No DOM (node test lane / SSR) → let the overlay fall back to its default.
+  if (typeof document === 'undefined') return undefined
+
   const root = getThemeRoot()
 
   return root === document.documentElement ? document.body : root

@@ -16,6 +16,7 @@ import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 
 import { Chip } from '@/components/atoms/Chip'
+import { overlayContainer } from '@/lib/overlay'
 import { formatTimeZone } from '@/lib'
 
 export type EventTimeProps = {
@@ -101,7 +102,7 @@ function TimezoneChip({ time, delay = 0 }: TimezoneChipProps) {
         </Chip>
       </button>
       {isOpen && (
-        <FloatingPortal>
+        <FloatingPortal root={overlayContainer()}>
           <div
             ref={refs.setFloating}
             className="z-50 max-w-64 rounded-md border border-gray-6 bg-gray-2 px-2 py-1 text-sm text-foreground shadow-md"

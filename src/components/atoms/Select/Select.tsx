@@ -2,6 +2,7 @@ import { type ReactNode } from 'react'
 import * as RadixSelect from '@radix-ui/react-select'
 
 import { overlayContainer } from '@/lib/overlay'
+import { DownArrowIcon } from '@/components/atoms/Icons'
 
 // A select built on @radix-ui/react-select, replacing NextUI's Select. Controlled
 // via value/onValueChange (pair with react-hook-form's Controller for forms).
@@ -19,19 +20,6 @@ export type SelectProps = {
   children: ReactNode
   className?: string
 }
-
-const ChevronIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="h-4 w-4 opacity-70"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    viewBox="0 0 24 24"
-  >
-    <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-)
 
 export function Select({
   value,
@@ -63,7 +51,7 @@ export function Select({
       >
         <RadixSelect.Value placeholder={placeholder} />
         <RadixSelect.Icon>
-          <ChevronIcon />
+          <DownArrowIcon className="h-4 w-4 opacity-70" />
         </RadixSelect.Icon>
       </RadixSelect.Trigger>
 

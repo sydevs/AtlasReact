@@ -41,6 +41,12 @@ export type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 // A 12-step ramp (channels) plus the on-color for the solid (step 9).
 export type ColorScale = Record<Step, string> & { contrast: string }
 
+// The built-in (no-tenant) brand seeds — the SY teal / secondary orange. The
+// static defaults in globals.css are these run through buildScale(); the
+// palette.defaults.test.ts gate asserts they stay in sync, so a ladder change
+// can't silently desync the default theme from every tenant theme.
+export const DEFAULT_SEEDS = { primary: '#82b1ae', secondary: '#e08e79' } as const
+
 // Fixed per-step lightness (HSL L%) for steps 1–8 and 11–12. Steps 1–8 walk from
 // the near-white app background down through the borders; 11–12 are the text
 // steps. Step 9 (solid) and 10 (hovered solid) are derived from the seed itself
