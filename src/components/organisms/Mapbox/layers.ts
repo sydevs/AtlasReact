@@ -18,6 +18,8 @@ export const clusterLayer: Props = {
     'text-size': 12,
   },
   paint: {
+    // White count sits on the opaque `cluster` sprite (not the basemap), so it
+    // stays legible on both the light and dark map styles — no theming needed.
     'text-color': '#FFFFFF',
   },
 }
@@ -68,6 +70,8 @@ export const boundsLayer: LayerProps = {
     'line-cap': 'round',
   },
   paint: {
+    // Debug-only layer (rendered behind DEBUG_BOUNDARY in Map.tsx); the neutral
+    // mid-grey reads on both basemaps, so it needs no theme-aware variant.
     'line-color': '#888',
     'line-width': 4,
   },

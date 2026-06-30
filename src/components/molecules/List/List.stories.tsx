@@ -45,16 +45,6 @@ export const Default: Story = () => (
       </div>
     </StorySection>
 
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <div className="max-w-md">
-        <ListHeader backHref="#region" title="Cambridge" />
-        <List>
-          <ListItem count={12} href="#area" label="Cambridge" />
-          <ListItem count={7} href="#area" label="Oxford" />
-        </List>
-      </div>
-    </StorySection>
-
     <StorySection inContext={true} title="Examples">
       <div className="max-w-md rounded-lg border border-divider overflow-hidden">
         <ListHeader backHref="#region" title="Cambridgeshire" />

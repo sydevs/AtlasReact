@@ -4,11 +4,14 @@ import type { ReactNode } from 'react'
  * Unified StorySection component for consistent story structure in Ladle.
  * Ported from WeMeditateWeb for parity — see STORYBOOK.md.
  *
+ * Chrome uses NextUI semantic tokens so it stays legible in both themes; the
+ * canvas theme is driven by Ladle's own toggle (see .ladle/components.tsx).
+ *
  * @param title - Section title (renders as h2 for sections, p for subsections)
  * @param description - Optional description text below the title
  * @param children - The section content
- * @param theme - Text color theme: 'light' (dark text) or 'dark' (white text)
- * @param background - Background style: 'none', 'neutral' (gray), or 'gradient' (teal)
+ * @param background - Context background simulating the map surface panels float
+ *   over: 'none', 'neutral' (semantic surface), or 'gradient' (brand teal)
  * @param variant - Section type: 'section', 'subsection', or 'scrollable'
  * @param inContext - When true, adds "In Context" prefix to title and bold top border
  */
@@ -16,7 +19,6 @@ export interface StorySectionProps {
   title: string
   description?: string
   children: ReactNode
-  theme?: 'light' | 'dark'
   background?: 'none' | 'neutral' | 'gradient'
   variant?: 'section' | 'subsection' | 'scrollable'
   inContext?: boolean
@@ -26,41 +28,22 @@ export const StorySection = ({
   title,
   description,
   children,
-  theme = 'light',
   background = 'none',
   variant = 'section',
   inContext = false,
 }: StorySectionProps) => {
-  // Background styles based on theme and background type
+  // Context backgrounds that simulate the map surface panels float over. The
+  // teal gradient is a fixed dark brand colour, so its text is pinned white to
+  // read in both themes; neutral uses a theme-aware semantic surface token.
   const getBackgroundStyles = () => {
-    if (background === 'none') return ''
-
-    const baseStyles = 'p-6 rounded-lg'
-
-    if (background === 'neutral') {
-      return theme === 'dark' ? `bg-gray-800 ${baseStyles}` : `bg-gray-50 ${baseStyles}`
-    }
-
-    if (background === 'gradient') {
-      return theme === 'dark'
-        ? `bg-gradient-to-b from-teal-600 to-teal-700 ${baseStyles}`
-        : `bg-gradient-to-b from-teal-50 to-teal-100 ${baseStyles}`
-    }
+    if (background === 'neutral') return 'bg-default-100 p-6 rounded-lg'
+    if (background === 'gradient')
+      return 'bg-gradient-to-b from-teal-600 to-teal-700 p-6 rounded-lg text-white'
 
     return ''
   }
 
-  // Text colors based on theme. For non-subsection sections, the title/description
-  // sit on the light wrapper background, so they always use light-theme colors.
-  const getTitleColor = () => {
-    if (variant === 'subsection') {
-      return theme === 'dark' ? 'text-gray-100' : 'text-gray-700'
-    }
-
-    return 'text-gray-900'
-  }
-
-  const descriptionColor = 'text-gray-600'
+  const titleColor = variant === 'subsection' ? 'text-default-600' : 'text-foreground'
 
   const variantConfig = {
     section: {
@@ -88,50 +71,38 @@ export const StorySection = ({
 
   const config = variantConfig[variant]
   const TitleTag = config.tag
-  const titleColor = getTitleColor()
   const backgroundStyles = getBackgroundStyles()
 
   const displayTitle =
     inContext && title ? `In Context - ${title}` : inContext ? 'In Context' : title
 
-  // `dark` class is added so NextUI/Tailwind components inside a dark section
-  // render in dark mode (the story canvas itself is always light — see
-  // .ladle/components.tsx). This is the one adaptation from WeMeditate's helper
-  // for our NextUI-themed stack.
-  const childrenTextColor = theme === 'dark' ? 'dark text-white' : ''
-
   const renderContent = () => {
     if (config.isScrollable) {
-      const borderColor = theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
-      const scrollBackground =
-        backgroundStyles ||
-        (theme === 'dark' ? 'bg-gradient-to-b from-teal-600 to-teal-700' : 'bg-white')
+      const scrollBackground = backgroundStyles || 'bg-background'
 
       return (
-        <div className={`h-[600px] overflow-y-auto border-4 ${borderColor} -m-6`}>
-          <div className={`min-h-full px-6 ${scrollBackground} ${childrenTextColor}`}>
-            {children}
-          </div>
+        <div className="h-[600px] overflow-y-auto border-4 border-default-200 -m-6">
+          <div className={`min-h-full px-6 ${scrollBackground}`}>{children}</div>
         </div>
       )
     }
 
     if (backgroundStyles) {
-      return <div className={`${backgroundStyles} ${childrenTextColor}`}>{children}</div>
+      return <div className={backgroundStyles}>{children}</div>
     }
 
-    return <div className={childrenTextColor}>{children}</div>
+    return <>{children}</>
   }
 
   return (
     <>
       <div className={config.wrapperClass}>
-        {inContext && <div className="border-t-4 border-gray-900 mb-6 pt-8" />}
+        {inContext && <div className="border-t-4 border-foreground mb-6 pt-8" />}
         <TitleTag className={`${config.titleClass} ${titleColor}`}>{displayTitle}</TitleTag>
-        {description && <p className={`text-sm ${descriptionColor} mb-4`}>{description}</p>}
+        {description && <p className="text-sm text-default-500 mb-4">{description}</p>}
         {renderContent()}
       </div>
-      {config.showDivider && <hr className="border-gray-200" />}
+      {config.showDivider && <hr className="border-divider" />}
     </>
   )
 }

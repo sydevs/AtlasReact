@@ -30,12 +30,6 @@ export const Default: Story = () => (
       </div>
     </StorySection>
 
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <div className="h-64 w-full">
-        <LoadingFallback />
-      </div>
-    </StorySection>
-
     <div />
   </StoryWrapper>
 )

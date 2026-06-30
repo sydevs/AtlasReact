@@ -22,10 +22,6 @@ export const Default: Story = () => (
       <LanguageSelector />
     </StorySection>
 
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <LanguageSelector />
-    </StorySection>
-
     <StorySection inContext={true} title="Examples">
       <div className="flex items-center gap-4 text-default-700">
         <span className="text-sm">Language</span>

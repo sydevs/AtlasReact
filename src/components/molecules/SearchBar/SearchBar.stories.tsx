@@ -61,10 +61,6 @@ export const Default: Story = () => (
         <SearchBar backHref="#search" header="Saturday Morning Meditation" />
       </StorySection>
 
-      <StorySection background="neutral" theme="dark" title="Dark Surface">
-        <SearchBar filterable eventCount={8} header="Cambridge" />
-      </StorySection>
-
       <StorySection inContext={true} title="Examples">
         <div className="max-w-md rounded-lg border border-divider overflow-hidden">
           <SearchBar

@@ -33,12 +33,6 @@ export const Default: Story = () => (
       </div>
     </StorySection>
 
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <div className="max-w-md">
-        <EventImages images={mockEventImages} />
-      </div>
-    </StorySection>
-
     <StorySection inContext={true} title="Examples">
       <div className="max-w-md rounded-lg border border-divider overflow-hidden">
         <EventImages images={mockEventImages} />

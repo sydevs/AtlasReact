@@ -263,27 +263,24 @@ module.exports = {
           },
         },
         dark: {
-          extend: {
-            colors: {
-              primary: {
-                ...ORANGE_COLOR,
-                foreground: '#FFFFFF',
-              },
-              secondary: {
-                ...TEAL_COLOR,
-                foreground: '#000000',
-              },
-              danger: {
-                ...ORANGE_COLOR,
-                foreground: '#000000',
-              },
+          // NextUI's `extend` takes a base-theme *name* (string); nesting colors
+          // under it silently drops them, so the custom dark palette never
+          // applied. Mirror the light theme: put colors at the theme level so
+          // they merge onto NextUI's built-in dark base.
+          colors: {
+            primary: {
+              ...ORANGE_COLOR,
+              foreground: '#FFFFFF',
             },
-            borderColor: {
-              DEFAULT: '#1e1e1e',
+            secondary: {
+              ...TEAL_COLOR,
+              foreground: '#000000',
             },
-            backgroundColor: {
-              DEFAULT: '#1e1e1e',
+            danger: {
+              ...ORANGE_COLOR,
+              foreground: '#000000',
             },
+            focus: ORANGE_COLOR,
           },
         },
       },

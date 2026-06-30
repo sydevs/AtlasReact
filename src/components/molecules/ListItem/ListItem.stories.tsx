@@ -26,12 +26,6 @@ export const Default: Story = () => (
       </div>
     </StorySection>
 
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <div className="max-w-md">
-        <ListItem count={3} href="#area" label="London" subtitle="Greater London" />
-      </div>
-    </StorySection>
-
     <StorySection inContext={true} title="Examples">
       <div className="max-w-md rounded-lg border border-divider overflow-hidden">
         <List>

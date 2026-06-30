@@ -4,7 +4,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { Dropdown, DropdownItem } from './Dropdown'
 
-import { LanguageIcon, LocationIcon, DownArrowIcon } from '@/components/atoms/Icons'
+import { LocationIcon, DownArrowIcon } from '@/components/atoms/Icons'
 
 export default {
   title: 'Atoms',
@@ -23,7 +23,7 @@ const triggerClass =
  * Dropdown — a portaled popover with viewport-aware placement (flip/shift) built
  * on Floating UI. `DropdownItem` renders an `<a>` for links (`href`) and a
  * `<button>` for actions (`onClick`). Panel chrome uses NextUI semantic tokens,
- * so it follows light/dark + the accent theme (see the dark surface below).
+ * so it follows light/dark + the accent theme.
  */
 export const Default: Story = () => (
   <StoryWrapper>
@@ -93,22 +93,6 @@ export const Default: Story = () => (
           </StorySection>
         ))}
       </div>
-    </StorySection>
-
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <Dropdown
-        trigger={
-          <span className={triggerClass}>
-            <LanguageIcon size={18} />
-            Language
-          </span>
-        }
-      >
-        <DropdownItem className="text-primary" onClick={() => {}}>
-          English
-        </DropdownItem>
-        <DropdownItem onClick={() => {}}>Français</DropdownItem>
-      </Dropdown>
     </StorySection>
 
     <StorySection inContext={true} title="Examples">

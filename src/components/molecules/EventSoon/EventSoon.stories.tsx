@@ -41,10 +41,6 @@ export const Default: Story = () => (
       </div>
     </StorySection>
 
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <EventSoonChip firstDate={soonInPerson} online={false} />
-    </StorySection>
-
     <StorySection inContext={true} title="Examples">
       <div className="flex max-w-md items-center gap-1">
         <EventSoonChip firstDate={soonInPerson} online={false} />

@@ -4,6 +4,7 @@ import { HashRouter } from 'react-router'
 import App from './App'
 import i18n from './config/i18n'
 import atlasAuth from './config/api/auth'
+import { initTheme } from './hooks/use-theme'
 
 // Implementation of embeddable Widget
 // Demo in: demo.html
@@ -29,6 +30,9 @@ export default function Widget({ apiKey, locale }: WidgetProps) {
   if (!window.location.hash) {
     window.location.hash = HASH_BASE
   }
+
+  // Restore the persisted (or default) theme before first paint to avoid a flash.
+  initTheme()
 
   return (
     <HashRouter basename={HASH_BASE}>

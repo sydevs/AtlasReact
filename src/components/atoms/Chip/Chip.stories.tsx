@@ -24,8 +24,7 @@ const colors = ['primary', 'secondary', 'default'] as const
 
 /**
  * Chip — a compact, uppercase label built on NextUI's Chip with app defaults.
- * Showcases the colour × emphasis matrix, the icon slot, and how chips read on a
- * dark surface.
+ * Showcases the colour × emphasis matrix and the icon slot.
  */
 export const Default: Story = () => (
   <StoryWrapper>
@@ -67,14 +66,6 @@ export const Default: Story = () => (
         <Chip color="secondary" icon={<OnlineCallIcon size={14} />}>
           online
         </Chip>
-      </div>
-    </StorySection>
-
-    <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <div className="flex flex-wrap items-center gap-2">
-        <Chip>online</Chip>
-        <Chip color="secondary">Français</Chip>
-        <Chip icon={<EventIcon size={14} />}>weekly</Chip>
       </div>
     </StorySection>
 
