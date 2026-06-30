@@ -3,6 +3,7 @@
 // See DESIGN_SYSTEM.md. Explicit named exports only — each folder surfaces its
 // primary component(s) + `Props` type; single-use internals stay private.
 export { Navbar } from './Navbar'
+export type { NavbarProps } from './Navbar'
 
 export { SearchBar } from './SearchBar'
 export type { SearchBarProps } from './SearchBar'

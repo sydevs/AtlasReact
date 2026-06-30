@@ -21,7 +21,7 @@ export function isSoon(nextDate: DateTime, online: boolean) {
  *
  * - `abbreviation` — short name shown on the chip (e.g. `GMT+1`)
  * - `name` — long, localized name for the tooltip (e.g. `British Summer Time`)
- * - `offset` — UTC offset for the tooltip (e.g. `+01:00`)
+ * - `offset` — UTC offset for the tooltip (e.g. `+1`)
  */
 export function formatTimeZone(time: DateTime) {
   return {
