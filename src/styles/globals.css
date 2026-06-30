@@ -12,9 +12,17 @@
   @apply shadow-md;
 }
 
+/* Resolve the active-bullet color HERE — inside the themed wrapper — so it picks
+   up the widget's brand primary rather than :root's default theme value. Inactive
+   bullets use the theme foreground so they stay visible in both light and dark. */
+.swiper {
+  --swiper-theme-color: hsl(var(--nextui-primary));
+  --swiper-pagination-bullet-inactive-color: hsl(var(--nextui-foreground));
+  --swiper-pagination-bullet-inactive-opacity: 0.4;
+}
+
 @layer base {
   :root {
-    --swiper-theme-color: hsl(var(--nextui-primary));
     --swiper-pagination-bottom: 1rem;
     --swiper-pagination-bullet-width: 5rem;
     --swiper-pagination-bullet-height: 1rem;
