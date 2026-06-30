@@ -1,41 +1,57 @@
 import { describe, it, expect } from 'vitest'
 
-import { RegionSchema, RegionSlimSchema } from './region'
+import { RegionDocSchema, RegionSchema } from './region'
 
-const region = {
-  id: 10,
-  path: '/regions/cam',
-  label: 'Cambridgeshire',
-  eventCount: 5,
-  url: 'https://atlas.example/regions/cam',
-  parentPath: '/countries/gb',
-  areas: [{ id: 100, path: '/areas/cambridge', label: 'Cambridge', subtitle: null, eventCount: 3 }],
-  bounds: [-0.5, 52.0, 0.5, 52.5],
+const regionDoc = {
+  id: 28,
+  slug: 'belgium',
+  level: 'country',
+  name: 'Belgium',
+  mapboxId: 'dXJuOm1ieHBsYzpJaFU',
+  breadcrumbs: [{ doc: 28, label: 'Belgium' }],
+  legacyData: { countryCode: 'BE' },
 }
 
-describe('RegionSchema', () => {
-  it('parses a region with nested slim areas', () => {
-    const parsed = RegionSchema.parse(region)
+const region = {
+  id: 5,
+  slug: 'flanders',
+  name: 'Flanders',
+  eventCount: 3,
+  bounds: [3, 50, 5, 52],
+  path: '/regions/flanders',
+  parentPath: '/countries/belgium',
+  areas: [
+    {
+      id: 9,
+      slug: 'antwerpen',
+      level: 'city',
+      name: 'Antwerpen',
+      subtitle: null,
+      eventCount: 2,
+      path: '/areas/antwerpen',
+    },
+  ],
+}
 
-    expect(parsed.areas).toHaveLength(1)
+describe('RegionDocSchema', () => {
+  it('parses a raw region read and its ISO country code', () => {
+    const parsed = RegionDocSchema.parse(regionDoc)
+
+    expect(parsed.level).toBe('country')
+    expect(parsed.legacyData?.countryCode).toBe('BE')
   })
 
-  it('rejects an area child missing its eventCount', () => {
-    const bad = { ...region, areas: [{ id: 100, path: '/areas/cambridge', label: 'Cambridge' }] }
-
-    expect(() => RegionSchema.parse(bad)).toThrow()
+  it('rejects an unknown level', () => {
+    expect(() => RegionDocSchema.parse({ ...regionDoc, level: 'planet' })).toThrow()
   })
 })
 
-describe('RegionSlimSchema', () => {
-  it('parses a slim region (core fields only)', () => {
-    const parsed = RegionSlimSchema.parse({
-      id: 10,
-      path: '/regions/cam',
-      label: 'Cambridgeshire',
-      eventCount: 5,
-    })
+describe('RegionSchema', () => {
+  it('parses a region view-model with its child areas', () => {
+    expect(RegionSchema.parse(region).areas).toHaveLength(1)
+  })
 
-    expect(parsed.id).toBe(10)
+  it('allows null bounds', () => {
+    expect(RegionSchema.parse({ ...region, bounds: null }).bounds).toBeNull()
   })
 })

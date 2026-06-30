@@ -2,32 +2,32 @@ import { describe, it, expect } from 'vitest'
 
 import { ClientSchema } from './client'
 
-describe('ClientSchema', () => {
-  it('parses a client with a locale and initial path', () => {
-    const parsed = ClientSchema.parse({
-      name: 'Host Site',
-      domain: 'host.example',
-      locale: 'en',
-      initialPath: '/search',
-    })
+const client = {
+  id: 7,
+  name: 'Host Site',
+  locale: 'en',
+  color1: '#000000',
+  allowedDomains: 'host.example\nwww.host.example',
+  clientId: 'sahaj-atlas-client',
+  region: { id: 28, slug: 'belgium', level: 'country', name: 'Belgium' },
+  legacyConfig: { default_view: 'map' },
+}
 
-    expect(parsed).toMatchObject({ locale: 'en', initialPath: '/search' })
+describe('ClientSchema', () => {
+  it('parses a client with a resolved home region', () => {
+    const parsed = ClientSchema.parse(client)
+
+    expect(parsed.locale).toBe('en')
+    expect(parsed.region).toMatchObject({ slug: 'belgium', level: 'country' })
   })
 
-  it('allows null locale and initialPath', () => {
-    const parsed = ClientSchema.parse({
-      name: 'Host Site',
-      domain: 'host.example',
-      locale: null,
-      initialPath: null,
-    })
+  it('allows a null locale and an unset region', () => {
+    const parsed = ClientSchema.parse({ id: 7, name: 'Host Site', locale: null })
 
     expect(parsed.locale).toBeNull()
   })
 
-  it('rejects a missing domain', () => {
-    expect(() =>
-      ClientSchema.parse({ name: 'Host Site', locale: null, initialPath: null }),
-    ).toThrow()
+  it('rejects a missing id', () => {
+    expect(() => ClientSchema.parse({ name: 'Host Site', locale: 'en' })).toThrow()
   })
 })

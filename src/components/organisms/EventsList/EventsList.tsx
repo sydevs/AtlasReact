@@ -5,6 +5,7 @@ import { EventItem } from '@/components/molecules/EventItem'
 import { List } from '@/components/molecules/List'
 import { isSoon } from '@/lib'
 import { EventSlim } from '@/types'
+import { isOnline, nextOccurrence } from '@/lib/shape'
 import api from '@/config/api'
 import i18n from '@/config/i18n'
 
@@ -16,10 +17,13 @@ export interface DynamicEventsListProps {
 
 function calculateOrder(event: EventSlim) {
   let order = event.distance || 100
+  const online = isOnline(event)
+  const languageCode = event.languages[0] ?? ''
+  const next = nextOccurrence(event)
 
-  if (i18n.resolvedLanguage != event.languageCode) order *= 2
-  if (isSoon(DateTime.fromJSDate(event.nextDate), event.online)) order *= 0.5
-  if (event.online) order *= 1.5
+  if (i18n.resolvedLanguage != languageCode) order *= 2
+  if (next && isSoon(DateTime.fromJSDate(next), online)) order *= 0.5
+  if (online) order *= 1.5
 
   return order
 }

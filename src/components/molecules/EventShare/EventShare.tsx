@@ -53,7 +53,7 @@ function ShareModal({ event, isOpen, onOpenChange }: ShareModalProps) {
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">{t('registration.invite_friend')}</ModalHeader>
         <ModalBody>
-          <ShareContent label={event.label} url={event.url} />
+          <ShareContent label={event.title} url={event.webUrl ?? ''} />
         </ModalBody>
         <ModalFooter />
       </ModalContent>

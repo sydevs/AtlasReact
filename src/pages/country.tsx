@@ -13,22 +13,26 @@ import { useViewState } from '@/config/store'
 import { useLocale } from '@/hooks/use-locale'
 import { useMapbox } from '@/hooks/use-mapbox'
 
-function CountryPanel({ countryCode }: { countryCode: string }) {
+function CountryPanel({ slug }: { slug: string }) {
   const { fitBounds } = useMapbox()
   const { t } = useTranslation('common')
   const { regionNames } = useLocale()
   const setBoundary = useViewState((s) => s.setBoundary)
   const { data: country } = useSuspenseQuery({
-    queryKey: ['country', countryCode],
-    queryFn: () => api.getCountry(countryCode),
+    queryKey: ['country', slug],
+    queryFn: () => api.getCountry(slug),
   })
 
   useEffect(() => {
-    setBoundary(bboxPolygon(country.bounds))
-    fitBounds(country.bounds)
-  }, [country, fitBounds])
+    if (country.bounds) {
+      setBoundary(bboxPolygon(country.bounds))
+      fitBounds(country.bounds)
+    } else {
+      setBoundary(undefined)
+    }
+  }, [country, fitBounds, setBoundary])
 
-  const countryName = regionNames.of(country.code) || country.label
+  const countryName = (country.countryCode && regionNames.of(country.countryCode)) || country.name
 
   return (
     <>
@@ -48,7 +52,7 @@ function CountryPanel({ countryCode }: { countryCode: string }) {
                 key={child.id}
                 count={child.eventCount}
                 href={child.path}
-                label={child.label}
+                label={child.name}
                 subtitle={child.subtitle}
               />
             ),
@@ -59,12 +63,12 @@ function CountryPanel({ countryCode }: { countryCode: string }) {
 }
 
 export default function CountryPage() {
-  let { countryCode } = useParams()
+  let { slug } = useParams()
 
   // This wrapper is necessary because <Panel> contains an <ErrorBoundary> and <Suspense> to handle loading
   return (
     <Panel>
-      <CountryPanel countryCode={countryCode || ''} />
+      <CountryPanel slug={slug || ''} />
     </Panel>
   )
 }

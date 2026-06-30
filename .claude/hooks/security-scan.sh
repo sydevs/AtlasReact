@@ -16,10 +16,10 @@ command=$(echo "$input" | grep -o '"command":"[^"]*"' | sed 's/"command":"//;s/"
 # PUBLIC — a leaked `sk.` Mapbox token or API key is a real exposure.
 patterns=(
   "sk\.eyJ"                                    # Mapbox SECRET access token (sk.…)
-  "MAPBOX_SECRET"
-  "CLOUDFLARE_API_TOKEN"                        # deploy/runtime secret (Cloudflare Pages)
-  "AWS_SECRET_ACCESS_KEY"
-  "SENTRY_AUTH_TOKEN"
+  "MAPBOX_SECRET[A-Z_]*\s*[:=]"                 # Mapbox secret assignment (not doc mentions)
+  "CLOUDFLARE_API_TOKEN\s*[:=]"                 # deploy/runtime secret (Cloudflare Pages)
+  "AWS_SECRET_ACCESS_KEY\s*[:=]"
+  "SENTRY_AUTH_TOKEN\s*[:=]"
   "-----BEGIN PRIVATE KEY-----"
   "-----BEGIN RSA PRIVATE KEY-----"
   "api[_-]?key.*=.*['\"][a-zA-Z0-9_-]{20,}['\"]"

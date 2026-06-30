@@ -20,21 +20,21 @@
     "starting_at": "Select your starting date"
   },
   "questions": {
+    "accessibility": "Do you have any accessibility requirements?",
     "aspirations": "What are you looking for from meditation?",
     "experience": "Have you experienced this meditation before?",
+    "guests": "Will you be bringing any guests?",
+    "healthInfo": "Is there anything about your health we should know?",
+    "priorExperience": "Have you practised Sahaja Yoga meditation before?",
     "questions": "Do you have any questions?",
-    "referral": "How did you hear about us?"
+    "referral": "How did you hear about us?",
+    "referralSource": "How did you hear about this event?"
   },
   "recurrence": {
     "daily": "Every Day",
-    "monthly_1st": "1st %{weekday} of Every Month",
-    "monthly_2nd": "2nd %{weekday} of Every Month",
-    "monthly_3rd": "3rd %{weekday} of Every Month",
-    "monthly_4th": "4th %{weekday} of Every Month",
-    "monthly_last": "Last %{weekday} of Every Month",
+    "monthly": "Monthly",
     "null": "Contact host for timings",
-    "weekly_1": "Every %{weekday}",
-    "weekly_2": "Every 2nd %{weekday}"
+    "weekly": "Every %{weekday}"
   },
   "registration": {
     "cancel": "Cancel",

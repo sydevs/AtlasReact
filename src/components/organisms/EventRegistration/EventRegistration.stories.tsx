@@ -14,11 +14,8 @@ export default { title: 'Organisms' } satisfies StoryDefault
 // External registration renders an outbound link instead of opening the modal.
 const externalEvent: Event = {
   ...mockEvent,
-  registration: {
-    ...mockEvent.registration!,
-    mode: 'external',
-    externalUrl: 'https://example.com/register',
-  },
+  registrationMode: 'external',
+  externalRegistrationUrl: 'https://example.com/register',
 }
 
 /**

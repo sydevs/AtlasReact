@@ -7,6 +7,7 @@ import { EventImages } from '@/components/molecules/EventImages'
 import { ShareButton } from '@/components/molecules/EventShare'
 import { EventDetails } from '@/components/organisms/EventDetails'
 import { useLocale } from '@/hooks/use-locale'
+import { isOnline, lexicalToHtml, nextOccurrence } from '@/lib/shape'
 import { Event } from '@/types'
 import { Chip } from '@/components/atoms/Chip'
 
@@ -20,6 +21,11 @@ export function EventPanel({ event }: EventPanelProps) {
   const { t } = useTranslation('events')
   const { locale, languageNames } = useLocale()
 
+  const online = isOnline(event)
+  const languageCode = event.languages[0] ?? ''
+  const next = nextOccurrence(event)
+  const descriptionHtml = lexicalToHtml(event.description)
+
   return (
     <>
       <div className="flex w-full justify-center items-center">
@@ -32,23 +38,34 @@ export function EventPanel({ event }: EventPanelProps) {
           ${event.images.length > 0 ? '' : 'pl-5 mt-3'}
         `}
         >
-          {event.label}
+          {event.title}
         </h1>
         <div className="flex gap-1">
-          {event.timing && (
-            <EventSoonChip firstDate={event.timing.firstDate} online={event.online} />
-          )}
-          {event.online && <Chip>{t('details.online')}</Chip>}
-          {event.languageCode.split('-')[0] !== locale.split('-')[0] && (
-            <Chip color="secondary">{languageNames.of(event.languageCode)}</Chip>
+          {next && <EventSoonChip firstDate={next} online={online} />}
+          {online && <Chip>{t('details.online')}</Chip>}
+          {languageCode && languageCode.split('-')[0] !== locale.split('-')[0] && (
+            <Chip color="secondary">{languageNames.of(languageCode)}</Chip>
           )}
         </div>
-        {event.descriptionHtml && (
+        {descriptionHtml && (
           <div
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(event.descriptionHtml, {
+              __html: DOMPurify.sanitize(descriptionHtml, {
                 USE_PROFILES: { html: true },
-                ALLOWED_TAGS: ['p', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'del', 'br'],
+                ALLOWED_TAGS: [
+                  'p',
+                  'b',
+                  'i',
+                  'em',
+                  'strong',
+                  'a',
+                  'ul',
+                  'ol',
+                  'li',
+                  'del',
+                  'br',
+                  'h3',
+                ],
                 ALLOWED_ATTR: ['href'],
                 ADD_ATTR: ['target'],
               }),
@@ -56,12 +73,10 @@ export function EventPanel({ event }: EventPanelProps) {
             className="flex flex-col gap-2 my-2 colored-links normal-nums"
           />
         )}
-        {event.registration && (
-          <div className="flex-center-x gap-1">
-            <RegistrationButton className="flex-grow-[3]" event={event} />
-            <ShareButton className="flex-grow" event={event} />
-          </div>
-        )}
+        <div className="flex-center-x gap-1">
+          <RegistrationButton className="flex-grow-[3]" event={event} />
+          <ShareButton className="flex-grow" event={event} />
+        </div>
         <EventDetails event={event} />
       </div>
     </>

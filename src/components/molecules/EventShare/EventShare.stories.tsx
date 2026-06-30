@@ -28,19 +28,19 @@ export const Default: Story = () => (
       title="Share Content"
     >
       <div className="max-w-sm">
-        <ShareContent label={mockEvent.label} url={mockEvent.url} />
+        <ShareContent label={mockEvent.title} url={mockEvent.webUrl ?? ''} />
       </div>
     </StorySection>
 
     <StorySection background="neutral" theme="dark" title="Dark Surface">
       <div className="max-w-sm">
-        <ShareContent label={mockEvent.label} url={mockEvent.url} />
+        <ShareContent label={mockEvent.title} url={mockEvent.webUrl ?? ''} />
       </div>
     </StorySection>
 
     <StorySection inContext={true} title="Examples">
       <div className="flex max-w-md items-center justify-end gap-2 rounded-lg border border-divider p-4">
-        <span className="text-sm text-default-600">{mockEvent.label}</span>
+        <span className="text-sm text-default-600">{mockEvent.title}</span>
         <ShareButton event={mockEvent} />
       </div>
     </StorySection>

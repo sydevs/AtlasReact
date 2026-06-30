@@ -75,12 +75,14 @@ function IndexPanel() {
                 key={country.id}
                 count={country.eventCount}
                 href={country.path}
-                label={regionNames.of(country.code) || country.label}
+                label={(country.countryCode && regionNames.of(country.countryCode)) || country.name}
               >
-                <CircleFlag
-                  className="w-7 h-7 mr-3 border border-divider rounded-full bg-divider"
-                  countryCode={country.code.toLocaleLowerCase()}
-                />
+                {country.countryCode && (
+                  <CircleFlag
+                    className="w-7 h-7 mr-3 border border-divider rounded-full bg-divider"
+                    countryCode={country.countryCode.toLocaleLowerCase()}
+                  />
+                )}
               </ListItem>
             ))}
         </List>

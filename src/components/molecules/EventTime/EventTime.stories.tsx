@@ -19,11 +19,11 @@ export const Default: Story = () => (
     <StorySection title="Variants">
       <div className="flex flex-col gap-6">
         <StorySection title="Minimal" variant="subsection">
-          <EventTime duration={null} nextDate={nextDate} timeZone="Europe/London" />
+          <EventTime nextDate={nextDate} timeZone="Europe/London" />
         </StorySection>
 
         <StorySection title="Maximal" variant="subsection">
-          <EventTime showTimeZone duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
+          <EventTime showTimeZone endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
         </StorySection>
       </div>
     </StorySection>
@@ -32,7 +32,7 @@ export const Default: Story = () => (
       description="With a duration, the end time is appended after the start."
       title="With Duration"
     >
-      <EventTime duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
+      <EventTime endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
     </StorySection>
 
     <StorySection
@@ -40,22 +40,18 @@ export const Default: Story = () => (
       title="Time Zone"
     >
       <div className="flex flex-col gap-2">
-        <div>
-          <EventTime duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
-        </div>
-        <div>
-          <EventTime showTimeZone duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
-        </div>
+        <EventTime endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
+        <EventTime showTimeZone endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
       </div>
     </StorySection>
 
     <StorySection background="neutral" theme="dark" title="Dark Surface">
-      <EventTime showTimeZone duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
+      <EventTime showTimeZone endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
     </StorySection>
 
     <StorySection inContext={true} title="Examples">
       <div className="max-w-md text-xs text-gray-500">
-        <EventTime showTimeZone duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
+        <EventTime showTimeZone endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
       </div>
     </StorySection>
 

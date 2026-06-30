@@ -41,14 +41,14 @@ export function EventImages({ images }: { images: EventImage[] }) {
         {images.map((image, index) => (
           <SwiperSlide key={image.url} className="p-6 pb-10">
             <button
-              aria-label={image.altText ?? t('details.view_photo')}
+              aria-label={image.alt ?? t('details.view_photo')}
               className="block w-full cursor-zoom-in"
               type="button"
               onClick={() => openAt(index)}
             >
               <Image
                 isBlurred
-                alt={image.altText}
+                alt={image.alt ?? undefined}
                 className="rounded-lg aspect-[4/3] object-cover"
                 height="100%"
                 src={image.url}

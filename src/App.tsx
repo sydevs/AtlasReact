@@ -11,6 +11,7 @@ import Providers from './providers'
 import MapLayout from './layouts/map'
 import api from './config/api'
 
+import { regionPath } from '@/lib/shape'
 import { ErrorFallback, LoadingFallback } from '@/components/atoms'
 import EventPage from '@/pages/event'
 import VenuePage from '@/pages/venue'
@@ -50,8 +51,21 @@ function AppRouter({ apiKey, defaultLocale }: AppProps) {
 
   const { data: client } = useSuspenseQuery({
     queryKey: ['client', apiKey],
-    queryFn: () => api.getClient(apiKey),
+    queryFn: () => api.getClient(),
   })
+
+  // The widget's home view is its configured region; fall back to the search index.
+  const initialPath =
+    client.region && typeof client.region === 'object'
+      ? regionPath(client.region.level, client.region.slug)
+      : '/search'
+
+  // Primary host for analytics (allowedDomains is a newline-separated list).
+  const primaryDomain =
+    client.allowedDomains
+      ?.split('\n')
+      .map((domain) => domain.trim())
+      .find(Boolean) ?? ''
 
   useEffect(() => {
     if (defaultLocale || client.locale) {
@@ -67,17 +81,18 @@ function AppRouter({ apiKey, defaultLocale }: AppProps) {
 
   useEffect(() => setCurrentPath(location.pathname), [location])
 
-  if (import.meta.env.VITE_FATHOM_ID && !client.domain.includes('localhost')) {
-    Fathom.load(import.meta.env.VITE_FATHOM_ID)
-  }
+  const fathomEnabled =
+    !!import.meta.env.VITE_FATHOM_ID && !!primaryDomain && !primaryDomain.includes('localhost')
 
   useEffect(() => {
-    if (import.meta.env.VITE_FATHOM_ID && !client.domain.includes('localhost')) {
-      Fathom.trackPageview({
-        url: `https://${client.domain}/${location.pathname}`,
-      })
+    if (fathomEnabled) Fathom.load(import.meta.env.VITE_FATHOM_ID)
+  }, [fathomEnabled])
+
+  useEffect(() => {
+    if (fathomEnabled) {
+      Fathom.trackPageview({ url: `https://${primaryDomain}/${location.pathname}` })
     }
-  }, [location])
+  }, [location, fathomEnabled, primaryDomain])
 
   return (
     <>
@@ -87,12 +102,12 @@ function AppRouter({ apiKey, defaultLocale }: AppProps) {
       <MapLayout>
         <Routes>
           <Route element={<IndexPage />} path="/search" />
-          <Route element={<CountryPage />} path="/countries/:countryCode" />
-          <Route element={<RegionPage />} path="/regions/:id" />
-          <Route element={<AreaPage />} path="/areas/:id" />
-          <Route element={<VenuePage />} path="/venues/:id" />
+          <Route element={<CountryPage />} path="/countries/:slug" />
+          <Route element={<RegionPage />} path="/regions/:slug" />
+          <Route element={<AreaPage />} path="/areas/:slug" />
+          <Route element={<VenuePage />} path="/venues/:slug" />
           <Route element={<EventPage />} path="/events/:id" />
-          <Route element={<Navigate to={client.initialPath || '/search'} />} path="*" />
+          <Route element={<Navigate to={initialPath} />} path="*" />
         </Routes>
       </MapLayout>
     </>

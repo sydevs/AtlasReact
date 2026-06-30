@@ -20,7 +20,7 @@ import { formatTimeZone } from '@/lib'
 
 export type EventTimeProps = {
   nextDate: DateTime
-  duration: number | null
+  endTime?: string | null // "HH:MM" same-day end, in the event's timezone
   timeZone: string
   showTimeZone?: boolean
   /** Tooltip open delay (ms) for the timezone chip. Only applies when `showTimeZone` is set. */
@@ -29,21 +29,24 @@ export type EventTimeProps = {
 
 export function EventTime({
   nextDate,
-  duration,
+  endTime,
   timeZone,
   delay,
   showTimeZone = false,
 }: EventTimeProps) {
-  const times = [nextDate]
+  const start = nextDate.setZone(timeZone)
+  const times = [start]
 
-  if (duration) {
-    times.push(nextDate.plus({ hours: duration }))
+  if (endTime) {
+    const [hour, minute] = endTime.split(':').map(Number)
+
+    times.push(start.set({ hour, minute }))
   }
 
   return (
     <>
-      {times.map((time) => time.setZone(timeZone).toLocaleString(DateTime.TIME_SIMPLE)).join(' - ')}
-      {showTimeZone && <TimezoneChip delay={delay} time={nextDate.setZone(timeZone)} />}
+      {times.map((time) => time.toLocaleString(DateTime.TIME_SIMPLE)).join(' - ')}
+      {showTimeZone && <TimezoneChip delay={delay} time={start} />}
     </>
   )
 }

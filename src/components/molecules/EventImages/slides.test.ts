@@ -8,9 +8,9 @@ import { imagesToSlides } from './slides'
 // UI imports (the helper's imports are type-only), so it stays in the fast lane.
 
 describe('imagesToSlides', () => {
-  it('maps url to src and altText to both alt and description', () => {
+  it('maps url to src and alt to both alt and description', () => {
     const images: EventImage[] = [
-      { url: 'https://img/1.jpg', thumbnailUrl: 'https://img/1-thumb.jpg', altText: 'Hall' },
+      { url: 'https://img/1.jpg', thumbnailURL: 'https://img/1-thumb.jpg', alt: 'Hall' },
     ]
 
     expect(imagesToSlides(images)).toEqual([
@@ -18,10 +18,10 @@ describe('imagesToSlides', () => {
     ])
   })
 
-  it('preserves order and leaves alt/description undefined when altText is missing', () => {
+  it('preserves order and leaves alt/description undefined when alt is missing', () => {
     const images: EventImage[] = [
-      { url: 'https://img/a.jpg', thumbnailUrl: 'https://img/a-t.jpg', altText: 'A' },
-      { url: 'https://img/b.jpg', thumbnailUrl: 'https://img/b-t.jpg' },
+      { url: 'https://img/a.jpg', thumbnailURL: 'https://img/a-t.jpg', alt: 'A' },
+      { url: 'https://img/b.jpg', thumbnailURL: 'https://img/b-t.jpg' },
     ]
 
     const slides = imagesToSlides(images)
