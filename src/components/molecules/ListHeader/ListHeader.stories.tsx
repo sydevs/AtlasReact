@@ -17,28 +17,28 @@ export const Default: Story = () => (
   <StoryWrapper>
     <StorySection title="Default">
       <div className="max-w-md">
-        <ListHeader returnLink="#region" title="Cambridge" />
+        <ListHeader backHref="#region" title="Cambridge" />
       </div>
     </StorySection>
 
     <StorySection title="Long Title">
       <div className="max-w-md">
-        <ListHeader returnLink="#region" title="Greater London and the South East" />
+        <ListHeader backHref="#region" title="Greater London and the South East" />
       </div>
     </StorySection>
 
     <StorySection background="neutral" theme="dark" title="Dark Surface">
       <div className="max-w-md">
-        <ListHeader returnLink="#region" title="Cambridge" />
+        <ListHeader backHref="#region" title="Cambridge" />
       </div>
     </StorySection>
 
     <StorySection inContext={true} title="Examples">
       <div className="max-w-md rounded-lg border border-divider overflow-hidden">
-        <ListHeader returnLink="#region" title="Cambridgeshire" />
+        <ListHeader backHref="#region" title="Cambridgeshire" />
         <List>
-          <ListItem count={12} label="Cambridge" link="#area" />
-          <ListItem count={4} label="Ely" link="#area" />
+          <ListItem count={12} href="#area" label="Cambridge" />
+          <ListItem count={4} href="#area" label="Ely" />
         </List>
       </div>
     </StorySection>

@@ -17,9 +17,9 @@ export const Default: Story = () => (
     <StorySection title="Basic">
       <div className="max-w-md">
         <List>
-          <ListItem count={12} label="Cambridge" link="#area" />
-          <ListItem count={7} label="Oxford" link="#area" />
-          <ListItem count={3} label="London" link="#area" />
+          <ListItem count={12} href="#area" label="Cambridge" />
+          <ListItem count={7} href="#area" label="Oxford" />
+          <ListItem count={3} href="#area" label="London" />
         </List>
       </div>
     </StorySection>
@@ -27,8 +27,8 @@ export const Default: Story = () => (
     <StorySection title="With Subtitles">
       <div className="max-w-md">
         <List>
-          <ListItem count={12} label="Cambridge" link="#area" subtitle="Cambridgeshire" />
-          <ListItem count={7} label="Oxford" link="#area" subtitle="Oxfordshire" />
+          <ListItem count={12} href="#area" label="Cambridge" subtitle="Cambridgeshire" />
+          <ListItem count={7} href="#area" label="Oxford" subtitle="Oxfordshire" />
         </List>
       </div>
     </StorySection>
@@ -36,8 +36,8 @@ export const Default: Story = () => (
     <StorySection background="neutral" theme="dark" title="Dark Surface">
       <div className="max-w-md">
         <List>
-          <ListItem count={12} label="Cambridge" link="#area" />
-          <ListItem count={7} label="Oxford" link="#area" />
+          <ListItem count={12} href="#area" label="Cambridge" />
+          <ListItem count={7} href="#area" label="Oxford" />
         </List>
       </div>
     </StorySection>
@@ -45,9 +45,9 @@ export const Default: Story = () => (
     <StorySection inContext={true} title="Examples">
       <div className="max-w-md rounded-lg border border-divider overflow-hidden">
         <List>
-          <ListItem count={12} label="Cambridge" link="#area" subtitle="Cambridgeshire" />
-          <ListItem count={7} label="Oxford" link="#area" subtitle="Oxfordshire" />
-          <ListItem count={3} label="London" link="#area" subtitle="Greater London" />
+          <ListItem count={12} href="#area" label="Cambridge" subtitle="Cambridgeshire" />
+          <ListItem count={7} href="#area" label="Oxford" subtitle="Oxfordshire" />
+          <ListItem count={3} href="#area" label="London" subtitle="Greater London" />
         </List>
       </div>
     </StorySection>

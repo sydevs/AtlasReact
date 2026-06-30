@@ -4,13 +4,13 @@ import { UpArrowIcon } from '@/components/atoms/Icons'
 
 interface ListHeaderProps {
   title: string
-  returnLink: string
+  backHref: string
 }
 
-export function ListHeader({ title, returnLink }: ListHeaderProps) {
+export function ListHeader({ title, backHref }: ListHeaderProps) {
   return (
     <h1 className="text-2xl font-bold text-center p-2 flex flex-row items-center">
-      <Link className="text-3xl" href={returnLink}>
+      <Link className="text-3xl" href={backHref}>
         <UpArrowIcon />
       </Link>
       <span className="flex-grow">{title}</span>

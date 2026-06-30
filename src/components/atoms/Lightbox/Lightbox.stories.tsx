@@ -46,7 +46,7 @@ function LightboxDemo({ slides, label }: { slides: LightboxSlide[]; label: strin
       <Button color="primary" onPress={() => setOpen(true)}>
         {label}
       </Button>
-      <Lightbox close={() => setOpen(false)} index={0} open={open} slides={slides} />
+      <Lightbox index={0} isOpen={open} slides={slides} onClose={() => setOpen(false)} />
     </>
   )
 }

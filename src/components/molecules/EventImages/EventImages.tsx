@@ -64,10 +64,10 @@ export function EventImages({ images }: { images: EventImage[] }) {
       {open && (
         <Suspense fallback={null}>
           <Lightbox
-            open
-            close={() => setOpen(false)}
+            isOpen
             index={activeIndex}
             slides={imagesToSlides(images)}
+            onClose={() => setOpen(false)}
           />
         </Suspense>
       )}

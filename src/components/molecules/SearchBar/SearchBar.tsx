@@ -13,7 +13,7 @@ interface SearchBarProps {
   onSelect?: (value: GeocodeFeature) => void
   header?: string
   subheader?: string
-  returnLink?: string
+  backHref?: string
   filterable?: boolean
   eventCount?: number
 }
@@ -22,7 +22,7 @@ export function SearchBar({
   onSelect,
   header,
   subheader,
-  returnLink,
+  backHref,
   eventCount,
   filterable = false,
 }: SearchBarProps) {
@@ -66,7 +66,7 @@ export function SearchBar({
       className="sticky top-0 z-10 p-4 pb-3 bg-background border-b-1.5 border-default-300 flex-center-x flex-col"
     >
       <div className="flex-center-y gap-2 w-full">
-        {returnLink && <UpArrowIcon size={32} onClick={() => navigate(returnLink)} />}
+        {backHref && <UpArrowIcon size={32} onClick={() => navigate(backHref)} />}
 
         <div className="flex-grow">
           {isSearching || !header ? (

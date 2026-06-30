@@ -36,8 +36,8 @@ function RegionPanel({ regionId }: { regionId: number }) {
         />
       </Helmet>
       <SearchBar
+        backHref={region.parentPath}
         header={region.label}
-        returnLink={region.parentPath}
         onSelect={(value) => console.log(value)}
       />
       <List>
@@ -47,8 +47,8 @@ function RegionPanel({ regionId }: { regionId: number }) {
             <ListItem
               key={area.id}
               count={area.eventCount}
+              href={area.path}
               label={area.label}
-              link={area.path}
               subtitle={area.subtitle}
             />
           ))}

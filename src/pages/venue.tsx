@@ -40,8 +40,8 @@ function VenuePanel({ venueId }: { venueId: number }) {
         />
       </Helmet>
       <SearchBar
+        backHref={venue.parentPath}
         header={venue.label}
-        returnLink={venue.parentPath}
         onSelect={(value) => console.log(value)}
       />
       <EventsList events={venue.events} />
