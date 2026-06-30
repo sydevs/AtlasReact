@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router'
 import { Helmet } from 'react-helmet-async'
-import { Suspense, useEffect } from 'react'
+import { Suspense, useEffect, type RefObject } from 'react'
 import * as Fathom from 'fathom-client'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -10,6 +10,7 @@ import { useLocale } from './hooks/use-locale'
 import Providers from './providers'
 import MapLayout from './layouts/map'
 import api from './config/api'
+import { BrandTheme } from './config/theme/BrandTheme'
 
 import { regionPath } from '@/lib/shape'
 import { ErrorFallback, LoadingFallback } from '@/components/atoms'
@@ -23,21 +24,28 @@ import '@/styles/globals.css'
 import '@/config/i18n'
 import i18n from '@/config/i18n'
 
+import type { PaletteRoles } from '@/config/theme/palette'
+
 // ===== APP ===== //
 
 type AppProps = {
   apiKey: string | undefined | null
   defaultLocale?: string | null
+  // Per-embed brand palette + the wrapper to scope theming to (widget only).
+  brand?: PaletteRoles
+  themeRootRef?: RefObject<HTMLElement | null>
 }
 
-export default function App(props: AppProps) {
+export default function App({ apiKey, defaultLocale, brand, themeRootRef }: AppProps) {
   return (
     <Providers>
-      <Suspense fallback={<LoadingFallback />}>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <AppRouter {...props} />
-        </ErrorBoundary>
-      </Suspense>
+      <BrandTheme apiKey={apiKey} palette={brand} rootRef={themeRootRef}>
+        <Suspense fallback={<LoadingFallback />}>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <AppRouter apiKey={apiKey} defaultLocale={defaultLocale} />
+          </ErrorBoundary>
+        </Suspense>
+      </BrandTheme>
     </Providers>
   )
 }
