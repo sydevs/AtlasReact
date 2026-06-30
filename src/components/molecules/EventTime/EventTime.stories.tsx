@@ -6,7 +6,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { EventTime } from './EventTime'
 
-export default { title: 'Molecules / Display' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 const nextDate = DateTime.fromISO('2026-07-04T09:30', { zone: 'Europe/London' })
 
@@ -40,8 +40,12 @@ export const Default: Story = () => (
       title="Time Zone"
     >
       <div className="flex flex-col gap-2">
-        <EventTime duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
-        <EventTime showTimeZone duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
+        <div>
+          <EventTime duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
+        </div>
+        <div>
+          <EventTime showTimeZone duration={1.5} nextDate={nextDate} timeZone="Europe/London" />
+        </div>
       </div>
     </StorySection>
 

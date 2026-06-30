@@ -5,10 +5,39 @@ import { useMemo } from 'react'
 
 import { SocialIcon, AnchorIcon, CallIcon, LocationIcon } from '@/components/atoms/Icons'
 import { EventTime } from '@/components/molecules/EventTime'
-import { EventContact, EventLocation, EventTiming } from '@/types'
+import { Event, EventContact, EventLocation, EventTiming } from '@/types'
 import { useLocale } from '@/hooks/use-locale'
 
-export function EventContactDetails({
+export type EventDetailsProps = {
+  event: Event
+}
+
+/**
+ * The stack of detail cards shown inside an EventPanel — host contact, timing,
+ * and location. The contact card's position and emphasis depend on whether the
+ * event has timing, so the ordering logic lives here rather than at the call
+ * site. The individual cards and the generic row primitive below are private to
+ * this module.
+ */
+export function EventDetails({ event }: EventDetailsProps) {
+  return (
+    <div className="mt-5 flex flex-col gap-4">
+      {event.contact && !event.timing && (
+        <EventContactDetails isHighlighted contact={event.contact} />
+      )}
+
+      {event.timing && event.timing.upcomingDates.length > 0 && (
+        <EventTimingDetails showTimeZone={event.online} timing={event.timing} />
+      )}
+
+      {event.location && <EventLocationDetails location={event.location} />}
+
+      {event.contact && event.timing && <EventContactDetails contact={event.contact} />}
+    </div>
+  )
+}
+
+function EventContactDetails({
   contact,
   isHighlighted = false,
 }: {
@@ -33,12 +62,12 @@ export function EventContactDetails({
   )
 }
 
-export function EventTimingDetails({
+function EventTimingDetails({
   timing,
-  convertTimeZone = false,
+  showTimeZone = false,
 }: {
   timing: EventTiming
-  convertTimeZone?: boolean
+  showTimeZone?: boolean
 }) {
   const { t } = useTranslation('events')
   const { locale } = useLocale()
@@ -53,13 +82,13 @@ export function EventTimingDetails({
         <EventTime
           duration={timing.duration}
           nextDate={nextDate}
-          showTimeZone={convertTimeZone}
-          timeZone={convertTimeZone ? DateTime.local().zoneName : timing.timeZone}
+          showTimeZone={showTimeZone}
+          timeZone={showTimeZone ? DateTime.local().zoneName : timing.timeZone}
         />
       }
       title={
-        timing.type
-          ? t(`recurrence.${timing.type}`, {
+        timing.recurrenceType
+          ? t(`recurrence.${timing.recurrenceType}`, {
               weekday: nextDate.toLocaleString({ weekday: 'long' }),
             })
           : t('details.contact_for_timing')
@@ -75,7 +104,7 @@ export function EventTimingDetails({
   )
 }
 
-export function EventLocationDetails({ location }: { location: EventLocation }) {
+function EventLocationDetails({ location }: { location: EventLocation }) {
   const { t } = useTranslation('events')
   let title: string, subtitle: string
 
@@ -118,13 +147,7 @@ type EventDetailProps = {
   children: React.ReactNode
 }
 
-export function EventDetail({
-  isExternal = false,
-  title,
-  content,
-  url,
-  children,
-}: EventDetailProps) {
+function EventDetail({ isExternal = false, title, content, url, children }: EventDetailProps) {
   return (
     <div className="flex-center-y gap-3">
       <div className="text-center border-1 border-primary-100 rounded-sm w-11 h-11">{children}</div>

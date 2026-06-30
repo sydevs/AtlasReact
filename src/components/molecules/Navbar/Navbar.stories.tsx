@@ -4,7 +4,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { Navbar } from './Navbar'
 
-export default { title: 'Molecules / Sections' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 /**
  * Navbar — the app's top bar: ATLAS brand, nav links, theme switch, and language

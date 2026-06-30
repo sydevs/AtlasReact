@@ -9,11 +9,11 @@ import { MapSearch } from '@/components/organisms/Mapbox/MapSearch'
 import { UpArrowIcon, DownArrowIcon, SearchIcon, CloseIcon } from '@/components/atoms/Icons'
 import { useBreakpoint } from '@/config/responsive'
 
-interface SearchBarProps {
+export interface SearchBarProps {
   onSelect?: (value: GeocodeFeature) => void
   header?: string
   subheader?: string
-  returnLink?: string
+  backHref?: string
   filterable?: boolean
   eventCount?: number
 }
@@ -22,7 +22,7 @@ export function SearchBar({
   onSelect,
   header,
   subheader,
-  returnLink,
+  backHref,
   eventCount,
   filterable = false,
 }: SearchBarProps) {
@@ -66,7 +66,7 @@ export function SearchBar({
       className="sticky top-0 z-10 p-4 pb-3 bg-background border-b-1.5 border-default-300 flex-center-x flex-col"
     >
       <div className="flex-center-y gap-2 w-full">
-        {returnLink && <UpArrowIcon size={32} onClick={() => navigate(returnLink)} />}
+        {backHref && <UpArrowIcon size={32} onClick={() => navigate(backHref)} />}
 
         <div className="flex-grow">
           {isSearching || !header ? (
@@ -105,11 +105,11 @@ export function SearchBar({
       )}
       {!isMd && eventCount && (
         <div className="mt-2 text-center text-sm font-semibold uppercase leading-snug">
-          <span className="hover:underline cursor-pointer" onClick={executeScroll}>
+          <button className="hover:underline cursor-pointer" type="button" onClick={executeScroll}>
             {eventCount} {t('events')}
             <br />
             <DownArrowIcon className="inline -mt-1" />
-          </span>
+          </button>
         </div>
       )}
     </div>

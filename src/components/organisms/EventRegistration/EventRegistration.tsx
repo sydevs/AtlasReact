@@ -38,14 +38,16 @@ const INPUT_STYLE = {
   radius: InputProps['radius']
 }
 
-type RegistrationButtonProps = {
+export type RegistrationButtonProps = {
   event: Event
 } & ButtonProps
 
 export function RegistrationButton({ event, ...buttonProps }: RegistrationButtonProps) {
-  if (!event.registration || !event.timing) return null
   const { t } = useTranslation('events')
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+  if (!event.registration || !event.timing) return null
+
   const isNative = event.registration.mode == 'native'
 
   if (isNative) {
@@ -60,8 +62,8 @@ export function RegistrationButton({ event, ...buttonProps }: RegistrationButton
           eventRegistration={event.registration}
           eventTiming={event.timing}
           eventUrl={event.url}
-          isOnline={event.online}
           isOpen={isOpen}
+          online={event.online}
           onOpenChange={onOpenChange}
         />
       </>
@@ -89,18 +91,18 @@ type RegistrationModalProps = {
   eventUrl: string
   eventTiming: EventTiming
   eventRegistration: EventRegistration
-  isOnline: boolean
+  online: boolean
   isOpen: boolean
   onOpenChange: (isOpen: boolean) => void
 }
 
-export function RegistrationModal({
+function RegistrationModal({
   eventId,
   eventLabel,
   eventUrl,
   eventTiming,
   eventRegistration,
-  isOnline,
+  online,
   isOpen,
   onOpenChange,
 }: RegistrationModalProps) {
@@ -172,7 +174,7 @@ export function RegistrationModal({
                   </>
                 )}
 
-                {isOnline && (
+                {online && (
                   <Alert
                     hideIconWrapper
                     classNames={{ base: 'mt-3' }}
@@ -219,7 +221,7 @@ type RegistrationFieldsProps = {
   errors: FieldErrors<Registration>
 }
 
-export function RegistrationFields({
+function RegistrationFields({
   timingOptions,
   registrationOptions,
   register,

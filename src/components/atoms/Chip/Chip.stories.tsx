@@ -1,7 +1,5 @@
 import type { Story, StoryDefault } from '@ladle/react'
 
-import { DateTime } from 'luxon'
-
 import {
   StoryWrapper,
   StorySection,
@@ -14,20 +12,20 @@ import {
   StoryGridCell,
 } from '../../ladle'
 
-import { Chip, TimezoneChip } from './Chip'
+import { Chip } from './Chip'
 
 import { EventIcon, OnlineCallIcon } from '@/components/atoms/Icons'
 
 export default {
-  title: 'Atoms / Feedback',
+  title: 'Atoms',
 } satisfies StoryDefault
 
 const colors = ['primary', 'secondary', 'default'] as const
 
 /**
  * Chip — a compact, uppercase label built on NextUI's Chip with app defaults.
- * Showcases the colour × emphasis matrix, the icon slot, the TimezoneChip, and
- * how chips read on a dark surface.
+ * Showcases the colour × emphasis matrix, the icon slot, and how chips read on a
+ * dark surface.
  */
 export const Default: Story = () => (
   <StoryWrapper>
@@ -70,13 +68,6 @@ export const Default: Story = () => (
           online
         </Chip>
       </div>
-    </StorySection>
-
-    <StorySection
-      description="TimezoneChip shows the offset in a tooltip on hover."
-      title="Timezone"
-    >
-      <TimezoneChip time={DateTime.fromISO('2026-07-04T09:30', { zone: 'Europe/London' })} />
     </StorySection>
 
     <StorySection background="neutral" theme="dark" title="Dark Surface">

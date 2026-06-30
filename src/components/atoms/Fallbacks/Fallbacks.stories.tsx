@@ -5,7 +5,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 import { LoadingFallback, ErrorFallback } from './Fallbacks'
 
 export default {
-  title: 'Atoms / Feedback',
+  title: 'Atoms',
 } satisfies StoryDefault
 
 /**

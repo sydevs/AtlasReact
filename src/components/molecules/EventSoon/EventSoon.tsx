@@ -4,28 +4,21 @@ import { useTranslation } from 'react-i18next'
 
 import { useLocale } from '@/hooks/use-locale'
 import { Chip } from '@/components/atoms/Chip'
+import { isSoon } from '@/lib'
 
-type EventSoonChipProps = {
+export type EventSoonChipProps = {
   online: boolean
   firstDate: Date
 }
 
-export function isSoon(nextDate: DateTime, online: boolean) {
-  const unit = online ? 'hours' : 'weeks'
-  const diff = nextDate.diffNow([unit]).get(unit)
-
-  return 0 < diff && diff < 1
-}
-
 export function EventSoonChip({ firstDate, online }: EventSoonChipProps) {
   const date = useMemo(() => DateTime.fromJSDate(firstDate), [firstDate])
+  const { t } = useTranslation('events')
+  const { locale } = useLocale()
 
   if (!isSoon(date, online)) {
     return null
   }
-
-  const { t } = useTranslation('events')
-  const { locale } = useLocale()
 
   return (
     <Chip color="primary">

@@ -5,7 +5,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 import { LanguageSelector } from './LanguageSelector'
 
 export default {
-  title: 'Atoms / Form',
+  title: 'Atoms',
 } satisfies StoryDefault
 
 /**

@@ -27,11 +27,11 @@ export interface LightboxProps {
   /** Slides to display, in navigation order. */
   slides: LightboxSlide[]
   /** Whether the overlay is open. */
-  open: boolean
+  isOpen: boolean
   /** Index of the initially-shown slide. */
   index: number
   /** Called when the user dismisses the lightbox (Esc, backdrop, close button). */
-  close: () => void
+  onClose: () => void
 }
 
 /**
@@ -46,15 +46,15 @@ export interface LightboxProps {
  * tap and pinch. Thumbnails and the prev/next carousel only matter for
  * multi-slide groups, so they are dropped for a single slide.
  */
-export function Lightbox({ slides, open, index, close }: LightboxProps) {
+export function Lightbox({ slides, isOpen, index, onClose }: LightboxProps) {
   const single = slides.length <= 1
   const plugins = single ? [Captions, Zoom] : [Captions, Thumbnails, Zoom]
 
   return (
     <YARLightbox
-      close={close}
+      close={onClose}
       index={index}
-      open={open}
+      open={isOpen}
       plugins={plugins}
       // A single slide has nowhere to navigate, so drop the prev/next arrows
       // (YARL would otherwise show them and wrap back to the same image).

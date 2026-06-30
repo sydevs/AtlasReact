@@ -74,8 +74,8 @@ function IndexPanel() {
               <ListItem
                 key={country.id}
                 count={country.eventCount}
+                href={country.path}
                 label={regionNames.of(country.code) || country.label}
-                link={country.path}
               >
                 <CircleFlag
                   className="w-7 h-7 mr-3 border border-divider rounded-full bg-divider"

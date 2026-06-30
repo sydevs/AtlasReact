@@ -4,34 +4,42 @@ import type { Story, StoryDefault } from '@ladle/react'
 // from the co-located file.
 import { StoryWrapper, StorySection } from '../../ladle'
 
-import { RegistrationButton, RegistrationModal } from './EventRegistration'
+import { RegistrationButton } from './EventRegistration'
 
 import { mockEvent } from '@/mocks/events'
+import { Event } from '@/types'
 
 export default { title: 'Organisms' } satisfies StoryDefault
 
+// External registration renders an outbound link instead of opening the modal.
+const externalEvent: Event = {
+  ...mockEvent,
+  registration: {
+    ...mockEvent.registration!,
+    mode: 'external',
+    externalUrl: 'https://example.com/register',
+  },
+}
+
 /**
- * EventRegistration — the registration call-to-action button and the modal it
- * opens (with the native registration fields). The modal is shown open so its
- * contents render in the canvas.
+ * EventRegistration — the registration call-to-action. Native registration opens
+ * an in-app modal (its form is private to the module); external registration
+ * links out to the host's own page.
  */
 export const Default: Story = () => (
   <StoryWrapper>
-    <StorySection description="Opens the registration modal on press." title="Button">
+    <StorySection
+      description="Native registration opens the in-app registration modal on press."
+      title="Native"
+    >
       <RegistrationButton event={mockEvent} />
     </StorySection>
 
-    <StorySection description="The registration modal in its open state." title="Modal">
-      <RegistrationModal
-        isOpen
-        eventId={mockEvent.id}
-        eventLabel={mockEvent.label}
-        eventRegistration={mockEvent.registration!}
-        eventTiming={mockEvent.timing!}
-        eventUrl={mockEvent.url}
-        isOnline={mockEvent.online}
-        onOpenChange={() => {}}
-      />
+    <StorySection
+      description="External registration links out to the host's own page."
+      title="External"
+    >
+      <RegistrationButton event={externalEvent} />
     </StorySection>
 
     <div />

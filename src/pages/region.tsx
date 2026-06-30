@@ -35,11 +35,7 @@ function RegionPanel({ regionId }: { regionId: number }) {
           name="description"
         />
       </Helmet>
-      <SearchBar
-        header={region.label}
-        returnLink={region.parentPath}
-        onSelect={(value) => console.log(value)}
-      />
+      <SearchBar backHref={region.parentPath} header={region.label} />
       <List>
         {region.areas
           .filter((area) => area.eventCount > 0)
@@ -47,8 +43,8 @@ function RegionPanel({ regionId }: { regionId: number }) {
             <ListItem
               key={area.id}
               count={area.eventCount}
+              href={area.path}
               label={area.label}
-              link={area.path}
               subtitle={area.subtitle}
             />
           ))}

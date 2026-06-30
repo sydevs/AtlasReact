@@ -1,1 +1,2 @@
-export * from './EventItem'
+export { EventItem } from './EventItem'
+export type { EventItemProps } from './EventItem'

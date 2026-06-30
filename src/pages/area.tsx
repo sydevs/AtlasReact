@@ -41,8 +41,8 @@ function AreaPanel({ areaId }: { areaId: number }) {
         />
       </Helmet>
       <SearchBar
+        backHref={area.parentPath}
         header={area.label}
-        returnLink={area.parentPath}
         subheader={area.subtitle || undefined}
       />
       <EventsList events={area.events} />

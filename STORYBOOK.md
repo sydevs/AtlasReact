@@ -106,7 +106,7 @@ import { Chip } from './Chip'                  // subject: co-located
 import { StoryWrapper, StorySection } from '../../ladle' // helpers
 // mock data from @/mocks/events ; icons from @/components/atoms/Icons
 
-export default { title: 'Atoms / Feedback' } satisfies StoryDefault
+export default { title: 'Atoms' } satisfies StoryDefault
 
 /** Brief JSDoc: what the component is and what the story shows. */
 export const Default: Story = () => (
@@ -122,16 +122,10 @@ Default.storyName = 'Chip'
 
 Conventions:
 
-- **Title** = `'<Tier> / <Subcategory>'`; `Default.storyName` = the component name.
-  Organisms use just `'Organisms'`. Our subcategory map:
-  - **Atoms** — Feedback (`Chip`, `Fallbacks`), Form (`Dropdown`,
-    `ThemeSwitch`, `LanguageSelector`), Layout (`Panel`), Media (`Icons`,
-    `Lightbox`).
-  - **Molecules** — Display (`List`, `ListItem`, `ListHeader`, `EventItem`,
-    `EventTime`, `EventMetadata`), Feedback (`EventSoon`), Interactive
-    (`SearchBar`, `EventShare`), Media (`EventImages`), Sections (`Navbar`).
-  - **Organisms** — `Organisms` (`Map`, `MapSearch`, `EventsList`, `EventPanel`,
-    `EventDetails`, `EventRegistration`).
+- **Title** = the bare tier — `'Atoms'`, `'Molecules'`, or `'Organisms'`, with no
+  second-level subcategory; `Default.storyName` = the component name. The Ladle
+  sidebar therefore has exactly **three** top-level groups, each listing its
+  components by `storyName` (no nested category folders).
 - **Imports**: subject co-located (`./Chip`); helpers `../../ladle`; cross-component
   by alias (`@/components/atoms/Icons`); fixtures from `@/mocks/events`.
 - **Trailing `<div />`** removes the last section's divider.

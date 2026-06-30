@@ -8,7 +8,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 import { Lightbox, type LightboxSlide } from './Lightbox'
 
 export default {
-  title: 'Atoms / Media',
+  title: 'Atoms',
 } satisfies StoryDefault
 
 const single: LightboxSlide[] = [
@@ -46,7 +46,7 @@ function LightboxDemo({ slides, label }: { slides: LightboxSlide[]; label: strin
       <Button color="primary" onPress={() => setOpen(true)}>
         {label}
       </Button>
-      <Lightbox close={() => setOpen(false)} index={0} open={open} slides={slides} />
+      <Lightbox index={0} isOpen={open} slides={slides} onClose={() => setOpen(false)} />
     </>
   )
 }
