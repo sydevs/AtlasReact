@@ -156,7 +156,31 @@ MCP for Cloudflare Pages questions.
 - Branch from `main`: `<type>/<short-slug>` (e.g. `feat/venue-clustering`).
 - Conventional commits: `<type>(<scope>): <subject>` (see
   `.claude/skills/draft-ticket/conventions.md`).
-- Use the `/implement-issue`, `/pr-prep`, `/draft-ticket`, and
+- Use the `/implement-issue`, `/finalize-pr`, `/pr-prep`, `/draft-ticket`, and
   `/reflect-session` skills for structured workflows.
 - Never force-push `main`, never skip hooks (`--no-verify`), never commit
   `.env.local` or any `sk.`/API secret.
+
+### PR workflow (3 phases)
+
+PRs move through three phases. The point is to **batch CI runs** — don't push
+(and re-trigger CI) on every small change.
+
+1. **Implement** — `/implement-issue <n>` takes a ticket end-to-end (read → plan
+   → branch → implement → validate), then runs the finalize pipeline, which opens
+   the PR and gets CI green.
+2. **Adjust** — while iterating on an **open PR** (follow-up tweaks after
+   `/implement-issue`, or any further work on a PR branch), **commit each change
+   locally as you go, but do NOT push** — batching avoids re-running CI on every
+   tweak. This is the one place that overrides the usual "commit/push only when
+   asked" default: during Adjust, commit follow-up changes locally without being
+   asked; just never push (the user can still say "hold off" to pause committing).
+3. **Finalize** — `/finalize-pr` ships the batch: simplify → a single
+   `/code-review` → conditional `/security-review` (only when risky paths
+   changed) → lean gate → push → create/refresh the PR → watch CI (capped
+   fix-loop) → report. Run it when the PR is ready for review/merge.
+
+Skills: `.claude/skills/implement-issue/` (phase 1) and
+`.claude/skills/finalize-pr/` (phase 3, also reused by phase 1). The lean gate
+(`/pr-prep`) is `pnpm lint && pnpm typecheck && pnpm test:run`; CI adds the
+production build + `ladle:build` (see `.claude/rules/tests.md`).
