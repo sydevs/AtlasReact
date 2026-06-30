@@ -1,3 +1,5 @@
+import type { PaletteRoles } from '@/config/theme/palette'
+
 import { Navigate, Route, Routes, useLocation } from 'react-router'
 import { Helmet } from 'react-helmet-async'
 import { Suspense, useEffect, type RefObject } from 'react'
@@ -23,8 +25,6 @@ import IndexPage from '@/pages/index'
 import '@/styles/globals.css'
 import '@/config/i18n'
 import i18n from '@/config/i18n'
-
-import type { PaletteRoles } from '@/config/theme/palette'
 
 // ===== APP ===== //
 
