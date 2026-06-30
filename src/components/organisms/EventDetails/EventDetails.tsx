@@ -1,9 +1,9 @@
-import { Link } from '@nextui-org/react'
 import { useTranslation } from 'react-i18next'
 import { DateTime } from 'luxon'
 import { useMemo } from 'react'
 
 import { SocialIcon, AnchorIcon, CallIcon, LocationIcon } from '@/components/atoms/Icons'
+import { Link } from '@/components/atoms/Link'
 import { EventTime } from '@/components/molecules/EventTime'
 import { Event } from '@/types'
 import { isOnline, nextOccurrence } from '@/lib/shape'
@@ -81,7 +81,7 @@ function EventContactDetails({
       url={`tel: ${event.contactPhone}`}
     >
       <div
-        className={`flex-center h-full ${isHighlighted ? 'text-background bg-primary-100' : 'text-primary'}`}
+        className={`flex-center h-full ${isHighlighted ? 'text-background bg-primary-4' : 'text-primary'}`}
       >
         <CallIcon size={32} />
       </div>
@@ -131,10 +131,10 @@ function EventTimingDetails({
           : t('details.contact_for_timing')
       }
     >
-      <div className="text-tiny bg-primary-100 dark:bg-primary-900 py-0.5 font-semibold">
+      <div className="text-xs bg-primary-4 dark:bg-primary-11 py-0.5 font-semibold">
         {nextDate.toLocaleString({ month: 'short' }).toUpperCase()}
       </div>
-      <div className="flex items-center justify-center font-semibold text-md h-6 text-default-500">
+      <div className="flex items-center justify-center font-semibold text-md h-6 text-gray-11">
         {nextDate.day}
       </div>
     </EventDetail>
@@ -189,7 +189,7 @@ type EventDetailProps = {
 function EventDetail({ isExternal = false, title, content, url, children }: EventDetailProps) {
   return (
     <div className="flex-center-y gap-3">
-      <div className="text-center border-1 border-primary-100 rounded-sm w-11 h-11">{children}</div>
+      <div className="text-center border border-primary-4 rounded-sm w-11 h-11">{children}</div>
       <div className="flex flex-col gap-0.5">
         {url ? (
           <Link
@@ -205,7 +205,7 @@ function EventDetail({ isExternal = false, title, content, url, children }: Even
         ) : (
           <div className="text-md font-medium">{title}</div>
         )}
-        <div className="text-base text-default-500 max-w-72">{content}</div>
+        <div className="text-base text-gray-11 max-w-72">{content}</div>
       </div>
     </div>
   )

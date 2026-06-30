@@ -1,11 +1,12 @@
 import type { Story, StoryDefault } from '@ladle/react'
 
 import { useState } from 'react'
-import { Button } from '@nextui-org/react'
 
 import { StoryWrapper, StorySection } from '../../ladle'
 
 import { Lightbox, type LightboxSlide } from './Lightbox'
+
+import { Button } from '@/components/atoms/Button'
 
 export default {
   title: 'Atoms',
@@ -43,7 +44,7 @@ function LightboxDemo({ slides, label }: { slides: LightboxSlide[]; label: strin
 
   return (
     <>
-      <Button color="primary" onPress={() => setOpen(true)}>
+      <Button color="primary" onClick={() => setOpen(true)}>
         {label}
       </Button>
       <Lightbox index={0} isOpen={open} slides={slides} onClose={() => setOpen(false)} />
@@ -75,7 +76,7 @@ export const Default: Story = () => (
 
     <StorySection inContext={true} title="Examples">
       <div className="flex flex-col gap-3">
-        <p className="text-sm text-default-600">
+        <p className="text-sm text-gray-11">
           In the app the event photo carousel opens this lightbox on the tapped image; here a button
           stands in for that trigger.
         </p>

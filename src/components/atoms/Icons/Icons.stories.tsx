@@ -50,7 +50,7 @@ export const Default: Story = () => (
         {ICONS.map(({ name, Icon }) => (
           <div key={name} className="flex w-20 flex-col items-center gap-2 text-center">
             <Icon size={28} />
-            <span className="text-tiny text-default-500">{name}</span>
+            <span className="text-xs text-gray-11">{name}</span>
           </div>
         ))}
       </div>
@@ -61,7 +61,7 @@ export const Default: Story = () => (
         {SOCIAL_PLATFORMS.map((platform) => (
           <div key={platform} className="flex w-20 flex-col items-center gap-2 text-center">
             <SocialIcon platform={platform} size={28} />
-            <span className="text-tiny text-default-500">{platform}</span>
+            <span className="text-xs text-gray-11">{platform}</span>
           </div>
         ))}
       </div>
@@ -69,15 +69,15 @@ export const Default: Story = () => (
 
     <StorySection inContext={true} title="Examples">
       <div className="flex flex-col gap-3">
-        <span className="flex items-center gap-2 text-default-700">
+        <span className="flex items-center gap-2 text-gray-12">
           <LocationIcon size={18} />
           London, United Kingdom
         </span>
-        <span className="flex items-center gap-2 text-default-700">
+        <span className="flex items-center gap-2 text-gray-12">
           <CalendarIcon size={18} />
           Every Tuesday, 7:00 PM
         </span>
-        <span className="flex items-center gap-2 text-default-700">
+        <span className="flex items-center gap-2 text-gray-12">
           <CallIcon size={18} />
           +44 20 1234 5678
         </span>

@@ -24,7 +24,7 @@ export function LanguageSelector() {
       isOpen={isOpen}
       size="sm"
       trigger={
-        <div className="font-semibold text-md text-default-500 uppercase flex flex-row gap-1 items-center hover:opacity-hover">
+        <div className="font-semibold text-md text-gray-11 uppercase flex flex-row gap-1 items-center hover:opacity-hover">
           <LanguageIcon />
           {locale}
         </div>

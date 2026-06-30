@@ -8,7 +8,7 @@ export default { title: 'Molecules' } satisfies StoryDefault
 
 /**
  * Navbar — the app's top bar: ATLAS brand, nav links, theme switch, and language
- * selector, built on NextUI's Navbar. Shows the default and bordered surfaces.
+ * selector, built from primitives. Shows the default and bordered surfaces.
  */
 export const Default: Story = () => (
   <StoryWrapper>
@@ -18,14 +18,14 @@ export const Default: Story = () => (
 
     <StorySection title="Bordered">
       <div className="border border-divider rounded-lg overflow-hidden">
-        <Navbar isBordered />
+        <Navbar className="border-b border-divider" />
       </div>
     </StorySection>
 
     <StorySection inContext={true} title="Examples">
       <div className="border border-divider rounded-lg overflow-hidden">
-        <Navbar isBordered />
-        <div className="p-6 text-sm text-default-600">Page content sits below the navbar.</div>
+        <Navbar className="border-b border-divider" />
+        <div className="p-6 text-sm text-gray-11">Page content sits below the navbar.</div>
       </div>
     </StorySection>
 

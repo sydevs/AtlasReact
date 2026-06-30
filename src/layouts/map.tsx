@@ -9,7 +9,7 @@ export default function MapLayout({ children }: { children: React.ReactNode }) {
   return (
     <MapProvider>
       {hasNavbar && (
-        <Navbar className="fixed top-0 border-t-medium shadow-md md:static pointer-events-auto" />
+        <Navbar className="fixed top-0 border-t-2 shadow-md md:static pointer-events-auto" />
       )}
       <div className="w-dvw h-dvh fixed">
         <Mapbox />

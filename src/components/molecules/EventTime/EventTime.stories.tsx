@@ -46,7 +46,7 @@ export const Default: Story = () => (
     </StorySection>
 
     <StorySection inContext={true} title="Examples">
-      <div className="max-w-md text-xs text-default-500">
+      <div className="max-w-md text-xs text-gray-11">
         <EventTime showTimeZone endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
       </div>
     </StorySection>

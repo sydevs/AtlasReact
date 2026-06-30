@@ -69,7 +69,7 @@ export const Default: Story = () => (
             header="Cambridge"
             subheader="Free meditation classes near you"
           />
-          <div className="p-6 text-sm text-default-600">Events list renders below the bar.</div>
+          <div className="p-6 text-sm text-gray-11">Events list renders below the bar.</div>
         </div>
       </StorySection>
 

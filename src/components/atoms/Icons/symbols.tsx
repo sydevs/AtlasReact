@@ -123,7 +123,7 @@ export const LanguageIcon: React.FC<IconSvgProps> = ({ ...props }) => (
 
 export const AnchorIcon: React.FC<IconSvgProps> = ({ ...props }) => (
   <svg
-    className="group-hover:text-inherit text-default-400 transition-[color,transform] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+    className="group-hover:text-inherit text-gray-10 transition-[color,transform] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
     fill="none"
     height="16"
     stroke="currentColor"

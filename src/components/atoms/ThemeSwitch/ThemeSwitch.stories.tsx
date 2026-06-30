@@ -22,7 +22,7 @@ export const Default: Story = () => (
     </StorySection>
 
     <StorySection inContext={true} title="Examples">
-      <div className="flex items-center gap-3 text-default-700">
+      <div className="flex items-center gap-3 text-gray-12">
         <span className="text-sm">Appearance</span>
         <ThemeSwitch />
       </div>
