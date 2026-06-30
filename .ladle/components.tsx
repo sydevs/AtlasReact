@@ -17,9 +17,9 @@ import '@/styles/globals.css'
 // production applyPalette on the story wrapper, so Ladle previews exactly what
 // an embed renders. "Default" applies no override (built-in teal/orange).
 const PALETTES: Record<string, PaletteRoles> = {
-  'Default (teal)': {},
-  'Shrimataji (maroon)': { primary: '#64032E', secondary: '#7A404E', background: '#F0ECE2' },
-  'Sahajayoga (green)': { primary: '#468503', secondary: '#4C6539' },
+  'wemeditate.com': {},
+  'shrimataji.org': { primary: '#64032E', secondary: '#AF94A3', background: '#F0ECE2' },
+  'sahajayoga.org': { primary: '#62834B', secondary: '#5D6F44' },
 }
 
 // Global decorator for every story.
@@ -63,7 +63,7 @@ export const Provider: GlobalProvider = ({ children }) => {
     applyTheme(ladleTheme === ThemeState.Dark ? 'dark' : 'light')
   }, [ladleTheme])
 
-  const [palette, setPalette] = useState('Default (teal)')
+  const [palette, setPalette] = useState('wemeditate.com')
   const wrapperRef = useRef<HTMLElement>(null)
   const { theme } = useTheme()
 
