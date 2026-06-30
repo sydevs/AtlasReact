@@ -41,6 +41,12 @@ describe('buildScale', () => {
     // saturation/lightness → identical generated scale.
     expect(buildScale('#ff0000')).toEqual(buildScale('#800000'))
   })
+
+  it('keeps a near-neutral seed neutral (no invented hue)', () => {
+    // Charcoal is achromatic (colord reports hue 0); it must NOT become a
+    // saturated red — its low saturation passes through instead of the fixed 60.
+    expect(parse(buildScale('#333333').DEFAULT).s).toBeLessThan(10)
+  })
 })
 
 describe('foreground contrast', () => {

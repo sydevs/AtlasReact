@@ -87,28 +87,39 @@ const foregroundFor = (c: Colord) =>
 // constant saturation over a lightness ladder: teal ≈ 23%, orange ≈ 62%.)
 const SCALE_SATURATION = 60
 
+// A near-achromatic seed (e.g. charcoal #333) has no meaningful hue — colord
+// reports h=0 — so pinning it to the fixed saturation would invent a vivid red.
+// Below this threshold keep the seed's own (low) saturation so neutrals stay
+// neutral; anything chromatic is pinned to SCALE_SATURATION.
+const NEUTRAL_THRESHOLD = 10
+
+const scaleSaturation = (seedSaturation: number) =>
+  seedSaturation < NEUTRAL_THRESHOLD ? seedSaturation : SCALE_SATURATION
+
 // The solid brand color (DEFAULT). In light mode it sits at the 400 step,
 // matching the built-in teal/orange whose DEFAULT is their own 400; in dark mode
 // it shifts to a lighter step so it stays visible on the dark canvas.
 const DEFAULT_LIGHTNESS = SCALE_LIGHTNESS[400]
 const DARK_DEFAULT_LIGHTNESS = SCALE_LIGHTNESS[200]
 
-const darkTone = (h: number): Colord =>
-  colord({ h, s: SCALE_SATURATION, l: DARK_DEFAULT_LIGHTNESS })
+const darkTone = (h: number, saturation: number): Colord =>
+  colord({ h, s: saturation, l: DARK_DEFAULT_LIGHTNESS })
 
-// Derive a NextUI color scale from a seed hex using ONLY its hue: the 10…900
-// steps walk SCALE_LIGHTNESS at the fixed SCALE_SATURATION, the DEFAULT is the
+// Derive a NextUI color scale from a seed hex using essentially its hue: the
+// 10…900 steps walk SCALE_LIGHTNESS at a fixed saturation (a near-neutral seed
+// keeps its own low saturation; see scaleSaturation), the DEFAULT is the
 // 400-step solid, and `foreground` is its readable on-color. Mode-aware
 // DEFAULT/foreground for dark mode are computed in applyPalette; this scale is
 // the light-mode/canonical form.
 export function buildScale(seedHex: string): ColorScale {
-  const { h } = colord(seedHex).toHsl()
+  const { h, s } = colord(seedHex).toHsl()
+  const saturation = scaleSaturation(s)
 
   const steps = Object.fromEntries(
-    Object.entries(SCALE_LIGHTNESS).map(([shade, l]) => [shade, channel(h, SCALE_SATURATION, l)]),
+    Object.entries(SCALE_LIGHTNESS).map(([shade, l]) => [shade, channel(h, saturation, l)]),
   ) as Omit<ColorScale, 'DEFAULT' | 'foreground'>
 
-  const solid = colord({ h, s: SCALE_SATURATION, l: DEFAULT_LIGHTNESS })
+  const solid = colord({ h, s: saturation, l: DEFAULT_LIGHTNESS })
 
   return {
     ...steps,
@@ -131,7 +142,8 @@ const setRole = (root: HTMLElement, token: string, seedHex: string, mode: ThemeM
 
   // DEFAULT + foreground are the most visible (bg-primary / text-primary). Dark
   // mode shifts the solid to a lighter tone so it stays visible on the dark canvas.
-  const tone = mode === 'dark' ? darkTone(seed.toHsl().h) : null
+  const { h, s } = seed.toHsl()
+  const tone = mode === 'dark' ? darkTone(h, scaleSaturation(s)) : null
   const base = tone ? toChannel(tone) : scale.DEFAULT
   const foreground = tone ? foregroundFor(tone) : scale.foreground
 
