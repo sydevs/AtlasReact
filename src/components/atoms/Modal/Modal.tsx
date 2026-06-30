@@ -2,7 +2,7 @@ import { type ReactNode } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { tv, type VariantProps } from 'tailwind-variants'
 
-import { getThemeRoot } from '@/hooks/use-theme'
+import { overlayContainer } from '@/lib/overlay'
 
 // A modal dialog built on @radix-ui/react-dialog, replacing NextUI's Modal suite.
 // It portals into the theme root (the widget wrapper) — not document.body — so
@@ -51,7 +51,7 @@ export function Modal({
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={onOpenChange}>
-      <Dialog.Portal container={getThemeRoot()}>
+      <Dialog.Portal container={overlayContainer()}>
         <Dialog.Overlay className={slots.overlay()} />
         <div className={slots.wrapper()}>
           <Dialog.Content aria-label={ariaLabel} className={slots.content({ className })}>

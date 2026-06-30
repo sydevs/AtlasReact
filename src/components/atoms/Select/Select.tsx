@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react'
 import * as RadixSelect from '@radix-ui/react-select'
 
-import { getThemeRoot } from '@/hooks/use-theme'
+import { overlayContainer } from '@/lib/overlay'
 
 // A select built on @radix-ui/react-select, replacing NextUI's Select. Controlled
 // via value/onValueChange (pair with react-hook-form's Controller for forms).
@@ -67,7 +67,7 @@ export function Select({
         </RadixSelect.Icon>
       </RadixSelect.Trigger>
 
-      <RadixSelect.Portal container={getThemeRoot()}>
+      <RadixSelect.Portal container={overlayContainer()}>
         <RadixSelect.Content
           className="z-50 overflow-hidden rounded-lg border border-gray-6 bg-background shadow-xl"
           position="popper"
