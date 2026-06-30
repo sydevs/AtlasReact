@@ -49,15 +49,25 @@ export function BrandTheme({ apiKey, palette, rootRef, children }: BrandThemePro
 
   // useLayoutEffect runs before the browser paints, so the palette (and the
   // wrapper as the theme root) are in place for the first frame — no flash.
-  // `theme` in the deps re-applies the mode-aware DEFAULT/foreground on a flip.
   useLayoutEffect(() => {
     if (typeof document === 'undefined') return
 
     // Adopt the widget wrapper as the theme root (null → stays <html>), then
-    // paint the resolved palette onto whichever element that resolves to.
+    // paint the resolved palette onto it. Mode is read from the root's own class
+    // rather than `theme`: on the widget's first paint the `theme` snapshot can
+    // still reflect <html> (before setThemeRoot adopts the wrapper), which would
+    // paint a dark wrapper in light tones. `theme` stays in the deps to re-run
+    // this on a light↔dark toggle.
     setThemeRoot(rootRef?.current ?? null)
-    applyPalette(getThemeRoot(), resolved, theme)
+    const root = getThemeRoot()
+
+    applyPalette(root, resolved, root.classList.contains('dark') ? 'dark' : 'light')
   }, [resolved, theme, rootRef])
+
+  // Release the theme root when this widget unmounts so a torn-down embed stops
+  // owning the module-level root (and its detached wrapper can be GC'd). Assumes
+  // one widget per page; a second concurrent embed would share this singleton.
+  useLayoutEffect(() => () => setThemeRoot(null), [])
 
   return <>{children}</>
 }
