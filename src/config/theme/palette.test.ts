@@ -55,12 +55,24 @@ describe('buildScale', () => {
     }
   })
 
-  it('uses the seed verbatim as the DEFAULT', () => {
-    const scale = buildScale('#82b1ae')
+  it('uses a muted seed verbatim as the DEFAULT', () => {
+    const scale = buildScale('#82b1ae') // teal sits below the saturation cap
     const seed = colord('#82b1ae').toHsl()
     const def = parse(scale.DEFAULT)
 
     expect(def).toEqual({ h: seed.h, s: seed.s, l: seed.l })
+  })
+
+  it('caps the saturation of a vivid seed, leaving muted seeds untouched', () => {
+    // Neon green (#468503 ≈ 96% sat) is pulled down to the cap so it matches the
+    // muted register of the rest of the UI; hue + lightness are preserved.
+    const green = parse(buildScale('#468503').DEFAULT)
+
+    expect(green.s).toBe(60)
+    expect(green.h).toBe(89)
+
+    // The default teal (≈23% sat) is already below the cap → unchanged.
+    expect(parse(buildScale('#82b1ae').DEFAULT).s).toBe(23)
   })
 })
 
@@ -100,12 +112,12 @@ describe('applyPalette', () => {
 
     applyPalette(root, { primary: '#64032e' }, 'light')
 
-    expect(props.get('--nextui-primary')).toBe('333 94% 20%')
+    expect(props.get('--nextui-primary')).toBe('333 60% 20%')
     expect(props.get('--nextui-primary-foreground')).toBe('0 0% 100%')
     expect(props.get('--nextui-primary-100')).toBeDefined()
     expect(props.get('--nextui-primary-900')).toBeDefined()
     // Focus follows primary.
-    expect(props.get('--nextui-focus')).toBe('333 94% 20%')
+    expect(props.get('--nextui-focus')).toBe('333 60% 20%')
   })
 
   it('lightens + desaturates the DEFAULT in dark mode (no vanishing primary)', () => {
@@ -161,6 +173,6 @@ describe('applyPalette', () => {
     expect(props.has('--nextui-secondary')).toBe(false)
     expect(props.has('--nextui-secondary-100')).toBe(false)
     expect(props.has('--nextui-background')).toBe(false)
-    expect(props.get('--nextui-primary')).toBe('333 94% 20%')
+    expect(props.get('--nextui-primary')).toBe('333 60% 20%')
   })
 })

@@ -81,6 +81,19 @@ const WHITE = '0 0% 100%'
 const foregroundFor = (c: Colord) =>
   c.contrast('#000000') >= c.contrast('#ffffff') ? BLACK : WHITE
 
+// The brand palette is deliberately muted (the default teal sits near 23%
+// saturation, orange near 63%). A very saturated seed — e.g. a vivid green —
+// would generate neon shades that read as harsh/glowing next to the rest of the
+// UI and unreadable as tinted text, so cap saturation to keep generated scales
+// in the same calm register. Low-saturation seeds pass through untouched.
+const MAX_SATURATION = 60
+
+const muted = (c: Colord): Colord => {
+  const { h, s, l } = c.toHsl()
+
+  return s <= MAX_SATURATION ? c : colord({ h, s: MAX_SATURATION, l })
+}
+
 // Dark-mode tone shift (Material 3 tonal guidance: preserve hue, raise tone,
 // desaturate slightly) so a dark brand color stays visible on the dark canvas
 // instead of vanishing into it. Lightness is clamped into a mid-high band (any
@@ -97,7 +110,7 @@ const darkTone = (c: Colord): Colord => {
 // readable on-color for the DEFAULT. Mode-aware DEFAULT/foreground for dark mode
 // are computed in applyPalette; this scale is the light-mode/canonical form.
 export function buildScale(seedHex: string): ColorScale {
-  const seed = colord(seedHex)
+  const seed = muted(colord(seedHex))
   const { h, s } = seed.toHsl()
 
   const steps = Object.fromEntries(
@@ -126,7 +139,7 @@ const setRole = (root: HTMLElement, token: string, seedHex: string, mode: ThemeM
   // DEFAULT + foreground are the most visible (bg-primary / text-primary). Light
   // mode uses the scale's seed-based values as-is; dark lightens the tone so a
   // dark brand color stays visible on the dark canvas.
-  const tone = mode === 'dark' ? darkTone(seed) : null
+  const tone = mode === 'dark' ? darkTone(muted(seed)) : null
   const base = tone ? toChannel(tone) : scale.DEFAULT
   const foreground = tone ? foregroundFor(tone) : scale.foreground
 
