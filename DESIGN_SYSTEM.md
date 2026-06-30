@@ -147,7 +147,8 @@ are the template tier and are not re-exported through the component barrels.
   would clash with an imported type, alias the **import** rather than renaming
   ours — e.g. `Chip` imports NextUI's props as `NextUIChipProps` so our exported
   type stays `ChipProps`.
-- **Prop-naming rule:** state/behavior booleans use `isX` (`isOpen`); event
+- **Prop-naming rule:** state/behavior booleans use `isX` (`isOpen`), with
+  `showX` / `hideX` accepted for visibility toggles (`showTimeZone`); event
   handlers use `onX` (`onClose`); a prop that forwards a router link uses
   `href` / `backHref`; a prop that passes a zod/schema field through keeps that
   field's name (`online`, matching the `Event` schema) instead of inventing `isX`.
