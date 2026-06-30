@@ -6,7 +6,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { EventSoonChip } from './EventSoon'
 
-export default { title: 'Molecules / Feedback' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 // EventSoonChip only renders when the date is "soon" relative to now: within
 // 1 hour for online events, within 1 week for in-person ones. The visible

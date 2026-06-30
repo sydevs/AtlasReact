@@ -17,7 +17,7 @@ import { Chip } from './Chip'
 import { EventIcon, OnlineCallIcon } from '@/components/atoms/Icons'
 
 export default {
-  title: 'Atoms / Feedback',
+  title: 'Atoms',
 } satisfies StoryDefault
 
 const colors = ['primary', 'secondary', 'default'] as const

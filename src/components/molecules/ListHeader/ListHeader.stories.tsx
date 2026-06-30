@@ -7,7 +7,7 @@ import { ListHeader } from './ListHeader'
 import { List } from '@/components/molecules/List'
 import { ListItem } from '@/components/molecules/ListItem'
 
-export default { title: 'Molecules / Display' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 /**
  * ListHeader — a centered title with an up-arrow return link, used atop a drilled

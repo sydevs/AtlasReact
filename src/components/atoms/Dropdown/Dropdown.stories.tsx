@@ -7,7 +7,7 @@ import { Dropdown, DropdownItem } from './Dropdown'
 import { LanguageIcon, LocationIcon, DownArrowIcon } from '@/components/atoms/Icons'
 
 export default {
-  title: 'Atoms / Form',
+  title: 'Atoms',
 } satisfies StoryDefault
 
 const sizes = ['sm', 'md', 'lg'] as const

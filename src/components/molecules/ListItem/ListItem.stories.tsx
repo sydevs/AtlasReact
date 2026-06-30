@@ -6,7 +6,7 @@ import { ListItem } from './ListItem'
 
 import { List } from '@/components/molecules/List'
 
-export default { title: 'Molecules / Display' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 /**
  * ListItem — a single navigable row (label, optional subtitle, count, trailing

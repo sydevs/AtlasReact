@@ -6,7 +6,7 @@ import { EventMetadata } from './EventMetadata'
 
 import { mockEvent } from '@/mocks/events'
 
-export default { title: 'Molecules / Display' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 /**
  * EventMetadata — injects SEO / OpenGraph / Schema.org JSON-LD tags into the

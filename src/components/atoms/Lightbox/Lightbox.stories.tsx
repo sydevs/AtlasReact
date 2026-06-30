@@ -8,7 +8,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 import { Lightbox, type LightboxSlide } from './Lightbox'
 
 export default {
-  title: 'Atoms / Media',
+  title: 'Atoms',
 } satisfies StoryDefault
 
 const single: LightboxSlide[] = [

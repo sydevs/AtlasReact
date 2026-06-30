@@ -7,7 +7,7 @@ import { EventItem } from './EventItem'
 import { List } from '@/components/molecules/List'
 import { mockEventSlim, mockEventSlimOnline } from '@/mocks/events'
 
-export default { title: 'Molecules / Display' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 /**
  * EventItem — a single event row (title, location, recurrence, time, status

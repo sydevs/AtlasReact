@@ -6,7 +6,7 @@ import { ShareButton, ShareContent } from './EventShare'
 
 import { mockEvent } from '@/mocks/events'
 
-export default { title: 'Molecules / Interactive' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 /**
  * EventShare — share affordances for an event: the trigger Button (ShareButton)

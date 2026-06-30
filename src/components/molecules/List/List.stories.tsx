@@ -6,7 +6,7 @@ import { List } from './List'
 
 import { ListItem } from '@/components/molecules/ListItem'
 
-export default { title: 'Molecules / Display' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 /**
  * List — a scroll-shadowed `<ul>` container for ListItem rows. It only provides
