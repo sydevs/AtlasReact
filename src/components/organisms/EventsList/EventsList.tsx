@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 
 import { EventItem } from '@/components/molecules/EventItem'
 import { List } from '@/components/molecules/List'
-import { isSoon } from '@/components/molecules/EventSoon'
+import { isSoon } from '@/lib'
 import { EventSlim } from '@/types'
 import api from '@/config/api'
 import i18n from '@/config/i18n'
