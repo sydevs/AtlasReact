@@ -28,9 +28,10 @@ src/components/
   atoms/Chip/                 # one folder per component
     Chip.tsx                  #   the component (PascalCase, matches the folder)
     Chip.stories.tsx          #   co-located Ladle stories
-    index.ts                  #   component barrel: `export * from './Chip'`
+    index.ts                  #   component barrel: explicit `export { Chip }` + `ChipProps`
   <tier>/index.ts             # tier barrel — the public import surface
 src/layouts/    # templates: page-level layout scaffolds (see below)
+src/lib/        # pure domain utilities (no React/i18n) — e.g. events.ts (isSoon)
 ```
 
 ### What goes where
@@ -53,7 +54,7 @@ here is **organisms own data/network/map lifecycles; atoms and molecules don't.*
 | Folder                | Exports                              | Notes                                         |
 | --------------------- | ------------------------------------ | --------------------------------------------- |
 | `Icons/` (sub-module) | `*Icon`, `Logo`, `SocialIcon`, …     | SVG primitives; grouped module with its own `index.tsx` |
-| `Chip/`               | `Chip`, `TimezoneChip`               | Wraps NextUI `Chip` with app defaults (`tv()`) |
+| `Chip/`               | `Chip`                               | Pure presentational atom; wraps NextUI `Chip` with app defaults (`tv()`) |
 | `Dropdown/`           | `Dropdown`, `DropdownItem`           | Floating-UI popover: portaled, flip/shift, NextUI tokens (`tv()`) |
 | `LanguageSelector/`   | `LanguageSelector`                   | Locale switcher (`useLocale`)                 |
 | `Panel/`              | `Panel`                              | Suspense + ErrorBoundary layout shell         |
@@ -71,10 +72,10 @@ here is **organisms own data/network/map lifecycles; atoms and molecules don't.*
 | `ListItem/`         | `ListItem`                                      | Generic labelled list row              |
 | `ListHeader/`       | `ListHeader`                                    | Back-button + title row                |
 | `EventItem/`        | `EventItem`                                     | Per-event summary card in a list       |
-| `EventTime/`        | `EventTime`                                     | Formatted event time range             |
-| `EventShare/`       | `ShareButton`, `ShareModal`, `ShareContent`     | Share-event modal                      |
+| `EventTime/`        | `EventTime`                                     | Formatted event time range (timezone chip is a private composition) |
+| `EventShare/`       | `ShareButton`, `ShareContent`                   | Share button + the shared URL/social block (modal is private) |
 | `EventImages/`      | `EventImages`                                   | Swiper image carousel                  |
-| `EventSoon/`        | `EventSoonChip`, `isSoon`                       | "Starting soon" chip + predicate       |
+| `EventSoon/`        | `EventSoonChip`                                 | "Starting soon" chip (the `isSoon` predicate lives in `src/lib`) |
 | `EventMetadata/`    | `EventMetadata`                                 | Schema.org / OG `<head>` tags (Helmet) |
 
 **Organisms** (`src/components/organisms/`)
@@ -84,8 +85,8 @@ here is **organisms own data/network/map lifecycles; atoms and molecules don't.*
 | `Mapbox/` (sub-module)   | `Mapbox`, `MapSearch` (+ `layers.ts`, `themes.ts` helpers)    | The Mapbox surface; see [`.claude/rules/mapbox.md`](.claude/rules/mapbox.md) |
 | `EventsList/`            | `EventsList`, `DynamicEventsList`                              | List + distance-sorted fetch       |
 | `EventPanel/`            | `EventPanel`                                                   | Full event detail panel            |
-| `EventDetails/`          | `EventContactDetails`, `EventTimingDetails`, `EventLocationDetails`, `EventDetail` | Detail cards     |
-| `EventRegistration/`     | `RegistrationButton`, `RegistrationModal`, `RegistrationFields` | Registration form (RHF + mutation) |
+| `EventDetails/`          | `EventDetails`                                                 | Consolidated detail-cards block (the three cards + row primitive are private) |
+| `EventRegistration/`     | `RegistrationButton`                                          | Registration CTA (modal + form fields are private) |
 
 **Templates** — `src/layouts/{default,map}.tsx` (`DefaultLayout`, `MapLayout`).
 Layouts stay in `src/layouts/` (route-level scaffolds owned by `App.tsx`); they
@@ -97,10 +98,23 @@ are the template tier and are not re-exported through the component barrels.
 
 - **Use named exports** for every component (no `export default`). This keeps the
   barrels clean and import names greppable.
-- **Two barrel layers.** Each component folder has an `index.ts`
-  (`export * from './Chip'`); each tier has an `index.ts` re-exporting its
-  component folders. The `Icons/` and `Mapbox/` sub-modules group several files
-  behind their own `index`.
+- **Explicit named exports — never `export *`.** Each component `index.ts` lists
+  exactly its public surface: `export { Chip }` + `export type { ChipProps }`.
+  Each tier `index.ts` re-exports its folders the same explicit way. `export *`
+  leaks internals, so it's banned in component and tier barrels.
+- **What a barrel must _not_ export:** subcomponents and modals that are only
+  reached through a public trigger, generic row/layout primitives, helper
+  predicates/constants, and `tv()` variant maps. Make those **module-private**
+  (don't `export` them) or, for pure domain logic, move them to `src/lib/`.
+- **Documented multi-export exceptions** (the only barrels that surface more than
+  one primary + its `Props`):
+  1. **`Dropdown`** — the `Dropdown` + `DropdownItem` compound.
+  2. **`Icons/`** — an icon-set module (keeps a single `export *`).
+  3. **`Mapbox/`** — sub-module exposing `Mapbox` + `MapSearch` (layers/themes stay internal).
+  4. **`EventsList/`** — the `DynamicEventsList` container + `EventsList` presentational pair.
+  5. **`EventShare/`** — `ShareButton` + the shared `ShareContent` block (reused by
+     the registration "thank you" screen); the modal stays private.
+  6. **`Fallbacks/`** — `LoadingFallback` + `ErrorFallback` (pending split into two folders).
 - **App code (pages, layouts, stories) imports from the tier barrel**:
   `import { Chip } from '@/components/atoms'`. The barrel is the public surface;
   layout can change behind it.
@@ -111,6 +125,12 @@ are the template tier and are not re-exported through the component barrels.
   bugs; the per-component folder index is cycle-safe.
 - Keep barrels free of logic — re-exports only (the one tolerated exception is the
   tiny `List` wrapper, co-located in `List/List.tsx`).
+- **Atoms stay primitive; compositions inline or split by reuse.** An atom (e.g.
+  `Chip`) never carries time/date/domain logic. Pure domain logic goes to
+  `src/lib/` (the `isSoon` predicate that `EventsList` sorts with). A
+  **single-use** composition is inlined into its one parent (the timezone chip
+  lives privately in `EventTime`); a **multi-use** composition becomes a thin
+  exported molecule (`EventSoonChip`, used by `EventItem` and `EventPanel`).
 - **Code-split exception:** a heavy organism that is lazy-loaded (the event detail
   page lazy-imports `EventPanel`) is intentionally left _out_ of its tier barrel,
   so a barrel import doesn't pull it back into the static graph. Such components —
@@ -122,10 +142,15 @@ are the template tier and are not re-exported through the component barrels.
 
 ### Props typing
 
-- Every component that takes props declares a named props type and destructures
-  it in the signature. Prefer `<Component>Props`; fall back to a local `Props`
-  when that name would clash with an imported type — e.g. `Chip` composes NextUI's
-  `ChipProps`, so its own props type is `Props` to avoid the collision.
+- Every component that takes props declares and **exports** a named
+  `<Component>Props` type and destructures it in the signature. When the name
+  would clash with an imported type, alias the **import** rather than renaming
+  ours — e.g. `Chip` imports NextUI's props as `NextUIChipProps` so our exported
+  type stays `ChipProps`.
+- **Prop-naming rule:** state/behavior booleans use `isX` (`isOpen`); event
+  handlers use `onX` (`onClose`); a prop that forwards a router link uses
+  `href` / `backHref`; a prop that passes a zod/schema field through keeps that
+  field's name (`online`, matching the `Event` schema) instead of inventing `isX`.
 - Use an **`interface`** for a plain object shape; use a **`type`** when composing
   with `&` (extending a NextUI component's props, as `Chip` does). Don't inline
   non-trivial prop shapes.
@@ -147,8 +172,12 @@ Wrap a NextUI component in our own atom **only** when we need to:
 
 1. **Bake in app defaults** used in many places (e.g. `Chip` fixes `radius`,
    `size`, `variant`, and uppercased bold content), or
-2. **Add app-specific behaviour** a raw primitive can't express (e.g.
-   `TimezoneChip`'s tooltip, `Panel`'s Suspense + error boundary).
+2. **Add app-specific behaviour** a raw primitive can't express (e.g. `Panel`'s
+   Suspense + error boundary, `Dropdown`'s floating-UI popover).
+
+Domain/date logic, though, is **not** a reason to wrap an atom — that stays out of
+the atom layer (a single-use composition like `EventTime`'s timezone chip lives
+in its parent; a pure predicate like `isSoon` lives in `src/lib/`).
 
 Otherwise, **use the NextUI primitive directly.** Don't create a pass-through
 wrapper that only renames props — it's maintenance with no payoff.
@@ -167,8 +196,8 @@ section vocabulary, and the global decorator.
 
 1. Pick the tier (atom / molecule / organism) using the table above.
 2. Create the folder `src/components/<tier>/<Name>/` with:
-   - `<Name>.tsx` — **named** export(s) and a `<Name>Props` type;
-   - `index.ts` — `export * from './<Name>'`;
+   - `<Name>.tsx` — **named**, **exported** primary component(s) + `<Name>Props` type;
+   - `index.ts` — explicit `export { <Name> }` + `export type { <Name>Props }` (never `export *`);
    - `<Name>.stories.tsx` — co-located stories (light + dark; key variants).
 3. Re-export the folder from `src/components/<tier>/index.ts`.
 4. Use `tv()` if it has variants; reuse existing icons from `atoms/Icons/`.

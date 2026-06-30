@@ -28,7 +28,7 @@ atomic tier (`src/components/atoms|molecules|organisms/`) per `DESIGN_SYSTEM.md`
 - Tailwind 3 utility classes are the default. For components with variants
   (size/color/state), use **`tailwind-variants`** (`tv(...)`) rather than
   ad-hoc `clsx` string concatenation — it's already a dependency and matches the
-  NextUI styling model. See `src/components/atoms/chip.tsx` for the reference usage.
+  NextUI styling model. See `src/components/atoms/Chip/Chip.tsx` for the reference usage.
 - `clsx` is fine for simple conditional class joins.
 - Global styles and Tailwind layers live in `src/styles/globals.css`. The
   widget injects its CSS via JS (`vite-plugin-css-injected-by-js`) so it works
@@ -54,6 +54,14 @@ in host pages, **and** runs standalone in dev. Because of that:
   sub-modules group several files); `src/layouts/` holds templates. App code
   imports from the tier barrels; components import each other by component-folder
   path. See `DESIGN_SYSTEM.md`.
+- **Explicit named exports — no `export *`.** Every component and tier barrel
+  lists exactly what it surfaces: the primary component(s) + the `<Name>Props`
+  type. Single-use internals (private modals, row primitives, helper sub-cards)
+  are **not** exported — keep them module-private. The only wildcard left is the
+  `Icons/` icon-set module. See the export rules + exception list in `DESIGN_SYSTEM.md`.
+- **Atoms stay primitive.** No time/date/domain logic in an atom — put pure
+  domain helpers in `src/lib/` (e.g. `isSoon`) and keep single-use compositions
+  inlined in their one parent.
 - Keep components presentational where possible; pull data via hooks
   (`src/hooks/`) and React Query (`src/config/api`), and read shared state from
   zustand selectors. See `.claude/rules/data-layer.md` and
