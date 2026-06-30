@@ -56,11 +56,10 @@ pass for reuse / simplification / efficiency / altitude — it does **not** hunt
 
 ### 2. Code review (`/code-review`) — single pass
 
-Run **one** code-review pass over the full branch diff, in an **isolated context** so its file
-reading doesn't bloat the main thread. **Dispatch one Task subagent** whose sole job is to run
-`/code-review` at **high** effort over `origin/main...HEAD` and return its findings (severity +
-`file:line` + suggested fix). Do **not** run `/code-review` inline, and do **not** add a second
-review pass afterwards — one pass is the contract.
+**Dispatch one Task subagent** whose sole job is to run `/code-review` at **high** effort over the
+full branch diff (`origin/main...HEAD`) and return its findings (severity + `file:line` + suggested
+fix) — in an **isolated context** so its file reading doesn't bloat the main thread. Run it
+**once**: not inline, and no second review pass afterwards — one pass is the contract.
 
 - **Blocking**: triage every finding. Fix the valid ones (each as its own commit), then re-run the
   lean gate. Note any finding you dismiss with a one-line reason for the report.
@@ -95,9 +94,8 @@ git diff origin/main...HEAD -- src | grep -E '^\+' | grep -E 'dangerouslySetInne
 .claude/skills/pr-prep/check.sh          # lint + typecheck + test:run — the canonical lean gate
 ```
 
-Fix and re-run on failure. CI runs the same three checks plus the production build and `ladle:build`
-(and a separate smoke job against the Cloudflare preview) — that's the real gate; don't reproduce the
-build locally unless debugging a red run (`pr-prep/check.sh --full` adds `pnpm build`).
+Fix and re-run on failure. CI (step 7) is the real gate — it adds the production build; don't
+reproduce that locally unless debugging a red run (`pr-prep/check.sh --full` adds `pnpm build`).
 
 ### 5. Push
 
