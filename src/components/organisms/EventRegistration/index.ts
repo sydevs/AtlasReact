@@ -1,1 +1,2 @@
-export * from './EventRegistration'
+export { RegistrationButton } from './EventRegistration'
+export type { RegistrationButtonProps } from './EventRegistration'

@@ -5,7 +5,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 import { ThemeSwitch } from './ThemeSwitch'
 
 export default {
-  title: 'Atoms / Form',
+  title: 'Atoms',
 } satisfies StoryDefault
 
 /**

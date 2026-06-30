@@ -1,1 +1,2 @@
-export * from './EventPanel'
+export { EventPanel } from './EventPanel'
+export type { EventPanelProps } from './EventPanel'

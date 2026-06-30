@@ -40,8 +40,8 @@ function AreaPanel({ slug }: { slug: string }) {
         />
       </Helmet>
       <SearchBar
+        backHref={area.parentPath ?? undefined}
         header={area.name}
-        returnLink={area.parentPath ?? undefined}
         subheader={area.subtitle || undefined}
       />
       <EventsList events={area.events} />

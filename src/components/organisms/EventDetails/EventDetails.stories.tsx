@@ -4,63 +4,38 @@ import type { Story, StoryDefault } from '@ladle/react'
 // from the co-located file.
 import { StoryWrapper, StorySection } from '../../ladle'
 
-import {
-  EventContactDetails,
-  EventTimingDetails,
-  EventLocationDetails,
-  EventDetail,
-} from './EventDetails'
+import { EventDetails } from './EventDetails'
 
-import { CalendarIcon } from '@/components/atoms/Icons'
 import { mockEvent } from '@/mocks/events'
+import { Event } from '@/types'
 
 export default { title: 'Organisms' } satisfies StoryDefault
 
+// No upcoming occurrence → the host-contact card is highlighted and moves to the top.
+const contactOnlyEvent: Event = { ...mockEvent, schedule: null }
+
 /**
- * EventDetails — the individual detail cards rendered inside an EventPanel:
- * contact, timing, and location, plus the generic EventDetail row primitive
- * they're built on.
+ * EventDetails — the stack of detail cards (timing, location, host contact)
+ * rendered inside an EventPanel. The contact card's position and emphasis depend
+ * on whether the event has an upcoming occurrence.
  */
 export const Default: Story = () => (
   <StoryWrapper>
-    <StorySection title="Contact">
+    <StorySection
+      description="Timing, location, and host-contact cards for a recurring venue event."
+      title="Default"
+    >
       <div className="max-w-md">
-        <StorySection title="Default" variant="subsection">
-          <EventContactDetails event={mockEvent} />
-        </StorySection>
-        <StorySection title="Highlighted" variant="subsection">
-          <EventContactDetails isHighlighted event={mockEvent} />
-        </StorySection>
-      </div>
-    </StorySection>
-
-    <StorySection title="Timing">
-      <div className="max-w-md">
-        <EventTimingDetails event={mockEvent} />
-      </div>
-    </StorySection>
-
-    <StorySection title="Location">
-      <div className="max-w-md">
-        <EventLocationDetails event={mockEvent} />
+        <EventDetails event={mockEvent} />
       </div>
     </StorySection>
 
     <StorySection
-      description="The generic detail row primitive with a custom icon slot."
-      title="Detail Row"
+      description="With no upcoming occurrence, the host-contact card is highlighted and shown first."
+      title="Contact Only"
     >
       <div className="max-w-md">
-        <EventDetail
-          isExternal
-          content="2 hours"
-          title="A generic detail row"
-          url="https://example.com"
-        >
-          <div className="flex-center h-full text-primary">
-            <CalendarIcon />
-          </div>
-        </EventDetail>
+        <EventDetails event={contactOnlyEvent} />
       </div>
     </StorySection>
 

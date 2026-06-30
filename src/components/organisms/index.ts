@@ -1,9 +1,12 @@
 // Organisms — complex, data-connected sections (React Query, the map, forms).
 // Public import surface: `import { EventsList } from '@/components/organisms'`.
-// See DESIGN_SYSTEM.md. The Mapbox sub-module's layer/theme helpers are internal
-// and not re-exported here (see .claude/rules/mapbox.md).
-export * from './Mapbox'
-export * from './EventsList'
+// See DESIGN_SYSTEM.md. Explicit named exports only. The Mapbox sub-module's
+// layer/theme helpers are internal and not re-exported here (see
+// .claude/rules/mapbox.md).
+export { Mapbox, MapSearch } from './Mapbox'
+
+export { EventsList, DynamicEventsList } from './EventsList'
+export type { EventsListProps, DynamicEventsListProps } from './EventsList'
 
 // NOTE: EventPanel / EventDetails / EventRegistration are deliberately NOT
 // re-exported. The event detail page lazy-loads the panel

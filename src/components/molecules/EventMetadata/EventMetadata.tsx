@@ -6,7 +6,7 @@ import { useLocale } from '@/hooks/use-locale'
 import { isOnline, lexicalToText, nextOccurrence } from '@/lib/shape'
 import { Event } from '@/types'
 
-type EventMetadataProps = {
+export type EventMetadataProps = {
   event: Event
 }
 

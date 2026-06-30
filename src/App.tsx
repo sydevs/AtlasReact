@@ -19,7 +19,6 @@ import AreaPage from '@/pages/area'
 import RegionPage from '@/pages/region'
 import CountryPage from '@/pages/country'
 import IndexPage from '@/pages/index'
-
 import '@/styles/globals.css'
 import '@/config/i18n'
 import i18n from '@/config/i18n'

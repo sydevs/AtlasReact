@@ -22,19 +22,19 @@ export function MapSearch({ onSelect }: SearchProps) {
     // @ts-ignore: 'Geocoder' cannot be used as a JSX component.
     <Geocoder
       accessToken={import.meta.env.VITE_MAPBOX_ACCESSTOKEN}
+      // @ts-ignore: Type 'Map$1' is not assignable to type 'Map'.
+      map={mapbox?.getMap()}
       options={{
         language: locale, // TOOD: Make sure this switches when locale changes
         proximity: mapbox?.getCenter(),
       }}
+      theme={controlTheme}
       value={searchQuery}
       onChange={(query) => {
         setSearchQuery(query)
         setSearchParams({ q: query })
       }}
       onRetrieve={onSelect}
-      theme={controlTheme}
-      // @ts-ignore: Type 'Map$1' is not assignable to type 'Map'.
-      map={mapbox?.getMap()}
     />
   )
 }

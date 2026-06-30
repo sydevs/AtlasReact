@@ -9,6 +9,10 @@ import { Event } from '@/types'
 import { isOnline, nextOccurrence } from '@/lib/shape'
 import { useLocale } from '@/hooks/use-locale'
 
+export type EventDetailsProps = {
+  event: Event
+}
+
 // Detect the meeting platform from an online event's join URL (for its icon).
 function detectPlatform(url?: string | null): 'zoom' | 'google_meet' | 'youtube' | undefined {
   if (!url) return undefined
@@ -34,7 +38,31 @@ function directionsUrl(event: Event): string | undefined {
     : undefined
 }
 
-export function EventContactDetails({
+/**
+ * The stack of detail cards shown inside an EventPanel — host contact, timing,
+ * and location. The contact card's position and emphasis depend on whether the
+ * event has an upcoming occurrence, so the ordering logic lives here rather than
+ * at the call site. The individual cards and the generic row primitive below are
+ * private to this module.
+ */
+export function EventDetails({ event }: EventDetailsProps) {
+  const online = isOnline(event)
+  const next = nextOccurrence(event)
+
+  return (
+    <div className="mt-5 flex flex-col gap-4">
+      {!next && <EventContactDetails isHighlighted event={event} />}
+
+      {next && <EventTimingDetails convertTimeZone={online} event={event} />}
+
+      <EventLocationDetails event={event} />
+
+      {next && <EventContactDetails event={event} />}
+    </div>
+  )
+}
+
+function EventContactDetails({
   event,
   isHighlighted = false,
 }: {
@@ -61,7 +89,7 @@ export function EventContactDetails({
   )
 }
 
-export function EventTimingDetails({
+function EventTimingDetails({
   event,
   convertTimeZone = false,
 }: {
@@ -113,7 +141,7 @@ export function EventTimingDetails({
   )
 }
 
-export function EventLocationDetails({ event }: { event: Event }) {
+function EventLocationDetails({ event }: { event: Event }) {
   const { t } = useTranslation('events')
   const online = isOnline(event)
 
@@ -158,13 +186,7 @@ type EventDetailProps = {
   children: React.ReactNode
 }
 
-export function EventDetail({
-  isExternal = false,
-  title,
-  content,
-  url,
-  children,
-}: EventDetailProps) {
+function EventDetail({ isExternal = false, title, content, url, children }: EventDetailProps) {
   return (
     <div className="flex-center-y gap-3">
       <div className="text-center border-1 border-primary-100 rounded-sm w-11 h-11">{children}</div>

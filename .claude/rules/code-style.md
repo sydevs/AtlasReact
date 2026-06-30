@@ -70,5 +70,5 @@ a file manually.
 
 ```bash
 pnpm typecheck   # cross-file type safety
-pnpm lint        # report (hooks auto-fix on save; lint:fix to fix manually)
+pnpm lint        # fails on any warning (--max-warnings 0); lint:fix to auto-fix
 ```

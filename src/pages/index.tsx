@@ -74,8 +74,8 @@ function IndexPanel() {
               <ListItem
                 key={country.id}
                 count={country.eventCount}
+                href={country.path}
                 label={(country.countryCode && regionNames.of(country.countryCode)) || country.name}
-                link={country.path}
               >
                 {country.countryCode && (
                   <CircleFlag

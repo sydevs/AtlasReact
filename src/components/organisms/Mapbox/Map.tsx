@@ -140,17 +140,17 @@ export function Mapbox() {
   return (
     <ReactMapGL
       reuseMaps
+      attributionControl={false}
       id="mapbox"
       interactiveLayerIds={[clusterLayer.id, unclusteredPointLayer.id]}
+      // @ts-ignore - Language is a valid property
+      language={locale} // TOOD: Make sure this switches when locale changes
+      mapStyle={MAP_STYLES[theme]}
       mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESSTOKEN}
       style={{ width: '100%', height: '100%' }}
       worldview={MAP_WORLDVIEWS[languageCode] || MAP_WORLDVIEWS.default}
       onClick={selectFeature}
       onMouseMove={hoverOnFeature}
-      attributionControl={false}
-      // @ts-ignore - Language is a valid property
-      language={locale} // TOOD: Make sure this switches when locale changes
-      mapStyle={MAP_STYLES[theme]}
       //{...viewState}
       onMoveEnd={(evt) => setViewState(evt.viewState)}
     >

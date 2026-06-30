@@ -5,11 +5,7 @@ import { EventSoonChip } from '@/components/molecules/EventSoon'
 import { RegistrationButton } from '@/components/organisms/EventRegistration'
 import { EventImages } from '@/components/molecules/EventImages'
 import { ShareButton } from '@/components/molecules/EventShare'
-import {
-  EventContactDetails,
-  EventLocationDetails,
-  EventTimingDetails,
-} from '@/components/organisms/EventDetails'
+import { EventDetails } from '@/components/organisms/EventDetails'
 import { useLocale } from '@/hooks/use-locale'
 import { isOnline, lexicalToHtml, nextOccurrence } from '@/lib/shape'
 import { Event } from '@/types'
@@ -17,7 +13,7 @@ import { Chip } from '@/components/atoms/Chip'
 
 const DOMPurify = createDOMPurify(window)
 
-type EventPanelProps = {
+export type EventPanelProps = {
   event: Event
 }
 
@@ -81,15 +77,7 @@ export function EventPanel({ event }: EventPanelProps) {
           <RegistrationButton className="flex-grow-[3]" event={event} />
           <ShareButton className="flex-grow" event={event} />
         </div>
-        <div className="mt-5 flex flex-col gap-4">
-          {!next && <EventContactDetails isHighlighted event={event} />}
-
-          {next && <EventTimingDetails convertTimeZone={online} event={event} />}
-
-          <EventLocationDetails event={event} />
-
-          {next && <EventContactDetails event={event} />}
-        </div>
+        <EventDetails event={event} />
       </div>
     </>
   )

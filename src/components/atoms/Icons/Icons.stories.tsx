@@ -19,7 +19,7 @@ import {
 } from './index'
 
 export default {
-  title: 'Atoms / Media',
+  title: 'Atoms',
 } satisfies StoryDefault
 
 const ICONS = [

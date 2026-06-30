@@ -6,7 +6,7 @@ import { EventImages } from './EventImages'
 
 import { mockEventImages } from '@/mocks/events'
 
-export default { title: 'Molecules / Media' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 /**
  * EventImages — an autoplaying Swiper carousel of an event's photos. With a

@@ -43,11 +43,7 @@ function CountryPanel({ slug }: { slug: string }) {
           name="description"
         />
       </Helmet>
-      <SearchBar
-        header={countryName}
-        returnLink="/search"
-        onSelect={(value) => console.log(value)}
-      />
+      <SearchBar backHref="/search" header={countryName} />
       <List>
         {country.children.map(
           (child) =>
@@ -55,8 +51,8 @@ function CountryPanel({ slug }: { slug: string }) {
               <ListItem
                 key={child.id}
                 count={child.eventCount}
+                href={child.path}
                 label={child.name}
-                link={child.path}
                 subtitle={child.subtitle}
               />
             ),

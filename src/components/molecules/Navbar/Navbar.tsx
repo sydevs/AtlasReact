@@ -1,7 +1,7 @@
 import { Link } from '@nextui-org/react'
 import {
   Navbar as NextUINavbar,
-  NavbarProps,
+  type NavbarProps as NextUINavbarProps,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
@@ -15,6 +15,10 @@ import { siteConfig } from '@/config/site'
 import { ThemeSwitch } from '@/components/atoms/ThemeSwitch'
 import { LanguageSelector } from '@/components/atoms/LanguageSelector'
 import { Logo } from '@/components/atoms/Icons'
+
+// A thin pass-through over NextUI's Navbar; reuse its props (aliased to avoid the
+// name clash), so our public type matches the other molecules' `<Name>Props`.
+export type NavbarProps = NextUINavbarProps
 
 export const Navbar = ({ ...props }: NavbarProps) => {
   return (

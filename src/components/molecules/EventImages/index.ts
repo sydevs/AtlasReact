@@ -1,1 +1,1 @@
-export * from './EventImages'
+export { EventImages } from './EventImages'

@@ -6,7 +6,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { EventTime } from './EventTime'
 
-export default { title: 'Molecules / Display' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 const nextDate = DateTime.fromISO('2026-07-04T09:30', { zone: 'Europe/London' })
 

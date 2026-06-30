@@ -50,7 +50,7 @@ function enabledQuestions(event: Event): string[] {
     .map(([key]) => key)
 }
 
-type RegistrationButtonProps = {
+export type RegistrationButtonProps = {
   event: Event
 } & ButtonProps
 
@@ -113,7 +113,7 @@ type RegistrationModalProps = {
   onOpenChange: (isOpen: boolean) => void
 }
 
-export function RegistrationModal({
+function RegistrationModal({
   eventId,
   eventTitle,
   eventUrl,
@@ -238,7 +238,7 @@ type RegistrationFieldsProps = {
   errors: FieldErrors<Registration>
 }
 
-export function RegistrationFields({
+function RegistrationFields({
   upcomingDates,
   questions,
   register,

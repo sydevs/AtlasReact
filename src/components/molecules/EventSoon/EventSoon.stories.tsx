@@ -6,15 +6,15 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { EventSoonChip } from './EventSoon'
 
-export default { title: 'Molecules / Feedback' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 // EventSoonChip only renders when the date is "soon" relative to now: within
-// 1 hour for online events, within 1 week for in-person ones. The visible
-// stories use now-relative dates; the "renders nothing" case uses a fixed date
-// far outside the window.
+// 1 hour for online events, within 1 week for in-person ones. All cases are
+// now-relative so they stay correct over time — the "renders nothing" case sits
+// a month out, well past the 1-week in-person window.
 const soonInPerson = DateTime.now().plus({ days: 3 }).toJSDate()
 const soonOnline = DateTime.now().plus({ minutes: 30 }).toJSDate()
-const fixedDate = new Date('2026-07-04T09:30:00Z')
+const notSoon = DateTime.now().plus({ months: 1 }).toJSDate()
 
 /**
  * EventSoonChip — a "starting soon / starting on …" chip that appears only when
@@ -36,7 +36,7 @@ export const Default: Story = () => (
       title="Not Soon"
     >
       <div className="text-sm text-default-500">
-        <EventSoonChip firstDate={fixedDate} online={false} />
+        <EventSoonChip firstDate={notSoon} online={false} />
         (no chip)
       </div>
     </StorySection>

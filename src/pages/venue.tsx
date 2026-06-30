@@ -41,11 +41,7 @@ function VenuePanel({ slug }: { slug: string }) {
           name="description"
         />
       </Helmet>
-      <SearchBar
-        header={venue.name}
-        returnLink={venue.parentPath ?? undefined}
-        onSelect={(value) => console.log(value)}
-      />
+      <SearchBar backHref={venue.parentPath ?? undefined} header={venue.name} />
       <EventsList events={venue.events} />
     </>
   )

@@ -21,7 +21,7 @@ import {
 } from '@/components/atoms/Icons'
 import { Event } from '@/types'
 
-type ShareButtonProps = {
+export type ShareButtonProps = {
   event: Event
 } & ButtonProps
 
@@ -45,7 +45,7 @@ type ShareModalProps = {
   onOpenChange: (isOpen: boolean) => void
 }
 
-export function ShareModal({ event, isOpen, onOpenChange }: ShareModalProps) {
+function ShareModal({ event, isOpen, onOpenChange }: ShareModalProps) {
   const { t } = useTranslation('events')
 
   return (
@@ -61,7 +61,7 @@ export function ShareModal({ event, isOpen, onOpenChange }: ShareModalProps) {
   )
 }
 
-type ShareContentProps = {
+export type ShareContentProps = {
   label: string
   url: string
 }

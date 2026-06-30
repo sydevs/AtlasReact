@@ -1,2 +1,2 @@
-export * from './Map'
-export * from './MapSearch'
+export { Mapbox } from './Map'
+export { MapSearch } from './MapSearch'
