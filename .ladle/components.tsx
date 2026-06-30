@@ -19,7 +19,7 @@ import '@/styles/globals.css'
 const PALETTES: Record<string, PaletteRoles> = {
   'palette: wemeditate.com': {},
   'palette: shrimataji.org': { primary: '#64032E', secondary: '#A11F0C', background: '#F0ECE2' },
-  'palette: sahajayoga.org': { primary: '#62834B', secondary: '#5D6F44' },
+  'palette: sahajayoga.org': { primary: '#5D6F44', secondary: '#D47B2C' },
 }
 
 // Global decorator for every story.
