@@ -45,7 +45,7 @@ type ShareModalProps = {
   onOpenChange: (isOpen: boolean) => void
 }
 
-export function ShareModal({ event, isOpen, onOpenChange }: ShareModalProps) {
+function ShareModal({ event, isOpen, onOpenChange }: ShareModalProps) {
   const { t } = useTranslation('events')
 
   return (
