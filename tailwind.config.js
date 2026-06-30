@@ -1,35 +1,21 @@
-import { nextui } from '@nextui-org/theme'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
-const TEAL_COLOR = {
-  DEFAULT: '#82b1ae',
-  10: '#f4f8f7', // alt #e9f1f0
-  50: '#c1d8d7',
-  100: '#b1cfcc',
-  200: '#a2c5c2',
-  300: '#92bbb8', // Original
-  400: '#82b1ae',
-  500: '#73a7a4',
-  600: '#639e99',
-  700: '#598f8a',
-  800: '#4f7f7b',
-  900: '#456f6c',
-}
+// Brand roles (primary/secondary) read the runtime engine's 12-step channel vars
+// (src/config/theme/palette.ts; defaulted in globals.css). `DEFAULT` is the solid
+// (step 9) and `foreground` its on-color, so `bg-primary` / `text-primary` keep
+// working alongside the full `primary-1…12` ramp.
+const brandScale = (name) => ({
+  ...Object.fromEntries(
+    Array.from({ length: 12 }, (_, i) => [i + 1, `hsl(var(--${name}-${i + 1}) / <alpha-value>)`]),
+  ),
+  DEFAULT: `hsl(var(--${name}-9) / <alpha-value>)`,
+  foreground: `hsl(var(--${name}-contrast) / <alpha-value>)`,
+})
 
-const ORANGE_COLOR = {
-  DEFAULT: '#e08e79',
-  10: '#fBf3f1',
-  50: '#f3d3cc',
-  100: '#eec2b7',
-  200: '#eab1a2',
-  300: '#e59f8e',
-  400: '#e08e79', // Original
-  500: '#db7d64',
-  600: '#d66b50',
-  700: '#d25a3b',
-  800: '#c64d2d',
-  900: '#b14529',
-}
+// Radix Colors neutral/status ramps come in as solid hex vars (globals.css imports
+// the Radix CSS), so they're referenced directly — no alpha channel.
+const radixScale = (name) =>
+  Object.fromEntries(Array.from({ length: 12 }, (_, i) => [i + 1, `var(--${name}-${i + 1})`]))
 
 const TAILWIND_REM_TO_PX = {
   borderRadius: {
@@ -170,10 +156,36 @@ module.exports = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './.ladle/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     ...TAILWIND_REM_TO_PX,
+    extend: {
+      // Semantic color tokens. Brand roles (primary/secondary) repaint at runtime
+      // via the engine's CSS vars; neutral (gray) + status (danger) are fixed
+      // Radix Colors ramps. `danger` is intentionally independent of the brand's
+      // `secondary` — a fixed status hue, never tenant-overridden.
+      colors: {
+        gray: radixScale('gray'),
+        primary: brandScale('primary'),
+        secondary: brandScale('secondary'),
+        danger: {
+          ...radixScale('red'),
+          DEFAULT: 'var(--red-9)',
+          foreground: '#ffffff',
+        },
+        // Semantic aliases onto canonical steps, so common surfaces stay readable.
+        background: 'hsl(var(--background) / <alpha-value>)',
+        foreground: 'var(--gray-12)',
+        divider: 'var(--gray-6)',
+        focus: 'hsl(var(--primary-9))',
+      },
+      // NextUI's `opacity-hover` (0.8) / `opacity-disabled` (0.5) tokens, kept so
+      // the existing hover/disabled utilities still resolve.
+      opacity: {
+        hover: '0.8',
+        disabled: '0.5',
+      },
+    },
     fontSize: {
       xs: [
         '12px',
@@ -222,66 +234,6 @@ module.exports = {
       'circle-pattern': "url('/graphics/circle.svg')",
     },
   },
-  defaultTheme: 'light',
   darkMode: 'class',
-  plugins: [
-    nextui({
-      layout: {
-        radius: {
-          small: '2px', // rounded-small
-          medium: '4px', // rounded-medium
-          large: '8px', // rounded-large
-        },
-        fontSize: {
-          tiny: '12px', // text-tiny
-          small: '14px', // text-small
-          medium: '16px', // text-medium
-          large: '18px', // text-large
-        },
-        lineHeight: {
-          tiny: '16px', // text-tiny
-          small: '20px', // text-small
-          medium: '24px', // text-medium
-          large: '28px', // text-large
-        },
-      },
-      // `danger` is intentionally left to NextUI's built-in red: it's a fixed
-      // status hue that must stay independent of the brand's `secondary`
-      // (orange) — and of any tenant palette, which only overrides
-      // primary/secondary/background at runtime (see src/config/theme/palette.ts).
-      themes: {
-        light: {
-          colors: {
-            primary: {
-              ...TEAL_COLOR,
-              foreground: '#000000',
-            },
-            secondary: {
-              ...ORANGE_COLOR,
-              foreground: '#000000',
-            },
-            focus: TEAL_COLOR,
-          },
-        },
-        dark: {
-          // Keep the brand hue in dark mode — no teal↔orange swap. Primary stays
-          // teal and secondary stays orange so a brand color reads the same in
-          // both modes; NextUI's built-in dark base still supplies the neutral
-          // surfaces. (Colors live at the theme level, not under `extend`, which
-          // takes a base-theme *name* and would silently drop a nested palette.)
-          colors: {
-            primary: {
-              ...TEAL_COLOR,
-              foreground: '#000000',
-            },
-            secondary: {
-              ...ORANGE_COLOR,
-              foreground: '#000000',
-            },
-            focus: TEAL_COLOR,
-          },
-        },
-      },
-    }),
-  ],
+  plugins: [],
 }
