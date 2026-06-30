@@ -156,7 +156,7 @@ export function Button({
   const classes = button({ color, variant, size, isIconOnly, className })
   const content = (
     <>
-      {isLoading ? <Spinner color="default" size={SPINNER_SIZE[size ?? 'md']} /> : startContent}
+      {isLoading ? <Spinner color="current" size={SPINNER_SIZE[size ?? 'md']} /> : startContent}
       {children}
       {!isLoading && endContent}
     </>

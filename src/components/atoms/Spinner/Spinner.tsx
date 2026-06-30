@@ -13,6 +13,9 @@ const spinner = tv({
       primary: { circle: 'border-primary-9' },
       secondary: { circle: 'border-secondary-9' },
       default: { circle: 'border-gray-9' },
+      // Inherit the surrounding text colour — used by Button so the spinner
+      // matches the label across every colour/variant.
+      current: { circle: 'border-current' },
     },
     size: {
       sm: { circle: 'h-5 w-5 border-2' },

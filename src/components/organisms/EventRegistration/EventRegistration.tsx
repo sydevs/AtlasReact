@@ -130,7 +130,13 @@ function RegistrationModal({
     },
   })
 
-  const close = () => onOpenChange(false)
+  // Reset the thank-you state on close too: the footer buttons call this
+  // directly (a controlled prop change Radix's onOpenChange doesn't observe),
+  // so without this the next open would show the thank-you screen, not the form.
+  const close = () => {
+    onOpenChange(false)
+    setSubmitted(false)
+  }
 
   return (
     <Modal

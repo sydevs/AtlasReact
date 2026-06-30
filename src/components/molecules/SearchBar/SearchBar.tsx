@@ -103,7 +103,7 @@ export function SearchBar({
           </div>
         </Switch>
       )}
-      {!isMd && eventCount && (
+      {!isMd && !!eventCount && (
         <div className="mt-2 text-center text-sm font-semibold uppercase leading-snug">
           <button className="hover:underline cursor-pointer" type="button" onClick={executeScroll}>
             {eventCount} {t('events')}

@@ -47,7 +47,7 @@ export function EventImages({ images }: { images: EventImage[] }) {
             >
               <img
                 alt={image.alt ?? undefined}
-                className="h-full w-full rounded-lg aspect-[4/3] object-cover"
+                className="w-full rounded-lg aspect-[4/3] object-cover"
                 src={image.url}
               />
             </button>

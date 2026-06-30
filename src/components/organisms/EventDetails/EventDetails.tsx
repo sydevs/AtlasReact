@@ -131,7 +131,7 @@ function EventTimingDetails({
           : t('details.contact_for_timing')
       }
     >
-      <div className="text-xs bg-primary-4 dark:bg-primary-11 py-0.5 font-semibold">
+      <div className="text-xs bg-primary-4 dark:bg-primary-5 py-0.5 font-semibold">
         {nextDate.toLocaleString({ month: 'short' }).toUpperCase()}
       </div>
       <div className="flex items-center justify-center font-semibold text-md h-6 text-gray-11">

@@ -10,7 +10,7 @@ import { overlayContainer } from '@/lib/overlay'
 // long-standing embedded-overlay theming gap noted in providers.tsx.
 const modal = tv({
   slots: {
-    overlay: 'fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in',
+    overlay: 'fixed inset-0 z-50 bg-black/50',
     wrapper: 'fixed inset-0 z-50 flex justify-center p-4',
     content:
       'relative flex w-full max-w-md flex-col gap-1 rounded-lg bg-background text-foreground shadow-xl outline-none max-h-full overflow-y-auto',
