@@ -87,8 +87,8 @@ function EventTimingDetails({
         />
       }
       title={
-        timing.type
-          ? t(`recurrence.${timing.type}`, {
+        timing.recurrenceType
+          ? t(`recurrence.${timing.recurrenceType}`, {
               weekday: nextDate.toLocaleString({ weekday: 'long' }),
             })
           : t('details.contact_for_timing')

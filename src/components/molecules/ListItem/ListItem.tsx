@@ -20,7 +20,7 @@ export function ListItem({ label, subtitle, count, href, children }: ListItemPro
         {children}
         <div className="text-lg flex-grow">
           <div>{label}</div>
-          {subtitle && <div className="text-md font-light">{subtitle}</div>}
+          {subtitle && <div className="text-md font-light mt-0.5">{subtitle}</div>}
         </div>
         <div className="text-right mr-1">{count}</div>
         <RightArrowIcon className="text-xl" />

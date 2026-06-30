@@ -101,7 +101,7 @@ function TimezoneChip({ time, delay = 0 }: TimezoneChipProps) {
         <FloatingPortal>
           <div
             ref={refs.setFloating}
-            className="z-50 max-w-64 rounded-md bg-foreground px-2 py-1 text-small text-background shadow-md"
+            className="z-50 max-w-64 rounded-md border border-default-200 bg-content1 px-2 py-1 text-small text-foreground shadow-md"
             style={floatingStyles}
             {...getFloatingProps()}
           >
