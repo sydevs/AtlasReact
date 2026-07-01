@@ -4,15 +4,79 @@ import { useTranslation } from 'react-i18next'
 import { EventContactDetails, EventTimingDetails, EventLocationDetails } from './details'
 
 import { EventSoonChip } from '@/components/molecules/EventSoon'
-import { RegistrationButton } from '@/components/organisms/EventRegistration'
+import { RegistrationForm } from '@/components/organisms/RegistrationForm'
 import { ImageCarousel } from '@/components/molecules/ImageCarousel'
 import { ShareButton } from '@/components/molecules/EventShare'
+import { Modal } from '@/components/atoms/Modal'
+import { Button } from '@/components/atoms/Button'
+import { AnchorIcon } from '@/components/atoms/Icons'
 import { useLocale } from '@/hooks/use-locale'
 import { isOnline, lexicalToHtml, nextOccurrence } from '@/lib/shape'
 import { Event } from '@/types'
 import { Chip } from '@/components/atoms/Chip'
 
 const DOMPurify = createDOMPurify(window)
+
+// The registration questions enabled on this event (each `true` boolean → a field).
+function enabledQuestions(event: Event): string[] {
+  const questions = event.registrationQuestions
+
+  if (!questions) return []
+
+  return Object.entries(questions)
+    .filter(([, enabled]) => enabled)
+    .map(([key]) => key)
+}
+
+// The registration call-to-action. External events link straight out; native
+// events (with at least one upcoming date) open the RegistrationForm in a Modal.
+// EventView owns this decision so RegistrationForm can stay a config-driven form.
+function RegisterAction({ event, className }: { event: Event; className?: string }) {
+  const { t } = useTranslation('events')
+
+  if (event.registrationMode === 'external') {
+    if (!event.externalRegistrationUrl) return null
+
+    return (
+      <Button
+        className={className}
+        color="primary"
+        href={event.externalRegistrationUrl}
+        rel="noopener noreferrer"
+        target="_blank"
+        variant="flat"
+      >
+        <span className="font-semibold tracking-wider">{t('registration.register_now')}</span>
+        <AnchorIcon className="text-primary" />
+      </Button>
+    )
+  }
+
+  const upcomingDates = event.schedule?.upcomingDates ?? []
+
+  if (upcomingDates.length === 0) return null
+
+  return (
+    <Modal
+      backdrop="blur"
+      placement="bottom"
+      trigger={
+        <Button className={className} color="primary" variant="flat">
+          <span className="font-semibold tracking-wider">{t('registration.register_now')}</span>
+        </Button>
+      }
+    >
+      <RegistrationForm
+        eventId={event.id}
+        eventTitle={event.title}
+        eventUrl={event.webUrl ?? ''}
+        isOnline={isOnline(event)}
+        questions={enabledQuestions(event)}
+        upcomingDates={upcomingDates}
+      />
+    </Modal>
+  )
+}
 
 export type EventViewProps = {
   event: Event
@@ -82,7 +146,7 @@ export function EventView({ event }: EventViewProps) {
           />
         )}
         <div className="flex-center-x gap-1">
-          <RegistrationButton className="flex-grow-[3]" event={event} />
+          <RegisterAction className="flex-grow-[3]" event={event} />
           <ShareButton className="flex-grow" event={event} />
         </div>
         {/* The host-contact card's position and emphasis depend on whether the

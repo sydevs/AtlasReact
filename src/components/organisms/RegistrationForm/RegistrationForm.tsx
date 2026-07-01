@@ -13,101 +13,45 @@ import { useTranslation } from 'react-i18next'
 import { type ReactNode, useState } from 'react'
 import clsx from 'clsx'
 
-import { AnchorIcon } from '@/components/atoms/Icons'
-import { Button, type ButtonProps } from '@/components/atoms/Button'
-import { Modal, ModalHeader, ModalBody, ModalFooter } from '@/components/atoms/Modal'
+import { Button } from '@/components/atoms/Button'
+import { ModalHeader, ModalBody, ModalFooter, ModalClose } from '@/components/atoms/Modal'
 import { Alert } from '@/components/atoms/Alert'
+import { Checkbox } from '@/components/atoms/Checkbox'
 import { Select, SelectItem } from '@/components/atoms/Select'
 import { ShareContent } from '@/components/molecules/EventShare'
 import api from '@/config/api'
 import { Registration, RegistrationSchema } from '@/types'
-import { Event } from '@/types'
-import { isOnline } from '@/lib/shape'
 import { useLocale } from '@/hooks/use-locale'
 
-// The registration questions enabled on this event (each `true` boolean → a field).
-function enabledQuestions(event: Event): string[] {
-  const questions = event.registrationQuestions
-
-  if (!questions) return []
-
-  return Object.entries(questions)
-    .filter(([, enabled]) => enabled)
-    .map(([key]) => key)
-}
-
-export type RegistrationButtonProps = {
-  event: Event
-} & ButtonProps
-
-export function RegistrationButton({ event, ...buttonProps }: RegistrationButtonProps) {
-  const { t } = useTranslation('events')
-  const [isOpen, setIsOpen] = useState(false)
-
-  // External registration: just link out (Button renders an <a> when given href).
-  if (event.registrationMode === 'external') {
-    if (!event.externalRegistrationUrl) return null
-
-    return (
-      <Button
-        color="primary"
-        href={event.externalRegistrationUrl}
-        rel="noopener noreferrer"
-        target="_blank"
-        variant="flat"
-        {...buttonProps}
-      >
-        <span className="font-semibold tracking-wider">{t('registration.register_now')}</span>
-        <AnchorIcon className="text-primary" />
-      </Button>
-    )
-  }
-
-  // In-app registration needs at least one upcoming date to register against.
-  const upcomingDates = event.schedule?.upcomingDates ?? []
-
-  if (upcomingDates.length === 0) return null
-
-  return (
-    <>
-      <Button color="primary" variant="flat" onClick={() => setIsOpen(true)} {...buttonProps}>
-        <span className="font-semibold tracking-wider">{t('registration.register_now')}</span>
-      </Button>
-      <RegistrationModal
-        eventId={event.id}
-        eventTitle={event.title}
-        eventUrl={event.webUrl ?? ''}
-        isOnline={isOnline(event)}
-        isOpen={isOpen}
-        questions={enabledQuestions(event)}
-        upcomingDates={upcomingDates}
-        onOpenChange={setIsOpen}
-      />
-    </>
-  )
-}
-
-type RegistrationModalProps = {
+export type RegistrationFormProps = {
   eventId: number
-  eventTitle: string
-  eventUrl: string
   upcomingDates: Date[]
   questions: string[]
   isOnline: boolean
-  isOpen: boolean
-  onOpenChange: (isOpen: boolean) => void
+  eventTitle: string
+  eventUrl: string
+  /** Optional close callback; the footer also closes the enclosing Modal via ModalClose. */
+  onClose?: () => void
 }
 
-function RegistrationModal({
+/**
+ * The event registration form — generic and config-driven (no Event coupling).
+ * It owns the form state, the createRegistration mutation, and the thank-you /
+ * error / online-notice states, and renders Modal header/body/footer *content*;
+ * the parent (EventView) wraps it in a <Modal> and decides when to show it.
+ *
+ * Radix unmounts the dialog content on close, so this remounts fresh on each
+ * reopen — no manual reset-on-close needed.
+ */
+export function RegistrationForm({
   eventId,
-  eventTitle,
-  eventUrl,
   upcomingDates,
   questions,
   isOnline,
-  isOpen,
-  onOpenChange,
-}: RegistrationModalProps) {
+  eventTitle,
+  eventUrl,
+  onClose,
+}: RegistrationFormProps) {
   const [submitted, setSubmitted] = useState(false)
   const { t } = useTranslation('events')
 
@@ -115,7 +59,6 @@ function RegistrationModal({
     register,
     control,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<Registration>({ resolver: zodResolver(RegistrationSchema) })
 
@@ -124,91 +67,74 @@ function RegistrationModal({
     mutationFn: (newRegistration: Registration) => {
       return api.createRegistration(eventId, newRegistration)
     },
-    onSuccess: () => {
-      setSubmitted(true)
-      reset()
-    },
+    onSuccess: () => setSubmitted(true),
   })
 
-  // Reset the thank-you state on close too: the footer buttons call this
-  // directly (a controlled prop change Radix's onOpenChange doesn't observe),
-  // so without this the next open would show the thank-you screen, not the form.
-  const close = () => {
-    onOpenChange(false)
-    setSubmitted(false)
-  }
-
   return (
-    <Modal
-      backdrop="blur"
-      isOpen={isOpen}
-      placement="bottom"
-      onOpenChange={(open) => {
-        onOpenChange(open)
-        if (!open) setSubmitted(false)
-      }}
-    >
-      <form className="flex flex-col" onSubmit={handleSubmit((data) => mutation.mutate(data))}>
-        <ModalHeader className="mt-2 text-center text-xl">
-          {t(submitted ? 'registration.thank_you' : 'registration.register_now')}
-        </ModalHeader>
-        <ModalBody>
-          {submitted ? (
-            <div className="text-center flex flex-col gap-3">
-              <p>{t('registration.followup')}</p>
-              <div className="font-semibold mt-2">{t('registration.invite_friend')}</div>
-              <ShareContent label={eventTitle} url={eventUrl} />
-            </div>
-          ) : (
-            <>
-              <RegistrationFields
-                control={control}
-                errors={errors}
-                questions={questions}
-                register={register}
-                upcomingDates={upcomingDates}
-              />
-
-              {mutation.isError && (
-                <Alert
-                  className="mt-4"
-                  color="secondary"
-                  description={mutation.error.message}
-                  title="Something went wrong"
-                />
-              )}
-            </>
-          )}
-
-          {isOnline && (
-            <Alert
-              hideIcon
-              className="mt-3"
-              color="primary"
-              description={t('registration.online_notice')}
-              title={t('registration.online_notice_title')}
-              variant="bordered"
+    <form className="flex flex-col" onSubmit={handleSubmit((data) => mutation.mutate(data))}>
+      <ModalHeader className="mt-2 text-center text-xl">
+        {t(submitted ? 'registration.thank_you' : 'registration.register_now')}
+      </ModalHeader>
+      <ModalBody>
+        {submitted ? (
+          <div className="text-center flex flex-col gap-3">
+            <p>{t('registration.followup')}</p>
+            <div className="font-semibold mt-2">{t('registration.invite_friend')}</div>
+            <ShareContent label={eventTitle} url={eventUrl} />
+          </div>
+        ) : (
+          <>
+            <RegistrationFields
+              control={control}
+              errors={errors}
+              questions={questions}
+              register={register}
+              upcomingDates={upcomingDates}
             />
-          )}
-        </ModalBody>
-        <ModalFooter>
-          {submitted ? (
-            <Button color="primary" variant="flat" onClick={close}>
+
+            {mutation.isError && (
+              <Alert
+                className="mt-4"
+                color="secondary"
+                description={mutation.error.message}
+                title="Something went wrong"
+              />
+            )}
+          </>
+        )}
+
+        {isOnline && (
+          <Alert
+            hideIcon
+            className="mt-3"
+            color="primary"
+            description={t('registration.online_notice')}
+            title={t('registration.online_notice_title')}
+            variant="bordered"
+          />
+        )}
+      </ModalBody>
+      <ModalFooter>
+        {submitted ? (
+          <ModalClose>
+            <Button color="primary" variant="flat" onClick={onClose}>
               {t('registration.okay')}
             </Button>
-          ) : (
-            <>
-              <Button disabled={mutation.isPending} variant="flat" onClick={close}>
+          </ModalClose>
+        ) : (
+          <>
+            <ModalClose>
+              <Button disabled={mutation.isPending} variant="flat" onClick={onClose}>
                 {t('registration.cancel')}
               </Button>
-              <Button color="primary" isLoading={mutation.isPending} type="submit" variant="flat">
-                {t('registration.submit')}
-              </Button>
-            </>
-          )}
-        </ModalFooter>
-      </form>
-    </Modal>
+            </ModalClose>
+            <Button color="primary" isLoading={mutation.isPending} type="submit" variant="flat">
+              {t('registration.submit')}
+            </Button>
+          </>
+        )}
+      </ModalFooter>
+    </form>
   )
 }
 
@@ -373,6 +299,24 @@ function RegistrationFields({
           registration={register(`questions.${question}`)}
         />
       ))}
+
+      {/* Opt-in mailing-list consent — a checkbox-appearance toggle, unchecked by
+          default, shown just above the privacy note. */}
+      <Controller
+        control={control}
+        defaultValue={false}
+        name="subscribe"
+        render={({ field }) => (
+          <Checkbox
+            appearance="checkbox"
+            checked={!!field.value}
+            color="primary"
+            onCheckedChange={field.onChange}
+          >
+            {t('registration.mailing_list_consent')}
+          </Checkbox>
+        )}
+      />
 
       <p className="text-xs text-center">{t('registration.privacy_policy')}</p>
     </div>
