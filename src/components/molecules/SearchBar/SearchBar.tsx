@@ -3,7 +3,7 @@ import { GeocodeFeature } from '@mapbox/search-js-core'
 import { useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 
-import { Switch } from '@/components/atoms/Switch'
+import { Checkbox } from '@/components/atoms/Checkbox'
 import { useSearchState } from '@/config/store'
 import { MapSearch } from '@/components/organisms/Mapbox/MapSearch'
 import { UpArrowIcon, DownArrowIcon, SearchIcon, CloseIcon } from '@/components/atoms/Icons'
@@ -91,7 +91,8 @@ export function SearchBar({
         )}
       </div>
       {filterable && (
-        <Switch
+        <Checkbox
+          appearance="switch"
           checked={onlineOnly}
           className="mt-2 hover:opacity-hover"
           color="primary"
@@ -101,7 +102,7 @@ export function SearchBar({
           <div className="font-semibold text-foreground">
             {t(onlineOnly ? 'showing_online_classes' : 'show_online_classes')}
           </div>
-        </Switch>
+        </Checkbox>
       )}
       {!isMd && !!eventCount && (
         <div className="mt-2 text-center text-sm font-semibold uppercase leading-snug">

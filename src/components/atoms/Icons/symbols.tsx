@@ -121,6 +121,14 @@ export const LanguageIcon: React.FC<IconSvgProps> = ({ ...props }) => (
   />
 )
 
+export const CheckIcon: React.FC<IconSvgProps> = ({ ...props }) => (
+  <BaseIcon
+    paths={['M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z']}
+    view="0 0 24 24"
+    {...props}
+  />
+)
+
 export const AnchorIcon: React.FC<IconSvgProps> = ({ ...props }) => (
   <svg
     className="group-hover:text-inherit text-gray-10 transition-[color,transform] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

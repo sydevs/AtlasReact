@@ -15,6 +15,9 @@ export type { AlertProps } from './Alert'
 export { Button } from './Button'
 export type { ButtonProps } from './Button'
 
+export { Checkbox } from './Checkbox'
+export type { CheckboxProps } from './Checkbox'
+
 export { Chip } from './Chip'
 export type { ChipProps } from './Chip'
 
@@ -39,9 +42,6 @@ export type { PanelProps } from './Panel'
 
 export { Spinner } from './Spinner'
 export type { SpinnerProps } from './Spinner'
-
-export { Switch } from './Switch'
-export type { SwitchProps } from './Switch'
 
 export { ThemeSwitch } from './ThemeSwitch'
 export type { ThemeSwitchProps } from './ThemeSwitch'
