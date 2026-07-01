@@ -12,8 +12,8 @@ import { UpArrowIcon } from '@/components/atoms'
 import { useMapbox } from '@/hooks/use-mapbox'
 import { isOnline, regionPath } from '@/lib/shape'
 
-const EventPanelContent = lazy(() =>
-  import('@/components/organisms/EventPanel').then((m) => ({ default: m.EventPanel })),
+const EventViewContent = lazy(() =>
+  import('@/components/organisms/EventView').then((m) => ({ default: m.EventView })),
 )
 
 function EventPanel({ eventId }: { eventId: number }) {
@@ -56,7 +56,7 @@ function EventPanel({ eventId }: { eventId: number }) {
         <UpArrowIcon className="text-lg" size={32} />
       </Link>
       <EventMetadata event={event} />
-      <EventPanelContent event={event} />
+      <EventViewContent event={event} />
     </>
   )
 }

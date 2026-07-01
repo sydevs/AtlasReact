@@ -1,11 +1,12 @@
 import createDOMPurify from 'dompurify'
 import { useTranslation } from 'react-i18next'
 
+import { EventContactDetails, EventTimingDetails, EventLocationDetails } from './details'
+
 import { EventSoonChip } from '@/components/molecules/EventSoon'
 import { RegistrationButton } from '@/components/organisms/EventRegistration'
 import { EventImages } from '@/components/molecules/EventImages'
 import { ShareButton } from '@/components/molecules/EventShare'
-import { EventDetails } from '@/components/organisms/EventDetails'
 import { useLocale } from '@/hooks/use-locale'
 import { isOnline, lexicalToHtml, nextOccurrence } from '@/lib/shape'
 import { Event } from '@/types'
@@ -13,11 +14,11 @@ import { Chip } from '@/components/atoms/Chip'
 
 const DOMPurify = createDOMPurify(window)
 
-export type EventPanelProps = {
+export type EventViewProps = {
   event: Event
 }
 
-export function EventPanel({ event }: EventPanelProps) {
+export function EventView({ event }: EventViewProps) {
   const { t } = useTranslation('events')
   const { locale, languageNames } = useLocale()
 
@@ -77,7 +78,19 @@ export function EventPanel({ event }: EventPanelProps) {
           <RegistrationButton className="flex-grow-[3]" event={event} />
           <ShareButton className="flex-grow" event={event} />
         </div>
-        <EventDetails event={event} />
+        {/* The host-contact card's position and emphasis depend on whether the
+            event has an upcoming occurrence, so EventView owns the ordering:
+            contact-highlighted-first when there's no upcoming date, else
+            timing → location → contact. */}
+        <div className="mt-5 flex flex-col gap-4">
+          {!next && <EventContactDetails isHighlighted event={event} />}
+
+          {next && <EventTimingDetails convertTimeZone={online} event={event} />}
+
+          <EventLocationDetails event={event} />
+
+          {next && <EventContactDetails event={event} />}
+        </div>
       </div>
     </>
   )

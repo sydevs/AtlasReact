@@ -2,16 +2,12 @@ import { useTranslation } from 'react-i18next'
 import { DateTime } from 'luxon'
 import { useMemo } from 'react'
 
-import { SocialIcon, AnchorIcon, CallIcon, LocationIcon } from '@/components/atoms/Icons'
-import { Link } from '@/components/atoms/Link'
+import { SocialIcon, CallIcon, LocationIcon } from '@/components/atoms/Icons'
+import { DetailRow } from '@/components/molecules/DetailRow'
 import { EventTime } from '@/components/molecules/EventTime'
 import { Event } from '@/types'
 import { isOnline, nextOccurrence } from '@/lib/shape'
 import { useLocale } from '@/hooks/use-locale'
-
-export type EventDetailsProps = {
-  event: Event
-}
 
 // Detect the meeting platform from an online event's join URL (for its icon).
 function detectPlatform(url?: string | null): 'zoom' | 'google_meet' | 'youtube' | undefined {
@@ -38,31 +34,10 @@ function directionsUrl(event: Event): string | undefined {
     : undefined
 }
 
-/**
- * The stack of detail cards shown inside an EventPanel — host contact, timing,
- * and location. The contact card's position and emphasis depend on whether the
- * event has an upcoming occurrence, so the ordering logic lives here rather than
- * at the call site. The individual cards and the generic row primitive below are
- * private to this module.
- */
-export function EventDetails({ event }: EventDetailsProps) {
-  const online = isOnline(event)
-  const next = nextOccurrence(event)
-
-  return (
-    <div className="mt-5 flex flex-col gap-4">
-      {!next && <EventContactDetails isHighlighted event={event} />}
-
-      {next && <EventTimingDetails convertTimeZone={online} event={event} />}
-
-      <EventLocationDetails event={event} />
-
-      {next && <EventContactDetails event={event} />}
-    </div>
-  )
-}
-
-function EventContactDetails({
+// The individual event detail cards — host contact, timing, and location — each
+// a DetailRow with the right icon/badge and copy. Private to the EventView
+// folder; EventView owns their ordering (see EventView.tsx).
+export function EventContactDetails({
   event,
   isHighlighted = false,
 }: {
@@ -74,7 +49,7 @@ function EventContactDetails({
   if (!event.contactPhone) return null
 
   return (
-    <EventDetail
+    <DetailRow
       content={t('details.tel', { phoneNumber: event.contactPhone })}
       isExternal={true}
       title={isHighlighted ? t('details.contact_for_timing') : t('details.contact_host')}
@@ -85,11 +60,11 @@ function EventContactDetails({
       >
         <CallIcon size={32} />
       </div>
-    </EventDetail>
+    </DetailRow>
   )
 }
 
-function EventTimingDetails({
+export function EventTimingDetails({
   event,
   convertTimeZone = false,
 }: {
@@ -110,7 +85,7 @@ function EventTimingDetails({
   if (!nextDate) return null
 
   return (
-    <EventDetail
+    <DetailRow
       content={
         <EventTime
           endTime={schedule?.endTime}
@@ -137,11 +112,11 @@ function EventTimingDetails({
       <div className="flex items-center justify-center font-semibold text-md h-6 text-gray-11">
         {nextDate.day}
       </div>
-    </EventDetail>
+    </DetailRow>
   )
 }
 
-function EventLocationDetails({ event }: { event: Event }) {
+export function EventLocationDetails({ event }: { event: Event }) {
   const { t } = useTranslation('events')
   const online = isOnline(event)
 
@@ -165,7 +140,7 @@ function EventLocationDetails({ event }: { event: Event }) {
   const platform = detectPlatform(event.onlineUrl)
 
   return (
-    <EventDetail
+    <DetailRow
       content={subtitle}
       isExternal={true}
       title={title}
@@ -174,39 +149,6 @@ function EventLocationDetails({ event }: { event: Event }) {
       <div className="flex-center h-full text-primary">
         {platform ? <SocialIcon platform={platform} size={24} /> : <LocationIcon />}
       </div>
-    </EventDetail>
-  )
-}
-
-type EventDetailProps = {
-  title: React.ReactNode
-  content: React.ReactNode
-  url?: string
-  isExternal?: boolean
-  children: React.ReactNode
-}
-
-function EventDetail({ isExternal = false, title, content, url, children }: EventDetailProps) {
-  return (
-    <div className="flex-center-y gap-3">
-      <div className="text-center border border-primary-4 rounded-sm w-11 h-11">{children}</div>
-      <div className="flex flex-col gap-0.5">
-        {url ? (
-          <Link
-            anchorIcon={isExternal && <AnchorIcon />}
-            className="group gap-x-0.5 text-md text-foreground font-medium"
-            href={url}
-            isExternal={isExternal}
-            rel="noreferrer noopener"
-            showAnchorIcon={isExternal}
-          >
-            {title}
-          </Link>
-        ) : (
-          <div className="text-md font-medium">{title}</div>
-        )}
-        <div className="text-base text-gray-11 max-w-72">{content}</div>
-      </div>
-    </div>
+    </DetailRow>
   )
 }

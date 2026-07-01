@@ -8,6 +8,10 @@ export type { NavbarProps } from './Navbar'
 export { SearchBar } from './SearchBar'
 export type { SearchBarProps } from './SearchBar'
 
+// DetailRow — a generic labelled icon row; the event detail cards build on it.
+export { DetailRow } from './DetailRow'
+export type { DetailRowProps } from './DetailRow'
+
 // List also surfaces its ListHeader sub-component (back link + title).
 export { List, ListHeader } from './List'
 export type { ListHeaderProps } from './List'
