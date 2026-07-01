@@ -32,13 +32,8 @@ export type { LinkProps } from './Link'
 export { Modal, ModalHeader, ModalBody, ModalFooter, ModalClose } from './Modal'
 export type { ModalProps } from './Modal'
 
-export { LanguageSelector } from './LanguageSelector'
-
 export { Panel } from './Panel'
 export type { PanelProps } from './Panel'
 
 export { Spinner } from './Spinner'
 export type { SpinnerProps } from './Spinner'
-
-export { ThemeSwitch } from './ThemeSwitch'
-export type { ThemeSwitchProps } from './ThemeSwitch'
