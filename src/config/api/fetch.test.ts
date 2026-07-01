@@ -99,8 +99,10 @@ describe('getGeojson', () => {
   })
 })
 
-describe('getCountry (hierarchy derivation)', () => {
-  // Belgium(28) → Brussels(470), with one located event at the Brussels venue.
+describe('getRegion (unified hierarchy derivation)', () => {
+  // Belgium(28) → Brussels(470), with one located event under Brussels. The
+  // region read resolves by slug alone; the country's path + its child's nested
+  // path come from the breadcrumb slug chain.
   const route = (
     url: string,
     config?: { params?: { where?: Record<string, { equals?: unknown }> } },
@@ -117,6 +119,9 @@ describe('getCountry (hierarchy derivation)', () => {
               level: 'country',
               name: 'Belgium',
               mapboxId: 'mbx',
+              breadcrumbs: [
+                { doc: { id: 28, slug: 'belgium', level: 'country' }, label: 'Belgium' },
+              ],
               legacyData: { countryCode: 'BE' },
             },
           ],
@@ -153,19 +158,23 @@ describe('getCountry (hierarchy derivation)', () => {
     }
   }
 
-  it('derives eventCount, bounds, ISO code, and event-bearing children from the feed', async () => {
+  it('derives level, eventCount, bounds, ISO code, path, and nested children', async () => {
     get.mockImplementation((url: string, config?: never) => Promise.resolve(route(url, config)))
 
-    const country = await api.getCountry('belgium')
+    const region = await api.getRegion('belgium')
 
-    expect(country.eventCount).toBe(1)
-    expect(country.bounds).toEqual([4.35, 50.85, 4.35, 50.85])
-    expect(country.countryCode).toBe('BE')
-    expect(country.children).toHaveLength(1)
-    expect(country.children[0]).toMatchObject({
+    expect(region.level).toBe('country')
+    expect(region.eventCount).toBe(1)
+    expect(region.bounds).toEqual([4.35, 50.85, 4.35, 50.85])
+    expect(region.countryCode).toBe('BE')
+    expect(region.path).toBe('/belgium')
+    // a country lists subregions, not events
+    expect(region.events).toHaveLength(0)
+    expect(region.subregions).toHaveLength(1)
+    expect(region.subregions[0]).toMatchObject({
       slug: 'brussels',
       eventCount: 1,
-      path: '/areas/brussels',
+      path: '/belgium/brussels',
     })
   })
 })
