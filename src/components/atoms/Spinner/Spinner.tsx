@@ -1,26 +1,28 @@
 import { tv, type VariantProps } from 'tailwind-variants'
 
-// A pure CSS spinner (two rings, one spinning) — replaces NextUI's Spinner with
-// no library dependency. Color keys onto the brand/neutral 12-step tokens.
+// Radix Primitives ships no spinner (only Radix Themes does), so — like the
+// Radix+Tailwind ecosystem (shadcn/ui) — this is a plain SVG with `animate-spin`
+// and the colour driven by `currentColor`. (A CSS border-ring on a <span> won't
+// animate: `transform` is ignored on inline elements.)
 const spinner = tv({
   slots: {
     base: 'flex flex-col items-center justify-center gap-2',
-    circle: 'animate-spin rounded-full border-solid border-t-transparent',
+    icon: 'animate-spin',
     label: 'text-sm text-gray-11',
   },
   variants: {
     color: {
-      primary: { circle: 'border-primary-9' },
-      secondary: { circle: 'border-secondary-9' },
-      default: { circle: 'border-gray-9' },
+      primary: { icon: 'text-primary-9' },
+      secondary: { icon: 'text-secondary-9' },
+      default: { icon: 'text-gray-9' },
       // Inherit the surrounding text colour — used by Button so the spinner
       // matches the label across every colour/variant.
-      current: { circle: 'border-current' },
+      current: { icon: 'text-current' },
     },
     size: {
-      sm: { circle: 'h-5 w-5 border-2' },
-      md: { circle: 'h-8 w-8 border-[3px]' },
-      lg: { circle: 'h-10 w-10 border-4' },
+      sm: { icon: 'h-5 w-5' },
+      md: { icon: 'h-8 w-8' },
+      lg: { icon: 'h-10 w-10' },
     },
   },
   defaultVariants: {
@@ -35,11 +37,25 @@ export type SpinnerProps = VariantProps<typeof spinner> & {
 }
 
 export function Spinner({ color, size, label, className }: SpinnerProps) {
-  const { base, circle, label: labelClass } = spinner({ color, size })
+  const { base, icon, label: labelClass } = spinner({ color, size })
 
   return (
     <div aria-live="polite" className={base({ className })} role="status">
-      <span aria-hidden="true" className={circle()} />
+      <svg aria-hidden="true" className={icon()} fill="none" viewBox="0 0 24 24">
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
+        <path
+          className="opacity-75"
+          d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 0 1 4 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          fill="currentColor"
+        />
+      </svg>
       {label && <span className={labelClass()}>{label}</span>}
       {!label && <span className="sr-only">Loading</span>}
     </div>
