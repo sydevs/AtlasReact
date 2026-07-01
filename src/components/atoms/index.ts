@@ -29,7 +29,7 @@ export { LoadingFallback, ErrorFallback } from './Fallbacks'
 export { Link } from './Link'
 export type { LinkProps } from './Link'
 
-export { Modal, ModalHeader, ModalBody, ModalFooter } from './Modal'
+export { Modal, ModalHeader, ModalBody, ModalFooter, ModalClose } from './Modal'
 export type { ModalProps } from './Modal'
 
 export { LanguageSelector } from './LanguageSelector'
