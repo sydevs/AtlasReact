@@ -6,7 +6,7 @@ import { bboxPolygon } from '@turf/bbox-polygon'
 import { useTranslation } from 'react-i18next'
 
 import api from '@/config/api'
-import { List, ListItem } from '@/components/molecules'
+import { List, RegionCard } from '@/components/molecules'
 import { SearchBar } from '@/components/molecules'
 import { Panel } from '@/components/atoms'
 import { useViewState } from '@/config/store'
@@ -48,7 +48,7 @@ function CountryPanel({ slug }: { slug: string }) {
         {country.children.map(
           (child) =>
             child.eventCount > 0 && (
-              <ListItem
+              <RegionCard
                 key={child.id}
                 count={child.eventCount}
                 href={child.path}

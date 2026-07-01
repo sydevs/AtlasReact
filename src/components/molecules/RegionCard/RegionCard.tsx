@@ -1,7 +1,7 @@
 import { Link } from '@/components/atoms/Link'
 import { RightArrowIcon } from '@/components/atoms/Icons'
 
-export interface ListItemProps {
+export interface RegionCardProps {
   label: string
   subtitle?: string | null
   count: number
@@ -9,7 +9,7 @@ export interface ListItemProps {
   children?: React.ReactNode
 }
 
-export function ListItem({ label, subtitle, count, href, children }: ListItemProps) {
+export function RegionCard({ label, subtitle, count, href, children }: RegionCardProps) {
   return (
     <Link
       className="px-6 block text-inherit transition-colors hover:bg-primary-2 dark:hover:bg-gray-3"

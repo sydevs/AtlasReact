@@ -9,7 +9,7 @@ import { useSearchParams } from 'react-router'
 import { useLocale } from '@/hooks/use-locale'
 import { Panel } from '@/components/atoms'
 import { useSearchState, useViewState } from '@/config/store'
-import { List, ListItem } from '@/components/molecules'
+import { List, RegionCard } from '@/components/molecules'
 import { DynamicEventsList } from '@/components/organisms'
 import api from '@/config/api'
 import { SearchBar } from '@/components/molecules'
@@ -71,7 +71,7 @@ function IndexPanel() {
           {countries
             .filter((country) => country.eventCount > 0)
             .map((country) => (
-              <ListItem
+              <RegionCard
                 key={country.id}
                 count={country.eventCount}
                 href={country.path}
@@ -83,7 +83,7 @@ function IndexPanel() {
                     countryCode={country.countryCode.toLocaleLowerCase()}
                   />
                 )}
-              </ListItem>
+              </RegionCard>
             ))}
         </List>
       )}

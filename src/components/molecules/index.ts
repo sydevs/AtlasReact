@@ -16,11 +16,11 @@ export type { DetailRowProps } from './DetailRow'
 export { List, ListHeader } from './List'
 export type { ListHeaderProps } from './List'
 
-export { ListItem } from './ListItem'
-export type { ListItemProps } from './ListItem'
+export { RegionCard } from './RegionCard'
+export type { RegionCardProps } from './RegionCard'
 
-export { EventItem } from './EventItem'
-export type { EventItemProps } from './EventItem'
+export { EventCard } from './EventCard'
+export type { EventCardProps } from './EventCard'
 
 export { EventTime } from './EventTime'
 export type { EventTimeProps } from './EventTime'

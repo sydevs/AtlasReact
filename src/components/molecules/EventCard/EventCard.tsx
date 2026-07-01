@@ -11,11 +11,11 @@ import { Link } from '@/components/atoms/Link'
 import { Chip } from '@/components/atoms/Chip'
 import { EventSlim } from '@/types'
 
-export interface EventItemProps {
+export interface EventCardProps {
   event: EventSlim
 }
 
-export function EventItem({ event }: EventItemProps) {
+export function EventCard({ event }: EventCardProps) {
   const { t } = useTranslation('events')
   const { locale, languageNames } = useLocale()
 
