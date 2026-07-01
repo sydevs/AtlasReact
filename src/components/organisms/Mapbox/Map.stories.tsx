@@ -6,7 +6,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { Mapbox } from './Map'
 
-export default { title: 'Organisms' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 // Map coverage is intentionally light: the map needs VITE_MAPBOX_ACCESSTOKEN and
 // fetches live GeoJSON from the Atlas API. Without a token we show a notice.

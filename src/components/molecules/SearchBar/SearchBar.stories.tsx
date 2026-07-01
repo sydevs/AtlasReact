@@ -6,7 +6,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { SearchBar } from './SearchBar'
 
-export default { title: 'Molecules' } satisfies StoryDefault
+export default { title: 'Organisms' } satisfies StoryDefault
 
 // SearchBar embeds a Mapbox geocoder (the MapSearch organism). With a `header`
 // set it renders the collapsed header state instead of the live geocoder, so

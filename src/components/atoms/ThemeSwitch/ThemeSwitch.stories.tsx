@@ -5,7 +5,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 import { ThemeSwitch } from './ThemeSwitch'
 
 export default {
-  title: 'Atoms',
+  title: 'Molecules',
 } satisfies StoryDefault
 
 /**

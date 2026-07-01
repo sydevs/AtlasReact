@@ -9,7 +9,7 @@ import { EventDetails } from './EventDetails'
 import { mockEvent } from '@/mocks/events'
 import { Event } from '@/types'
 
-export default { title: 'Organisms' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 // No upcoming occurrence → the host-contact card is highlighted and moves to the top.
 const contactOnlyEvent: Event = { ...mockEvent, schedule: null }
