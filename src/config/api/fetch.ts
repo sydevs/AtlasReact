@@ -16,17 +16,17 @@ import { GEOJSON_STALE_TIME, queryClient } from '@/config/query-client'
 import { centerOfBounds, distanceKm } from '@/lib/geo'
 import {
   ancestorIdsFromBreadcrumbs,
-  ancestorSlugsFromBreadcrumbs,
   boundsUnder,
   countUnder,
   eventPath,
   eventStubPath,
   eventsUnder,
   regionPath,
+  regionSlugChain,
 } from '@/lib/shape'
 import {
   ClientSchema,
-  EventSchema,
+  EventDocSchema,
   EventSlimSchema,
   GeojsonSchema,
   RegionDocSchema,
@@ -228,8 +228,9 @@ const getRegion = async (slug: string): Promise<Region> => {
   const [doc, geojson] = await Promise.all([getRegionDoc(slug), loadGeojson()])
   const events = indexFeatures(geojson)
 
-  const chain = ancestorSlugsFromBreadcrumbs(doc.breadcrumbs)
-  const path = regionPath(chain.length ? chain : [doc.slug])
+  // ancestors + self, tolerant of whether breadcrumbs include the region itself.
+  const chain = regionSlugChain(doc)
+  const path = regionPath(chain)
   const parentPath = chain.length > 1 ? regionPath(chain.slice(0, -1)) : undefined
 
   const isParent = doc.level === 'country' || doc.level === 'region'
@@ -309,10 +310,11 @@ const getEvent = async (id: number): Promise<Event> => {
     },
   })
 
-  return EventSchema.parse({
-    ...response.data,
-    path: eventPath(response.data.region, response.data.id),
-  })
+  // Parse first (validates the region), then derive the canonical path from the
+  // validated region — never dereference the raw response.
+  const event = EventDocSchema.parse(response.data)
+
+  return { ...event, path: eventPath(event.region, event.id) }
 }
 
 // ── Widget bootstrap (client config + atlas-wide defaults) ───────────────────────

@@ -17,6 +17,7 @@ import {
   SearchBar,
 } from '@/components/molecules'
 import { useViewState } from '@/config/store'
+import { isCanonicalPath } from '@/lib/shape'
 import { useLocale } from '@/hooks/use-locale'
 import { useMapbox } from '@/hooks/use-mapbox'
 
@@ -40,7 +41,7 @@ function RegionPanel({ slug }: { slug: string }) {
   useEffect(() => {
     if (region.level === 'center' && region.events.length < 2) {
       navigate(region.parentPath ?? '/search', { replace: true })
-    } else if (region.path && location.pathname !== region.path) {
+    } else if (region.path && !isCanonicalPath(location.pathname, region.path)) {
       navigate(region.path, { replace: true })
     }
   }, [region, location.pathname, navigate])

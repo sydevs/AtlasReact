@@ -28,15 +28,20 @@ export const ancestorSlugsFromBreadcrumbs = (
     .filter((slug): slug is string => typeof slug === 'string' && slug.length > 0)
 
 /**
- * Full nested path to a region reference, from its breadcrumb slug chain. Falls
- * back to the ref's own slug (a flat `/slug`) when the chain isn't populated —
- * still resolvable (terminal segment), just not yet canonical.
+ * The region's own slug chain (ancestors + self). Tolerant of whether the backend
+ * breadcrumbs include the region itself as the terminal crumb or not: the ref's
+ * own `slug` is appended unless it's already the last one. Falls back to a flat
+ * `[slug]` when the ancestor chain isn't populated — still resolvable (terminal
+ * segment), just not yet canonical.
  */
-export const regionRefPath = (ref: RegionRef): string => {
+export const regionSlugChain = (ref: RegionRef): string[] => {
   const chain = ancestorSlugsFromBreadcrumbs(ref.breadcrumbs)
 
-  return regionPath(chain.length ? chain : [ref.slug])
+  return chain.at(-1) === ref.slug ? chain : [...chain, ref.slug]
 }
+
+/** Full nested path to a region reference, from its slug chain. */
+export const regionRefPath = (ref: RegionRef): string => regionPath(regionSlugChain(ref))
 
 /** Canonical nested event path: its region's chain plus the numeric event id. */
 export const eventPath = (region: RegionRef, id: number): string => `${regionRefPath(region)}/${id}`
@@ -48,6 +53,24 @@ export const eventPath = (region: RegionRef, id: number): string => `${regionRef
  * server `webPath` in the geojson feed — sydevs/SahajCloud#530.)
  */
 export const eventStubPath = (id: number): string => `/${id}`
+
+/** Decode a URL segment, tolerating a malformed `%` escape (returns it unchanged). */
+const safeDecode = (segment: string): string => {
+  try {
+    return decodeURIComponent(segment)
+  } catch {
+    return segment
+  }
+}
+
+/**
+ * True when `pathname` already is the canonical `target`, ignoring percent-
+ * encoding. The address bar stores non-ASCII slugs encoded (`/li%C3%A8ge`) while
+ * our paths are built from decoded breadcrumb slugs (`/liège`), so a raw `!==`
+ * would loop the canonicalize redirect forever on accented slugs.
+ */
+export const isCanonicalPath = (pathname: string, target: string): boolean =>
+  safeDecode(pathname) === target
 
 /** What an incoming pathname resolves to, keyed off its terminal segment. */
 export type ResolvedPath = { kind: 'region'; slug: string } | { kind: 'event'; id: number } | null
@@ -65,5 +88,5 @@ export const resolvePath = (pathname: string): ResolvedPath => {
   if (!terminal) return null
   if (/^\d+$/.test(terminal)) return { kind: 'event', id: Number(terminal) }
 
-  return { kind: 'region', slug: decodeURIComponent(terminal) }
+  return { kind: 'region', slug: safeDecode(terminal) }
 }

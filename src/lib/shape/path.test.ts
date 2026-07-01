@@ -6,8 +6,10 @@ import {
   ancestorSlugsFromBreadcrumbs,
   eventPath,
   eventStubPath,
+  isCanonicalPath,
   regionPath,
   regionRefPath,
+  regionSlugChain,
   resolvePath,
 } from './path'
 
@@ -46,6 +48,38 @@ describe('regionRefPath', () => {
   it('falls back to a flat /slug when the chain is not populated', () => {
     expect(regionRefPath({ id: 3, slug: 'antwerpen', level: 'city' })).toBe('/antwerpen')
     expect(regionRefPath({ ...cityRef, breadcrumbs: [{ doc: 1 }] })).toBe('/antwerpen')
+  })
+})
+
+describe('regionSlugChain', () => {
+  it('uses the chain as-is when breadcrumbs already include the region itself', () => {
+    expect(regionSlugChain(cityRef)).toEqual(['belgium', 'flanders', 'antwerpen'])
+  })
+
+  it('appends the region slug when breadcrumbs are ancestors-only', () => {
+    expect(regionSlugChain({ ...cityRef, breadcrumbs: breadcrumbs.slice(0, -1) })).toEqual([
+      'belgium',
+      'flanders',
+      'antwerpen',
+    ])
+  })
+
+  it('falls back to just the region slug when the chain is unpopulated', () => {
+    expect(regionSlugChain({ id: 3, slug: 'antwerpen', level: 'city' })).toEqual(['antwerpen'])
+  })
+})
+
+describe('isCanonicalPath', () => {
+  it('treats a percent-encoded pathname as equal to its decoded target', () => {
+    expect(isCanonicalPath('/belgium/li%C3%A8ge', '/belgium/liège')).toBe(true)
+  })
+
+  it('is false when the paths genuinely differ (legacy flat URL)', () => {
+    expect(isCanonicalPath('/areas/antwerpen', '/belgium/flanders/antwerpen')).toBe(false)
+  })
+
+  it('does not throw on a malformed percent escape', () => {
+    expect(isCanonicalPath('/foo%', '/foo%')).toBe(true)
   })
 })
 
@@ -88,5 +122,9 @@ describe('resolvePath', () => {
 
   it('decodes an encoded terminal slug', () => {
     expect(resolvePath('/belgium/li%C3%A8ge')).toEqual({ kind: 'region', slug: 'liège' })
+  })
+
+  it('does not throw on a malformed percent escape', () => {
+    expect(resolvePath('/foo%')).toEqual({ kind: 'region', slug: 'foo%' })
   })
 })

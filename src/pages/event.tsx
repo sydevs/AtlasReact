@@ -8,7 +8,7 @@ import { EventMetadata, Panel } from '@/components/molecules'
 import { useViewState } from '@/config/store'
 import { UpArrowIcon } from '@/components/atoms'
 import { useMapbox } from '@/hooks/use-mapbox'
-import { isOnline, regionRefPath } from '@/lib/shape'
+import { isCanonicalPath, isOnline, regionRefPath } from '@/lib/shape'
 
 const EventViewContent = lazy(() =>
   import('@/components/organisms/EventView').then((m) => ({ default: m.EventView })),
@@ -30,7 +30,7 @@ function EventPanel({ eventId }: { eventId: number }) {
 
   // Canonicalize to the event's nested breadcrumb path (also subsumes /events/:id).
   useEffect(() => {
-    if (event.path && location.pathname !== event.path) {
+    if (event.path && !isCanonicalPath(location.pathname, event.path)) {
       navigate(event.path, { replace: true })
     }
   }, [event.path, location.pathname, navigate])
