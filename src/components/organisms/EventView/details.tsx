@@ -51,13 +51,12 @@ export function EventContactDetails({
   return (
     <DetailRow
       content={t('details.tel', { phoneNumber: event.contactPhone })}
+      highlighted={isHighlighted}
       isExternal={true}
       title={isHighlighted ? t('details.contact_for_timing') : t('details.contact_host')}
       url={`tel: ${event.contactPhone}`}
     >
-      <div
-        className={`flex-center h-full ${isHighlighted ? 'text-background bg-primary-4' : 'text-primary'}`}
-      >
+      <div className={`flex-center h-full ${isHighlighted ? '' : 'text-primary'}`}>
         <CallIcon size={32} />
       </div>
     </DetailRow>
