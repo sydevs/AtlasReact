@@ -20,13 +20,12 @@ export const BreadcrumbSchema = z.object({
   doc: z
     .union([
       z.number(),
-      z
-        .object({
-          id: z.number(),
-          slug: z.string().nullish(),
-          level: RegionLevelSchema.nullish(),
-        })
-        .passthrough(),
+      // Only id/slug/level are consumed; don't retain arbitrary CMS fields.
+      z.object({
+        id: z.number(),
+        slug: z.string().nullish(),
+        level: RegionLevelSchema.nullish(),
+      }),
     ])
     .nullish(),
   label: z.string().nullish(),
