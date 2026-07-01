@@ -30,5 +30,8 @@ export type { LinkProps } from './Link'
 export { Modal, ModalHeader, ModalBody, ModalFooter, ModalClose } from './Modal'
 export type { ModalProps } from './Modal'
 
+export { Select, SelectItem } from './Select'
+export type { SelectProps, SelectItemProps } from './Select'
+
 export { Spinner } from './Spinner'
 export type { SpinnerProps } from './Spinner'

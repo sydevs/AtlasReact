@@ -9,7 +9,7 @@ Companion doc: [`STORYBOOK.md`](STORYBOOK.md) — how we preview these component
 [Ladle](https://ladle.dev/) using the shared story helpers (in parity with WeMeditateWeb).
 
 > **Scope guardrail.** NextUI v2 (`@nextui-org/react`) stays our primitive layer.
-> This system adds *structure and previews* around the existing components — it is
+> This system adds _structure and previews_ around the existing components — it is
 > not a rebuild of NextUI-backed components and not a visual redesign.
 
 ## Atomic taxonomy
@@ -36,12 +36,12 @@ src/lib/        # pure domain utilities (no React/i18n) — e.g. events.ts (isSo
 
 ### What goes where
 
-| Tier          | Definition                                                                                                   | May use                                                        | Must **not** do                                          |
-| ------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------- | -------------------------------------------------------- |
-| **Atom**      | Smallest building block. Renders from its props alone.                                                        | NextUI primitives, Tailwind, icons, `useTheme`/`useLocale`/i18n labels | Fetch data, read app stores, navigate                    |
-| **Molecule**  | A small, reusable composition of atoms forming one UI unit.                                                   | Everything an atom may, plus light store reads / a `useNavigate` link | Own a data-fetch lifecycle, drive the map                |
-| **Organism**  | A complex, often data-connected section of the UI.                                                            | React Query, zustand stores, the Mapbox instance, `react-hook-form` | —                                                        |
-| **Template**  | Page-level layout scaffold that arranges organisms/molecules and owns no business logic. Lives in `src/layouts/`. | Composition + responsive layout                               | Fetch data, own entity state                             |
+| Tier         | Definition                                                                                                        | May use                                                                | Must **not** do                           |
+| ------------ | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------- |
+| **Atom**     | Smallest building block. Renders from its props alone.                                                            | NextUI primitives, Tailwind, icons, `useTheme`/`useLocale`/i18n labels | Fetch data, read app stores, navigate     |
+| **Molecule** | A small, reusable composition of atoms forming one UI unit.                                                       | Everything an atom may, plus light store reads / a `useNavigate` link  | Own a data-fetch lifecycle, drive the map |
+| **Organism** | A complex, often data-connected section of the UI.                                                                | React Query, zustand stores, the Mapbox instance, `react-hook-form`    | —                                         |
+| **Template** | Page-level layout scaffold that arranges organisms/molecules and owns no business logic. Lives in `src/layouts/`. | Composition + responsive layout                                        | Fetch data, own entity state              |
 
 Atomic design is a guide, not a straitjacket: a molecule reading a single store
 slice or rendering a router `<Link>` is fine. The dividing line that matters most
@@ -51,41 +51,41 @@ here is **organisms own data/network/map lifecycles; atoms and molecules don't.*
 
 **Atoms** (`src/components/atoms/`)
 
-| Folder                | Exports                              | Notes                                         |
-| --------------------- | ------------------------------------ | --------------------------------------------- |
-| `Icons/` (sub-module) | `*Icon`, `Logo`, `SocialIcon`, …     | SVG primitives; grouped module with its own `index.tsx` |
-| `Chip/`               | `Chip`                               | Pure presentational atom; wraps NextUI `Chip` with app defaults (`tv()`) |
-| `Dropdown/`           | `Dropdown`, `DropdownItem`           | Floating-UI popover: portaled, flip/shift, NextUI tokens (`tv()`) |
-| `LanguageSelector/`   | `LanguageSelector`                   | Locale switcher (`useLocale`)                 |
-| `Panel/`              | `Panel`                              | Suspense + ErrorBoundary layout shell         |
-| `Lightbox/`           | `Lightbox`                           | Lazy YARL fullscreen overlay (own code-split chunk; barrel re-exports the `React.lazy` shim) |
-| `Fallbacks/`          | `LoadingFallback`, `ErrorFallback`   | Suspense / error-boundary fallbacks           |
-| `ThemeSwitch/`        | `ThemeSwitch`                        | Light/dark toggle (`useTheme`)                |
+| Folder                | Exports                                              | Notes                                                                                                                                   |
+| --------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `Icons/` (sub-module) | `*Icon`, `Logo`, `SocialIcon`, …                     | SVG primitives; grouped module with its own `index.tsx`                                                                                 |
+| `Checkbox/`           | `Checkbox`                                           | Radix toggle with `appearance: 'switch' \| 'checkbox'` (default `switch`); the checkbox appearance backs the registration consent field |
+| `Chip/`               | `Chip`                                               | Pure presentational atom; brand-token styling (`tv()`)                                                                                  |
+| `Dropdown/`           | `Dropdown`, `DropdownItem`                           | Floating-UI popover: portaled, flip/shift (`tv()`)                                                                                      |
+| `Modal/`              | `Modal`, `ModalHeader`/`Body`/`Footer`, `ModalClose` | Radix dialog; optional `trigger` (uncontrolled) or `isOpen`/`onOpenChange` (controlled) — the single dialog abstraction                 |
+| `Select/`             | `Select`, `SelectItem`                               | Radix select on brand tokens (used by the registration form)                                                                            |
 
 **Molecules** (`src/components/molecules/`)
 
-| Folder              | Exports                                        | Notes                                  |
-| ------------------- | ---------------------------------------------- | -------------------------------------- |
-| `Navbar/`           | `Navbar`                                        | Logo + theme switch + language         |
-| `SearchBar/`        | `SearchBar`                                     | Search input; reads `useSearchState`   |
-| `List/`             | `List`, `ListHeader`                            | Scrollable `<ul>` container + its back-link/title header sub-component |
-| `ListItem/`         | `ListItem`                                      | Generic labelled list row              |
-| `EventItem/`        | `EventItem`                                     | Per-event summary card in a list       |
-| `EventTime/`        | `EventTime`                                     | Formatted event time range (timezone chip is a private composition) |
-| `EventShare/`       | `ShareButton`, `ShareContent`                   | Share button + the shared URL/social block (modal is private) |
-| `EventImages/`      | `EventImages`                                   | Swiper image carousel                  |
-| `EventSoon/`        | `EventSoonChip`                                 | "Starting soon" chip (the `isSoon` predicate lives in `src/lib`) |
-| `EventMetadata/`    | `EventMetadata`                                 | Schema.org / OG `<head>` tags (Helmet); renders no visible UI, so it has **no story** |
+| Folder           | Exports                            | Notes                                                                                         |
+| ---------------- | ---------------------------------- | --------------------------------------------------------------------------------------------- |
+| `Navbar/`        | `Navbar`                           | Logo + theme switch + language (`LanguageSelector` + `ThemeSwitch` are private files here)    |
+| `SearchBar/`     | `SearchBar`                        | Search input; reads `useSearchState`                                                          |
+| `Panel/`         | `Panel`                            | Suspense + ErrorBoundary page-content shell (moved up from atoms)                             |
+| `Fallbacks/`     | `LoadingFallback`, `ErrorFallback` | Suspense / error-boundary fallbacks (moved up from atoms; compose `Alert`/`Spinner`)          |
+| `DetailRow/`     | `DetailRow`                        | Generic labelled icon row (icon slot + title + content + optional link)                       |
+| `List/`          | `List`, `ListHeader`               | Scrollable `<ul>` container + its back-link/title header sub-component                        |
+| `RegionCard/`    | `RegionCard`                       | Navigable region row (country → region → area drill-down)                                     |
+| `EventCard/`     | `EventCard`                        | Per-event summary card in a list                                                              |
+| `EventTime/`     | `EventTime`                        | Formatted event time range (timezone chip is a private composition)                           |
+| `ShareContent/`  | `ShareContent`                     | Copyable URL + social-links block (reused by the share dialog and the registration thank-you) |
+| `ImageCarousel/` | `ImageCarousel`                    | Generic Swiper carousel (`slides`); folds in the lazy YARL lightbox (own chunk)               |
+| `EventSoon/`     | `EventSoonChip`                    | "Starting soon" chip (the `isSoon` predicate lives in `src/lib`)                              |
+| `EventMetadata/` | `EventMetadata`                    | Schema.org / OG `<head>` tags (Helmet); renders no visible UI, so it has **no story**         |
 
 **Organisms** (`src/components/organisms/`)
 
-| Folder                   | Exports                                                       | Notes                              |
-| ------------------------ | ------------------------------------------------------------- | ---------------------------------- |
-| `Mapbox/` (sub-module)   | `Mapbox`, `MapSearch` (+ `layers.ts`, `themes.ts` helpers)    | The Mapbox surface; see [`.claude/rules/mapbox.md`](.claude/rules/mapbox.md) |
-| `EventsList/`            | `EventsList`, `DynamicEventsList`                              | List + distance-sorted fetch       |
-| `EventPanel/`            | `EventPanel`                                                   | Full event detail panel            |
-| `EventDetails/`          | `EventDetails`                                                 | Consolidated detail-cards block (the three cards + row primitive are private) |
-| `EventRegistration/`     | `RegistrationButton`                                          | Registration CTA (modal + form fields are private) |
+| Folder                 | Exports                                                    | Notes                                                                                                                                                                                              |
+| ---------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Mapbox/` (sub-module) | `Mapbox`, `MapSearch` (+ `layers.ts`, `themes.ts` helpers) | The Mapbox surface; see [`.claude/rules/mapbox.md`](.claude/rules/mapbox.md)                                                                                                                       |
+| `EventsList/`          | `EventsList`, `DynamicEventsList`                          | List + distance-sorted fetch                                                                                                                                                                       |
+| `EventView/`           | `EventView`                                                | Full event detail panel; owns the detail-card ordering + register/share triggers (the three detail cards + register/share actions live private in the folder). Lazy-loaded — **not** in the barrel |
+| `RegistrationForm/`    | `RegistrationForm`                                         | Form-only, config-driven registration (field chrome is private); `EventView` wraps it in a `Modal`. **Not** in the barrel                                                                          |
 
 **Templates** — `src/layouts/{default,map}.tsx` (`DefaultLayout`, `MapLayout`).
 Layouts stay in `src/layouts/` (route-level scaffolds owned by `App.tsx`); they
@@ -111,9 +111,11 @@ are the template tier and are not re-exported through the component barrels.
   2. **`Icons/`** — an icon-set module (keeps a single `export *`).
   3. **`Mapbox/`** — sub-module exposing `Mapbox` + `MapSearch` (layers/themes stay internal).
   4. **`EventsList/`** — the `DynamicEventsList` container + `EventsList` presentational pair.
-  5. **`EventShare/`** — `ShareButton` + the shared `ShareContent` block (reused by
-     the registration "thank you" screen); the modal stays private.
-  6. **`Fallbacks/`** — `LoadingFallback` + `ErrorFallback` (pending split into two folders).
+  5. **`Modal/`** — `Modal` + the `ModalHeader`/`ModalBody`/`ModalFooter` layout
+     parts + `ModalClose`. The single dialog abstraction: a `Modal` takes an
+     optional `trigger` (uncontrolled) or `isOpen`/`onOpenChange` (controlled), and
+     both the share and registration dialogs compose it.
+  6. **`Fallbacks/`** (molecules) — `LoadingFallback` + `ErrorFallback` (pending split into two folders).
   7. **`List/`** — `List` + its `ListHeader` sub-component (back link + title).
 - **App code (pages, layouts, stories) imports from the tier barrel**:
   `import { Chip } from '@/components/atoms'`. The barrel is the public surface;
@@ -130,12 +132,12 @@ are the template tier and are not re-exported through the component barrels.
   `src/lib/` (the `isSoon` predicate that `EventsList` sorts with). A
   **single-use** composition is inlined into its one parent (the timezone chip
   lives privately in `EventTime`); a **multi-use** composition becomes a thin
-  exported molecule (`EventSoonChip`, used by `EventItem` and `EventPanel`).
+  exported molecule (`EventSoonChip`, used by `EventCard` and `EventView`).
 - **Code-split exception:** a heavy organism that is lazy-loaded (the event detail
-  page lazy-imports `EventPanel`) is intentionally left _out_ of its tier barrel,
+  page lazy-imports `EventView`) is intentionally left _out_ of its tier barrel,
   so a barrel import doesn't pull it back into the static graph. Such components —
-  and any reached only through them (`EventDetails`, `EventRegistration`) — are
-  imported by direct folder path. See `organisms/index.ts`.
+  and any reached only through them (`RegistrationForm`) — are imported by direct
+  folder path. See `organisms/index.ts`.
 - Component folders and files are **PascalCase** (`Chip/Chip.tsx`); non-component
   files stay kebab-case (hooks `use-x.ts` exporting `useX`, config, types, pages,
   layouts); zustand stores `useXState` (see [`.claude/rules/code-style.md`](.claude/rules/code-style.md)).
