@@ -5,7 +5,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 import { Panel } from './Panel'
 
 export default {
-  title: 'Atoms',
+  title: 'Molecules',
 } satisfies StoryDefault
 
 const Placeholder = ({ label }: { label: string }) => (

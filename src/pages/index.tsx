@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { useSearchParams } from 'react-router'
 
 import { useLocale } from '@/hooks/use-locale'
-import { Panel } from '@/components/atoms'
+import { Panel } from '@/components/molecules'
 import { useSearchState, useViewState } from '@/config/store'
 import { List, RegionCard } from '@/components/molecules'
 import { DynamicEventsList } from '@/components/organisms'

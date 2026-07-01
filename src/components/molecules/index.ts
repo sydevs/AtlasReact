@@ -8,6 +8,14 @@ export type { NavbarProps } from './Navbar'
 export { SearchBar } from './SearchBar'
 export type { SearchBarProps } from './SearchBar'
 
+// Panel — the page-content container (Suspense + ErrorBoundary) and the
+// Loading/Error fallbacks it renders. Moved up from atoms: they compose Alert/
+// Spinner and own the loading/error UX, so they sit above the atom tier.
+export { Panel } from './Panel'
+export type { PanelProps } from './Panel'
+
+export { LoadingFallback, ErrorFallback } from './Fallbacks'
+
 // DetailRow — a generic labelled icon row; the event detail cards build on it.
 export { DetailRow } from './DetailRow'
 export type { DetailRowProps } from './DetailRow'

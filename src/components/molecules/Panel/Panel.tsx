@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { ErrorFallback, LoadingFallback } from '@/components/atoms/Fallbacks'
+import { ErrorFallback, LoadingFallback } from '@/components/molecules/Fallbacks'
 import { useBreakpoint } from '@/config/responsive'
 
 export type PanelProps = {

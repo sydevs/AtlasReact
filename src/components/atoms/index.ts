@@ -24,16 +24,11 @@ export type { ChipProps } from './Chip'
 export { Dropdown, DropdownItem } from './Dropdown'
 export type { DropdownProps, DropdownItemProps } from './Dropdown'
 
-export { LoadingFallback, ErrorFallback } from './Fallbacks'
-
 export { Link } from './Link'
 export type { LinkProps } from './Link'
 
 export { Modal, ModalHeader, ModalBody, ModalFooter, ModalClose } from './Modal'
 export type { ModalProps } from './Modal'
-
-export { Panel } from './Panel'
-export type { PanelProps } from './Panel'
 
 export { Spinner } from './Spinner'
 export type { SpinnerProps } from './Spinner'

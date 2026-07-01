@@ -5,7 +5,7 @@ import { lazy } from 'react'
 
 import api from '@/config/api'
 import { Link } from '@/components/atoms/Link'
-import { Panel } from '@/components/atoms'
+import { Panel } from '@/components/molecules'
 import { useViewState } from '@/config/store'
 import { EventMetadata } from '@/components/molecules'
 import { UpArrowIcon } from '@/components/atoms'

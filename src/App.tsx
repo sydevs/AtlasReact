@@ -15,7 +15,7 @@ import { clientQuery } from './config/api'
 import { BrandTheme } from './config/theme/BrandTheme'
 
 import { regionPath } from '@/lib/shape'
-import { ErrorFallback, LoadingFallback } from '@/components/atoms'
+import { ErrorFallback, LoadingFallback } from '@/components/molecules'
 import EventPage from '@/pages/event'
 import VenuePage from '@/pages/venue'
 import AreaPage from '@/pages/area'

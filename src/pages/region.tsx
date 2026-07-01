@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 import { SearchBar } from '@/components/molecules'
 import { List, RegionCard } from '@/components/molecules'
-import { Panel } from '@/components/atoms'
+import { Panel } from '@/components/molecules'
 import { useViewState } from '@/config/store'
 import api from '@/config/api'
 import { useMapbox } from '@/hooks/use-mapbox'
