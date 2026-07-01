@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { StoryWrapper, StorySection } from '../../ladle'
 
-import { Modal, ModalHeader, ModalBody, ModalFooter } from './Modal'
+import { Modal, ModalHeader, ModalBody, ModalFooter, ModalClose } from './Modal'
 
 import { Button } from '@/components/atoms/Button'
 
@@ -18,7 +18,10 @@ export const Default: Story = () => {
 
   return (
     <StoryWrapper>
-      <StorySection description="Opens a centred dialog with a blurred backdrop." title="Dialog">
+      <StorySection
+        description="Controlled by an external open state (isOpen/onOpenChange)."
+        title="Controlled dialog"
+      >
         <Button color="primary" onClick={() => setOpen(true)}>
           Open modal
         </Button>
@@ -36,6 +39,30 @@ export const Default: Story = () => {
             <Button color="primary" variant="flat" onClick={() => setOpen(false)}>
               Done
             </Button>
+          </ModalFooter>
+        </Modal>
+      </StorySection>
+
+      <StorySection
+        description="Uncontrolled: a `trigger` opens it and <ModalClose> closes it."
+        title="Trigger dialog"
+      >
+        <Modal trigger={<Button color="primary">Invite a friend</Button>}>
+          <ModalHeader>Invite a friend</ModalHeader>
+          <ModalBody>
+            <p className="text-sm text-gray-11">
+              Share this event with someone who might enjoy a free meditation class.
+            </p>
+          </ModalBody>
+          <ModalFooter>
+            <ModalClose>
+              <Button variant="flat">Cancel</Button>
+            </ModalClose>
+            <ModalClose>
+              <Button color="primary" variant="flat">
+                Done
+              </Button>
+            </ModalClose>
           </ModalFooter>
         </Modal>
       </StorySection>

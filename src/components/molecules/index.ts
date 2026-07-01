@@ -8,25 +8,38 @@ export type { NavbarProps } from './Navbar'
 export { SearchBar } from './SearchBar'
 export type { SearchBarProps } from './SearchBar'
 
+// Panel — the page-content container (Suspense + ErrorBoundary) and the
+// Loading/Error fallbacks it renders. Moved up from atoms: they compose Alert/
+// Spinner and own the loading/error UX, so they sit above the atom tier.
+export { Panel } from './Panel'
+export type { PanelProps } from './Panel'
+
+export { LoadingFallback, ErrorFallback } from './Fallbacks'
+
+// DetailRow — a generic labelled icon row; the event detail cards build on it.
+export { DetailRow } from './DetailRow'
+export type { DetailRowProps } from './DetailRow'
+
 // List also surfaces its ListHeader sub-component (back link + title).
 export { List, ListHeader } from './List'
 export type { ListHeaderProps } from './List'
 
-export { ListItem } from './ListItem'
-export type { ListItemProps } from './ListItem'
+export { RegionCard } from './RegionCard'
+export type { RegionCardProps } from './RegionCard'
 
-export { EventItem } from './EventItem'
-export type { EventItemProps } from './EventItem'
+export { EventCard } from './EventCard'
+export type { EventCardProps } from './EventCard'
 
 export { EventTime } from './EventTime'
 export type { EventTimeProps } from './EventTime'
 
-// EventShare exposes its trigger button and the shared share-content block
-// (reused by the registration "thank you" screen); the modal is private.
-export { ShareButton, ShareContent } from './EventShare'
-export type { ShareButtonProps, ShareContentProps } from './EventShare'
+// ShareContent — the copyable URL + social-links block, reused by the event
+// share dialog (composed by EventView) and the registration "thank you" screen.
+export { ShareContent } from './ShareContent'
+export type { ShareContentProps } from './ShareContent'
 
-export { EventImages } from './EventImages'
+export { ImageCarousel } from './ImageCarousel'
+export type { Slide } from './ImageCarousel'
 
 export { EventSoonChip } from './EventSoon'
 export type { EventSoonChipProps } from './EventSoon'

@@ -30,8 +30,11 @@ const modal = tv({
 })
 
 export type ModalProps = VariantProps<typeof modal> & {
-  isOpen: boolean
-  onOpenChange: (open: boolean) => void
+  /** Controlled open state. Omit (with a `trigger`) for an uncontrolled dialog. */
+  isOpen?: boolean
+  onOpenChange?: (open: boolean) => void
+  /** Element that opens the dialog, rendered via `Dialog.Trigger asChild`. */
+  trigger?: ReactNode
   /** Accessible dialog label when no <ModalHeader> is rendered. */
   ariaLabel?: string
   children: ReactNode
@@ -41,6 +44,7 @@ export type ModalProps = VariantProps<typeof modal> & {
 export function Modal({
   isOpen,
   onOpenChange,
+  trigger,
   placement,
   backdrop,
   ariaLabel,
@@ -49,8 +53,11 @@ export function Modal({
 }: ModalProps) {
   const slots = modal({ placement, backdrop })
 
+  // Passing `open`/`onOpenChange` = controlled (unchanged from before); omitting
+  // both makes Radix uncontrolled, so a `trigger` opens/closes it on its own.
   return (
     <Dialog.Root open={isOpen} onOpenChange={onOpenChange}>
+      {trigger && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
       <Dialog.Portal container={overlayContainer()}>
         <Dialog.Overlay className={slots.overlay()} />
         <div className={slots.wrapper()}>
@@ -80,4 +87,10 @@ export function ModalFooter({ children, className }: { children: ReactNode; clas
   return (
     <div className={`flex justify-end gap-2 px-6 pt-2 pb-5 ${className ?? ''}`}>{children}</div>
   )
+}
+
+// Wraps a close control (e.g. a Button) so activating it dismisses the dialog —
+// the way to close from inside an uncontrolled, trigger-opened Modal.
+export function ModalClose({ children }: { children: ReactNode }) {
+  return <Dialog.Close asChild>{children}</Dialog.Close>
 }

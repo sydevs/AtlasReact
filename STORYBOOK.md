@@ -17,17 +17,17 @@ pnpm ladle:build  # static build (also the CI gate — broken stories fail it)
 
 ## How it's wired
 
-| Piece                    | What it does |
-| ------------------------ | ------------ |
-| `.ladle/config.mjs`      | Story glob (`src/**/*.stories.{ts,tsx}`), title, port, and `viteConfig`. |
-| `.ladle/vite.config.ts`  | Resolves the `@/` alias to `src/` (Ladle relocates Vite's root). |
-| `.ladle/i18n.ts`         | Self-contained i18next with the en/fr namespaces bundled (the app loads them over HTTP; Ladle has no backend). |
-| `.ladle/components.tsx`  | The **global decorator**: NextUI + React Query + Helmet (via `src/providers.tsx`) + a `MemoryRouter` + `<I18nextProvider>`. |
+| Piece                   | What it does                                                                                                                |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `.ladle/config.mjs`     | Story glob (`src/**/*.stories.{ts,tsx}`), title, port, and `viteConfig`.                                                    |
+| `.ladle/vite.config.ts` | Resolves the `@/` alias to `src/` (Ladle relocates Vite's root).                                                            |
+| `.ladle/i18n.ts`        | Self-contained i18next with the en/fr namespaces bundled (the app loads them over HTTP; Ladle has no backend).              |
+| `.ladle/components.tsx` | The **global decorator**: NextUI + React Query + Helmet (via `src/providers.tsx`) + a `MemoryRouter` + `<I18nextProvider>`. |
 
 **Theme / canvas.** Matching WeMeditateWeb, the story canvas is **always light**
 so the `StorySection` helper's `gray-900` titles stay legible. Show a component
 on a dark surface with `<StorySection theme="dark">` — it applies the `dark` class
-to its own subtree so NextUI components there render in dark mode. (We do *not*
+to its own subtree so NextUI components there render in dark mode. (We do _not_
 map Ladle's theme toggle to the whole canvas.)
 
 ## Story utility components
@@ -72,11 +72,16 @@ below `sm`, normal table at `sm`+.
 
 ```tsx
 import {
-  StoryGrid, StoryGridHeader, StoryGridHeaderRow, StoryGridHeaderCell,
-  StoryGridBody, StoryGridRow, StoryGridCell,
+  StoryGrid,
+  StoryGridHeader,
+  StoryGridHeaderRow,
+  StoryGridHeaderCell,
+  StoryGridBody,
+  StoryGridRow,
+  StoryGridCell,
 } from '../../ladle'
 
-<StoryGrid>
+;<StoryGrid>
   <StoryGridHeader>
     <StoryGridHeaderRow>
       <StoryGridHeaderCell />
@@ -102,7 +107,7 @@ reference.
 ```tsx
 import type { Story, StoryDefault } from '@ladle/react'
 
-import { Chip } from './Chip'                  // subject: co-located
+import { Chip } from './Chip' // subject: co-located
 import { StoryWrapper, StorySection } from '../../ladle' // helpers
 // mock data from @/mocks/events ; icons from @/components/atoms/Icons
 
@@ -112,7 +117,9 @@ export default { title: 'Atoms' } satisfies StoryDefault
 export const Default: Story = () => (
   <StoryWrapper>
     <StorySection title="Variants">{/* ... */}</StorySection>
-    <StorySection title="Examples" inContext={true}>{/* ... */}</StorySection>
+    <StorySection title="Examples" inContext={true}>
+      {/* ... */}
+    </StorySection>
     <div />
   </StoryWrapper>
 )
@@ -122,10 +129,15 @@ Default.storyName = 'Chip'
 
 Conventions:
 
-- **Title** = the bare tier — `'Atoms'`, `'Molecules'`, or `'Organisms'`, with no
-  second-level subcategory; `Default.storyName` = the component name. The Ladle
-  sidebar therefore has exactly **three** top-level groups, each listing its
-  components by `storyName` (no nested category folders).
+- **Title** = the component's tier — `'Atoms'`, `'Molecules'`, or `'Organisms'` —
+  optionally with a **single** `Tier / Group` subcategory that clusters a closely
+  related family under its tier (e.g. `'Molecules / List'` groups `List`,
+  `RegionCard`, and `EventCard`). Keep the tier as the first segment so the story
+  still sorts under its folder tier, and don't nest deeper than one group.
+  `Default.storyName` = the component name and **must be unique within a title**:
+  Ladle keys each story by `title` + `storyName`, so same-title files (all the
+  `'Molecules'` stories, or the three under `'Molecules / List'`) need distinct
+  `storyName`s.
 - **Imports**: subject co-located (`./Chip`); helpers `../../ladle`; cross-component
   by alias (`@/components/atoms/Icons`); fixtures from `@/mocks/events`.
 - **Trailing `<div />`** removes the last section's divider.

@@ -6,8 +6,8 @@ import { bboxPolygon } from '@turf/bbox-polygon'
 import { useTranslation } from 'react-i18next'
 
 import { SearchBar } from '@/components/molecules'
-import { List, ListItem } from '@/components/molecules'
-import { Panel } from '@/components/atoms'
+import { List, RegionCard } from '@/components/molecules'
+import { Panel } from '@/components/molecules'
 import { useViewState } from '@/config/store'
 import api from '@/config/api'
 import { useMapbox } from '@/hooks/use-mapbox'
@@ -44,7 +44,7 @@ function RegionPanel({ slug }: { slug: string }) {
         {region.areas
           .filter((area) => area.eventCount > 0)
           .map((area) => (
-            <ListItem
+            <RegionCard
               key={area.id}
               count={area.eventCount}
               href={area.path}

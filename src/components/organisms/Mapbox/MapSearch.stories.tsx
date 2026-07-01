@@ -6,7 +6,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { MapSearch } from './MapSearch'
 
-export default { title: 'Molecules' } satisfies StoryDefault
+export default { title: 'Organisms' } satisfies StoryDefault
 
 // The geocoder needs VITE_MAPBOX_ACCESSTOKEN to return results; without it we
 // show a notice. MapProvider supplies the (empty) map context it reads.

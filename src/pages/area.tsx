@@ -6,7 +6,7 @@ import { bboxPolygon } from '@turf/bbox-polygon'
 import { useTranslation } from 'react-i18next'
 
 import { useViewState } from '@/config/store'
-import { Panel } from '@/components/atoms'
+import { Panel } from '@/components/molecules'
 import { SearchBar } from '@/components/molecules'
 import { EventsList } from '@/components/organisms'
 import api from '@/config/api'

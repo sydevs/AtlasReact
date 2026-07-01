@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 
 import { SearchBar } from '@/components/molecules'
 import { EventsList } from '@/components/organisms'
-import { Panel } from '@/components/atoms'
+import { Panel } from '@/components/molecules'
 import api from '@/config/api'
 import { useMapbox } from '@/hooks/use-mapbox'
 

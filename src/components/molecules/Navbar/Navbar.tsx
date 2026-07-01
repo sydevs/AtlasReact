@@ -1,9 +1,10 @@
 import { type ComponentProps } from 'react'
 
+import { ThemeSwitch } from './ThemeSwitch'
+import { LanguageSelector } from './LanguageSelector'
+
 import { siteConfig } from '@/config/site'
 import { Link } from '@/components/atoms/Link'
-import { ThemeSwitch } from '@/components/atoms/ThemeSwitch'
-import { LanguageSelector } from '@/components/atoms/LanguageSelector'
 import { Logo } from '@/components/atoms/Icons'
 
 // Custom top bar built from primitives (no NextUI Navbar suite). Brand + desktop

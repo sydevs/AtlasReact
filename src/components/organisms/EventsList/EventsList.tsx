@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { DateTime } from 'luxon'
 
-import { EventItem } from '@/components/molecules/EventItem'
+import { EventCard } from '@/components/molecules/EventCard'
 import { List } from '@/components/molecules/List'
 import { isSoon } from '@/lib'
 import { EventSlim } from '@/types'
@@ -56,7 +56,7 @@ export function EventsList({ events }: EventsListProps) {
   return (
     <List>
       {events.map((event, _index, _arr) => (
-        <EventItem key={event.id} event={event} />
+        <EventCard key={event.id} event={event} />
       ))}
     </List>
   )

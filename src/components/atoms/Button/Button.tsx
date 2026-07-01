@@ -1,4 +1,4 @@
-import { type ComponentProps, type ReactNode } from 'react'
+import { type ComponentProps, type ReactNode, type Ref, forwardRef } from 'react'
 import { tv, type VariantProps } from 'tailwind-variants'
 
 import { Spinner } from '@/components/atoms/Spinner/Spinner'
@@ -141,54 +141,63 @@ export type ButtonProps =
 
 const SPINNER_SIZE = { sm: 'sm', md: 'sm', lg: 'md' } as const
 
-export function Button({
-  color,
-  variant,
-  size,
-  isIconOnly,
-  isLoading = false,
-  startContent,
-  endContent,
-  children,
-  className,
-  ...props
-}: ButtonProps) {
-  const classes = button({ color, variant, size, isIconOnly, className })
-  const content = (
-    <>
-      {isLoading ? <Spinner color="current" size={SPINNER_SIZE[size ?? 'md']} /> : startContent}
-      {children}
-      {!isLoading && endContent}
-    </>
-  )
+// forwardRef so Radix `asChild` slots (Dialog.Trigger / Dialog.Close, i.e. the
+// Modal `trigger` and ModalClose) can attach their ref to the underlying element.
+export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
+  function Button(
+    {
+      color,
+      variant,
+      size,
+      isIconOnly,
+      isLoading = false,
+      startContent,
+      endContent,
+      children,
+      className,
+      ...props
+    },
+    ref,
+  ) {
+    const classes = button({ color, variant, size, isIconOnly, className })
+    const content = (
+      <>
+        {isLoading ? <Spinner color="current" size={SPINNER_SIZE[size ?? 'md']} /> : startContent}
+        {children}
+        {!isLoading && endContent}
+      </>
+    )
 
-  if ('href' in props && props.href != null) {
-    const { href, target, rel, ...anchorProps } = props as { href: string } & ComponentProps<'a'>
+    if ('href' in props && props.href != null) {
+      const { href, target, rel, ...anchorProps } = props as { href: string } & ComponentProps<'a'>
+
+      return (
+        <a
+          ref={ref as Ref<HTMLAnchorElement>}
+          className={classes}
+          href={href}
+          rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
+          target={target}
+          {...anchorProps}
+        >
+          {content}
+        </a>
+      )
+    }
+
+    const { disabled, type = 'button', ...buttonProps } = props as ComponentProps<'button'>
 
     return (
-      <a
+      <button
+        ref={ref as Ref<HTMLButtonElement>}
+        aria-busy={isLoading || undefined}
         className={classes}
-        href={href}
-        rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
-        target={target}
-        {...anchorProps}
+        disabled={disabled || isLoading}
+        type={type}
+        {...buttonProps}
       >
         {content}
-      </a>
+      </button>
     )
-  }
-
-  const { disabled, type = 'button', ...buttonProps } = props as ComponentProps<'button'>
-
-  return (
-    <button
-      aria-busy={isLoading || undefined}
-      className={classes}
-      disabled={disabled || isLoading}
-      type={type}
-      {...buttonProps}
-    >
-      {content}
-    </button>
-  )
-}
+  },
+)
