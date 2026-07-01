@@ -1,4 +1,5 @@
 import createDOMPurify from 'dompurify'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { EventContactDetails, EventTimingDetails, EventLocationDetails } from './details'
@@ -112,12 +113,17 @@ export function EventView({ event }: EventViewProps) {
   const next = nextOccurrence(event)
   const descriptionHtml = lexicalToHtml(event.description)
 
-  // The image alt doubles as the lightbox caption (today's behavior).
-  const slides = event.images.map((image) => ({
-    src: image.url,
-    alt: image.alt ?? undefined,
-    caption: image.alt ?? undefined,
-  }))
+  // The image alt doubles as the lightbox caption (today's behavior). Memoized so
+  // a stable slides array is threaded to the carousel/lightbox across re-renders.
+  const slides = useMemo(
+    () =>
+      event.images.map((image) => ({
+        src: image.url,
+        alt: image.alt ?? undefined,
+        caption: image.alt ?? undefined,
+      })),
+    [event.images],
+  )
 
   return (
     <>

@@ -4,20 +4,23 @@ import { tv } from 'tailwind-variants'
 import { AnchorIcon } from '@/components/atoms/Icons'
 import { Link } from '@/components/atoms/Link'
 
-// The leading square icon slot. `highlighted` fills it with the brand tint (used
-// for the emphasised "contact for timing" card that leads the stack when an event
-// has no upcoming date); otherwise it's a bordered, transparent box.
+// The leading square slot owns its own tone, so callers just drop a bare icon in:
+// - `icon` (default): a brand-tinted icon (location, host contact).
+// - `highlight`: fill the slot and invert the icon — the emphasised host-contact
+//   card that leads the stack when an event has no upcoming date.
+// - `plain`: a self-styled slot (e.g. the timing date badge), left untinted.
 const detailRow = tv({
   slots: {
     iconBox: 'text-center border border-primary-4 rounded-sm w-11 h-11',
   },
   variants: {
-    highlighted: {
-      true: { iconBox: 'bg-primary-4 text-background' },
-      false: {},
+    tone: {
+      icon: { iconBox: 'text-primary' },
+      highlight: { iconBox: 'bg-primary-4 text-background' },
+      plain: {},
     },
   },
-  defaultVariants: { highlighted: false },
+  defaultVariants: { tone: 'icon' },
 })
 
 export type DetailRowProps = {
@@ -29,30 +32,31 @@ export type DetailRowProps = {
   url?: string
   /** Render the title as an external link (adds the anchor icon + new-tab rel). */
   isExternal?: boolean
-  /** Fill the leading icon slot with the brand tint to emphasise the row. */
-  highlighted?: boolean
+  /** Leading-slot appearance: a tinted icon (default), the highlighted fill, or an untinted slot. */
+  tone?: 'icon' | 'highlight' | 'plain'
   /** Visual for the leading square slot (an icon, a date badge, etc.). */
   children: ReactNode
 }
 
 /**
- * A generic labelled row: a leading square icon slot, then a title (optionally an
+ * A generic labelled row: a leading square slot, then a title (optionally an
  * internal/external link) over secondary content. Presentational only — callers
  * pass the icon/badge and copy. Used to build the event detail cards.
  *
  * Variants:
  * - `url` + `isExternal` — turn the title into an internal or external link.
- * - `highlighted` — fill the icon slot with the brand tint for an emphasised row.
+ * - `tone` — the leading slot's appearance. The slot owns the icon tint, so
+ *   callers pass a bare icon rather than styling it themselves.
  */
 export function DetailRow({
   isExternal = false,
-  highlighted = false,
+  tone = 'icon',
   title,
   content,
   url,
   children,
 }: DetailRowProps) {
-  const { iconBox } = detailRow({ highlighted })
+  const { iconBox } = detailRow({ tone })
 
   return (
     <div className="flex-center-y gap-3">

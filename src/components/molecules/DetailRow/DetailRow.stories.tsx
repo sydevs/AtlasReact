@@ -8,14 +8,20 @@ import { CallIcon, LocationIcon } from '@/components/atoms/Icons'
 
 export default { title: 'Molecules' } satisfies StoryDefault
 
-// A leading-slot icon (the common case).
+// A bare leading-slot icon — the slot's `tone` tints it, so callers don't.
 const Icon = () => (
-  <div className="flex-center h-full text-primary">
+  <div className="flex-center h-full">
     <LocationIcon />
   </div>
 )
 
-// A leading-slot date badge (as the event timing card uses).
+const Phone = () => (
+  <div className="flex-center h-full">
+    <CallIcon size={32} />
+  </div>
+)
+
+// A leading-slot date badge (as the event timing card uses) — a self-styled slot.
 const DateBadge = () => (
   <>
     <div className="bg-primary-4 py-0.5 text-xs font-semibold">MAR</div>
@@ -28,8 +34,9 @@ const DateBadge = () => (
 /**
  * DetailRow — a generic labelled row: a leading square slot (icon or badge) then a
  * title over secondary content. The title is plain text, or an internal/external
- * link when `url`/`isExternal` are set; `highlighted` fills the slot with the
- * brand tint. The event detail cards (timing, location, host contact) build on it.
+ * link via `url`/`isExternal`. The slot's `tone` owns its tint — `icon` (default),
+ * `highlight` (filled), or `plain` (self-styled, e.g. a date badge). The event
+ * detail cards (timing, location, host contact) build on it.
  */
 export const Default: Story = () => (
   <StoryWrapper>
@@ -57,61 +64,37 @@ export const Default: Story = () => (
             title="Contact the host"
             url="tel:+442012345678"
           >
-            <div className="flex-center h-full text-primary">
-              <CallIcon size={32} />
-            </div>
+            <Phone />
           </DetailRow>
         </StorySection>
       </div>
     </StorySection>
 
     <StorySection
-      description="`highlighted` fills the leading slot with the brand tint — used for the emphasised host-contact card that leads the stack when an event has no upcoming date."
-      title="Highlighted"
+      description="`tone` sets the leading slot's appearance: a tinted icon (default), the brand-filled highlight (the emphasised contact card), or an untinted self-styled slot."
+      title="Tone"
     >
       <div className="flex max-w-md flex-col gap-6">
-        <StorySection title="Default slot" variant="subsection">
-          <DetailRow
-            isExternal
-            content="Call for the next class time"
-            title="Contact for timing"
-            url="tel:+442012345678"
-          >
-            <div className="flex-center h-full text-primary">
-              <CallIcon size={32} />
-            </div>
-          </DetailRow>
-        </StorySection>
-
-        <StorySection title="highlighted" variant="subsection">
-          <DetailRow
-            highlighted
-            isExternal
-            content="Call for the next class time"
-            title="Contact for timing"
-            url="tel:+442012345678"
-          >
-            <div className="flex-center h-full">
-              <CallIcon size={32} />
-            </div>
-          </DetailRow>
-        </StorySection>
-      </div>
-    </StorySection>
-
-    <StorySection
-      description="The leading slot is a free-form `children` — an icon, or a date badge like the timing card."
-      title="Icon slot"
-    >
-      <div className="flex max-w-md flex-col gap-6">
-        <StorySection title="Icon" variant="subsection">
+        <StorySection title="icon (default)" variant="subsection">
           <DetailRow content="123 Peace Street, London" title="Meditation Centre">
             <Icon />
           </DetailRow>
         </StorySection>
 
-        <StorySection title="Date badge" variant="subsection">
-          <DetailRow content="Every Tuesday, 7:00 PM" title="Weekly class">
+        <StorySection title="highlight" variant="subsection">
+          <DetailRow
+            isExternal
+            content="Call for the next class time"
+            title="Contact for timing"
+            tone="highlight"
+            url="tel:+442012345678"
+          >
+            <Phone />
+          </DetailRow>
+        </StorySection>
+
+        <StorySection title="plain (self-styled slot, e.g. a date badge)" variant="subsection">
+          <DetailRow content="Every Tuesday, 7:00 PM" title="Weekly class" tone="plain">
             <DateBadge />
           </DetailRow>
         </StorySection>
@@ -120,7 +103,7 @@ export const Default: Story = () => (
 
     <StorySection inContext={true} title="Examples">
       <div className="flex max-w-md flex-col gap-4">
-        <DetailRow content="Every Tuesday, 7:00 PM" title="Weekly class">
+        <DetailRow content="Every Tuesday, 7:00 PM" title="Weekly class" tone="plain">
           <DateBadge />
         </DetailRow>
         <DetailRow
@@ -137,9 +120,7 @@ export const Default: Story = () => (
           title="Contact the host"
           url="tel:+442012345678"
         >
-          <div className="flex-center h-full text-primary">
-            <CallIcon size={32} />
-          </div>
+          <Phone />
         </DetailRow>
       </div>
     </StorySection>
