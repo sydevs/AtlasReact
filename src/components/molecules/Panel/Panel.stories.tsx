@@ -1,4 +1,7 @@
 import type { Story, StoryDefault } from '@ladle/react'
+import type { ComponentType } from 'react'
+
+import { lazy } from 'react'
 
 import { StoryWrapper, StorySection } from '../../ladle'
 
@@ -18,10 +21,20 @@ const Placeholder = ({ label }: { label: string }) => (
   </div>
 )
 
+// A child whose lazy import never resolves, so the Panel's Suspense fallback
+// (LoadingFallback) stays on screen for the story.
+const NeverResolves = lazy(() => new Promise<{ default: ComponentType }>(() => {}))
+
+// A child that throws during render, so the Panel's ErrorBoundary renders
+// ErrorFallback with the thrown message.
+const AlwaysThrows = () => {
+  throw new Error('Could not load this view.')
+}
+
 /**
  * Panel — the side container that holds list/detail views beside the map. It
- * provides the scrollable surface plus the Suspense + error boundary, and its
- * desktop width is configurable.
+ * provides the scrollable surface plus a Suspense boundary (LoadingFallback) and
+ * an ErrorBoundary (ErrorFallback), and its desktop width is configurable.
  */
 export const Default: Story = () => (
   <StoryWrapper>
@@ -32,6 +45,23 @@ export const Default: Story = () => (
       <Panel>
         <Placeholder label="Default panel" />
       </Panel>
+    </StorySection>
+
+    <StorySection
+      description="The panel's own fallbacks, shown by a child that suspends or throws."
+      title="States"
+    >
+      <StorySection title="Loading — Suspense → LoadingFallback" variant="subsection">
+        <Panel width={320}>
+          <NeverResolves />
+        </Panel>
+      </StorySection>
+
+      <StorySection title="Error — ErrorBoundary → ErrorFallback" variant="subsection">
+        <Panel width={320}>
+          <AlwaysThrows />
+        </Panel>
+      </StorySection>
     </StorySection>
 
     <StorySection description="Desktop width is set via the width prop." title="Widths">
