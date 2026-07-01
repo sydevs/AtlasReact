@@ -1,19 +1,29 @@
-import { Suspense, useState } from 'react'
+import { Suspense, lazy, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Autoplay, Pagination, A11y, EffectFade } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import { imagesToSlides } from './slides'
+/** One carousel slide; also shown full-screen in the lightbox. */
+export type Slide = {
+  /** Full-resolution image URL. */
+  src: string
+  /** Accessible alt text. */
+  alt?: string
+  /** Caption shown under the image in the lightbox. */
+  caption?: string
+}
 
-import { Lightbox } from '@/components/atoms/Lightbox'
-import { EventImage } from '@/types'
+// The lightbox wraps yet-another-react-lightbox and its CSS, so it is imported
+// lazily (its own chunk) — never statically — keeping YARL out of the initial
+// bundle until a photo is opened. Render it inside a <Suspense> boundary.
+const Lightbox = lazy(() => import('./lightbox').then((m) => ({ default: m.Lightbox })))
 
-export function EventImages({ images }: { images: EventImage[] }) {
+export function ImageCarousel({ slides }: { slides: Slide[] }) {
   const { t } = useTranslation('events')
   const [open, setOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
 
-  if (images.length === 0) return null
+  if (slides.length === 0) return null
 
   const openAt = (index: number) => {
     setActiveIndex(index)
@@ -27,7 +37,7 @@ export function EventImages({ images }: { images: EventImage[] }) {
           delay: 4000,
           disableOnInteraction: false,
         }}
-        enabled={images.length > 1}
+        enabled={slides.length > 1}
         grabCursor={true}
         loop={true}
         modules={[Autoplay, Pagination, A11y, EffectFade]}
@@ -37,18 +47,18 @@ export function EventImages({ images }: { images: EventImage[] }) {
           dynamicMainBullets: 5,
         }}
       >
-        {images.map((image, index) => (
-          <SwiperSlide key={image.url} className="p-6 pb-10">
+        {slides.map((slide, index) => (
+          <SwiperSlide key={slide.src} className="p-6 pb-10">
             <button
-              aria-label={image.alt ?? t('details.view_photo')}
+              aria-label={slide.alt ?? t('details.view_photo')}
               className="block w-full cursor-zoom-in"
               type="button"
               onClick={() => openAt(index)}
             >
               <img
-                alt={image.alt ?? undefined}
+                alt={slide.alt ?? undefined}
                 className="w-full rounded-lg aspect-[4/3] object-cover"
-                src={image.url}
+                src={slide.src}
               />
             </button>
           </SwiperSlide>
@@ -59,12 +69,7 @@ export function EventImages({ images }: { images: EventImage[] }) {
           CSS) is fetched on first open rather than with the carousel. */}
       {open && (
         <Suspense fallback={null}>
-          <Lightbox
-            isOpen
-            index={activeIndex}
-            slides={imagesToSlides(images)}
-            onClose={() => setOpen(false)}
-          />
+          <Lightbox isOpen index={activeIndex} slides={slides} onClose={() => setOpen(false)} />
         </Suspense>
       )}
     </>

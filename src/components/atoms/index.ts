@@ -34,9 +34,6 @@ export type { ModalProps } from './Modal'
 
 export { LanguageSelector } from './LanguageSelector'
 
-export { Lightbox } from './Lightbox'
-export type { LightboxProps, LightboxSlide } from './Lightbox'
-
 export { Panel } from './Panel'
 export type { PanelProps } from './Panel'
 

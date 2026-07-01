@@ -5,7 +5,7 @@ import { EventContactDetails, EventTimingDetails, EventLocationDetails } from '.
 
 import { EventSoonChip } from '@/components/molecules/EventSoon'
 import { RegistrationButton } from '@/components/organisms/EventRegistration'
-import { EventImages } from '@/components/molecules/EventImages'
+import { ImageCarousel } from '@/components/molecules/ImageCarousel'
 import { ShareButton } from '@/components/molecules/EventShare'
 import { useLocale } from '@/hooks/use-locale'
 import { isOnline, lexicalToHtml, nextOccurrence } from '@/lib/shape'
@@ -27,10 +27,17 @@ export function EventView({ event }: EventViewProps) {
   const next = nextOccurrence(event)
   const descriptionHtml = lexicalToHtml(event.description)
 
+  // The image alt doubles as the lightbox caption (today's behavior).
+  const slides = event.images.map((image) => ({
+    src: image.url,
+    alt: image.alt ?? undefined,
+    caption: image.alt ?? undefined,
+  }))
+
   return (
     <>
       <div className="flex w-full justify-center items-center">
-        <EventImages images={event.images} />
+        <ImageCarousel slides={slides} />
       </div>
       <div className="flex flex-col gap-3 px-8 pt-3 pb-12">
         <h1

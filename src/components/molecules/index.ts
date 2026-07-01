@@ -30,7 +30,8 @@ export type { EventTimeProps } from './EventTime'
 export { ShareButton, ShareContent } from './EventShare'
 export type { ShareButtonProps, ShareContentProps } from './EventShare'
 
-export { EventImages } from './EventImages'
+export { ImageCarousel } from './ImageCarousel'
+export type { Slide } from './ImageCarousel'
 
 export { EventSoonChip } from './EventSoon'
 export type { EventSoonChipProps } from './EventSoon'
