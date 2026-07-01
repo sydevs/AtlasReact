@@ -224,8 +224,8 @@ const getCountries = async (): Promise<RegionListItem[]> => {
 // (child list); `city`/`center` populate `events`. Path + parentPath come from
 // the breadcrumb slug chain; bounds/center are derived from the feed.
 const getRegion = async (slug: string): Promise<Region> => {
-  const doc = await getRegionDoc(slug)
-  const geojson = await loadGeojson()
+  // The region read and the feed are independent — load them in parallel.
+  const [doc, geojson] = await Promise.all([getRegionDoc(slug), loadGeojson()])
   const events = indexFeatures(geojson)
 
   const chain = ancestorSlugsFromBreadcrumbs(doc.breadcrumbs)
