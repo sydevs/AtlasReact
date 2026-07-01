@@ -1,8 +1,5 @@
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
-import { Modal, ModalHeader, ModalBody } from '@/components/atoms/Modal'
-import { Button, type ButtonProps } from '@/components/atoms/Button'
 import { Link } from '@/components/atoms/Link'
 import {
   FacebookIcon,
@@ -11,44 +8,6 @@ import {
   TwitterIcon,
   FlipboardIcon,
 } from '@/components/atoms/Icons'
-import { Event } from '@/types'
-
-export type ShareButtonProps = {
-  event: Event
-} & ButtonProps
-
-export function ShareButton({ event, ...buttonProps }: ShareButtonProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const { t } = useTranslation('events')
-
-  return (
-    <>
-      <Button color="primary" variant="faded" onClick={() => setIsOpen(true)} {...buttonProps}>
-        <span className="font-semibold tracking-wider">{t('details.share')}</span>
-      </Button>
-      <ShareModal event={event} isOpen={isOpen} onOpenChange={setIsOpen} />
-    </>
-  )
-}
-
-type ShareModalProps = {
-  event: Event
-  isOpen: boolean
-  onOpenChange: (isOpen: boolean) => void
-}
-
-function ShareModal({ event, isOpen, onOpenChange }: ShareModalProps) {
-  const { t } = useTranslation('events')
-
-  return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-      <ModalHeader className="flex flex-col gap-1">{t('registration.invite_friend')}</ModalHeader>
-      <ModalBody className="pb-6">
-        <ShareContent label={event.title} url={event.webUrl ?? ''} />
-      </ModalBody>
-    </Modal>
-  )
-}
 
 // Click-to-copy URL field — the custom replacement for NextUI's Snippet (which
 // was rendered with hideSymbol, i.e. select-to-copy). Copies on click with a
@@ -86,6 +45,11 @@ export type ShareContentProps = {
   url: string
 }
 
+/**
+ * The shareable block: a click-to-copy URL field plus a row of social share
+ * links. Generic (label + url) — used both in the event share dialog (composed
+ * by EventView) and the registration "thank you" screen.
+ */
 export function ShareContent({ label, url }: ShareContentProps) {
   label = encodeURI(label)
   url = encodeURI(url)

@@ -25,10 +25,10 @@ export type { EventItemProps } from './EventItem'
 export { EventTime } from './EventTime'
 export type { EventTimeProps } from './EventTime'
 
-// EventShare exposes its trigger button and the shared share-content block
-// (reused by the registration "thank you" screen); the modal is private.
-export { ShareButton, ShareContent } from './EventShare'
-export type { ShareButtonProps, ShareContentProps } from './EventShare'
+// ShareContent — the copyable URL + social-links block, reused by the event
+// share dialog (composed by EventView) and the registration "thank you" screen.
+export { ShareContent } from './ShareContent'
+export type { ShareContentProps } from './ShareContent'
 
 export { ImageCarousel } from './ImageCarousel'
 export type { Slide } from './ImageCarousel'

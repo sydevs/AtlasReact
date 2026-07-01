@@ -6,8 +6,8 @@ import { EventContactDetails, EventTimingDetails, EventLocationDetails } from '.
 import { EventSoonChip } from '@/components/molecules/EventSoon'
 import { RegistrationForm } from '@/components/organisms/RegistrationForm'
 import { ImageCarousel } from '@/components/molecules/ImageCarousel'
-import { ShareButton } from '@/components/molecules/EventShare'
-import { Modal } from '@/components/atoms/Modal'
+import { ShareContent } from '@/components/molecules/ShareContent'
+import { Modal, ModalHeader, ModalBody } from '@/components/atoms/Modal'
 import { Button } from '@/components/atoms/Button'
 import { AnchorIcon } from '@/components/atoms/Icons'
 import { useLocale } from '@/hooks/use-locale'
@@ -74,6 +74,27 @@ function RegisterAction({ event, className }: { event: Event; className?: string
         questions={enabledQuestions(event)}
         upcomingDates={upcomingDates}
       />
+    </Modal>
+  )
+}
+
+// The share call-to-action: a trigger that opens the "invite a friend" dialog
+// wrapping the shared ShareContent block.
+function ShareAction({ event, className }: { event: Event; className?: string }) {
+  const { t } = useTranslation('events')
+
+  return (
+    <Modal
+      trigger={
+        <Button className={className} color="primary" variant="faded">
+          <span className="font-semibold tracking-wider">{t('details.share')}</span>
+        </Button>
+      }
+    >
+      <ModalHeader className="flex flex-col gap-1">{t('registration.invite_friend')}</ModalHeader>
+      <ModalBody className="pb-6">
+        <ShareContent label={event.title} url={event.webUrl ?? ''} />
+      </ModalBody>
     </Modal>
   )
 }
@@ -147,7 +168,7 @@ export function EventView({ event }: EventViewProps) {
         )}
         <div className="flex-center-x gap-1">
           <RegisterAction className="flex-grow-[3]" event={event} />
-          <ShareButton className="flex-grow" event={event} />
+          <ShareAction className="flex-grow" event={event} />
         </div>
         {/* The host-contact card's position and emphasis depend on whether the
             event has an upcoming occurrence, so EventView owns the ordering:

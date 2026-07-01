@@ -18,7 +18,7 @@ import { ModalHeader, ModalBody, ModalFooter, ModalClose } from '@/components/at
 import { Alert } from '@/components/atoms/Alert'
 import { Checkbox } from '@/components/atoms/Checkbox'
 import { Select, SelectItem } from '@/components/atoms/Select'
-import { ShareContent } from '@/components/molecules/EventShare'
+import { ShareContent } from '@/components/molecules/ShareContent'
 import api from '@/config/api'
 import { Registration, RegistrationSchema } from '@/types'
 import { useLocale } from '@/hooks/use-locale'
