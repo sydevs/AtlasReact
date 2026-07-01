@@ -36,11 +36,12 @@ const PALETTES: Record<string, PaletteRoles> = {
 //
 // Theme: Ladle's own light/dark/auto toggle drives the whole canvas. We map its
 // active theme onto the root `light`/`dark` class — through the same applyTheme
-// seam useTheme uses — that Tailwind (darkMode: 'class'), NextUI, and useTheme
-// all read, so flipping Ladle's toggle re-themes every story, including the
-// Mapbox basemap (which follows useTheme). `auto` resolves against the OS
-// preference and tracks it live. The canvas background is left to Ladle's own
-// theme so it matches the surrounding chrome.
+// seam useTheme uses — that Tailwind (darkMode: 'class') and useTheme all read,
+// so flipping Ladle's toggle re-themes every story, including the Mapbox basemap
+// (which follows useTheme). `auto` resolves against the OS preference and tracks
+// it live. The wrapper carries `bg-background` so the whole preview area follows
+// the app theme — including when a story's own <ThemeSwitch> toggles it, not just
+// Ladle's toolbar (Ladle's own chrome stays on Ladle's theme, which is expected).
 //
 // Brand palette: a fixed switcher applies a tenant preset to the story wrapper
 // via the production applyPalette, re-applying when the palette or the resolved
@@ -82,7 +83,7 @@ export const Provider: GlobalProvider = ({ children }) => {
     <I18nextProvider i18n={storyI18n}>
       <MemoryRouter>
         <Providers>
-          <main ref={wrapperRef} className="min-h-screen p-6 text-foreground">
+          <main ref={wrapperRef} className="min-h-screen p-6 text-foreground bg-background">
             <select
               aria-label="Brand palette"
               style={{ position: 'fixed', top: 8, right: 8, zIndex: 50 }}

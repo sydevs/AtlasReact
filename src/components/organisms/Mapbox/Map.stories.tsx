@@ -6,7 +6,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { Mapbox } from './Map'
 
-export default { title: 'Organisms' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 // Map coverage is intentionally light: the map needs VITE_MAPBOX_ACCESSTOKEN and
 // fetches live GeoJSON from the Atlas API. Without a token we show a notice.
@@ -27,7 +27,7 @@ export const Default: Story = () => (
           </MapProvider>
         </div>
       ) : (
-        <div className="max-w-md rounded border border-default-200 p-4 text-sm text-default-600">
+        <div className="max-w-md rounded border border-gray-6 p-4 text-sm text-gray-11">
           Set <code>VITE_MAPBOX_ACCESSTOKEN</code> in <code>.env.local</code> to preview the live
           map.
         </div>

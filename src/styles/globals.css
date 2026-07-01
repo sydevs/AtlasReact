@@ -4,9 +4,87 @@
 @import 'swiper/css/a11y';
 @import 'swiper/css/pagination';
 
+/* Radix Colors — the neutral (gray) and status (danger=red) ramps. Each file
+   scopes its scale to `:root, .light` (light) / `.dark` (dark), which matches the
+   theme root's light/dark class, so the steps cascade into the widget wrapper.
+   The brand ramps (primary/secondary) are NOT from here — they're the runtime
+   engine's vars (src/config/theme/palette.ts), defaulted below. */
+@import '@radix-ui/colors/gray.css';
+@import '@radix-ui/colors/gray-dark.css';
+@import '@radix-ui/colors/red.css';
+@import '@radix-ui/colors/red-dark.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Built-in brand defaults (the SY teal/secondary orange) as a 12-step ramp per
+   role, in the same channel format the runtime engine writes. A tenant palette
+   overrides these by setting the vars inline on the theme root (inline beats
+   these selectors); when none is set, these stand. Generated to match
+   palette.ts buildScale() — keep in sync if the ladder changes. */
+:root,
+.light,
+.light-theme {
+  --primary-contrast: 0 0% 0%;
+  --primary-1: 176 23% 99%;
+  --primary-2: 176 23% 97%;
+  --primary-3: 176 23% 94%;
+  --primary-4: 176 23% 90%;
+  --primary-5: 176 23% 85%;
+  --primary-6: 176 23% 79%;
+  --primary-7: 176 23% 72%;
+  --primary-8: 176 23% 63%;
+  --primary-9: 176 23% 60%;
+  --primary-10: 176 23% 54%;
+  --primary-11: 176 23% 40%;
+  --primary-12: 176 23% 24%;
+  --secondary-contrast: 0 0% 0%;
+  --secondary-1: 12 60% 99%;
+  --secondary-2: 12 60% 97%;
+  --secondary-3: 12 60% 94%;
+  --secondary-4: 12 60% 90%;
+  --secondary-5: 12 60% 85%;
+  --secondary-6: 12 60% 79%;
+  --secondary-7: 12 60% 72%;
+  --secondary-8: 12 60% 63%;
+  --secondary-9: 12 60% 68%;
+  --secondary-10: 12 60% 62%;
+  --secondary-11: 12 60% 40%;
+  --secondary-12: 12 60% 24%;
+  --background: 0 0% 100%;
+}
+
+.dark,
+.dark-theme {
+  --primary-contrast: 0 0% 0%;
+  --primary-1: 176 23% 9%;
+  --primary-2: 176 23% 12%;
+  --primary-3: 176 23% 16%;
+  --primary-4: 176 23% 20%;
+  --primary-5: 176 23% 24%;
+  --primary-6: 176 23% 28%;
+  --primary-7: 176 23% 34%;
+  --primary-8: 176 23% 42%;
+  --primary-9: 176 23% 60%;
+  --primary-10: 176 23% 66%;
+  --primary-11: 176 23% 72%;
+  --primary-12: 176 23% 90%;
+  --secondary-contrast: 0 0% 0%;
+  --secondary-1: 12 60% 9%;
+  --secondary-2: 12 60% 12%;
+  --secondary-3: 12 60% 16%;
+  --secondary-4: 12 60% 20%;
+  --secondary-5: 12 60% 24%;
+  --secondary-6: 12 60% 28%;
+  --secondary-7: 12 60% 34%;
+  --secondary-8: 12 60% 42%;
+  --secondary-9: 12 60% 68%;
+  --secondary-10: 12 60% 74%;
+  --secondary-11: 12 60% 72%;
+  --secondary-12: 12 60% 90%;
+  --background: 0 0% 7%;
+}
 
 .swiper-pagination-bullet {
   @apply shadow-md;
@@ -16,8 +94,8 @@
    up the widget's brand primary rather than :root's default theme value. Inactive
    bullets use the theme foreground so they stay visible in both light and dark. */
 .swiper {
-  --swiper-theme-color: hsl(var(--nextui-primary));
-  --swiper-pagination-bullet-inactive-color: hsl(var(--nextui-foreground));
+  --swiper-theme-color: hsl(var(--primary-9));
+  --swiper-pagination-bullet-inactive-color: var(--gray-12);
   --swiper-pagination-bullet-inactive-opacity: 0.4;
 }
 

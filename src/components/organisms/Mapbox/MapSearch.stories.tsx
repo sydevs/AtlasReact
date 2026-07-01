@@ -6,7 +6,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { MapSearch } from './MapSearch'
 
-export default { title: 'Organisms' } satisfies StoryDefault
+export default { title: 'Molecules' } satisfies StoryDefault
 
 // The geocoder needs VITE_MAPBOX_ACCESSTOKEN to return results; without it we
 // show a notice. MapProvider supplies the (empty) map context it reads.
@@ -27,7 +27,7 @@ export const Default: Story = () => (
           </div>
         </MapProvider>
       ) : (
-        <div className="max-w-md rounded border border-default-200 p-4 text-sm text-default-600">
+        <div className="max-w-md rounded border border-gray-6 p-4 text-sm text-gray-11">
           Set <code>VITE_MAPBOX_ACCESSTOKEN</code> in <code>.env.local</code> to preview the
           geocoder.
         </div>

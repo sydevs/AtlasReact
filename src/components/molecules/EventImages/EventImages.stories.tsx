@@ -27,7 +27,7 @@ export const Default: Story = () => (
     </StorySection>
 
     <StorySection description="No images renders nothing (empty below)." title="Empty">
-      <div className="max-w-md text-sm text-default-500">
+      <div className="max-w-md text-sm text-gray-11">
         <EventImages images={[]} />
         (no carousel)
       </div>
@@ -38,7 +38,7 @@ export const Default: Story = () => (
         <EventImages images={mockEventImages} />
         <div className="px-6 pb-6">
           <div className="text-lg font-semibold">Saturday Morning Meditation</div>
-          <div className="text-sm text-default-600">Town Hall, Cambridge</div>
+          <div className="text-sm text-gray-11">Town Hall, Cambridge</div>
         </div>
       </div>
     </StorySection>

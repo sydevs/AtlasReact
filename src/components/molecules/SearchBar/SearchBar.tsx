@@ -1,9 +1,9 @@
 import React, { useCallback, useRef } from 'react'
 import { GeocodeFeature } from '@mapbox/search-js-core'
 import { useNavigate } from 'react-router'
-import { Switch } from '@nextui-org/react'
 import { useTranslation } from 'react-i18next'
 
+import { Switch } from '@/components/atoms/Switch'
 import { useSearchState } from '@/config/store'
 import { MapSearch } from '@/components/organisms/Mapbox/MapSearch'
 import { UpArrowIcon, DownArrowIcon, SearchIcon, CloseIcon } from '@/components/atoms/Icons'
@@ -63,7 +63,7 @@ export function SearchBar({
   return (
     <div
       ref={searchBarRef}
-      className="sticky top-0 z-10 p-4 pb-3 bg-background border-b-1.5 border-default-300 flex-center-x flex-col"
+      className="sticky top-0 z-10 p-4 pb-3 bg-background border-b-2 border-gray-7 flex-center-x flex-col"
     >
       <div className="flex-center-y gap-2 w-full">
         {backHref && <UpArrowIcon size={32} onClick={() => navigate(backHref)} />}
@@ -92,18 +92,18 @@ export function SearchBar({
       </div>
       {filterable && (
         <Switch
+          checked={onlineOnly}
           className="mt-2 hover:opacity-hover"
           color="primary"
-          isSelected={onlineOnly}
           size="sm"
-          onValueChange={setOnlineOnly}
+          onCheckedChange={setOnlineOnly}
         >
-          <div className="font-semibold text-content1-foreground">
+          <div className="font-semibold text-foreground">
             {t(onlineOnly ? 'showing_online_classes' : 'show_online_classes')}
           </div>
         </Switch>
       )}
-      {!isMd && eventCount && (
+      {!isMd && !!eventCount && (
         <div className="mt-2 text-center text-sm font-semibold uppercase leading-snug">
           <button className="hover:underline cursor-pointer" type="button" onClick={executeScroll}>
             {eventCount} {t('events')}

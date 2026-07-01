@@ -1,0 +1,194 @@
+import { type ComponentProps, type ReactNode } from 'react'
+import { tv, type VariantProps } from 'tailwind-variants'
+
+import { Spinner } from '@/components/atoms/Spinner/Spinner'
+
+// A styled button replacing NextUI's Button, built on the Radix-semantic 12-step
+// tokens. `variant` picks the surface treatment (solid / soft / faded / outline /
+// ghost) and `color` selects the ramp; the color×variant matrix is spelled out as
+// literal classes so Tailwind's scanner can see every utility.
+const button = tv({
+  base: [
+    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded font-medium',
+    'transition-[background,color,opacity] outline-none',
+    'focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1',
+    'disabled:opacity-disabled disabled:pointer-events-none',
+  ],
+  variants: {
+    color: { primary: '', secondary: '', default: '', danger: '' },
+    variant: {
+      solid: '',
+      flat: '',
+      faded: 'border',
+      bordered: 'border bg-transparent',
+      light: 'bg-transparent',
+    },
+    size: {
+      sm: 'h-8 px-3 text-sm',
+      md: 'h-10 px-4 text-sm',
+      lg: 'h-12 px-6 text-base',
+    },
+    isIconOnly: { true: 'px-0 aspect-square', false: '' },
+  },
+  compoundVariants: [
+    // solid
+    {
+      color: 'primary',
+      variant: 'solid',
+      class: 'bg-primary-9 text-primary-foreground hover:bg-primary-10',
+    },
+    {
+      color: 'secondary',
+      variant: 'solid',
+      class: 'bg-secondary-9 text-secondary-foreground hover:bg-secondary-10',
+    },
+    { color: 'default', variant: 'solid', class: 'bg-gray-9 text-white hover:bg-gray-10' },
+    {
+      color: 'danger',
+      variant: 'solid',
+      class: 'bg-danger-9 text-danger-foreground hover:bg-danger-10',
+    },
+    // flat (soft tint)
+    {
+      color: 'primary',
+      variant: 'flat',
+      class: 'bg-primary-3 text-primary-11 hover:bg-primary-4 active:bg-primary-5',
+    },
+    {
+      color: 'secondary',
+      variant: 'flat',
+      class: 'bg-secondary-3 text-secondary-11 hover:bg-secondary-4 active:bg-secondary-5',
+    },
+    {
+      color: 'default',
+      variant: 'flat',
+      class: 'bg-gray-3 text-gray-12 hover:bg-gray-4 active:bg-gray-5',
+    },
+    {
+      color: 'danger',
+      variant: 'flat',
+      class: 'bg-danger-3 text-danger-11 hover:bg-danger-4 active:bg-danger-5',
+    },
+    // faded (subtle bg + border)
+    {
+      color: 'primary',
+      variant: 'faded',
+      class: 'bg-primary-2 border-primary-6 text-primary-11 hover:bg-primary-3',
+    },
+    {
+      color: 'secondary',
+      variant: 'faded',
+      class: 'bg-secondary-2 border-secondary-6 text-secondary-11 hover:bg-secondary-3',
+    },
+    {
+      color: 'default',
+      variant: 'faded',
+      class: 'bg-gray-2 border-gray-6 text-gray-12 hover:bg-gray-3',
+    },
+    {
+      color: 'danger',
+      variant: 'faded',
+      class: 'bg-danger-2 border-danger-6 text-danger-11 hover:bg-danger-3',
+    },
+    // bordered (outline)
+    {
+      color: 'primary',
+      variant: 'bordered',
+      class: 'border-primary-7 text-primary-11 hover:bg-primary-3',
+    },
+    {
+      color: 'secondary',
+      variant: 'bordered',
+      class: 'border-secondary-7 text-secondary-11 hover:bg-secondary-3',
+    },
+    { color: 'default', variant: 'bordered', class: 'border-gray-7 text-gray-12 hover:bg-gray-3' },
+    {
+      color: 'danger',
+      variant: 'bordered',
+      class: 'border-danger-7 text-danger-11 hover:bg-danger-3',
+    },
+    // light (ghost)
+    { color: 'primary', variant: 'light', class: 'text-primary-11 hover:bg-primary-3' },
+    { color: 'secondary', variant: 'light', class: 'text-secondary-11 hover:bg-secondary-3' },
+    { color: 'default', variant: 'light', class: 'text-gray-12 hover:bg-gray-3' },
+    { color: 'danger', variant: 'light', class: 'text-danger-11 hover:bg-danger-3' },
+  ],
+  defaultVariants: {
+    color: 'default',
+    variant: 'solid',
+    size: 'md',
+    isIconOnly: false,
+  },
+})
+
+type ButtonVariants = VariantProps<typeof button>
+
+type ButtonOwnProps = Omit<ButtonVariants, 'isIconOnly'> & {
+  isIconOnly?: boolean
+  isLoading?: boolean
+  startContent?: ReactNode
+  endContent?: ReactNode
+  children?: ReactNode
+  className?: string
+}
+
+// Renders a real <button> by default, or an <a> when given an `href` (so a
+// NextUI `as={Link}` link-button becomes a styled anchor). Each arm carries its
+// own element props + keyboard semantics.
+export type ButtonProps =
+  | (ButtonOwnProps & Omit<ComponentProps<'button'>, 'color'>)
+  | (ButtonOwnProps & { href: string } & Omit<ComponentProps<'a'>, 'color'>)
+
+const SPINNER_SIZE = { sm: 'sm', md: 'sm', lg: 'md' } as const
+
+export function Button({
+  color,
+  variant,
+  size,
+  isIconOnly,
+  isLoading = false,
+  startContent,
+  endContent,
+  children,
+  className,
+  ...props
+}: ButtonProps) {
+  const classes = button({ color, variant, size, isIconOnly, className })
+  const content = (
+    <>
+      {isLoading ? <Spinner color="current" size={SPINNER_SIZE[size ?? 'md']} /> : startContent}
+      {children}
+      {!isLoading && endContent}
+    </>
+  )
+
+  if ('href' in props && props.href != null) {
+    const { href, target, rel, ...anchorProps } = props as { href: string } & ComponentProps<'a'>
+
+    return (
+      <a
+        className={classes}
+        href={href}
+        rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
+        target={target}
+        {...anchorProps}
+      >
+        {content}
+      </a>
+    )
+  }
+
+  const { disabled, type = 'button', ...buttonProps } = props as ComponentProps<'button'>
+
+  return (
+    <button
+      aria-busy={isLoading || undefined}
+      className={classes}
+      disabled={disabled || isLoading}
+      type={type}
+      {...buttonProps}
+    >
+      {content}
+    </button>
+  )
+}

@@ -35,7 +35,7 @@ export const Default: Story = () => (
       description="A date outside the window renders nothing (empty below)."
       title="Not Soon"
     >
-      <div className="text-sm text-default-500">
+      <div className="text-sm text-gray-11">
         <EventSoonChip firstDate={notSoon} online={false} />
         (no chip)
       </div>
@@ -44,7 +44,7 @@ export const Default: Story = () => (
     <StorySection inContext={true} title="Examples">
       <div className="flex max-w-md items-center gap-1">
         <EventSoonChip firstDate={soonInPerson} online={false} />
-        <span className="text-sm text-default-600">Saturday Morning Meditation</span>
+        <span className="text-sm text-gray-11">Saturday Morning Meditation</span>
       </div>
     </StorySection>
 

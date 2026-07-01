@@ -6,7 +6,7 @@ import { StoryWrapper, StorySection } from '../../ladle'
 
 import { SearchBar } from './SearchBar'
 
-export default { title: 'Molecules' } satisfies StoryDefault
+export default { title: 'Organisms' } satisfies StoryDefault
 
 // SearchBar embeds a Mapbox geocoder (the MapSearch organism). With a `header`
 // set it renders the collapsed header state instead of the live geocoder, so
@@ -69,7 +69,7 @@ export const Default: Story = () => (
             header="Cambridge"
             subheader="Free meditation classes near you"
           />
-          <div className="p-6 text-sm text-default-600">Events list renders below the bar.</div>
+          <div className="p-6 text-sm text-gray-11">Events list renders below the bar.</div>
         </div>
       </StorySection>
 

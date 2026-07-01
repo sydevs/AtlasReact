@@ -34,7 +34,7 @@ export const Default: Story = () => (
 
     <StorySection inContext={true} title="Examples">
       <div className="flex max-w-md items-center justify-end gap-2 rounded-lg border border-divider p-4">
-        <span className="text-sm text-default-600">{mockEvent.title}</span>
+        <span className="text-sm text-gray-11">{mockEvent.title}</span>
         <ShareButton event={mockEvent} />
       </div>
     </StorySection>

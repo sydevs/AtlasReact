@@ -17,7 +17,7 @@ const sizes = ['sm', 'md', 'lg'] as const
 // can't drive the dropdown's useClick — the shipping LanguageSelector uses a
 // plain element for the same reason).
 const triggerClass =
-  'inline-flex cursor-pointer items-center gap-2 rounded-md border border-default-300 px-4 py-2 text-sm font-medium text-foreground'
+  'inline-flex cursor-pointer items-center gap-2 rounded-md border border-gray-7 px-4 py-2 text-sm font-medium text-foreground'
 
 /**
  * Dropdown — a portaled popover with viewport-aware placement (flip/shift) built
@@ -96,7 +96,7 @@ export const Default: Story = () => (
     </StorySection>
 
     <StorySection inContext={true} title="Examples">
-      <div className="flex items-center gap-4 text-default-700">
+      <div className="flex items-center gap-4 text-gray-12">
         <span className="text-sm">Filter</span>
         <Dropdown
           align="end"

@@ -10,8 +10,8 @@ export default {
 
 const Placeholder = ({ label }: { label: string }) => (
   <div className="p-4">
-    <p className="font-semibold text-default-700">{label}</p>
-    <p className="mt-2 text-sm text-default-500">
+    <p className="font-semibold text-gray-12">{label}</p>
+    <p className="mt-2 text-sm text-gray-11">
       The panel wraps its children in a Suspense boundary (LoadingFallback) and an ErrorBoundary
       (ErrorFallback).
     </p>

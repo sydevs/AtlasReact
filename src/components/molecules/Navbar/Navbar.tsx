@@ -1,104 +1,49 @@
-import { Link } from '@nextui-org/react'
-import {
-  Navbar as NextUINavbar,
-  type NavbarProps as NextUINavbarProps,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenu,
-  NavbarMenuItem,
-} from '@nextui-org/react'
-import { link as linkStyles } from '@nextui-org/react'
-import clsx from 'clsx'
+import { type ComponentProps } from 'react'
 
 import { siteConfig } from '@/config/site'
+import { Link } from '@/components/atoms/Link'
 import { ThemeSwitch } from '@/components/atoms/ThemeSwitch'
 import { LanguageSelector } from '@/components/atoms/LanguageSelector'
 import { Logo } from '@/components/atoms/Icons'
 
-// A thin pass-through over NextUI's Navbar; reuse its props (aliased to avoid the
-// name clash), so our public type matches the other molecules' `<Name>Props`.
-export type NavbarProps = NextUINavbarProps
+// Custom top bar built from primitives (no NextUI Navbar suite). Brand + desktop
+// nav links on the left, theme/language actions on the right; the language
+// selector collapses below `sm`, matching the previous responsive behavior. The
+// old NextUI mobile menu was gated behind a commented-out toggle (never visible),
+// so it's intentionally not carried over.
+export type NavbarProps = ComponentProps<'nav'>
 
-export const Navbar = ({ ...props }: NavbarProps) => {
+export const Navbar = ({ className, ...props }: NavbarProps) => {
   return (
-    <NextUINavbar maxWidth="xl" position="static" {...props}>
-      <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
-        <NavbarBrand className="gap-3 max-w-fit">
-          <Link className="flex justify-start items-center gap-1" color="foreground" href="/">
+    <nav className={`w-full bg-background ${className ?? ''}`} {...props}>
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
+        <div className="flex items-center gap-3">
+          <Link className="flex items-center justify-start gap-1" color="foreground" href="/">
             <Logo />
             <p className="font-bold text-inherit">ATLAS</p>
           </Link>
-        </NavbarBrand>
-        <div className="hidden lg:flex gap-4 justify-start ml-2">
-          {siteConfig.navItems.map((item) => (
-            <NavbarItem key={item.href}>
+
+          <div className="ml-2 hidden justify-start gap-4 lg:flex">
+            {siteConfig.navItems.map((item) => (
               <Link
-                className={clsx(
-                  linkStyles({ color: 'foreground' }),
-                  'data-[active=true]:text-primary data-[active=true]:font-medium',
-                )}
+                key={item.href}
+                className="data-[active=true]:text-primary data-[active=true]:font-medium"
                 color="foreground"
                 href={item.href}
               >
                 {item.label}
               </Link>
-            </NavbarItem>
-          ))}
+            ))}
+          </div>
         </div>
-      </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
-        <NavbarItem className="hidden sm:flex gap-2">
+        <div className="flex items-center gap-2">
           <ThemeSwitch />
-          <LanguageSelector />
-          {/*<Link href="/help">
-            <HelpIcon className="text-default-500" />
-          </Link>*/}
-        </NavbarItem>
-        {/*<NavbarItem className="hidden md:flex">
-          <Button
-            isExternal
-            as={Link}
-            className="text-sm font-normal text-default-600 bg-default-100"
-            href={siteConfig.links.sponsor}
-            startContent={<HeartFilledIcon className="text-danger" />}
-            variant="flat"
-          >
-            Donate
-          </Button>
-        </NavbarItem>*/}
-      </NavbarContent>
-
-      <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        {/*<Link href="/help">
-          <HelpIcon className="text-default-500" />
-        </Link>*/}
-        <ThemeSwitch />
-        {/* <NavbarMenuToggle /> */}
-      </NavbarContent>
-
-      <NavbarMenu>
-        <div className="mx-4 mt-2 flex flex-col gap-2">
-          {siteConfig.navMenuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? 'primary'
-                    : index === siteConfig.navMenuItems.length - 1
-                      ? 'danger'
-                      : 'foreground'
-                }
-                href="#"
-                size="lg"
-              >
-                {item.label}
-              </Link>
-            </NavbarMenuItem>
-          ))}
+          <div className="hidden sm:flex">
+            <LanguageSelector />
+          </div>
         </div>
-      </NavbarMenu>
-    </NextUINavbar>
+      </div>
+    </nav>
   )
 }

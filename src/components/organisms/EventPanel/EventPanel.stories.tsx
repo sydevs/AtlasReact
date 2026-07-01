@@ -18,19 +18,19 @@ export default { title: 'Organisms' } satisfies StoryDefault
 export const Default: Story = () => (
   <StoryWrapper>
     <StorySection description="A recurring in-person event." title="In Person">
-      <div className="max-w-md border border-default-200">
+      <div className="max-w-md border border-gray-6">
         <EventPanel event={mockEvent} />
       </div>
     </StorySection>
 
     <StorySection description="An online event in French." title="Online">
-      <div className="max-w-md border border-default-200">
+      <div className="max-w-md border border-gray-6">
         <EventPanel event={{ ...mockEvent, eventType: 'online', languages: ['fr'] }} />
       </div>
     </StorySection>
 
     <StorySection description="An event without images." title="No Images">
-      <div className="max-w-md border border-default-200">
+      <div className="max-w-md border border-gray-6">
         <EventPanel event={{ ...mockEvent, images: [] }} />
       </div>
     </StorySection>

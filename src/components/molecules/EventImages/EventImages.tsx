@@ -1,5 +1,4 @@
 import { Suspense, useState } from 'react'
-import { Image } from '@nextui-org/react'
 import { useTranslation } from 'react-i18next'
 import { Autoplay, Pagination, A11y, EffectFade } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -46,13 +45,10 @@ export function EventImages({ images }: { images: EventImage[] }) {
               type="button"
               onClick={() => openAt(index)}
             >
-              <Image
-                isBlurred
+              <img
                 alt={image.alt ?? undefined}
-                className="rounded-lg aspect-[4/3] object-cover"
-                height="100%"
+                className="w-full rounded-lg aspect-[4/3] object-cover"
                 src={image.url}
-                width="100%"
               />
             </button>
           </SwiperSlide>

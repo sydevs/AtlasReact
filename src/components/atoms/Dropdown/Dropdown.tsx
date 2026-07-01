@@ -16,6 +16,8 @@ import {
 } from '@floating-ui/react'
 import { tv } from 'tailwind-variants'
 
+import { overlayContainer } from '@/lib/overlay'
+
 /** Side of the trigger the panel opens on. */
 export type DropdownSide = 'top' | 'bottom' | 'left' | 'right'
 
@@ -103,7 +105,7 @@ export type DropdownItemProps =
 const dropdownItem = tv({
   // `w-full text-left` keep the <button> variant reading as a full-width menu
   // row (buttons are otherwise inline + centered) and a no-op for the <a>.
-  base: 'block w-full text-left font-medium text-foreground transition-colors hover:bg-default-100',
+  base: 'block w-full text-left font-medium text-foreground transition-colors hover:bg-gray-3',
   variants: {
     size: {
       sm: 'px-4 py-2.5 text-sm',
@@ -150,7 +152,7 @@ export function DropdownItem({ size = 'md', className, children, ...props }: Dro
 }
 
 const dropdownPanel = tv({
-  base: 'z-50 rounded-lg border border-default-200 bg-content1 shadow-xl',
+  base: 'z-50 rounded-lg border border-gray-6 bg-gray-2 shadow-xl',
   variants: {
     // `full` matches the trigger width via the floating-ui size middleware, so it
     // imposes no min-width of its own.
@@ -296,7 +298,7 @@ export function Dropdown({
       </div>
 
       {isOpen && (
-        <FloatingPortal>
+        <FloatingPortal root={overlayContainer()}>
           <FloatingFocusManager
             context={context}
             // Non-modal so the background stays interactive, and initialFocus={-1}

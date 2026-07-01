@@ -1,4 +1,3 @@
-import { Link } from '@nextui-org/react'
 import { useMemo } from 'react'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
@@ -8,6 +7,7 @@ import { eventTimeZone, isOnline, nextOccurrence } from '@/lib/shape'
 import { EventTime } from '@/components/molecules/EventTime'
 import { EventSoonChip } from '@/components/molecules/EventSoon'
 import { RightArrowIcon } from '@/components/atoms/Icons'
+import { Link } from '@/components/atoms/Link'
 import { Chip } from '@/components/atoms/Chip'
 import { EventSlim } from '@/types'
 
@@ -39,7 +39,7 @@ export function EventItem({ event }: EventItemProps) {
 
   return (
     <Link
-      className="block px-6 text-inherit transition-colors hover:bg-primary-10 dark:hover:bg-default-100"
+      className="block px-6 text-inherit transition-colors hover:bg-primary-2 dark:hover:bg-gray-3"
       href={event.path}
     >
       <li key={event.id} className="flex-center-y py-5 border-b border-divider min-h-36">
@@ -56,7 +56,7 @@ export function EventItem({ event }: EventItemProps) {
               : t('details.contact_for_timing')}
           </div>
           {recurrence && nextDate && (
-            <div className="text-xs text-default-500">
+            <div className="text-xs text-gray-11">
               <EventTime
                 delay={500}
                 endTime={schedule?.endTime}

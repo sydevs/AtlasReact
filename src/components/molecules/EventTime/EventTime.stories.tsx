@@ -39,14 +39,20 @@ export const Default: Story = () => (
       description="Pass showTimeZone to append the TimezoneChip (offset on hover)."
       title="Time Zone"
     >
+      {/* EventTime renders inline content (a Fragment), so wrap each in a block
+          to keep the two examples on their own lines. */}
       <div className="flex flex-col gap-2">
-        <EventTime endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
-        <EventTime showTimeZone endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
+        <div>
+          <EventTime endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
+        </div>
+        <div>
+          <EventTime showTimeZone endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
+        </div>
       </div>
     </StorySection>
 
     <StorySection inContext={true} title="Examples">
-      <div className="max-w-md text-xs text-default-500">
+      <div className="max-w-md text-xs text-gray-11">
         <EventTime showTimeZone endTime="11:00" nextDate={nextDate} timeZone="Europe/London" />
       </div>
     </StorySection>

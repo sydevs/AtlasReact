@@ -1,10 +1,10 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
 import { useEffect } from 'react'
-import { Link } from '@nextui-org/react'
 import { lazy } from 'react'
 
 import api from '@/config/api'
+import { Link } from '@/components/atoms/Link'
 import { Panel } from '@/components/atoms'
 import { useViewState } from '@/config/store'
 import { EventMetadata } from '@/components/molecules'
@@ -50,7 +50,7 @@ function EventPanel({ eventId }: { eventId: number }) {
   return (
     <>
       <Link
-        className="text-3xl absolute top-5 left-2.5 z-20 bg-background rounded hover:opacity-100 hover:bg-primary-50 transition-colors"
+        className="text-3xl absolute top-5 left-2.5 z-20 bg-background rounded hover:opacity-100 hover:bg-primary-3 transition-colors"
         href={parentPath}
       >
         <UpArrowIcon className="text-lg" size={32} />

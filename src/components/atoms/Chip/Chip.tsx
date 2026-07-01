@@ -1,45 +1,58 @@
 import React from 'react'
-import { Chip as NextUIChip, type ChipProps as NextUIChipProps } from '@nextui-org/react'
 import { tv, type VariantProps } from 'tailwind-variants'
 
 import { IconSvgProps } from '@/types'
 
-// Reference tailwind-variants usage for the design system (see DESIGN_SYSTEM.md).
-// Content is always uppercased; `emphasis` is a design-system variant exposed for
-// the component library (previewed in Chip.stories) — the app uses the default.
-const chipContent = tv({
-  base: 'uppercase',
+// A compact, uppercase label — the design system's reference tailwind-variants
+// component (see DESIGN_SYSTEM.md), now built directly on the Radix-semantic
+// 12-step tokens instead of NextUI's Chip. `flat` is a soft tint, `light` is
+// text-only; `emphasis` tunes the content weight.
+const chip = tv({
+  slots: {
+    base: 'inline-flex items-center gap-1 rounded-sm',
+    content: 'uppercase leading-none',
+  },
   variants: {
+    color: { primary: '', secondary: '', default: '' },
+    variant: { flat: '', light: '' },
+    size: {
+      sm: { base: 'px-2 py-1 text-xs' },
+      md: { base: 'px-2.5 py-1.5 text-sm' },
+    },
     emphasis: {
-      solid: 'font-bold',
-      subtle: 'font-medium',
+      solid: { content: 'font-bold' },
+      subtle: { content: 'font-medium' },
     },
   },
+  compoundVariants: [
+    { color: 'primary', variant: 'flat', class: { base: 'bg-primary-3 text-primary-11' } },
+    { color: 'secondary', variant: 'flat', class: { base: 'bg-secondary-3 text-secondary-11' } },
+    { color: 'default', variant: 'flat', class: { base: 'bg-gray-3 text-gray-12' } },
+    { color: 'primary', variant: 'light', class: { base: 'text-primary-11' } },
+    { color: 'secondary', variant: 'light', class: { base: 'text-secondary-11' } },
+    { color: 'default', variant: 'light', class: { base: 'text-gray-12' } },
+  ],
   defaultVariants: {
+    color: 'primary',
+    variant: 'flat',
+    size: 'sm',
     emphasis: 'solid',
   },
 })
 
-export type ChipProps = {
+export type ChipProps = VariantProps<typeof chip> & {
   children: React.ReactNode
   icon?: React.ReactElement<IconSvgProps>
-  emphasis?: VariantProps<typeof chipContent>['emphasis']
-} & NextUIChipProps
+  className?: string
+}
 
-export function Chip({ children, icon, emphasis, ...props }: ChipProps) {
+export function Chip({ children, icon, color, variant, size, emphasis, className }: ChipProps) {
+  const slots = chip({ color, variant, size, emphasis })
+
   return (
-    <NextUIChip
-      classNames={{
-        content: chipContent({ emphasis }),
-      }}
-      color="primary"
-      radius="sm"
-      size="sm"
-      startContent={icon}
-      variant="flat"
-      {...props}
-    >
-      {children}
-    </NextUIChip>
+    <span className={slots.base({ className })}>
+      {icon}
+      <span className={slots.content()}>{children}</span>
+    </span>
   )
 }

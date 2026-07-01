@@ -36,14 +36,14 @@ export const StorySection = ({
   // teal gradient is a fixed dark brand colour, so its text is pinned white to
   // read in both themes; neutral uses a theme-aware semantic surface token.
   const getBackgroundStyles = () => {
-    if (background === 'neutral') return 'bg-default-100 p-6 rounded-lg'
+    if (background === 'neutral') return 'bg-gray-3 p-6 rounded-lg'
     if (background === 'gradient')
       return 'bg-gradient-to-b from-teal-600 to-teal-700 p-6 rounded-lg text-white'
 
     return ''
   }
 
-  const titleColor = variant === 'subsection' ? 'text-default-600' : 'text-foreground'
+  const titleColor = variant === 'subsection' ? 'text-gray-11' : 'text-foreground'
 
   const variantConfig = {
     section: {
@@ -81,7 +81,7 @@ export const StorySection = ({
       const scrollBackground = backgroundStyles || 'bg-background'
 
       return (
-        <div className="h-[600px] overflow-y-auto border-4 border-default-200 -m-6">
+        <div className="h-[600px] overflow-y-auto border-4 border-gray-6 -m-6">
           <div className={`min-h-full px-6 ${scrollBackground}`}>{children}</div>
         </div>
       )
@@ -99,7 +99,7 @@ export const StorySection = ({
       <div className={config.wrapperClass}>
         {inContext && <div className="border-t-4 border-foreground mb-6 pt-8" />}
         <TitleTag className={`${config.titleClass} ${titleColor}`}>{displayTitle}</TitleTag>
-        {description && <p className="text-sm text-default-500 mb-4">{description}</p>}
+        {description && <p className="text-sm text-gray-11 mb-4">{description}</p>}
         {renderContent()}
       </div>
       {config.showDivider && <hr className="border-divider" />}

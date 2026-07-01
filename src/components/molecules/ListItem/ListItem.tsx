@@ -1,5 +1,4 @@
-import { Link } from '@nextui-org/react'
-
+import { Link } from '@/components/atoms/Link'
 import { RightArrowIcon } from '@/components/atoms/Icons'
 
 export interface ListItemProps {
@@ -13,7 +12,7 @@ export interface ListItemProps {
 export function ListItem({ label, subtitle, count, href, children }: ListItemProps) {
   return (
     <Link
-      className="px-6 block text-inherit transition-colors hover:bg-primary-10 dark:hover:bg-default-100"
+      className="px-6 block text-inherit transition-colors hover:bg-primary-2 dark:hover:bg-gray-3"
       href={href}
     >
       <li className="py-5 flex flex-row items-center font-semibold border-b border-divider">

@@ -1,17 +1,9 @@
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Snippet,
-  Link,
-  Button,
-  ButtonProps,
-  useDisclosure,
-} from '@nextui-org/react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { Modal, ModalHeader, ModalBody } from '@/components/atoms/Modal'
+import { Button, type ButtonProps } from '@/components/atoms/Button'
+import { Link } from '@/components/atoms/Link'
 import {
   FacebookIcon,
   EmailIcon,
@@ -26,15 +18,15 @@ export type ShareButtonProps = {
 } & ButtonProps
 
 export function ShareButton({ event, ...buttonProps }: ShareButtonProps) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const [isOpen, setIsOpen] = useState(false)
   const { t } = useTranslation('events')
 
   return (
     <>
-      <Button color="primary" variant="faded" onPress={onOpen} {...buttonProps}>
+      <Button color="primary" variant="faded" onClick={() => setIsOpen(true)} {...buttonProps}>
         <span className="font-semibold tracking-wider">{t('details.share')}</span>
       </Button>
-      <ShareModal event={event} isOpen={isOpen} onOpenChange={onOpenChange} />
+      <ShareModal event={event} isOpen={isOpen} onOpenChange={setIsOpen} />
     </>
   )
 }
@@ -50,14 +42,42 @@ function ShareModal({ event, isOpen, onOpenChange }: ShareModalProps) {
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-      <ModalContent>
-        <ModalHeader className="flex flex-col gap-1">{t('registration.invite_friend')}</ModalHeader>
-        <ModalBody>
-          <ShareContent label={event.title} url={event.webUrl ?? ''} />
-        </ModalBody>
-        <ModalFooter />
-      </ModalContent>
+      <ModalHeader className="flex flex-col gap-1">{t('registration.invite_friend')}</ModalHeader>
+      <ModalBody className="pb-6">
+        <ShareContent label={event.title} url={event.webUrl ?? ''} />
+      </ModalBody>
     </Modal>
+  )
+}
+
+// Click-to-copy URL field — the custom replacement for NextUI's Snippet (which
+// was rendered with hideSymbol, i.e. select-to-copy). Copies on click with a
+// brief tint flash; the text stays selectable as a fallback.
+function CopyField({ value }: { value: string }) {
+  const [copied, setCopied] = useState(false)
+
+  const copy = () => {
+    navigator.clipboard
+      ?.writeText(value)
+      .then(() => {
+        setCopied(true)
+        window.setTimeout(() => setCopied(false), 1500)
+      })
+      .catch(() => {})
+  }
+
+  return (
+    <button
+      aria-label="Copy link"
+      className={`w-full select-all truncate rounded px-3 py-2 text-left text-sm text-secondary-11 transition-colors ${
+        copied ? 'bg-secondary-5' : 'bg-secondary-3'
+      }`}
+      title={value}
+      type="button"
+      onClick={copy}
+    >
+      {value}
+    </button>
   )
 }
 
@@ -95,9 +115,7 @@ export function ShareContent({ label, url }: ShareContentProps) {
   return (
     <>
       <div>
-        <Snippet className="text-sm w-full" color="secondary" hideSymbol={true}>
-          {url}
-        </Snippet>
+        <CopyField value={url} />
       </div>
       <div className="flex flex-row gap-4 mt-2 justify-center">
         {socials.map((social, index) => (

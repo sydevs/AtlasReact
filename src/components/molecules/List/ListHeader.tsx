@@ -1,5 +1,4 @@
-import { Link } from '@nextui-org/react'
-
+import { Link } from '@/components/atoms/Link'
 import { UpArrowIcon } from '@/components/atoms/Icons'
 
 export interface ListHeaderProps {
