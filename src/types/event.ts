@@ -1,6 +1,6 @@
 import z from 'zod'
 
-import { RegionRefSchema } from './region'
+import { RegionRefSchema } from './region-ref'
 
 export const EventTypeSchema = z.enum(['offline', 'online'])
 export type EventType = z.infer<typeof EventTypeSchema>
